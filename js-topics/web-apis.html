@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web APIs - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Web APIs</h1>
+        
+        <p>Web APIs (Application Programming Interfaces) are interfaces provided by browsers that allow JavaScript to interact with the browser and the web environment. These APIs enable developers to create rich, interactive web applications by providing access to various browser features and functionalities.</p>
+        
+        <h2>DOM API</h2>
+        <p>The Document Object Model (DOM) API allows JavaScript to interact with HTML and CSS, enabling dynamic content updates, style modifications, and event handling.</p>
+        
+        <h3>Key DOM Methods</h3>
+        <ul>
+            <li><code>document.getElementById()</code> - Get an element by its ID</li>
+            <li><code>document.querySelector()</code> - Select the first element matching a CSS selector</li>
+            <li><code>document.querySelectorAll()</code> - Select all elements matching a CSS selector</li>
+            <li><code>element.innerHTML</code> - Get or set the HTML content of an element</li>
+            <li><code>element.textContent</code> - Get or set the text content of an element</li>
+            <li><code>element.setAttribute()</code> - Set an attribute on an element</li>
+            <li><code>element.classList</code> - Add, remove, or toggle CSS classes</li>
+            <li><code>element.style</code> - Access and modify inline styles</li>
+        </ul>
+        
+        <h2>Fetch API</h2>
+        <p>The Fetch API provides a modern interface for making HTTP requests, replacing the older XMLHttpRequest. It returns Promises, making it easier to handle asynchronous operations.</p>
+        
+        <pre><code>fetch('https://api.example.com/data')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => console.log(data))
+  .catch(error => console.error('Fetch error:', error));</code></pre>
+        
+        <h2>Storage APIs</h2>
+        
+        <h3>localStorage and sessionStorage</h3>
+        <p>These APIs allow you to store key-value pairs in the browser:</p>
+        <ul>
+            <li><code>localStorage</code> - Persists data even after the browser is closed</li>
+            <li><code>sessionStorage</code> - Stores data for the duration of the page session</li>
+        </ul>
+        
+        <pre><code>// localStorage example
+localStorage.setItem('username', 'JohnDoe');
+const username = localStorage.getItem('username');
+localStorage.removeItem('username');
+localStorage.clear(); // Clear all items
+
+// sessionStorage works the same way
+sessionStorage.setItem('tempData', 'someValue');</code></pre>
+        
+        <h3>IndexedDB</h3>
+        <p>A low-level API for client-side storage of significant amounts of structured data, including files/blobs.</p>
+        
+        <h2>Geolocation API</h2>
+        <p>Allows web applications to access the user's geographical location information.</p>
+        
+        <pre><code>if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    },
+    error => {
+      console.error('Error getting location:', error.message);
+    }
+  );
+} else {
+  console.log('Geolocation is not supported by this browser.');
+}</code></pre>
+        
+        <h2>Canvas API</h2>
+        <p>Provides a means for drawing graphics via JavaScript and the HTML &lt;canvas&gt; element. It can be used for animation, game graphics, data visualization, photo manipulation, and real-time video processing.</p>
+        
+        <h2>Web Audio API</h2>
+        <p>Provides a powerful system for controlling audio on the web, allowing developers to choose audio sources, add effects, create audio visualizations, apply spatial effects, and more.</p>
+        
+        <h2>WebSockets API</h2>
+        <p>Enables two-way interactive communication between a user's browser and a server. It provides a persistent connection that allows data to be sent back and forth while remaining open.</p>
+        
+        <pre><code>const socket = new WebSocket('wss://example.com/socketserver');
+
+socket.onopen = function(event) {
+  console.log('Connection established');
+  socket.send('Hello Server!');
+};
+
+socket.onmessage = function(event) {
+  console.log('Message from server:', event.data);
+};
+
+socket.onclose = function(event) {
+  console.log('Connection closed');
+};
+
+socket.onerror = function(error) {
+  console.error('WebSocket error:', error);
+};</code></pre>
+        
+        <h2>Intersection Observer API</h2>
+        <p>Provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with the viewport.</p>
+        
+        <pre><code>const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      console.log('Element is visible in the viewport');
+      // Load images, trigger animations, etc.
+      observer.unobserve(entry.target); // Stop observing once triggered
+    }
+  });
+}, {
+  root: null, // viewport
+  threshold: 0.1 // 10% of the element is visible
+});
+
+// Start observing an element
+const element = document.querySelector('.lazy-load');
+observer.observe(element);</code></pre>
+        
+        <div class="examples">
+            <h3>More Examples</h3>
+            <pre><code>// Web Notifications API
+if ('Notification' in window) {
+  Notification.requestPermission().then(permission => {
+    if (permission === 'granted') {
+      new Notification('Hello!', {
+        body: 'This is a notification example',
+        icon: 'path/to/icon.png'
+      });
+    }
+  });
+}
+
+// File API
+document.getElementById('fileInput').addEventListener('change', event => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      console.log('File content:', e.target.result);
+    };
+    reader.readAsText(file); // or readAsDataURL, readAsArrayBuffer
+  }
+});
+
+// Web Speech API
+// Speech synthesis (text-to-speech)
+const speak = text => {
+  const utterance = new SpeechSynthesisUtterance(text);
+  speechSynthesis.speak(utterance);
+};
+
+speak('Hello, this is the Web Speech API in action!');
+
+// Speech recognition
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  
+  recognition.onresult = event => {
+    const transcript = event.results[0][0].transcript;
+    console.log('You said:', transcript);
+  };
+  
+  recognition.start();
+}
+
+// Drag and Drop API
+document.addEventListener('DOMContentLoaded', () => {
+  const draggable = document.getElementById('draggable');
+  const dropzone = document.getElementById('dropzone');
+  
+  draggable.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', draggable.id);
+  });
+  
+  dropzone.addEventListener('dragover', e => {
+    e.preventDefault(); // Allow drop
+  });
+  
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('text/plain');
+    const element = document.getElementById(id);
+    dropzone.appendChild(element);
+  });
+});</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank">MDN: Web APIs</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">MDN: Fetch API</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API" target="_blank">MDN: Web Storage API</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API" target="_blank">MDN: WebSockets API</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank">MDN: Intersection Observer API</a></li>
+                <li><a href="https://developers.google.com/web/fundamentals/primers/service-workers" target="_blank">Google Developers: Service Workers</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

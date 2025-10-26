@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic DOM Manipulation - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .demo-container {
+            border: 1px solid var(--code-border);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            background-color: var(--card-bg);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Basic DOM Manipulation</h1>
+        
+        <p>The Document Object Model (DOM) is a programming interface for HTML and XML documents. It represents the page so that programs can change the document structure, style, and content. JavaScript is commonly used to manipulate the DOM, allowing you to create dynamic web pages.</p>
+        
+        <h2>Understanding the DOM</h2>
+        <p>The DOM represents an HTML document as a tree of nodes. Each node represents a part of the document (element, attribute, text, etc.).</p>
+        
+        <pre><code>&lt;!-- HTML Document -->
+&lt;html>
+  &lt;head>
+    &lt;title>My Page&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;h1 id="heading">Hello World&lt;/h1>
+    &lt;p class="content">This is a paragraph.&lt;/p>
+  &lt;/body>
+&lt;/html>
+
+/* DOM Tree Representation
+Document
+└── html
+    ├── head
+    │   └── title
+    │       └── "My Page" (text node)
+    └── body
+        ├── h1 (with id="heading")
+        │   └── "Hello World" (text node)
+        └── p (with class="content")
+            └── "This is a paragraph." (text node)
+*/</code></pre>
+        
+        <h2>Accessing DOM Elements</h2>
+        <p>JavaScript provides several methods to access elements in the DOM:</p>
+        
+        <h3>By ID</h3>
+        <pre><code>// Get element with id="heading"
+const heading = document.getElementById('heading');
+console.log(heading); // &lt;h1 id="heading">Hello World&lt;/h1></code></pre>
+        
+        <h3>By Class Name</h3>
+        <pre><code>// Get all elements with class="content"
+const contentElements = document.getElementsByClassName('content');
+console.log(contentElements); // HTMLCollection [p.content]
+console.log(contentElements[0]); // &lt;p class="content">This is a paragraph.&lt;/p></code></pre>
+        
+        <h3>By Tag Name</h3>
+        <pre><code>// Get all paragraph elements
+const paragraphs = document.getElementsByTagName('p');
+console.log(paragraphs); // HTMLCollection [p.content]
+
+// Get all div elements
+const divs = document.getElementsByTagName('div');
+console.log(divs.length); // Number of div elements</code></pre>
+        
+        <h3>Using CSS Selectors</h3>
+        <pre><code>// querySelector returns the first matching element
+const heading = document.querySelector('#heading');
+const firstParagraph = document.querySelector('p');
+const contentElement = document.querySelector('.content');
+
+// querySelectorAll returns all matching elements
+const allParagraphs = document.querySelectorAll('p');
+const allContentElements = document.querySelectorAll('.content');
+
+// More complex selectors
+const nestedElements = document.querySelectorAll('div p');
+const specificElement = document.querySelector('ul li:nth-child(2)');</code></pre>
+        
+        <div class="tip-box">
+            <h4>Modern Approach</h4>
+            <p><code>querySelector</code> and <code>querySelectorAll</code> are more flexible and powerful than the older methods, as they allow you to use any valid CSS selector. They are generally preferred in modern JavaScript.</p>
+        </div>
+        
+        <h2>Modifying DOM Elements</h2>
+        
+        <h3>Changing Text Content</h3>
+        <pre><code>// Using textContent (recommended for most cases)
+const heading = document.getElementById('heading');
+heading.textContent = 'New Heading Text';
+
+// Using innerText (considers CSS styling, slower)
+heading.innerText = 'Another Heading Text';
+
+// Using innerHTML (can include HTML, security risk if not sanitized)
+heading.innerHTML = 'Heading with &lt;span>styled&lt;/span> text';</code></pre>
+        
+        <h3>Changing Attributes</h3>
+        <pre><code>const link = document.getElementById('myLink');
+
+// Get attribute value
+const href = link.getAttribute('href');
+console.log(href); // e.g., "https://example.com"
+
+// Set attribute value
+link.setAttribute('href', 'https://newurl.com');
+link.setAttribute('target', '_blank');
+
+// Check if attribute exists
+console.log(link.hasAttribute('target')); // true
+
+// Remove attribute
+link.removeAttribute('target');
+
+// Direct property access (for standard attributes)
+link.href = 'https://anotherurl.com';
+link.id = 'newLinkId';</code></pre>
+        
+        <h3>Modifying CSS Styles</h3>
+        <pre><code>const element = document.getElementById('myElement');
+
+// Using the style property (inline styles)
+element.style.color = 'blue';
+element.style.backgroundColor = 'yellow';
+element.style.padding = '10px';
+element.style.borderRadius = '5px';
+
+// Note: CSS properties with hyphens are camelCased in JavaScript
+// e.g., 'background-color' becomes 'backgroundColor'
+
+// Getting computed styles (all styles applied to the element)
+const computedStyle = window.getComputedStyle(element);
+console.log(computedStyle.color);
+console.log(computedStyle.fontSize);</code></pre>
+        
+        <h3>Working with CSS Classes</h3>
+        <pre><code>const element = document.getElementById('myElement');
+
+// Add a class
+element.classList.add('highlight');
+
+// Remove a class
+element.classList.remove('old-class');
+
+// Toggle a class (add if not present, remove if present)
+element.classList.toggle('active');
+
+// Replace one class with another
+element.classList.replace('old-class', 'new-class');
+
+// Check if element has a specific class
+if (element.classList.contains('active')) {
+  console.log('Element is active');
+}
+
+// Older approach (not recommended)
+// element.className = 'new-class another-class';</code></pre>
+        
+        <h2>Creating and Removing Elements</h2>
+        
+        <h3>Creating Elements</h3>
+        <pre><code>// Create a new element
+const newParagraph = document.createElement('p');
+
+// Add content to the element
+newParagraph.textContent = 'This is a dynamically created paragraph.';
+
+// Add attributes
+newParagraph.id = 'dynamic-para';
+newParagraph.classList.add('new-content');
+
+// Create a text node (alternative way to add text)
+const textNode = document.createTextNode('Text node content');
+const anotherParagraph = document.createElement('p');
+anotherParagraph.appendChild(textNode);</code></pre>
+        
+        <h3>Adding Elements to the DOM</h3>
+        <pre><code>const container = document.getElementById('container');
+const newElement = document.createElement('div');
+newElement.textContent = 'New element';
+
+// Append at the end of the container
+container.appendChild(newElement);
+
+// Insert before a specific element
+const referenceElement = document.getElementById('reference');
+container.insertBefore(newElement, referenceElement);
+
+// Modern methods (better browser support)
+// Append at the end
+container.append(newElement); // Can append multiple nodes and text
+container.append('Text can be added directly', newElement);
+
+// Prepend at the beginning
+container.prepend(newElement);
+
+// Insert adjacent to an element
+referenceElement.before(newElement); // Insert before
+referenceElement.after(newElement);  // Insert after
+referenceElement.replaceWith(newElement); // Replace</code></pre>
+        
+        <h3>Removing Elements</h3>
+        <pre><code>const elementToRemove = document.getElementById('remove-me');
+
+// Remove the element
+elementToRemove.remove();
+
+// Older approach (still useful in some cases)
+const parent = elementToRemove.parentNode;
+parent.removeChild(elementToRemove);
+
+// Remove all children of an element
+const container = document.getElementById('container');
+while (container.firstChild) {
+  container.removeChild(container.firstChild);
+}
+
+// Modern alternative to clear all children
+container.innerHTML = '';</code></pre>
+        
+        <h2>Traversing the DOM</h2>
+        <p>Navigating between DOM nodes is a common operation when manipulating the DOM.</p>
+        
+        <h3>Parent-Child Relationships</h3>
+        <pre><code>const child = document.getElementById('child-element');
+
+// Access parent node
+const parent = child.parentNode; // or child.parentElement
+
+// Access children
+const container = document.getElementById('container');
+const children = container.children; // HTMLCollection of child elements
+const firstChild = container.firstElementChild;
+const lastChild = container.lastElementChild;
+
+// Check if element has children
+const hasChildren = container.hasChildNodes();
+console.log(hasChildren); // true or false</code></pre>
+        
+        <h3>Sibling Relationships</h3>
+        <pre><code>const element = document.getElementById('middle-element');
+
+// Access siblings
+const previousSibling = element.previousElementSibling;
+const nextSibling = element.nextElementSibling;
+
+// Note: There are also .previousSibling and .nextSibling properties,
+// but they include text nodes and comments, which is usually not desired</code></pre>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Creating a Dynamic List</h4>
+            <pre><code>// HTML: &lt;ul id="todo-list">&lt;/ul>
+
+function addTodoItem(text) {
+  // Create new list item
+  const li = document.createElement('li');
+  li.textContent = text;
+  
+  // Add a delete button
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = 'Delete';
+  deleteButton.classList.add('delete-btn');
+  deleteButton.onclick = function() {
+    li.remove();
+  };
+  
+  // Append button to list item
+  li.appendChild(deleteButton);
+  
+  // Append list item to the todo list
+  document.getElementById('todo-list').appendChild(li);
+}
+
+// Add some items
+addTodoItem('Learn JavaScript');
+addTodoItem('Practice DOM manipulation');
+addTodoItem('Build a project');</code></pre>
+            
+            <h4>Toggling Element Visibility</h4>
+            <pre><code>// HTML:
+// &lt;button id="toggle-btn">Toggle Content&lt;/button>
+// &lt;div id="content">This content can be hidden or shown.&lt;/div>
+
+const toggleButton = document.getElementById('toggle-btn');
+const content = document.getElementById('content');
+
+toggleButton.addEventListener('click', function() {
+  // Toggle visibility using classList
+  content.classList.toggle('hidden');
+  
+  // Update button text
+  if (content.classList.contains('hidden')) {
+    toggleButton.textContent = 'Show Content';
+  } else {
+    toggleButton.textContent = 'Hide Content';
+  }
+});
+
+// CSS: .hidden { display: none; }</code></pre>
+            
+            <h4>Form Validation</h4>
+            <pre><code>// HTML:
+// &lt;form id="signup-form">
+//   &lt;input type="text" id="username" placeholder="Username">
+//   &lt;span id="username-error" class="error">&lt;/span>
+//   &lt;button type="submit">Submit&lt;/button>
+// &lt;/form>
+
+const form = document.getElementById('signup-form');
+const usernameInput = document.getElementById('username');
+const usernameError = document.getElementById('username-error');
+
+form.addEventListener('submit', function(event) {
+  // Prevent form submission
+  event.preventDefault();
+  
+  // Get input value and trim whitespace
+  const username = usernameInput.value.trim();
+  
+  // Validate username
+  if (username === '') {
+    // Show error message
+    usernameError.textContent = 'Username is required';
+    usernameInput.classList.add('invalid');
+  } else if (username.length < 3) {
+    usernameError.textContent = 'Username must be at least 3 characters';
+    usernameInput.classList.add('invalid');
+  } else {
+    // Clear error message
+    usernameError.textContent = '';
+    usernameInput.classList.remove('invalid');
+    
+    // Process the form (in a real app, you might submit it)
+    console.log('Form submitted with username:', username);
+  }
+});</code></pre>
+            
+            <h4>Creating a Tab Interface</h4>
+            <pre><code>// HTML:
+// &lt;div class="tabs">
+//   &lt;div class="tab-buttons">
+//     &lt;button class="tab-btn active" data-tab="tab1">Tab 1&lt;/button>
+//     &lt;button class="tab-btn" data-tab="tab2">Tab 2&lt;/button>
+//     &lt;button class="tab-btn" data-tab="tab3">Tab 3&lt;/button>
+//   &lt;/div>
+//   &lt;div class="tab-content">
+//     &lt;div id="tab1" class="tab-pane active">Content for Tab 1&lt;/div>
+//     &lt;div id="tab2" class="tab-pane">Content for Tab 2&lt;/div>
+//     &lt;div id="tab3" class="tab-pane">Content for Tab 3&lt;/div>
+//   &lt;/div>
+// &lt;/div>
+
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+// Add click event to each tab button
+tabButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    // Get the tab to activate
+    const tabId = this.dataset.tab;
+    
+    // Remove active class from all buttons and panes
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabPanes.forEach(pane => pane.classList.remove('active'));
+    
+    // Add active class to current button and corresponding pane
+    this.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  });
+});</code></pre>
+        </div>
+        
+        <div class="tip-box">
+            <h4>Performance Tips</h4>
+            <ul>
+                <li><strong>Minimize DOM manipulations</strong>: DOM operations are expensive. Batch changes when possible.</li>
+                <li><strong>Use document fragments</strong>: When adding multiple elements, use a DocumentFragment to minimize reflows.</li>
+                <li><strong>Cache DOM references</strong>: Store elements you access frequently in variables.</li>
+                <li><strong>Use event delegation</strong>: Attach event listeners to parent elements instead of individual children.</li>
+                <li><strong>Be careful with innerHTML</strong>: It can be a security risk (XSS) and is slower than other methods for simple text changes.</li>
+            </ul>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction" target="_blank">MDN: Introduction to the DOM</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" target="_blank">MDN: DOM API Reference</a></li>
+                <li><a href="https://javascript.info/dom-nodes" target="_blank">JavaScript.info: DOM Nodes</a></li>
+                <li><a href="https://www.w3schools.com/js/js_htmldom.asp" target="_blank">W3Schools: JavaScript HTML DOM</a></li>
+                <li><a href="https://eloquentjavascript.net/14_dom.html" target="_blank">Eloquent JavaScript: The Document Object Model</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element" target="_blank">MDN: Element Interface</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

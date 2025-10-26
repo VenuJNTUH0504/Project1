@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50, #3498db, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .tutorials-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            color: white;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 30px;
+            color: #2c3e50;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tutorials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tutorial-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: transform 0.3s ease;
+        }
+
+        .tutorial-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .tutorial-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .tutorial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tutorial-card:hover .tutorial-image img {
+            transform: scale(1.1);
+        }
+
+        .tutorial-info {
+            padding: 1.5rem;
+        }
+
+        .tutorial-info h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .tutorial-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .tutorial-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tutorial-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tutorial-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: #e0f7fa;
+            color: #00838f;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #ce1dd1, #3737e1);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #2e31d9, #e735bd);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .tutorials-container {
+                margin: 100px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .categories {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="tutorials-container">
+        <div class="hero-section">
+            <h1>Programming Tutorials</h1>
+            <p>Learn to code with our comprehensive tutorials and hands-on exercises</p>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search tutorials...">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active">All</button>
+            <button class="category-btn">Web Development</button>
+            <button class="category-btn">Python</button>
+            <button class="category-btn">JavaScript</button>
+            <button class="category-btn">Mobile Apps</button>
+            <button class="category-btn">Data Science</button>
+        </div>
+
+        <div class="tutorials-grid">
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Web Development">
+                </div>
+                <div class="tutorial-info">
+                    <h3>HTML & CSS Fundamentals</h3>
+                    <div class="tutorial-meta">
+                        <span><i class="fas fa-clock"></i> 4 hours</span>
+                        <span><i class="fas fa-user"></i> Beginner</span>
+                    </div>
+                    <p class="tutorial-description">Learn the basics of HTML and CSS to create beautiful and responsive websites. Perfect for beginners starting their web development journey.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">Web Design</span>
+                    </div>
+                    <a href="#" class="start-btn">Start Learning</a>
+                </div>
+            </div>
+
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Python">
+                </div>
+                <div class="tutorial-info">
+                    <h3>Python for Beginners</h3>
+                    <div class="tutorial-meta">
+                        <span><i class="fas fa-clock"></i> 6 hours</span>
+                        <span><i class="fas fa-user"></i> Beginner</span>
+                    </div>
+                    <p class="tutorial-description">Master the fundamentals of Python programming. Learn about variables, loops, functions, and more in this comprehensive tutorial.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Programming</span>
+                        <span class="tag">Basics</span>
+                    </div>
+                    <a href="#" class="start-btn">Start Learning</a>
+                </div>
+            </div>
+
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="JavaScript">
+                </div>
+                <div class="tutorial-info">
+                    <h3>JavaScript Essentials</h3>
+                    <div class="tutorial-meta">
+                        <span><i class="fas fa-clock"></i> 8 hours</span>
+                        <span><i class="fas fa-user"></i> Intermediate</span>
+                    </div>
+                    <p class="tutorial-description">Dive deep into JavaScript programming. Learn about DOM manipulation, events, async programming, and modern ES6+ features.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Web Development</span>
+                        <span class="tag">ES6</span>
+                    </div>
+                    <a href="#" class="start-btn">Start Learning</a>
+                </div>
+            </div>
+
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58eafc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Mobile Apps">
+                </div>
+                <div class="tutorial-info">
+                    <h3>React Native Basics</h3>
+                    <div class="tutorial-meta">
+                        <span><i class="fas fa-clock"></i> 10 hours</span>
+                        <span><i class="fas fa-user"></i> Intermediate</span>
+                    </div>
+                    <p class="tutorial-description">Learn how to build cross-platform mobile applications using React Native. Create beautiful and performant mobile apps.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">React Native</span>
+                        <span class="tag">Mobile</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <a href="#" class="start-btn">Start Learning</a>
+                </div>
+            </div>
+
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Data Science">
+                </div>
+                <div class="tutorial-info">
+                    <h3>Data Science with Python</h3>
+                    <div class="tutorial-meta">
+                        <span><i class="fas fa-clock"></i> 12 hours</span>
+                        <span><i class="fas fa-user"></i> Advanced</span>
+                    </div>
+                    <p class="tutorial-description">Master data analysis and visualization using Python. Learn about pandas, numpy, matplotlib, and machine learning basics.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Data Science</span>
+                        <span class="tag">Machine Learning</span>
+                    </div>
+                    <a href="#" class="start-btn">Start Learning</a>
+                </div>
+            </div>
+
+            <div class="tutorial-card">
+                <div class="tutorial-image">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Backend">
+                </div>
+                <div class="tutorial-info">
+                    <h3>Node.js Backend Development</h3>
+                    <div class="tutorial-meta">
+                        <span><i class="fas fa-clock"></i> 8 hours</span>
+                        <span><i class="fas fa-user"></i> Intermediate</span>
+                    </div>
+                    <p class="tutorial-description">Learn how to build robust backend applications using Node.js. Master Express.js, MongoDB, and RESTful API design.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Backend</span>
+                        <span class="tag">API</span>
+                    </div>
+                    <a href="#" class="start-btn">Start Learning</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

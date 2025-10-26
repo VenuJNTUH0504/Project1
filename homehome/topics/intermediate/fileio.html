@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File I/O in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>File I/O in C++</h1>
+            <p>Understanding file operations and stream handling in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to File I/O</h2>
+            <p>File I/O in C++ is handled through streams, which provide a convenient way to read from and write to files. The <code>fstream</code> library provides the necessary classes for file operations.</p>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Always check if file operations succeed and handle potential errors appropriately.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Basic File Operations</h2>
+            <p>Here are the basic operations for working with files in C++:</p>
+            
+            <pre><code>#include <fstream>
+#include <string>
+
+// Writing to a file
+ofstream outFile("example.txt");
+if (outFile.is_open()) {
+    outFile << "Hello, World!" << endl;
+    outFile.close();
+}
+
+// Reading from a file
+ifstream inFile("example.txt");
+string line;
+if (inFile.is_open()) {
+    while (getline(inFile, line)) {
+        cout << line << endl;
+    }
+    inFile.close();
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always close files after use to free system resources and ensure all data is written.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>File Modes</h2>
+            <p>Files can be opened in different modes to control how they are accessed:</p>
+            
+            <pre><code>// Open for writing (truncate if exists)
+ofstream file("data.txt", ios::out);
+
+// Open for reading
+ifstream file("data.txt", ios::in);
+
+// Open for appending
+ofstream file("data.txt", ios::app);
+
+// Open for both reading and writing
+fstream file("data.txt", ios::in | ios::out);</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use appropriate file modes based on your needs. For example, use <code>ios::app</code> when you want to add data to an existing file.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Binary File Operations</h2>
+            <p>Binary files store data in its raw form, which is useful for storing complex data structures:</p>
+            
+            <pre><code>struct Person {
+    char name[50];
+    int age;
+    double salary;
+};
+
+// Writing binary data
+Person p = {"John Doe", 30, 50000.0};
+ofstream outFile("person.dat", ios::binary);
+outFile.write(reinterpret_cast<char*>(&p), sizeof(Person));
+outFile.close();
+
+// Reading binary data
+Person p2;
+ifstream inFile("person.dat", ios::binary);
+inFile.read(reinterpret_cast<char*>(&p2), sizeof(Person));
+inFile.close();</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Be careful with binary file operations as they are platform-dependent and may not be portable.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Error Handling</h2>
+            <p>Proper error handling is crucial when working with files:</p>
+            
+            <pre><code>ifstream file("data.txt");
+if (!file) {
+    cerr << "Error: Could not open file" << endl;
+    return 1;
+}
+
+// Check file state
+if (file.fail()) {
+    cerr << "Error: File operation failed" << endl;
+}
+
+// Check for end of file
+if (file.eof()) {
+    cout << "Reached end of file" << endl;
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Always check file operations for errors and provide meaningful error messages.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

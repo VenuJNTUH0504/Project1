@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises & Async/Await - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        .diagram {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .dark-theme .diagram {
+            background-color: #333;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .flow-step {
+            padding: 10px 20px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #4ECDC4;
+            color: white;
+            width: 200px;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Promises & Async/Await</h1>
+        
+        <p>JavaScript is single-threaded, but it needs to handle asynchronous operations like API calls, file operations, and timers. Promises and Async/Await are modern JavaScript features that make asynchronous programming more manageable and readable.</p>
+        
+        <h2>Understanding Asynchronous JavaScript</h2>
+        
+        <p>Before diving into Promises and Async/Await, it's important to understand why we need asynchronous programming in JavaScript:</p>
+        
+        <ul>
+            <li><strong>Non-blocking execution</strong>: Asynchronous code allows the program to continue running while waiting for operations to complete</li>
+            <li><strong>Handling time-dependent operations</strong>: Like API calls, file I/O, timers, etc.</li>
+            <li><strong>Improving user experience</strong>: By keeping the UI responsive while performing background tasks</li>
+        </ul>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Synchronous Code</h4>
+                <pre><code>// Each operation blocks until complete
+console.log("Start");
+const data = fetchDataSync(); // Blocks execution
+console.log(data);
+processData(data);           // Blocks execution
+console.log("End");
+
+// Output order is always:
+// Start
+// [Data]
+// End</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Asynchronous Code</h4>
+                <pre><code>// Operations can run in parallel
+console.log("Start");
+fetchDataAsync().then(data => {
+  console.log(data);
+  processData(data);
+});
+console.log("End");
+
+// Output order is:
+// Start
+// End
+// [Data] (when the async operation completes)</code></pre>
+            </div>
+        </div>
+        
+        <h2>Callback Hell</h2>
+        
+        <p>Before Promises, asynchronous operations were typically handled using callbacks, which could lead to deeply nested code known as "callback hell" or the "pyramid of doom":</p>
+        
+        <pre><code>// Callback hell example
+getUser(userId, function(user) {
+  getUserPosts(user.id, function(posts) {
+    getPostComments(posts[0].id, function(comments) {
+      getCommentAuthor(comments[0].authorId, function(author) {
+        console.log(author.name);
+        
+        // More nested callbacks...
+        getAuthorDetails(author.id, function(details) {
+          // Even more nesting...
+        });
+      });
+    });
+  });
+});</code></pre>
+        
+        <p>This code is difficult to read, debug, and maintain. Promises and Async/Await were introduced to solve these problems.</p>
+        
+        <h2>Promises</h2>
+        
+        <p>A Promise is an object representing the eventual completion or failure of an asynchronous operation. It serves as a placeholder for a value that may not be available yet.</p>
+        
+        <h3>Promise States</h3>
+        
+        <p>A Promise can be in one of three states:</p>
+        
+        <ul>
+            <li><strong>Pending</strong>: Initial state, neither fulfilled nor rejected</li>
+            <li><strong>Fulfilled</strong>: The operation completed successfully</li>
+            <li><strong>Rejected</strong>: The operation failed</li>
+        </ul>
+        
+        <div class="flow-diagram">
+            <div class="flow-step">Pending</div>
+            <div class="flow-arrow">↓</div>
+            <div style="display: flex; gap: 20px;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="flow-arrow">↙</div>
+                    <div class="flow-step" style="background-color: #4CAF50;">Fulfilled</div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="flow-arrow">↘</div>
+                    <div class="flow-step" style="background-color: #f44336;">Rejected</div>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Creating Promises</h3>
+        
+        <p>You can create a new Promise using the Promise constructor:</p>
+        
+        <pre><code>// Creating a Promise
+const myPromise = new Promise((resolve, reject) => {
+  // Asynchronous operation
+  const success = true;
+  
+  if (success) {
+    // Operation succeeded
+    resolve("Operation completed successfully!");
+  } else {
+    // Operation failed
+    reject(new Error("Operation failed!"));
+  }
+});</code></pre>
+        
+        <h3>Using Promises</h3>
+        
+        <p>Promises provide <code>.then()</code>, <code>.catch()</code>, and <code>.finally()</code> methods to handle the results:</p>
+        
+        <pre><code>// Using a Promise
+myPromise
+  .then(result => {
+    console.log(result); // "Operation completed successfully!"
+    return "Next step";
+  })
+  .then(nextResult => {
+    console.log(nextResult); // "Next step"
+  })
+  .catch(error => {
+    console.error("Error:", error.message);
+  })
+  .finally(() => {
+    console.log("Promise settled (fulfilled or rejected)");
+  });</code></pre>
+        
+        <h3>Promise Chaining</h3>
+        
+        <p>Promises can be chained to handle sequences of asynchronous operations, solving the callback hell problem:</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Callback Hell</h4>
+                <pre><code>getUser(userId, function(user) {
+  getUserPosts(user.id, function(posts) {
+    getPostComments(posts[0].id, function(comments) {
+      // Deeply nested...
+    });
+  });
+});</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Promise Chain</h4>
+                <pre><code>getUser(userId)
+  .then(user => getUserPosts(user.id))
+  .then(posts => getPostComments(posts[0].id))
+  .then(comments => {
+    // Much cleaner!
+  })
+  .catch(error => {
+    // Handle any errors in the chain
+    console.error(error);
+  });</code></pre>
+            </div>
+        </div>
+        
+        <h3>Promise Methods</h3>
+        
+        <p>The Promise API provides several useful static methods:</p>
+        
+        <h4>Promise.all()</h4>
+        <p>Takes an array of promises and returns a new promise that fulfills when all input promises have fulfilled, or rejects if any input promise rejects.</p>
+        
+        <pre><code>// Execute multiple promises in parallel
+const promise1 = fetchUserData(1);
+const promise2 = fetchUserData(2);
+const promise3 = fetchUserData(3);
+
+Promise.all([promise1, promise2, promise3])
+  .then(results => {
+    // results is an array of the resolved values
+    console.log(results); // [userData1, userData2, userData3]
+  })
+  .catch(error => {
+    // If any promise rejects, this catch handles it
+    console.error("One of the promises failed:", error);
+  });</code></pre>
+        
+        <h4>Promise.race()</h4>
+        <p>Returns a promise that fulfills or rejects as soon as one of the input promises fulfills or rejects.</p>
+        
+        <pre><code>// Race between promises - first one wins
+const promise1 = new Promise(resolve => setTimeout(() => resolve("First"), 500));
+const promise2 = new Promise(resolve => setTimeout(() => resolve("Second"), 100));
+
+Promise.race([promise1, promise2])
+  .then(result => {
+    console.log(result); // "Second" (because it resolves faster)
+  });</code></pre>
+        
+        <h4>Promise.allSettled()</h4>
+        <p>Returns a promise that resolves after all of the given promises have either fulfilled or rejected.</p>
+        
+        <pre><code>const promises = [
+  Promise.resolve(1),
+  Promise.reject(new Error("Error")),
+  Promise.resolve(3)
+];
+
+Promise.allSettled(promises)
+  .then(results => {
+    // results is an array of objects with status and value/reason
+    console.log(results);
+    // [
+    //   { status: "fulfilled", value: 1 },
+    //   { status: "rejected", reason: Error },
+    //   { status: "fulfilled", value: 3 }
+    // ]
+  });</code></pre>
+        
+        <h4>Promise.any()</h4>
+        <p>Returns a promise that fulfills as soon as one of the input promises fulfills. If all promises reject, it rejects with an AggregateError.</p>
+        
+        <pre><code>const promises = [
+  Promise.reject(new Error("Error 1")),
+  new Promise(resolve => setTimeout(() => resolve("Success"), 200)),
+  Promise.reject(new Error("Error 2"))
+];
+
+Promise.any(promises)
+  .then(result => {
+    console.log(result); // "Success"
+  })
+  .catch(error => {
+    console.log(error); // AggregateError if all promises reject
+  });</code></pre>
+        
+        <h2>Async/Await</h2>
+        
+        <p>Introduced in ES2017, Async/Await is syntactic sugar built on top of Promises, making asynchronous code look and behave more like synchronous code.</p>
+        
+        <h3>Basic Syntax</h3>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Promise Chain</h4>
+                <pre><code>function fetchUserData() {
+  return fetch('/api/user')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(user => {
+      return fetch(`/api/posts?userId=${user.id}`);
+    })
+    .then(response => response.json())
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Async/Await</h4>
+                <pre><code>async function fetchUserData() {
+  try {
+    const userResponse = await fetch('/api/user');
+    if (!userResponse.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    const user = await userResponse.json();
+    const postsResponse = await fetch(`/api/posts?userId=${user.id}`);
+    const posts = await postsResponse.json();
+    
+    return posts;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}</code></pre>
+            </div>
+        </div>
+        
+        <h3>Key Points About Async/Await</h3>
+        
+        <ul>
+            <li><strong>async</strong>: The <code>async</code> keyword is used to declare an asynchronous function that implicitly returns a Promise</li>
+            <li><strong>await</strong>: The <code>await</code> keyword can only be used inside an <code>async</code> function and makes JavaScript wait until the Promise settles</li>
+            <li><strong>Error handling</strong>: Use try/catch blocks for error handling, similar to synchronous code</li>
+            <li><strong>Return values</strong>: The value returned by an async function is automatically wrapped in a Promise</li>
+        </ul>
+        
+        <div class="tip-box">
+            <h4>Tip: Async Functions Always Return Promises</h4>
+            <pre><code>async function getValue() {
+  return 42; // Automatically wrapped in a resolved promise
+}
+
+getValue().then(value => {
+  console.log(value); // 42
+});</code></pre>
+        </div>
+        
+        <h3>Parallel Execution with Async/Await</h3>
+        
+        <p>You can combine <code>Promise.all()</code> with async/await for parallel execution:</p>
+        
+        <pre><code>async function fetchMultipleUsers(userIds) {
+  try {
+    // Create an array of promises
+    const userPromises = userIds.map(id => fetch(`/api/users/${id}`).then(res => res.json()));
+    
+    // Wait for all promises to resolve in parallel
+    const users = await Promise.all(userPromises);
+    return users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+}
+
+// Usage
+fetchMultipleUsers([1, 2, 3])
+  .then(users => console.log(users))
+  .catch(error => console.error(error));</code></pre>
+        
+        <h3>Error Handling Patterns</h3>
+        
+        <p>There are several ways to handle errors with async/await:</p>
+        
+        <pre><code>// 1. Try/catch inside the async function
+async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
+  } catch (error) {
+    console.error('Error in fetchData:', error);
+    // You can return a default value or rethrow
+    return { error: true, message: error.message };
+  }
+}
+
+// 2. Catch when calling the async function
+async function fetchData() {
+  const response = await fetch('/api/data');
+  if (!response.ok) throw new Error('Network response was not ok');
+  return await response.json();
+}
+
+// Handle errors outside
+fetchData()
+  .then(data => console.log(data))
+  .catch(error => console.error('Error caught outside:', error));
+
+// 3. Async IIFE with try/catch
+(async () => {
+  try {
+    const data = await fetchData();
+    console.log(data);
+  } catch (error) {
+    console.error('Error in IIFE:', error);
+  }
+})();</code></pre>
+        
+        <h2>Real-World Examples</h2>
+        
+        <h3>Example 1: API Data Fetching</h3>
+        
+        <pre><code>// Fetch data from multiple endpoints and combine results
+async function fetchDashboardData(userId) {
+  try {
+    // Start both requests in parallel
+    const userPromise = fetch(`/api/users/${userId}`).then(res => res.json());
+    const postsPromise = fetch(`/api/posts?userId=${userId}`).then(res => res.json());
+    const statsPromise = fetch(`/api/stats?userId=${userId}`).then(res => res.json());
+    
+    // Wait for all requests to complete
+    const [user, posts, stats] = await Promise.all([userPromise, postsPromise, statsPromise]);
+    
+    // Combine the results
+    return {
+      user,
+      posts,
+      stats,
+      lastUpdated: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error);
+    throw new Error('Failed to load dashboard data');
+  }
+}</code></pre>
+        
+        <h3>Example 2: Sequential Processing with Dependency</h3>
+        
+        <pre><code>// Process items sequentially where each step depends on the previous
+async function processUserUpgrade(userId) {
+  try {
+    // Step 1: Get current user data
+    const user = await fetchUser(userId);
+    if (!user) throw new Error('User not found');
+    
+    // Step 2: Check eligibility (depends on user data)
+    const isEligible = await checkUpgradeEligibility(user);
+    if (!isEligible) throw new Error('User not eligible for upgrade');
+    
+    // Step 3: Process payment (depends on eligibility)
+    const paymentResult = await processPayment(user.paymentMethod);
+    if (!paymentResult.success) throw new Error(`Payment failed: ${paymentResult.message}`);
+    
+    // Step 4: Update user status (depends on payment)
+    const updatedUser = await updateUserStatus(userId, 'premium');
+    
+    // Step 5: Send confirmation (depends on update)
+    await sendUpgradeConfirmation(updatedUser.email);
+    
+    return {
+      success: true,
+      user: updatedUser
+    };
+  } catch (error) {
+    console.error('Upgrade process failed:', error);
+    // You might want to perform some cleanup or rollback here
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}</code></pre>
+        
+        <h3>Example 3: Retry Pattern</h3>
+        
+        <pre><code>// Retry a function multiple times before giving up
+async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
+  try {
+    return await fetch(url, options);
+  } catch (error) {
+    if (retries <= 1) throw error;
+    
+    // Wait for the specified delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+    
+    // Retry with one fewer retry remaining
+    console.log(`Retrying fetch to ${url}, ${retries-1} retries left`);
+    return fetchWithRetry(url, options, retries - 1, delay * 2);
+  }
+}
+
+// Usage
+async function getData() {
+  try {
+    const response = await fetchWithRetry('/api/data');
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed after all retries:', error);
+    throw error;
+  }
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Common Pitfalls</h4>
+            <ul>
+                <li><strong>Forgetting await</strong>: If you forget to use <code>await</code> with a Promise, your function will continue executing without waiting for the Promise to resolve</li>
+                <li><strong>Blocking the main thread</strong>: While <code>await</code> pauses the execution of the async function, it doesn't block the main thread</li>
+                <li><strong>Error swallowing</strong>: Always handle errors properly to avoid silent failures</li>
+                <li><strong>Sequential vs. parallel</strong>: Be mindful of when to run promises sequentially (one after another) versus in parallel</li>
+            </ul>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">MDN: JavaScript Promises</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">MDN: Async functions</a></li>
+                <li><a href="https://javascript.info/async-await" target="_blank">JavaScript.info: Async/await</a></li>
+                <li><a href="https://web.dev/articles/promises" target="_blank">web.dev: JavaScript Promises: an Introduction</a></li>
+                <li><a href="https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/async-performance/README.md" target="_blank">You Don't Know JS: Async & Performance</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

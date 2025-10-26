@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Data Types & Variables - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .type-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1.1rem;
+        }
+
+        .type-table th, .type-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .type-table th {
+            background-color: rgba(0, 173, 216, 0.1);
+            color: var(--primary-color);
+        }
+
+        .type-table tr:hover {
+            background-color: rgba(0, 173, 216, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Data Types & Variables</h1>
+            <p>Understanding Go's type system and variable declarations</p>
+        </header>
+
+        <div class="card">
+            <section id="basic-types">
+                <h2>Basic Types</h2>
+                <p>Go has several built-in basic types:</p>
+                <table class="type-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>bool</code></td>
+                            <td>Boolean value (true or false)</td>
+                            <td><code>var b bool = true</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>string</code></td>
+                            <td>Text string</td>
+                            <td><code>var s string = "Hello"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>int</code></td>
+                            <td>Signed integer (32 or 64 bits)</td>
+                            <td><code>var i int = 42</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>float64</code></td>
+                            <td>64-bit floating-point number</td>
+                            <td><code>var f float64 = 3.14</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>complex128</code></td>
+                            <td>Complex number with float64 real and imaginary parts</td>
+                            <td><code>var c complex128 = 1 + 2i</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="variable-declaration">
+                <h2>Variable Declaration</h2>
+                <p>Go provides several ways to declare variables:</p>
+                <pre><code class="language-go">// Explicit type declaration
+var name string = "John"
+
+// Type inference
+var age = 30
+
+// Short declaration (inside functions)
+height := 180
+
+// Multiple variables
+var (
+    firstName = "John"
+    lastName  = "Doe"
+    age       = 30
+)
+
+// Constants
+const pi = 3.14159</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="zero-values">
+                <h2>Zero Values</h2>
+                <p>Variables declared without an explicit initial value are given their zero value:</p>
+                <table class="type-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Zero Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>string</code></td>
+                            <td><code>""</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>int</code></td>
+                            <td><code>0</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>float64</code></td>
+                            <td><code>0.0</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>complex128</code></td>
+                            <td><code>0 + 0i</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="type-conversion">
+                <h2>Type Conversion</h2>
+                <p>Go requires explicit type conversion:</p>
+                <pre><code class="language-go">var i int = 42
+var f float64 = float64(i)
+var u uint = uint(f)
+
+// Type conversion between numeric types
+var x int = 10
+var y float64 = float64(x)
+
+// String conversion
+var s string = string(65) // "A"
+var num string = string(48) // "0"</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use meaningful variable names</li>
+                    <li>Prefer short declarations inside functions</li>
+                    <li>Use constants for values that don't change</li>
+                    <li>Be explicit with type conversions</li>
+                    <li>Use appropriate numeric types for your needs</li>
+                    <li>Initialize variables when possible</li>
+                    <li>Use the zero value when appropriate</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

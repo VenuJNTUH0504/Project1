@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Variables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .display-example { border: 2px solid #4a90e2; padding: 10px; margin: 10px 0; }
+        .inline-example span { background: #4a90e2; color: white; padding: 5px; margin: 5px; }
+        .block-example div { background: #f39c12; color: white; padding: 10px; margin: 5px; }
+        .flex-example { display: flex; gap: 10px; }
+        .flex-example div { background: #4a90e2; color: white; padding: 10px; flex: 1; }
+        .grid-example { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-example div { background: #f39c12; color: white; padding: 10px; }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Variables</h1>
+        <p>CSS Variables, also known as custom properties, allow you to store values in one place and reuse them throughout your stylesheet. They make your CSS more maintainable and flexible.</p>
+
+        <h2>How to Declare and Use CSS Variables</h2>
+        
+        <h3>1. Declaring Variables</h3>
+        <p>Variables are declared inside a selector using the <code>--variable-name</code> syntax, commonly in the <code>:root</code> selector for global scope.</p>
+        <div class="example-box">
+            <pre><code>:root {
+  --main-bg: #4a90e2;
+  --accent: #f39c12;
+  --padding: 16px;
+}</code></pre>
+        </div>
+
+        <h3>2. Using Variables</h3>
+        <p>Use the <code>var()</code> function to access the value of a variable.</p>
+        <div class="example-box">
+            <pre><code>body {
+  background: var(--main-bg);
+  color: #fff;
+  padding: var(--padding);
+}</code></pre>
+        </div>
+
+        <h3>3. Variable Scope</h3>
+        <p>Variables can be scoped to the <code>:root</code> (global) or to specific selectors (local).</p>
+        <div class="example-box">
+            <pre><code>:root {
+  --main-color: #4a90e2;
+}
+.button {
+  --main-color: #f39c12;
+  color: var(--main-color);
+}</code></pre>
+        </div>
+
+        <h3>4. Fallback Values</h3>
+        <p>You can provide a fallback value if the variable is not defined.</p>
+        <div class="example-box">
+            <pre><code>color: var(--text-color, #222);</code></pre>
+        </div>
+
+        <h2>CSS Variables vs. Preprocessor Variables</h2>
+        <ul>
+            <li><b>CSS Variables:</b> Native to CSS, dynamic, can be changed at runtime with JavaScript</li>
+            <li><b>Preprocessor Variables (e.g., SASS/LESS):</b> Static, replaced at compile time, not accessible in the browser</li>
+        </ul>
+
+        <h2>Benefits of CSS Variables</h2>
+        <ul>
+            <li>Easy to maintain and update values</li>
+            <li>Enable theming and dynamic changes</li>
+            <li>Reduce code duplication</li>
+            <li>Work with JavaScript for live updates</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

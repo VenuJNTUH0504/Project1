@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Design Patterns in C++</h1>
+            <p>Understanding and implementing common design patterns in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Singleton Pattern</h2>
+            <p>The Singleton pattern ensures a class has only one instance and provides a global point of access to it.</p>
+            
+            <pre><code>class Singleton {
+private:
+    static Singleton* instance;
+    Singleton() {}  // Private constructor
+    
+public:
+    static Singleton* getInstance() {
+        if (!instance) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+    
+    // Delete copy constructor and assignment operator
+    Singleton(const Singleton&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
+    
+    void doSomething() {
+        // Implementation
+    }
+};
+
+// Initialize static member
+Singleton* Singleton::instance = nullptr;
+
+// Usage
+Singleton::getInstance()->doSomething();</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Modern C++ implementations often use local static variables for thread-safe initialization.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Factory Pattern</h2>
+            <p>The Factory pattern provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.</p>
+            
+            <pre><code>class Product {
+public:
+    virtual ~Product() = default;
+    virtual void operation() = 0;
+};
+
+class ConcreteProductA : public Product {
+public:
+    void operation() override {
+        // Implementation for Product A
+    }
+};
+
+class ConcreteProductB : public Product {
+public:
+    void operation() override {
+        // Implementation for Product B
+    }
+};
+
+class Factory {
+public:
+    virtual std::unique_ptr<Product> createProduct() = 0;
+    virtual ~Factory() = default;
+};
+
+class ConcreteFactoryA : public Factory {
+public:
+    std::unique_ptr<Product> createProduct() override {
+        return std::make_unique<ConcreteProductA>();
+    }
+};
+
+class ConcreteFactoryB : public Factory {
+public:
+    std::unique_ptr<Product> createProduct() override {
+        return std::make_unique<ConcreteProductB>();
+    }
+};</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Observer Pattern</h2>
+            <p>The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.</p>
+            
+            <pre><code>#include <vector>
+#include <functional>
+
+class Subject {
+private:
+    std::vector<std::function<void()>> observers;
+    
+public:
+    void attach(std::function<void()> observer) {
+        observers.push_back(observer);
+    }
+    
+    void notify() {
+        for (const auto& observer : observers) {
+            observer();
+        }
+    }
+};
+
+class ConcreteSubject : public Subject {
+private:
+    int state;
+    
+public:
+    void setState(int newState) {
+        state = newState;
+        notify();
+    }
+    
+    int getState() const {
+        return state;
+    }
+};
+
+class Observer {
+public:
+    virtual void update() = 0;
+    virtual ~Observer() = default;
+};
+
+class ConcreteObserver : public Observer {
+private:
+    ConcreteSubject& subject;
+    
+public:
+    ConcreteObserver(ConcreteSubject& s) : subject(s) {}
+    
+    void update() override {
+        std::cout << "State changed to: " << subject.getState() << std::endl;
+    }
+};</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Strategy Pattern</h2>
+            <p>The Strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable.</p>
+            
+            <pre><code>class Strategy {
+public:
+    virtual void execute() = 0;
+    virtual ~Strategy() = default;
+};
+
+class ConcreteStrategyA : public Strategy {
+public:
+    void execute() override {
+        // Implementation of strategy A
+    }
+};
+
+class ConcreteStrategyB : public Strategy {
+public:
+    void execute() override {
+        // Implementation of strategy B
+    }
+};
+
+class Context {
+private:
+    std::unique_ptr<Strategy> strategy;
+    
+public:
+    void setStrategy(std::unique_ptr<Strategy> s) {
+        strategy = std::move(s);
+    }
+    
+    void executeStrategy() {
+        if (strategy) {
+            strategy->execute();
+        }
+    }
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> The Strategy pattern is often implemented using function objects or lambdas in modern C++.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Decorator Pattern</h2>
+            <p>The Decorator pattern attaches additional responsibilities to an object dynamically.</p>
+            
+            <pre><code>class Component {
+public:
+    virtual void operation() = 0;
+    virtual ~Component() = default;
+};
+
+class ConcreteComponent : public Component {
+public:
+    void operation() override {
+        // Basic implementation
+    }
+};
+
+class Decorator : public Component {
+protected:
+    std::unique_ptr<Component> component;
+    
+public:
+    Decorator(std::unique_ptr<Component> c) : component(std::move(c)) {}
+    
+    void operation() override {
+        if (component) {
+            component->operation();
+        }
+    }
+};
+
+class ConcreteDecoratorA : public Decorator {
+public:
+    ConcreteDecoratorA(std::unique_ptr<Component> c) : Decorator(std::move(c)) {}
+    
+    void operation() override {
+        Decorator::operation();
+        // Additional behavior
+    }
+};
+
+class ConcreteDecoratorB : public Decorator {
+public:
+    ConcreteDecoratorB(std::unique_ptr<Component> c) : Decorator(std::move(c)) {}
+    
+    void operation() override {
+        Decorator::operation();
+        // Additional behavior
+    }
+};</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Command Pattern</h2>
+            <p>The Command pattern encapsulates a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.</p>
+            
+            <pre><code>class Command {
+public:
+    virtual void execute() = 0;
+    virtual void undo() = 0;
+    virtual ~Command() = default;
+};
+
+class Receiver {
+public:
+    void action() {
+        // Perform the action
+    }
+    
+    void undoAction() {
+        // Undo the action
+    }
+};
+
+class ConcreteCommand : public Command {
+private:
+    Receiver& receiver;
+    
+public:
+    ConcreteCommand(Receiver& r) : receiver(r) {}
+    
+    void execute() override {
+        receiver.action();
+    }
+    
+    void undo() override {
+        receiver.undoAction();
+    }
+};
+
+class Invoker {
+private:
+    std::vector<std::unique_ptr<Command>> commands;
+    
+public:
+    void addCommand(std::unique_ptr<Command> cmd) {
+        commands.push_back(std::move(cmd));
+    }
+    
+    void executeCommands() {
+        for (const auto& cmd : commands) {
+            cmd->execute();
+        }
+    }
+    
+    void undoCommands() {
+        for (auto it = commands.rbegin(); it != commands.rend(); ++it) {
+            (*it)->undo();
+        }
+    }
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> The Command pattern is particularly useful for implementing undo/redo functionality and macro recording.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

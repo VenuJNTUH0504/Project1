@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Exception Handling - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Exception Handling</h1>
+            <p>Understanding and managing errors in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="basic-exceptions">
+                <h2>Basic Exception Handling</h2>
+                <p>Using try-except blocks:</p>
+                <pre><code class="language-python"># Basic try-except
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+
+# Multiple exceptions
+try:
+    value = int("not a number")
+    result = 10 / value
+except ValueError:
+    print("Invalid number format")
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+
+# Generic exception
+try:
+    file = open("nonexistent.txt")
+except Exception as e:
+    print(f"An error occurred: {e}")</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="else-finally">
+                <h2>Else and Finally Clauses</h2>
+                <p>Using else and finally in exception handling:</p>
+                <pre><code class="language-python"># Using else
+try:
+    result = 10 / 2
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+else:
+    print(f"Result: {result}")  # Only executed if no exception
+
+# Using finally
+try:
+    file = open("data.txt", "r")
+    content = file.read()
+except FileNotFoundError:
+    print("File not found")
+finally:
+    if 'file' in locals():
+        file.close()  # Always executed</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="raising-exceptions">
+                <h2>Raising Exceptions</h2>
+                <p>Creating and raising custom exceptions:</p>
+                <pre><code class="language-python"># Raising built-in exceptions
+def validate_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    if age > 120:
+        raise ValueError("Age is too high")
+    return age
+
+# Custom exception
+class InvalidEmailError(Exception):
+    pass
+
+def validate_email(email):
+    if "@" not in email:
+        raise InvalidEmailError("Invalid email format")
+    return email
+
+# Using custom exceptions
+try:
+    validate_email("invalid-email")
+except InvalidEmailError as e:
+    print(f"Email validation failed: {e}")</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="exception-hierarchy">
+                <h2>Exception Hierarchy</h2>
+                <p>Common Python exceptions and their hierarchy:</p>
+                <ul>
+                    <li><code>BaseException</code>
+                        <ul>
+                            <li><code>Exception</code>
+                                <ul>
+                                    <li><code>ArithmeticError</code>
+                                        <ul>
+                                            <li><code>ZeroDivisionError</code></li>
+                                            <li><code>OverflowError</code></li>
+                                        </ul>
+                                    </li>
+                                    <li><code>LookupError</code>
+                                        <ul>
+                                            <li><code>IndexError</code></li>
+                                            <li><code>KeyError</code></li>
+                                        </ul>
+                                    </li>
+                                    <li><code>OSError</code>
+                                        <ul>
+                                            <li><code>FileNotFoundError</code></li>
+                                            <li><code>PermissionError</code></li>
+                                        </ul>
+                                    </li>
+                                    <li><code>ValueError</code></li>
+                                    <li><code>TypeError</code></li>
+                                </ul>
+                            </li>
+                            <li><code>KeyboardInterrupt</code></li>
+                            <li><code>SystemExit</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="context-managers">
+                <h2>Context Managers</h2>
+                <p>Using context managers for resource management:</p>
+                <pre><code class="language-python"># Using with statement
+with open("data.txt", "r") as file:
+    content = file.read()
+    # File automatically closed after block
+
+# Custom context manager
+class DatabaseConnection:
+    def __init__(self, db_name):
+        self.db_name = db_name
+
+    def __enter__(self):
+        print(f"Connecting to {self.db_name}")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f"Closing connection to {self.db_name}")
+
+# Using custom context manager
+with DatabaseConnection("mydb") as db:
+    print("Performing database operations")</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Be specific with exception types</li>
+                    <li>Use custom exceptions for domain-specific errors</li>
+                    <li>Include error messages in exceptions</li>
+                    <li>Clean up resources in finally blocks</li>
+                    <li>Use context managers for resource management</li>
+                    <li>Log exceptions appropriately</li>
+                    <li>Don't catch all exceptions unless necessary</li>
+                    <li>Document exceptions in function docstrings</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

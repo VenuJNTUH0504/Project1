@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3178c6;  /* TypeScript blue */
+            --secondary-color: #235a97;
+            --accent-color: #007acc;
+            --bg-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-theme {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, rgba(49, 120, 198, 0.1), rgba(0, 122, 204, 0.05));
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .editor-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .editor-container {
+            margin-top: 1rem;
+        }
+
+        #tsEditor {
+            width: 100%;
+            height: 300px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .action-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .run-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        #output {
+            width: 100%;
+            min-height: 150px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Add these new styles for topic buttons */
+        .card ul {
+            list-style: none;
+        }
+
+        .card .main-topic {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            border-left: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card .main-topic:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3178c6, #235a97);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .card .main-topic:hover:before {
+            opacity: 0.1;
+        }
+
+        .card .main-topic:hover {
+            border-left: 4px solid #3178c6;
+            transform: translateX(5px);
+            color: #3178c6;
+            box-shadow: 0 2px 8px rgba(49, 120, 198, 0.1);
+        }
+
+        .card .main-topic.active {
+            background: linear-gradient(135deg, rgba(49, 120, 198, 0.15), rgba(35, 90, 151, 0.1));
+            border-left: 4px solid #3178c6;
+            color: #3178c6;
+        }
+
+        .card .subtopics {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-left: 1.5rem;
+        }
+
+        .card .subtopics.show {
+            max-height: 500px;
+        }
+
+        .card .subtopic-item {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card .subtopic-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .card .subtopic-item:hover:before {
+            opacity: 0.1;
+        }
+
+        .card .subtopic-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+            color: #4a90e2;
+            transform: translateX(10px);
+            box-shadow: 0 2px 6px rgba(74, 144, 226, 0.1);
+        }
+
+        /* Different colors for different sections */
+        .card:nth-child(1) .main-topic:hover,
+        .card:nth-child(1) .main-topic.active {
+            border-left-color: #3178c6;
+            color: #3178c6;
+        }
+
+        .card:nth-child(2) .main-topic:hover,
+        .card:nth-child(2) .main-topic.active {
+            border-left-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        .card:nth-child(3) .main-topic:hover,
+        .card:nth-child(3) .main-topic.active {
+            border-left-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .card:nth-child(1) .subtopic-item:hover {
+            color: #3178c6;
+            background: rgba(49, 120, 198, 0.1);
+        }
+
+        .card:nth-child(2) .subtopic-item:hover {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .card:nth-child(3) .subtopic-item:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .card:nth-child(1) .main-topic:before {
+            background: linear-gradient(135deg, #3178c6, #235a97);
+        }
+
+        .card:nth-child(2) .main-topic:before {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .card:nth-child(3) .main-topic:before {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .card .main-topic-header {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card .toggle-icon {
+            position: relative;
+            z-index: 2;
+            color: inherit;
+        }
+
+        /* Add subtle pulse animation for active topics */
+        @keyframes subtle-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .card .main-topic.active {
+            animation: subtle-pulse 2s infinite;
+        }
+
+        .topic-content {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .topic-content.active {
+            display: block;
+        }
+
+        .topic-content pre {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .topic-content code {
+            font-family: 'Courier New', monospace;
+            color: var(--text-color);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Topic Modal Styles */
+        .topic-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .topic-modal-content {
+            background-color: var(--card-bg);
+            margin: 50px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            color: var(--text-color);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: #e74c3c;
+        }
+        
+        #topicTitle {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .topic-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .topic-modal-body {
+            margin: 20px 0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .topic-examples {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .topic-examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .topic-examples-content {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        
+        .topic-resources {
+            margin-top: 30px;
+        }
+        
+        .topic-resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .topic-resources ul {
+            padding-left: 20px;
+        }
+        
+        .topic-resources li {
+            margin: 10px 0;
+        }
+        
+        .topic-resources a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-resources a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        
+        /* Subtopic item hover effect */
+        .subtopic-item {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <a href="frontend.html" class="back-button">Back to Home</a>
+
+    <div class="theme-toggle">
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i> Toggle Theme
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header animate-fade-in">
+            <h1>TYPESCRIPT LEARNING PLATFORM</h1>
+            <p>Master TypeScript with Interactive Learning</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="card animate-fade-in">
+                <h2><i class="fas fa-book"></i> Basics</h2>
+                <div class="topics-list">
+                    <div class="main-topic" onclick="toggleTopic(this, 'basics')">
+                        <div class="main-topic-header">
+                            <span><i class="fas fa-code"></i> Basics</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                    </div>
+                    <div class="subtopics" id="basics-subtopics">
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/types-variables.html'" style="text-decoration: none; color: inherit;">Types & Variables</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/functions-parameters.html'" style="text-decoration: none; color: inherit;">Functions & Parameters</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/interfaces.html'" style="text-decoration: none; color: inherit;">Interfaces</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/classes-objects.html'" style="text-decoration: none; color: inherit;">Classes & Objects</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/type-annotations.html'" style="text-decoration: none; color: inherit;">Type Annotations</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card animate-fade-in">
+                <h2><i class="fas fa-laptop-code"></i> Intermediate</h2>
+                <div class="topics-list">
+                    <div class="main-topic" onclick="toggleTopic(this, 'intermediate')">
+                        <div class="main-topic-header">
+                            <span><i class="fas fa-layer-group"></i> Intermediate</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                    </div>
+                    <div class="subtopics" id="intermediate-subtopics">
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/generics.html'" style="text-decoration: none; color: inherit;">Generics</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/type-inference.html'" style="text-decoration: none; color: inherit;">Type Inference</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/union-types.html'" style="text-decoration: none; color: inherit;">Union Types</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/modules-namespaces.html'" style="text-decoration: none; color: inherit;">Modules & Namespaces</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/decorators.html'" style="text-decoration: none; color: inherit;">Decorators</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card animate-fade-in">
+                <h2><i class="fas fa-brain"></i> Advanced</h2>
+                <div class="topics-list">
+                    <div class="main-topic" onclick="toggleTopic(this, 'advanced')">
+                        <div class="main-topic-header">
+                            <span><i class="fas fa-rocket"></i> Advanced</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                    </div>
+                    <div class="subtopics" id="advanced-subtopics">
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/advanced-types.html'" style="text-decoration: none; color: inherit;">Advanced Types</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/type-guards.html'" style="text-decoration: none; color: inherit;">Type Guards</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/utility-types.html'" style="text-decoration: none; color: inherit;">Utility Types</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/declaration-files.html'" style="text-decoration: none; color: inherit;">Declaration Files</a></div>
+                        <div class="subtopic-item" onclick="window.location.href='ts-topics/project-configuration.html'" style="text-decoration: none; color: inherit;">Project Configuration</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="topicContent" class="topic-content"></div>
+
+        <div class="editor-section animate-fade-in">
+            <h2><i class="fas fa-code"></i> TypeScript Editor</h2>
+            <div class="editor-container">
+                <textarea id="tsEditor" placeholder="Write your TypeScript code here...
+Example:
+interface Person {
+    name: string;
+    age: number;
+}
+
+let person: Person = {
+    name: 'John',
+    age: 30
+};
+
+console.log(person);"></textarea>
+                <div class="button-group">
+                    <button class="action-btn run-btn" onclick="runCode()">
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                    <button class="action-btn reset-btn" onclick="resetCode()">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                </div>
+                <div id="output"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topic Information Modal -->
+    <div id="topicModal" class="topic-modal">
+        <div class="topic-modal-content">
+            <span class="close-modal" onclick="closeTopicModal()">&times;</span>
+            <h2 id="topicTitle">Topic Title</h2>
+            <div id="topicCategory" class="topic-category">Category</div>
+            <div id="topicContent" class="topic-modal-body">
+                <!-- Topic content will be loaded here -->
+            </div>
+            <div class="topic-examples">
+                <h3>Examples</h3>
+                <pre id="topicExamples" class="topic-examples-content">
+                    <!-- Examples will be loaded here -->
+                </pre>
+            </div>
+            <div class="topic-resources">
+                <h3>Additional Resources</h3>
+                <ul id="topicResources">
+                    <!-- Resources will be loaded here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Language selector for the editor -->
+    <div style="margin: 1rem 0;">
+        <label for="language" style="font-weight:bold; margin-right: 0.5rem;">Language:</label>
+        <select id="language" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--primary-color);">
+            <option value="typescript">TypeScript</option>
+            <option value="javascript">JavaScript</option>
+        </select>
+    </div>
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('dark-theme')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+
+        // Async runCode implementation
+        async function runCode() {
+            const code = document.getElementById('tsEditor').value;
+            const selectedLang = document.getElementById('language').value;
+            const outputElem = document.getElementById('output');
+            outputElem.innerText = 'Running...';
+            try {
+                const response = await fetch('/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ language: selectedLang, code })
+                });
+                const data = await response.json();
+                outputElem.innerText = data.output;
+            } catch (error) {
+                outputElem.innerText = 'Error: ' + error.message;
+            }
+        }
+
+        function resetCode() {
+            document.getElementById('tsEditor').value = '';
+            document.getElementById('output').innerHTML = '';
+        }
+
+        function toggleTopic(element, topicId) {
+            // Remove active class from all topics
+            document.querySelectorAll('.main-topic').forEach(topic => {
+                if (topic !== element) {
+                    topic.classList.remove('active');
+                    topic.nextElementSibling.classList.remove('show');
+                }
+            });
+
+            // Toggle active class on clicked topic
+            element.classList.toggle('active');
+            document.getElementById(`${topicId}-subtopics`).classList.toggle('show');
+        }
+        
+        // Topic Information Modal Functions
+        function showTopicInfo(topicId, category, event) {
+            if (event) {
+                event.stopPropagation(); // Prevent card toggle
+            }
+            
+            // Get the modal
+            const modal = document.getElementById('topicModal');
+            const title = document.getElementById('topicTitle');
+            const categoryElem = document.getElementById('topicCategory');
+            const content = document.getElementById('topicContent');
+            const examples = document.getElementById('topicExamples');
+            const resources = document.getElementById('topicResources');
+            
+            // Set the title and category
+            title.textContent = getTopicTitle(topicId);
+            categoryElem.textContent = category;
+            
+            // Set the content, examples, and resources
+            content.innerHTML = getTopicContent(topicId);
+            examples.innerHTML = getTopicExamples(topicId);
+            resources.innerHTML = getTopicResources(topicId);
+            
+            // Display the modal
+            modal.style.display = 'block';
+        }
+        
+        function closeTopicModal() {
+            const modal = document.getElementById('topicModal');
+            modal.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('topicModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html> 

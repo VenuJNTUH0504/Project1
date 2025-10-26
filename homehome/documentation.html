@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50, #3498db, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .doc-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .sidebar h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 0.5rem 0;
+        }
+
+        .sidebar a:hover {
+            color: #3498db;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+        }
+
+        .api-endpoint {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .api-endpoint h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .api-method {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+
+        .api-url {
+            color: #666;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #ce1dd1, #3737e1);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #2e31d9, #e735bd);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .doc-container {
+                grid-template-columns: 1fr;
+                margin: 100px 1rem 50px;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="doc-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>Documentation</h3>
+            <ul>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#architecture">System Architecture</a></li>
+                <li><a href="#api">API Reference</a></li>
+                <li><a href="#authentication">Authentication</a></li>
+                <li><a href="#courses">Courses API</a></li>
+                <li><a href="#users">Users API</a></li>
+                <li><a href="#deployment">Deployment Guide</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="getting-started" class="section">
+                <h2>Getting Started</h2>
+                <p>Welcome to the CodeMaster documentation. This guide will help you understand the system architecture, API endpoints, and how to integrate with our platform.</p>
+                <div class="note">
+                    <i class="fas fa-info-circle"></i> Before you begin, make sure you have a valid API key and the necessary permissions.
+                </div>
+            </div>
+
+            <div id="architecture" class="section">
+                <h2>System Architecture</h2>
+                <p>CodeMaster is built using a modern microservices architecture with the following components:</p>
+                <ul>
+                    <li>Frontend: React.js with TypeScript</li>
+                    <li>Backend: Node.js with Express</li>
+                    <li>Database: MongoDB</li>
+                    <li>Authentication: JWT</li>
+                    <li>File Storage: AWS S3</li>
+                </ul>
+            </div>
+
+            <div id="api" class="section">
+                <h2>API Reference</h2>
+                <p>All API endpoints require authentication using a Bearer token. Include the token in the Authorization header of your requests.</p>
+                <div class="code-block">
+                    Authorization: Bearer your-api-key-here
+                </div>
+            </div>
+
+            <div id="authentication" class="section">
+                <h2>Authentication</h2>
+                <div class="api-endpoint">
+                    <h3>Login</h3>
+                    <span class="api-method">POST</span>
+                    <span class="api-url">/api/auth/login</span>
+                    <p>Authenticate a user and receive a JWT token.</p>
+                    <div class="code-block">
+                        {
+                            "email": "user@example.com",
+                            "password": "your-password"
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div id="courses" class="section">
+                <h2>Courses API</h2>
+                <div class="api-endpoint">
+                    <h3>Get All Courses</h3>
+                    <span class="api-method">GET</span>
+                    <span class="api-url">/api/courses</span>
+                    <p>Retrieve a list of all available courses.</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>Get Course Details</h3>
+                    <span class="api-method">GET</span>
+                    <span class="api-url">/api/courses/:id</span>
+                    <p>Retrieve detailed information about a specific course.</p>
+                </div>
+            </div>
+
+            <div id="users" class="section">
+                <h2>Users API</h2>
+                <div class="api-endpoint">
+                    <h3>Create User</h3>
+                    <span class="api-method">POST</span>
+                    <span class="api-url">/api/users</span>
+                    <p>Register a new user account.</p>
+                    <div class="code-block">
+                        {
+                            "name": "John Doe",
+                            "email": "john@example.com",
+                            "password": "secure-password",
+                            "role": "student"
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div id="deployment" class="section">
+                <h2>Deployment Guide</h2>
+                <p>To deploy the CodeMaster platform, follow these steps:</p>
+                <ol>
+                    <li>Set up your environment variables</li>
+                    <li>Install dependencies</li>
+                    <li>Build the frontend</li>
+                    <li>Start the backend server</li>
+                    <li>Configure your reverse proxy</li>
+                </ol>
+                <div class="code-block">
+                    # Install dependencies
+                    npm install
+
+                    # Build frontend
+                    npm run build
+
+                    # Start server
+                    npm start
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

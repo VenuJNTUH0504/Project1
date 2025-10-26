@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Java APIs - Code Pathway</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../../../index.html">Home</a></li>
+                <li><a href="../../../topics.html">Topics</a></li>
+                <li><a href="../../../about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <h1>Advanced Java APIs</h1>
+            
+            <section>
+                <h2>Introduction to Advanced Java APIs</h2>
+                <p>Java provides a rich set of advanced APIs that enable developers to build robust, scalable, and efficient applications. These APIs cover various domains including reflection, annotations, security, and more.</p>
+            </section>
+
+            <section>
+                <h2>Reflection API</h2>
+                <p>The Reflection API allows inspection and manipulation of classes, methods, and fields at runtime:</p>
+                <pre><code class="language-java">import java.lang.reflect.*;
+
+public class ReflectionExample {
+    public static void main(String[] args) {
+        try {
+            Class<?> clazz = Class.forName("com.example.MyClass");
+            
+            // Get all methods
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                System.out.println("Method: " + method.getName());
+            }
+            
+            // Create instance
+            Object instance = clazz.getDeclaredConstructor().newInstance();
+            
+            // Invoke method
+            Method method = clazz.getMethod("myMethod", String.class);
+            method.invoke(instance, "Hello");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Annotations</h2>
+                <p>Annotations provide metadata about code and can be processed at compile-time or runtime:</p>
+                <pre><code class="language-java">// Custom annotation
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@interface MyAnnotation {
+    String value() default "";
+    int priority() default 0;
+}
+
+// Using annotation
+class MyClass {
+    @MyAnnotation(value = "Important", priority = 1)
+    public void importantMethod() {
+        // Method implementation
+    }
+}
+
+// Processing annotation
+class AnnotationProcessor {
+    public static void processAnnotations(Object obj) {
+        Class<?> clazz = obj.getClass();
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(MyAnnotation.class)) {
+                MyAnnotation annotation = method.getAnnotation(MyAnnotation.class);
+                System.out.println("Method: " + method.getName() + 
+                    ", Value: " + annotation.value() + 
+                    ", Priority: " + annotation.priority());
+            }
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Security API</h2>
+                <p>Java Security API provides cryptographic operations and security features:</p>
+                <pre><code class="language-java">import javax.crypto.*;
+import java.security.*;
+import java.util.Base64;
+
+public class SecurityExample {
+    public static String encrypt(String data, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+    
+    public static String decrypt(String encryptedData, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
+        return new String(decryptedBytes);
+    }
+    
+    public static void main(String[] args) throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(256);
+        SecretKey key = keyGen.generateKey();
+        
+        String original = "Secret Message";
+        String encrypted = encrypt(original, key);
+        String decrypted = decrypt(encrypted, key);
+        
+        System.out.println("Original: " + original);
+        System.out.println("Encrypted: " + encrypted);
+        System.out.println("Decrypted: " + decrypted);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>NIO (New I/O) API</h2>
+                <p>The NIO API provides non-blocking I/O operations and improved performance:</p>
+                <pre><code class="language-java">import java.nio.*;
+import java.nio.channels.*;
+import java.nio.file.*;
+
+public class NIOExample {
+    public static void main(String[] args) {
+        try {
+            // Reading file
+            Path path = Paths.get("example.txt");
+            byte[] bytes = Files.readAllBytes(path);
+            
+            // Writing file
+            Path outputPath = Paths.get("output.txt");
+            Files.write(outputPath, bytes);
+            
+            // Using ByteBuffer
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            buffer.put("Hello".getBytes());
+            buffer.flip();
+            
+            // Using Channels
+            try (FileChannel channel = FileChannel.open(path, 
+                    StandardOpenOption.READ, StandardOpenOption.WRITE)) {
+                channel.write(buffer);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Process API</h2>
+                <p>Java 9 introduced an improved Process API for better process control:</p>
+                <pre><code class="language-java">import java.lang.ProcessHandle;
+import java.util.Optional;
+
+public class ProcessAPIExample {
+    public static void main(String[] args) {
+        // Get current process
+        ProcessHandle current = ProcessHandle.current();
+        System.out.println("Current PID: " + current.pid());
+        
+        // Get process info
+        Optional<ProcessHandle.Info> info = current.info();
+        info.ifPresent(processInfo -> {
+            System.out.println("Command: " + processInfo.command().orElse(""));
+            System.out.println("Start time: " + processInfo.startInstant().orElse(null));
+            System.out.println("User: " + processInfo.user().orElse(""));
+        });
+        
+        // List all processes
+        ProcessHandle.allProcesses()
+            .forEach(process -> System.out.println(process.pid()));
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use reflection sparingly as it can impact performance</li>
+                    <li>Follow security best practices when using cryptographic APIs</li>
+                    <li>Properly handle resources in NIO operations</li>
+                    <li>Use annotations to add metadata and improve code readability</li>
+                    <li>Implement proper error handling for all API operations</li>
+                    <li>Keep up with the latest API updates and security patches</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Code Pathway. All rights reserved.</p>
+    </footer>
+</body>
+</html> 

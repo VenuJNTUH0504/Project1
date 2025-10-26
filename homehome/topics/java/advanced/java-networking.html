@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Networking - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Java Networking</h1>
+            <p>Understanding and using Java's networking features</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Networking</h2>
+                <p>Java provides a comprehensive set of classes for network programming, allowing applications to communicate over the internet or local networks using various protocols.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="sockets">
+                <h2>Sockets</h2>
+                <p>Using sockets for network communication:</p>
+                <pre><code class="language-java">// Server socket
+try (ServerSocket serverSocket = new ServerSocket(8080)) {
+    System.out.println("Server listening on port 8080");
+    
+    while (true) {
+        try (Socket clientSocket = serverSocket.accept();
+             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+            
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println("Received: " + inputLine);
+                out.println("Echo: " + inputLine);
+            }
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// Client socket
+try (Socket socket = new Socket("localhost", 8080);
+     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+    
+    out.println("Hello, Server!");
+    String response = in.readLine();
+    System.out.println("Server response: " + response);
+} catch (IOException e) {
+    e.printStackTrace();
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="url-connection">
+                <h2>URL Connection</h2>
+                <p>Working with URLs and HTTP connections:</p>
+                <pre><code class="language-java">// Reading from URL
+try {
+    URL url = new URL("https://example.com");
+    URLConnection connection = url.openConnection();
+    
+    try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(connection.getInputStream()))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// HTTP POST request
+try {
+    URL url = new URL("https://api.example.com/data");
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("POST");
+    connection.setDoOutput(true);
+    
+    try (OutputStream os = connection.getOutputStream();
+         PrintWriter writer = new PrintWriter(new OutputStreamWriter(os))) {
+        writer.write("data=value");
+    }
+    
+    int responseCode = connection.getResponseCode();
+    System.out.println("Response Code: " + responseCode);
+} catch (IOException e) {
+    e.printStackTrace();
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="nio-networking">
+                <h2>NIO Networking</h2>
+                <p>Using NIO for non-blocking network operations:</p>
+                <pre><code class="language-java">// Server using NIO
+try (ServerSocketChannel serverChannel = ServerSocketChannel.open()) {
+    serverChannel.bind(new InetSocketAddress(8080));
+    serverChannel.configureBlocking(false);
+    
+    Selector selector = Selector.open();
+    serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+    
+    while (true) {
+        selector.select();
+        Set<SelectionKey> selectedKeys = selector.selectedKeys();
+        Iterator<SelectionKey> iter = selectedKeys.iterator();
+        
+        while (iter.hasNext()) {
+            SelectionKey key = iter.next();
+            if (key.isAcceptable()) {
+                SocketChannel client = serverChannel.accept();
+                client.configureBlocking(false);
+                client.register(selector, SelectionKey.OP_READ);
+            }
+            if (key.isReadable()) {
+                SocketChannel client = (SocketChannel) key.channel();
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                client.read(buffer);
+                buffer.flip();
+                // Process data
+            }
+            iter.remove();
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="datagram-sockets">
+                <h2>Datagram Sockets</h2>
+                <p>Using UDP for connectionless communication:</p>
+                <pre><code class="language-java">// UDP Server
+try (DatagramSocket socket = new DatagramSocket(8080)) {
+    byte[] buffer = new byte[1024];
+    DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+    
+    while (true) {
+        socket.receive(packet);
+        String message = new String(packet.getData(), 0, packet.getLength());
+        System.out.println("Received: " + message);
+        
+        // Send response
+        String response = "Echo: " + message;
+        byte[] responseData = response.getBytes();
+        DatagramPacket responsePacket = new DatagramPacket(
+            responseData, responseData.length,
+            packet.getAddress(), packet.getPort()
+        );
+        socket.send(responsePacket);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// UDP Client
+try (DatagramSocket socket = new DatagramSocket()) {
+    String message = "Hello, Server!";
+    byte[] data = message.getBytes();
+    InetAddress address = InetAddress.getByName("localhost");
+    DatagramPacket packet = new DatagramPacket(
+        data, data.length, address, 8080
+    );
+    
+    socket.send(packet);
+    
+    byte[] buffer = new byte[1024];
+    DatagramPacket response = new DatagramPacket(buffer, buffer.length);
+    socket.receive(response);
+    String responseMessage = new String(response.getData(), 0, response.getLength());
+    System.out.println("Server response: " + responseMessage);
+} catch (IOException e) {
+    e.printStackTrace();
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Handle network exceptions appropriately</li>
+                    <li>Use timeouts for network operations</li>
+                    <li>Close network resources properly</li>
+                    <li>Consider using NIO for high-performance applications</li>
+                    <li>Implement proper error handling and recovery</li>
+                    <li>Use appropriate protocols for your needs</li>
+                    <li>Consider security implications</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

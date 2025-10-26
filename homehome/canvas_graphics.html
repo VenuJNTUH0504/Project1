@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas & Graphics Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #00c6fb 0%, #005bea 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #005bea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #00c6fb;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #005bea;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #00c6fb;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .canvas-demo {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        canvas {
+            border: 1px solid #dee2e6;
+            background-color: white;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .note {
+            background-color: #e1f5fe;
+            border-left: 4px solid #00c6fb;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #005bea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #00c6fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #005bea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #00c6fb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Canvas & Graphics Guide</h1>
+
+        <h2>Introduction to Canvas</h2>
+        <p>The HTML <code>&lt;canvas&gt;</code> element provides a drawing space for creating graphics, animations, game graphics, data visualization, image manipulation, and real-time video processing using JavaScript.</p>
+
+        <h2>Creating a Canvas</h2>
+        <p>Basic canvas setup in HTML:</p>
+        <div class="code-box">
+            &lt;canvas id="myCanvas" width="500" height="300"&gt;
+                Your browser does not support the canvas element.
+            &lt;/canvas&gt;
+        </div>
+
+        <h2>Basic Shapes</h2>
+        <div class="canvas-demo">
+            <canvas id="shapesCanvas" width="400" height="200"></canvas>
+            <script>
+                const canvas = document.getElementById('shapesCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Rectangle
+                ctx.fillStyle = '#005bea';
+                ctx.fillRect(50, 50, 100, 80);
+                
+                // Circle
+                ctx.beginPath();
+                ctx.arc(250, 90, 40, 0, Math.PI * 2);
+                ctx.fillStyle = '#00c6fb';
+                ctx.fill();
+                
+                // Line
+                ctx.beginPath();
+                ctx.moveTo(300, 50);
+                ctx.lineTo(350, 150);
+                ctx.strokeStyle = '#005bea';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            </script>
+        </div>
+
+        <h2>Drawing Shapes</h2>
+        <p>Common methods for drawing shapes:</p>
+        <div class="code-box">
+            // Rectangle
+            ctx.fillRect(x, y, width, height);
+            ctx.strokeRect(x, y, width, height);
+
+            // Circle
+            ctx.beginPath();
+            ctx.arc(x, y, radius, startAngle, endAngle);
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        </div>
+
+        <h2>Colors and Styles</h2>
+        <div class="canvas-demo">
+            <canvas id="stylesCanvas" width="400" height="200"></canvas>
+            <script>
+                const styleCanvas = document.getElementById('stylesCanvas');
+                const styleCtx = styleCanvas.getContext('2d');
+
+                // Gradient
+                const gradient = styleCtx.createLinearGradient(0, 0, 400, 0);
+                gradient.addColorStop(0, '#005bea');
+                gradient.addColorStop(1, '#00c6fb');
+                
+                styleCtx.fillStyle = gradient;
+                styleCtx.fillRect(50, 50, 300, 100);
+            </script>
+        </div>
+
+        <h2>Text on Canvas</h2>
+        <div class="canvas-demo">
+            <canvas id="textCanvas" width="400" height="200"></canvas>
+            <script>
+                const textCanvas = document.getElementById('textCanvas');
+                const textCtx = textCanvas.getContext('2d');
+                
+                textCtx.font = '30px Arial';
+                textCtx.fillStyle = '#005bea';
+                textCtx.fillText('Canvas Text', 100, 100);
+                
+                textCtx.strokeStyle = '#00c6fb';
+                textCtx.strokeText('Stroke Text', 100, 150);
+            </script>
+        </div>
+
+        <h2>Images on Canvas</h2>
+        <p>Loading and drawing images:</p>
+        <div class="code-box">
+            const img = new Image();
+            img.src = 'image.jpg';
+            img.onload = function() {
+                ctx.drawImage(img, x, y, width, height);
+            };
+        </div>
+
+        <h2>Animations</h2>
+        <div class="canvas-demo">
+            <canvas id="animationCanvas" width="400" height="200"></canvas>
+            <script>
+                const animCanvas = document.getElementById('animationCanvas');
+                const animCtx = animCanvas.getContext('2d');
+                let x = 0;
+
+                function animate() {
+                    animCtx.clearRect(0, 0, 400, 200);
+                    animCtx.fillStyle = '#005bea';
+                    animCtx.fillRect(x, 80, 50, 50);
+                    x = (x + 2) % 400;
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            </script>
+        </div>
+
+        <h2>Canvas API Methods</h2>
+        <div class="note">
+            <ul>
+                <li><strong>fillRect(x, y, width, height)</strong> - Draws a filled rectangle</li>
+                <li><strong>strokeRect(x, y, width, height)</strong> - Draws a rectangular outline</li>
+                <li><strong>clearRect(x, y, width, height)</strong> - Clears the specified area</li>
+                <li><strong>beginPath()</strong> - Starts a new path</li>
+                <li><strong>closePath()</strong> - Closes the current path</li>
+                <li><strong>stroke()</strong> - Draws the path outline</li>
+                <li><strong>fill()</strong> - Fills the current path</li>
+            </ul>
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Clear the canvas before redrawing animations</li>
+                <li>Use requestAnimationFrame for smooth animations</li>
+                <li>Consider device pixel ratio for high-DPI displays</li>
+                <li>Optimize performance by reducing draw calls</li>
+                <li>Handle canvas resize events appropriately</li>
+                <li>Provide fallback content for older browsers</li>
+            </ul>
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html> 

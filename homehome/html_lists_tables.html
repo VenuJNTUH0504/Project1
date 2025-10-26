@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Lists & Tables Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a148c;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #6a1b9a;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #6a1b9a;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #6a1b9a;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .example-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #6a1b9a;
+        }
+
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: white;
+        }
+
+        .demo-table th, .demo-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .demo-table th {
+            background-color: #6a1b9a;
+            color: white;
+        }
+
+        .demo-table tr:nth-child(even) {
+            background-color: #f5f0f7;
+        }
+
+        .demo-table tr:hover {
+            background-color: #e8e2ee;
+        }
+
+        .code-box {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #6a1b9a;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #4a148c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .note {
+            background-color: #e8e2ee;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4a148c;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Lists & Tables Guide</h1>
+
+        <h2>HTML Lists</h2>
+        <p>HTML provides three types of lists to organize content effectively: unordered lists, ordered lists, and description lists. Each serves a different purpose in structuring information.</p>
+
+        <h2>Unordered Lists</h2>
+        <p>Unordered lists (<code>&lt;ul&gt;</code>) are used when the order of items doesn't matter. Each item is marked with a bullet point by default.</p>
+        <div class="example-box">
+            <h3>Example:</h3>
+            <ul>
+                <li>First item</li>
+                <li>Second item</li>
+                <li>Third item</li>
+            </ul>
+            <div class="code-box">
+                &lt;ul&gt;
+                    &lt;li&gt;First item&lt;/li&gt;
+                    &lt;li&gt;Second item&lt;/li&gt;
+                    &lt;li&gt;Third item&lt;/li&gt;
+                &lt;/ul&gt;
+            </div>
+        </div>
+
+        <h2>Ordered Lists</h2>
+        <p>Ordered lists (<code>&lt;ol&gt;</code>) are used when items need to be in a specific sequence. Items are automatically numbered.</p>
+        <div class="example-box">
+            <h3>Example:</h3>
+            <ol>
+                <li>First step</li>
+                <li>Second step</li>
+                <li>Third step</li>
+            </ol>
+            <div class="code-box">
+                &lt;ol&gt;
+                    &lt;li&gt;First step&lt;/li&gt;
+                    &lt;li&gt;Second step&lt;/li&gt;
+                    &lt;li&gt;Third step&lt;/li&gt;
+                &lt;/ol&gt;
+            </div>
+        </div>
+
+        <h2>Description Lists</h2>
+        <p>Description lists (<code>&lt;dl&gt;</code>) are used to create a list of terms and their descriptions.</p>
+        <div class="example-box">
+            <h3>Example:</h3>
+            <dl>
+                <dt>HTML</dt>
+                <dd>HyperText Markup Language</dd>
+                <dt>CSS</dt>
+                <dd>Cascading Style Sheets</dd>
+            </dl>
+            <div class="code-box">
+                &lt;dl&gt;
+                    &lt;dt&gt;HTML&lt;/dt&gt;
+                    &lt;dd&gt;HyperText Markup Language&lt;/dd&gt;
+                    &lt;dt&gt;CSS&lt;/dt&gt;
+                    &lt;dd&gt;Cascading Style Sheets&lt;/dd&gt;
+                &lt;/dl&gt;
+            </div>
+        </div>
+
+        <h2>HTML Tables</h2>
+        <p>Tables are used to organize data into rows and columns. They are created using the <code>&lt;table&gt;</code> element along with related tags.</p>
+
+        <h2>Basic Table Structure</h2>
+        <div class="note">
+            <p>Key table elements:</p>
+            <ul>
+                <li><code>&lt;table&gt;</code> - Defines a table</li>
+                <li><code>&lt;tr&gt;</code> - Defines a table row</li>
+                <li><code>&lt;th&gt;</code> - Defines a table header cell</li>
+                <li><code>&lt;td&gt;</code> - Defines a table data cell</li>
+            </ul>
+        </div>
+
+        <h2>Table Example</h2>
+        <div class="example-box">
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Data 1</td>
+                        <td>Data 2</td>
+                        <td>Data 3</td>
+                    </tr>
+                    <tr>
+                        <td>Data 4</td>
+                        <td>Data 5</td>
+                        <td>Data 6</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="code-box">
+                &lt;table&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Header 1&lt;/th&gt;
+                            &lt;th&gt;Header 2&lt;/th&gt;
+                            &lt;th&gt;Header 3&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;Data 1&lt;/td&gt;
+                            &lt;td&gt;Data 2&lt;/td&gt;
+                            &lt;td&gt;Data 3&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            </div>
+        </div>
+
+        <h2>Table Attributes</h2>
+        <p>Common table attributes include:</p>
+        <ul>
+            <li><code>colspan</code> - Spans a cell across multiple columns</li>
+            <li><code>rowspan</code> - Spans a cell across multiple rows</li>
+            <li><code>border</code> - Specifies table border width</li>
+            <li><code>cellpadding</code> - Specifies padding within cells</li>
+            <li><code>cellspacing</code> - Specifies spacing between cells</li>
+        </ul>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Use tables only for tabular data, not for layout</li>
+                <li>Include proper table headers using <code>&lt;th&gt;</code></li>
+                <li>Use <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, and <code>&lt;tfoot&gt;</code> for better structure</li>
+                <li>Consider responsive design for mobile devices</li>
+                <li>Use CSS for styling rather than HTML attributes</li>
+            </ul>
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

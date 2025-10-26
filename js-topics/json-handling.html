@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Handling - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .json-example {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .json-key {
+            color: #e06c75;
+        }
+
+        .json-string {
+            color: #98c379;
+        }
+
+        .json-number {
+            color: #d19a66;
+        }
+
+        .json-boolean {
+            color: #56b6c2;
+        }
+
+        .json-null {
+            color: #c678dd;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>JSON Handling</h1>
+        
+        <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format that is easy for humans to read and write and easy for machines to parse and generate. It has become the standard format for data exchange in web applications, APIs, configuration files, and more.</p>
+        
+        <h2>What is JSON?</h2>
+        
+        <p>JSON is a text format that is completely language independent but uses conventions familiar to programmers of the C-family of languages (C, C++, C#, Java, JavaScript, etc.). These properties make JSON an ideal data-interchange language.</p>
+        
+        <p>JSON is built on two structures:</p>
+        
+        <ul>
+            <li>A collection of name/value pairs (objects)</li>
+            <li>An ordered list of values (arrays)</li>
+        </ul>
+        
+        <h3>JSON Syntax Rules</h3>
+        
+        <ul>
+            <li>Data is in name/value pairs</li>
+            <li>Data is separated by commas</li>
+            <li>Objects are enclosed in curly braces {}</li>
+            <li>Arrays are enclosed in square brackets []</li>
+            <li>Names must be strings, written with double quotes</li>
+            <li>Values can be strings, numbers, objects, arrays, booleans, or null</li>
+        </ul>
+        
+        <h3>JSON Data Types</h3>
+        
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>String</td>
+                <td>Text enclosed in double quotes</td>
+                <td><code>"Hello, World!"</code></td>
+            </tr>
+            <tr>
+                <td>Number</td>
+                <td>Integer or floating-point</td>
+                <td><code>42</code>, <code>3.14159</code></td>
+            </tr>
+            <tr>
+                <td>Object</td>
+                <td>Collection of name/value pairs</td>
+                <td><code>{"name": "John", "age": 30}</code></td>
+            </tr>
+            <tr>
+                <td>Array</td>
+                <td>Ordered list of values</td>
+                <td><code>[1, 2, 3, 4]</code></td>
+            </tr>
+            <tr>
+                <td>Boolean</td>
+                <td>true or false</td>
+                <td><code>true</code>, <code>false</code></td>
+            </tr>
+            <tr>
+                <td>null</td>
+                <td>Empty value</td>
+                <td><code>null</code></td>
+            </tr>
+        </table>
+        
+        <div class="warning-box">
+            <h4>JSON vs. JavaScript Objects</h4>
+            <p>While JSON syntax looks similar to JavaScript object literals, there are important differences:</p>
+            <ul>
+                <li>JSON requires double quotes for property names</li>
+                <li>JSON doesn't support comments</li>
+                <li>JSON doesn't support undefined values</li>
+                <li>JSON doesn't support functions or methods</li>
+                <li>JSON doesn't allow trailing commas</li>
+            </ul>
+        </div>
+        
+        <h3>Example JSON</h3>
+        
+        <div class="json-example">
+{
+  "name": "John Doe",
+  "age": 30,
+  "isEmployed": true,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "zipCode": "12345"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "555-1234"
+    },
+    {
+      "type": "work",
+      "number": "555-5678"
+    }
+  ],
+  "children": [],
+  "spouse": null
+}
+        </div>
+        
+        <h2>Working with JSON in JavaScript</h2>
+        
+        <p>JavaScript provides built-in methods for working with JSON data:</p>
+        
+        <h3>JSON.parse()</h3>
+        
+        <p>The <code>JSON.parse()</code> method parses a JSON string and returns a JavaScript object.</p>
+        
+        <pre><code>// Converting JSON string to JavaScript object
+const jsonString = '{"name":"John", "age":30, "city":"New York"}';
+const obj = JSON.parse(jsonString);
+
+console.log(obj.name); // "John"
+console.log(obj.age);  // 30</code></pre>
+        
+        <h3>JSON.stringify()</h3>
+        
+        <p>The <code>JSON.stringify()</code> method converts a JavaScript object to a JSON string.</p>
+        
+        <pre><code>// Converting JavaScript object to JSON string
+const person = {
+  name: "John",
+  age: 30,
+  city: "New York"
+};
+
+const jsonString = JSON.stringify(person);
+console.log(jsonString); // '{"name":"John","age":30,"city":"New York"}'</code></pre>
+        
+        <h3>Handling Complex Objects</h3>
+        
+        <p>When converting JavaScript objects to JSON, certain types are handled specially:</p>
+        
+        <pre><code>const complexObject = {
+  // Regular properties are included
+  name: "Complex Object",
+  
+  // Date objects are converted to strings
+  created: new Date(),
+  
+  // Functions are omitted
+  calculate: function() { return 2 + 2; },
+  
+  // undefined values are omitted
+  missing: undefined,
+  
+  // NaN and Infinity are converted to null
+  specialNumbers: {
+    nan: NaN,
+    infinity: Infinity,
+    negInfinity: -Infinity
+  },
+  
+  // Circular references cause errors
+  // circular: complexObject // This would cause an error
+};
+
+const jsonString = JSON.stringify(complexObject);
+console.log(jsonString);
+// {"name":"Complex Object","created":"2023-04-23T12:34:56.789Z","specialNumbers":{"nan":null,"infinity":null,"negInfinity":null}}
+
+// Note: Functions and undefined values are omitted
+// Date objects are converted to ISO strings
+// NaN and Infinity values are converted to null</code></pre>
+        
+        <div class="warning-box">
+            <h4>Circular References</h4>
+            <p>JSON.stringify() will throw an error if it encounters circular references (objects that reference themselves):</p>
+            <pre><code>const obj = {};
+obj.self = obj; // Circular reference
+
+try {
+  JSON.stringify(obj);
+} catch (error) {
+  console.error(error); // TypeError: Converting circular structure to JSON
+}</code></pre>
+        </div>
+        
+        <h3>Customizing JSON Conversion</h3>
+        
+        <h4>The Replacer Parameter</h4>
+        
+        <p>The <code>JSON.stringify()</code> method accepts a second parameter called the replacer, which can be either a function or an array:</p>
+        
+        <pre><code>// Using a replacer function
+const user = {
+  name: "John",
+  password: "secret123",
+  age: 30,
+  roles: ["admin", "editor"]
+};
+
+// Exclude sensitive data
+const jsonString = JSON.stringify(user, (key, value) => {
+  // Skip the password field
+  if (key === "password") return undefined;
+  return value;
+});
+
+console.log(jsonString);
+// {"name":"John","age":30,"roles":["admin","editor"]}
+
+// Using an array of allowed properties
+const jsonString2 = JSON.stringify(user, ["name", "age"]);
+console.log(jsonString2);
+// {"name":"John","age":30}</code></pre>
+        
+        <h4>The Space Parameter</h4>
+        
+        <p>The <code>JSON.stringify()</code> method accepts a third parameter that controls the spacing in the resulting string for better readability:</p>
+        
+        <pre><code>const user = {
+  name: "John",
+  age: 30,
+  address: {
+    street: "123 Main St",
+    city: "Anytown"
+  }
+};
+
+// No space parameter (compact)
+console.log(JSON.stringify(user));
+// {"name":"John","age":30,"address":{"street":"123 Main St","city":"Anytown"}}
+
+// With 2 spaces
+console.log(JSON.stringify(user, null, 2));
+// {
+//   "name": "John",
+//   "age": 30,
+//   "address": {
+//     "street": "123 Main St",
+//     "city": "Anytown"
+//   }
+// }
+
+// With tab character
+console.log(JSON.stringify(user, null, '\t'));
+// {
+// 	"name": "John",
+// 	"age": 30,
+// 	"address": {
+// 		"street": "123 Main St",
+// 		"city": "Anytown"
+// 	}
+// }</code></pre>
+        
+        <h4>The toJSON() Method</h4>
+        
+        <p>Objects can define a <code>toJSON()</code> method to control their JSON serialization:</p>
+        
+        <pre><code>const user = {
+  firstName: "John",
+  lastName: "Doe",
+  birthDate: new Date(1990, 0, 1),
+  
+  // Custom JSON serialization
+  toJSON: function() {
+    return {
+      fullName: `${this.firstName} ${this.lastName}`,
+      age: new Date().getFullYear() - this.birthDate.getFullYear()
+    };
+  }
+};
+
+console.log(JSON.stringify(user));
+// {"fullName":"John Doe","age":33}</code></pre>
+        
+        <h3>Parsing with Reviver Function</h3>
+        
+        <p>The <code>JSON.parse()</code> method accepts a second parameter called the reviver function, which can transform the parsed values:</p>
+        
+        <pre><code>const jsonString = '{"name":"John","birthDate":"1990-01-01T00:00:00.000Z","isActive":true}';
+
+// Parse with a reviver function
+const user = JSON.parse(jsonString, (key, value) => {
+  // Convert date strings back to Date objects
+  if (key === 'birthDate') return new Date(value);
+  return value;
+});
+
+console.log(user.birthDate instanceof Date); // true
+console.log(user.birthDate.getFullYear());   // 1990</code></pre>
+        
+        <h2>Common JSON Use Cases</h2>
+        
+        <h3>API Communication</h3>
+        
+        <p>JSON is the standard format for sending and receiving data in web APIs:</p>
+        
+        <pre><code>// Fetching data from an API
+async function fetchUserData(userId) {
+  try {
+    const response = await fetch(`https://api.example.com/users/${userId}`);
+    
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    // Parse the JSON response
+    const userData = await response.json();
+    return userData;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+}
+
+// Sending data to an API
+async function createUser(userData) {
+  try {
+    const response = await fetch('https://api.example.com/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+}</code></pre>
+        
+        <h3>Configuration Files</h3>
+        
+        <p>JSON is commonly used for configuration files in JavaScript applications:</p>
+        
+        <pre><code>// Example package.json file
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "A sample application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}</code></pre>
+        
+        <h3>Local Storage</h3>
+        
+        <p>JSON is used to store complex data in localStorage:</p>
+        
+        <pre><code>// Saving user preferences to localStorage
+const userPreferences = {
+  theme: 'dark',
+  fontSize: 'medium',
+  notifications: {
+    email: true,
+    push: false
+  },
+  lastUpdated: new Date()
+};
+
+// Save to localStorage
+localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+
+// Retrieve from localStorage
+const savedPreferences = JSON.parse(localStorage.getItem('userPreferences'));
+
+// Note: Dates are stored as strings and need to be converted back
+savedPreferences.lastUpdated = new Date(savedPreferences.lastUpdated);</code></pre>
+        
+        <h2>Advanced JSON Techniques</h2>
+        
+        <h3>Handling Circular References</h3>
+        
+        <p>To handle circular references, you can create a custom replacer function:</p>
+        
+        <pre><code>// Function to handle circular references
+function getCircularReplacer() {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return '[Circular Reference]';
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+}
+
+// Create an object with circular reference
+const circularObj = { name: "Circular Object" };
+circularObj.self = circularObj;
+
+// Stringify with the custom replacer
+const jsonString = JSON.stringify(circularObj, getCircularReplacer());
+console.log(jsonString);
+// {"name":"Circular Object","self":"[Circular Reference]"}</code></pre>
+        
+        <h3>Deep Cloning Objects</h3>
+        
+        <p>JSON methods can be used for deep cloning objects (with some limitations):</p>
+        
+        <pre><code>// Deep clone using JSON methods
+function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+const original = {
+  name: "Original",
+  details: {
+    created: new Date(),
+    stats: [1, 2, 3]
+  }
+};
+
+const clone = deepClone(original);
+
+// Modify the clone
+clone.name = "Clone";
+clone.details.stats.push(4);
+
+console.log(original.name); // "Original"
+console.log(original.details.stats); // [1, 2, 3]
+console.log(clone.details.stats); // [1, 2, 3, 4]</code></pre>
+        
+        <div class="warning-box">
+            <h4>Limitations of JSON for Cloning</h4>
+            <p>Using JSON for deep cloning has limitations:</p>
+            <ul>
+                <li>Functions are lost</li>
+                <li>Dates are converted to strings</li>
+                <li>undefined values are lost</li>
+                <li>RegExp, Map, Set, and other special objects lose their type</li>
+                <li>Circular references cause errors (unless handled)</li>
+            </ul>
+        </div>
+        
+        <h3>Schema Validation</h3>
+        
+        <p>For complex applications, validating JSON against a schema ensures data integrity:</p>
+        
+        <pre><code>// Simple JSON validation function
+function validateUser(user) {
+  // Check required fields
+  if (!user.name || typeof user.name !== 'string') {
+    throw new Error('User must have a valid name string');
+  }
+  
+  if (typeof user.age !== 'number' || user.age < 0) {
+    throw new Error('User must have a valid age number');
+  }
+  
+  if (user.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) {
+    throw new Error('User email must be valid');
+  }
+  
+  return true;
+}
+
+// Usage
+try {
+  const userJson = '{"name":"John","age":30,"email":"john@example.com"}';
+  const user = JSON.parse(userJson);
+  
+  if (validateUser(user)) {
+    console.log('User data is valid');
+  }
+} catch (error) {
+  console.error('Validation error:', error.message);
+}</code></pre>
+        
+        <div class="tip-box">
+            <h4>JSON Schema Libraries</h4>
+            <p>For more complex validation, consider using libraries like:</p>
+            <ul>
+                <li>Ajv (Another JSON Schema Validator)</li>
+                <li>Joi</li>
+                <li>Yup</li>
+                <li>Zod</li>
+            </ul>
+        </div>
+        
+        <h3>JSON Parsing Performance</h3>
+        
+        <p>For large JSON data, parsing can be performance-intensive. Consider these techniques:</p>
+        
+        <pre><code>// Measure parsing performance
+const largeObject = { /* large object with many nested properties */ };
+const jsonString = JSON.stringify(largeObject);
+
+console.time('JSON Parse');
+const parsed = JSON.parse(jsonString);
+console.timeEnd('JSON Parse');
+
+// For very large JSON, consider streaming parsers like:
+// - oboe.js
+// - stream-json
+// - clarinet</code></pre>
+        
+        <h2>Common JSON Patterns and Best Practices</h2>
+        
+        <h3>Error Handling</h3>
+        
+        <p>Always use try-catch blocks when parsing JSON from external sources:</p>
+        
+        <pre><code>function safelyParseJSON(jsonString) {
+  try {
+    return { data: JSON.parse(jsonString), error: null };
+  } catch (error) {
+    console.error('JSON parsing error:', error);
+    return { data: null, error: error.message };
+  }
+}
+
+// Usage
+const { data, error } = safelyParseJSON(potentiallyInvalidJson);
+if (error) {
+  // Handle the error
+  showErrorMessage(`Invalid data format: ${error}`);
+} else {
+  // Use the data
+  processData(data);
+}</code></pre>
+        
+        <h3>JSON Response Patterns</h3>
+        
+        <p>When designing JSON APIs, use consistent response patterns:</p>
+        
+        <div class="json-example">
+// Success response pattern
+{
+  "success": true,
+  "data": {
+    "id": 123,
+    "name": "Product Name",
+    "price": 99.99
+  },
+  "meta": {
+    "timestamp": "2023-04-23T12:34:56.789Z",
+    "version": "1.0"
+  }
+}
+
+// Error response pattern
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid input data",
+    "details": [
+      {
+        "field": "email",
+        "message": "Must be a valid email address"
+      }
+    ]
+  },
+  "meta": {
+    "timestamp": "2023-04-23T12:34:56.789Z",
+    "version": "1.0"
+  }
+}
+        </div>
+        
+        <h3>Pagination and Collection Patterns</h3>
+        
+        <p>For collections of data, use consistent pagination patterns:</p>
+        
+        <div class="json-example">
+{
+  "data": [
+    { "id": 1, "name": "Item 1" },
+    { "id": 2, "name": "Item 2" },
+    { "id": 3, "name": "Item 3" }
+  ],
+  "pagination": {
+    "total": 100,
+    "count": 3,
+    "perPage": 3,
+    "currentPage": 1,
+    "totalPages": 34,
+    "links": {
+      "first": "/api/items?page=1",
+      "last": "/api/items?page=34",
+      "prev": null,
+      "next": "/api/items?page=2"
+    }
+  }
+}
+        </div>
+        
+        <h3>Versioning</h3>
+        
+        <p>Include version information in your JSON data to handle future changes:</p>
+        
+        <div class="json-example">
+{
+  "apiVersion": "1.0",
+  "data": {
+    "id": 123,
+    "name": "Product Name"
+  }
+}
+        </div>
+        
+        <h2>Practical Examples</h2>
+        
+        <h3>Example 1: Building a Configuration System</h3>
+        
+        <pre><code>// Configuration manager using JSON
+class ConfigManager {
+  constructor(defaultConfig = {}) {
+    this.defaultConfig = defaultConfig;
+    this.currentConfig = { ...defaultConfig };
+  }
+  
+  // Load configuration from JSON string
+  loadFromJSON(jsonString) {
+    try {
+      const parsedConfig = JSON.parse(jsonString);
+      this.currentConfig = {
+        ...this.defaultConfig,
+        ...parsedConfig
+      };
+      return true;
+    } catch (error) {
+      console.error('Failed to load configuration:', error);
+      return false;
+    }
+  }
+  
+  // Load configuration from file (in browser)
+  async loadFromFile(file) {
+    try {
+      const text = await file.text();
+      return this.loadFromJSON(text);
+    } catch (error) {
+      console.error('Failed to load configuration file:', error);
+      return false;
+    }
+  }
+  
+  // Get configuration value
+  get(key, defaultValue = null) {
+    const keys = key.split('.');
+    let value = this.currentConfig;
+    
+    for (const k of keys) {
+      if (value === undefined || value === null || typeof value !== 'object') {
+        return defaultValue;
+      }
+      value = value[k];
+    }
+    
+    return value !== undefined ? value : defaultValue;
+  }
+  
+  // Set configuration value
+  set(key, value) {
+    const keys = key.split('.');
+    let current = this.currentConfig;
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      const k = keys[i];
+      if (!(k in current) || typeof current[k] !== 'object') {
+        current[k] = {};
+      }
+      current = current[k];
+    }
+    
+    current[keys[keys.length - 1]] = value;
+  }
+  
+  // Export configuration to JSON string
+  toJSON(pretty = false) {
+    return JSON.stringify(
+      this.currentConfig,
+      null,
+      pretty ? 2 : 0
+    );
+  }
+  
+  // Reset to default configuration
+  reset() {
+    this.currentConfig = { ...this.defaultConfig };
+  }
+}
+
+// Usage
+const defaultConfig = {
+  app: {
+    name: "MyApp",
+    version: "1.0.0"
+  },
+  ui: {
+    theme: "light",
+    fontSize: "medium"
+  },
+  features: {
+    experimental: false
+  }
+};
+
+const configManager = new ConfigManager(defaultConfig);
+
+// Load custom configuration
+const customConfig = `{
+  "ui": {
+    "theme": "dark"
+  },
+  "features": {
+    "experimental": true
+  }
+}`;
+
+configManager.loadFromJSON(customConfig);
+
+console.log(configManager.get('app.name')); // "MyApp" (from default)
+console.log(configManager.get('ui.theme')); // "dark" (from custom)
+console.log(configManager.get('features.experimental')); // true (from custom)
+
+// Update a value
+configManager.set('ui.fontSize', 'large');
+
+// Export the current configuration
+console.log(configManager.toJSON(true));</code></pre>
+        
+        <h3>Example 2: Data Transformation Pipeline</h3>
+        
+        <pre><code>// Data transformation pipeline using JSON
+class DataTransformer {
+  constructor() {
+    this.transformers = [];
+  }
+  
+  // Add a transformation step
+  addTransformer(name, transformFn) {
+    this.transformers.push({ name, transform: transformFn });
+    return this;
+  }
+  
+  // Process data through the transformation pipeline
+  async process(inputData) {
+    try {
+      // Start with the input data
+      let data = typeof inputData === 'string' 
+        ? JSON.parse(inputData) 
+        : inputData;
+      
+      const results = [];
+      
+      // Apply each transformer in sequence
+      for (const { name, transform } of this.transformers) {
+        console.log(`Applying transformer: ${name}`);
+        
+        // Apply the transformation
+        data = await transform(data);
+        
+        // Record the result of this step
+        results.push({
+          transformer: name,
+          result: JSON.parse(JSON.stringify(data)) // Deep clone the result
+        });
+      }
+      
+      return {
+        finalResult: data,
+        transformationSteps: results
+      };
+    } catch (error) {
+      console.error('Transformation pipeline failed:', error);
+      throw error;
+    }
+  }
+}
+
+// Example usage
+const transformer = new DataTransformer();
+
+// Add transformation steps
+transformer
+  .addTransformer('normalize', data => {
+    // Normalize property names to camelCase
+    const normalized = {};
+    
+    for (const [key, value] of Object.entries(data)) {
+      const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+      normalized[camelKey] = value;
+    }
+    
+    return normalized;
+  })
+  .addTransformer('enrichUserData', async data => {
+    // Simulate fetching additional user data
+    if (data.userId) {
+      // In a real app, this might be an API call
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      data.userDetails = {
+        name: 'John Doe',
+        email: 'john@example.com'
+      };
+    }
+    
+    return data;
+  })
+  .addTransformer('calculateTotals', data => {
+    // Calculate totals if there are items
+    if (Array.isArray(data.items)) {
+      data.totalItems = data.items.length;
+      data.totalPrice = data.items.reduce((sum, item) => sum + (item.price || 0), 0);
+    }
+    
+    return data;
+  })
+  .addTransformer('formatOutput', data => {
+    // Format the final output structure
+    return {
+      data,
+      meta: {
+        processed: true,
+        timestamp: new Date().toISOString()
+      }
+    };
+  });
+
+// Process some data
+const inputData = {
+  user_id: 123,
+  order_id: "ORD-456",
+  items: [
+    { product_id: "P1", price: 29.99 },
+    { product_id: "P2", price: 49.99 }
+  ]
+};
+
+transformer.process(inputData)
+  .then(result => {
+    console.log('Final result:', JSON.stringify(result.finalResult, null, 2));
+    console.log('Transformation steps:', result.transformationSteps.length);
+  })
+  .catch(error => {
+    console.error('Processing failed:', error);
+  });</code></pre>
+        
+        <h3>Example 3: JSON-based State Management</h3>
+        
+        <pre><code>// Simple state management system using JSON
+class StateManager {
+  constructor(initialState = {}) {
+    this.state = initialState;
+    this.listeners = [];
+    this.history = [];
+    this.historyIndex = -1;
+    this.maxHistory = 50;
+  }
+  
+  // Get current state (or a slice of it)
+  getState(path = null) {
+    if (!path) return this.state;
+    
+    return path.split('.').reduce((obj, key) => {
+      return obj && obj[key] !== undefined ? obj[key] : undefined;
+    }, this.state);
+  }
+  
+  // Update state
+  setState(updater, actionName = 'update') {
+    // Save current state to history
+    this._saveToHistory(actionName);
+    
+    // Update state
+    if (typeof updater === 'function') {
+      this.state = updater(this.state);
+    } else {
+      this.state = { ...this.state, ...updater };
+    }
+    
+    // Notify listeners
+    this._notifyListeners();
+    
+    return this.state;
+  }
+  
+  // Subscribe to state changes
+  subscribe(listener) {
+    this.listeners.push(listener);
+    
+    // Return unsubscribe function
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== listener);
+    };
+  }
+  
+  // Save state to history
+  _saveToHistory(actionName) {
+    // Remove any future states if we're in the middle of history
+    if (this.historyIndex < this.history.length - 1) {
+      this.history = this.history.slice(0, this.historyIndex + 1);
+    }
+    
+    // Add current state to history
+    this.history.push({
+      state: JSON.parse(JSON.stringify(this.state)),
+      action: actionName,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Limit history size
+    if (this.history.length > this.maxHistory) {
+      this.history = this.history.slice(this.history.length - this.maxHistory);
+    }
+    
+    this.historyIndex = this.history.length - 1;
+  }
+  
+  // Notify all listeners
+  _notifyListeners() {
+    this.listeners.forEach(listener => listener(this.state));
+  }
+  
+  // Undo last action
+  undo() {
+    if (this.historyIndex > 0) {
+      this.historyIndex--;
+      this.state = JSON.parse(JSON.stringify(this.history[this.historyIndex].state));
+      this._notifyListeners();
+      return true;
+    }
+    return false;
+  }
+  
+  // Redo previously undone action
+  redo() {
+    if (this.historyIndex < this.history.length - 1) {
+      this.historyIndex++;
+      this.state = JSON.parse(JSON.stringify(this.history[this.historyIndex].state));
+      this._notifyListeners();
+      return true;
+    }
+    return false;
+  }
+  
+  // Export state to JSON
+  toJSON() {
+    return JSON.stringify(this.state);
+  }
+  
+  // Import state from JSON
+  fromJSON(json) {
+    try {
+      const newState = JSON.parse(json);
+      this._saveToHistory('import');
+      this.state = newState;
+      this._notifyListeners();
+      return true;
+    } catch (error) {
+      console.error('Failed to import state:', error);
+      return false;
+    }
+  }
+  
+  // Get history
+  getHistory() {
+    return this.history;
+  }
+}
+
+// Usage
+const appState = new StateManager({
+  user: {
+    name: 'Guest',
+    isLoggedIn: false
+  },
+  ui: {
+    theme: 'light',
+    sidebar: {
+      isOpen: true,
+      width: 250
+    }
+  },
+  data: {
+    items: [],
+    isLoading: false
+  }
+});
+
+// Subscribe to state changes
+const unsubscribe = appState.subscribe(state => {
+  console.log('State updated:', state);
+  // Update UI based on new state
+});
+
+// Update state
+appState.setState(state => ({
+  ...state,
+  user: {
+    ...state.user,
+    name: 'John',
+    isLoggedIn: true
+  }
+}), 'userLogin');
+
+// Update nested state
+appState.setState(state => ({
+  ...state,
+  ui: {
+    ...state.ui,
+    theme: 'dark',
+    sidebar: {
+      ...state.ui.sidebar,
+      isOpen: false
+    }
+  }
+}), 'changeTheme');
+
+// Undo last action
+appState.undo();
+
+// Export state to JSON
+const stateJson = appState.toJSON();
+console.log('Exported state:', stateJson);
+
+// Import state from JSON
+const newStateJson = '{"user":{"name":"Alice","isLoggedIn":true},"ui":{"theme":"blue","sidebar":{"isOpen":true,"width":300}},"data":{"items":[1,2,3],"isLoading":false}}';
+appState.fromJSON(newStateJson);</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" target="_blank">MDN: JSON</a></li>
+                <li><a href="https://www.json.org/json-en.html" target="_blank">JSON.org: Introducing JSON</a></li>
+                <li><a href="https://jsonformatter.org/" target="_blank">JSON Formatter & Validator</a></li>
+                <li><a href="https://jsonschema.net/" target="_blank">JSONSchema.net: Generate JSON Schema from JSON</a></li>
+                <li><a href="https://github.com/ajv-validator/ajv" target="_blank">Ajv: JSON Schema Validator</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

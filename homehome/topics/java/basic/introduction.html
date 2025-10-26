@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Java - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Introduction to Java</h1>
+            <p>Understanding the fundamentals of Java programming language</p>
+        </header>
+
+        <div class="card">
+            <h2>What is Java?</h2>
+            <p>Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let programmers write once, run anywhere (WORA).</p>
+            
+            <h3>Key Features:</h3>
+            <ul>
+                <li>Platform Independent (Write Once, Run Anywhere)</li>
+                <li>Object-Oriented</li>
+                <li>Simple and Easy to Learn</li>
+                <li>Secure</li>
+                <li>Robust</li>
+                <li>Multithreaded</li>
+                <li>High Performance</li>
+                <li>Distributed</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Java Development Kit (JDK)</h2>
+            <p>The JDK is a software development environment used for developing Java applications and applets. It includes:</p>
+            
+            <ul>
+                <li>Java Runtime Environment (JRE)</li>
+                <li>Java Compiler (javac)</li>
+                <li>Java Debugger</li>
+                <li>Java Documentation Generator (javadoc)</li>
+                <li>Other development tools</li>
+            </ul>
+
+            <div class="note">
+                <p><strong>Note:</strong> Always use the latest stable version of JDK for development.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Your First Java Program</h2>
+            <p>Let's create a simple "Hello, World!" program in Java:</p>
+            
+            <pre><code>public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+
+            <h3>Understanding the Code:</h3>
+            <ul>
+                <li><code>public class HelloWorld</code>: Defines a class named HelloWorld</li>
+                <li><code>public static void main(String[] args)</code>: The main method, entry point of the program</li>
+                <li><code>System.out.println()</code>: Prints text to the console</li>
+            </ul>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> The class name must match the filename (HelloWorld.java).</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Java Virtual Machine (JVM)</h2>
+            <p>The JVM is the runtime engine of the Java Platform, which allows any program written in Java to run on any device that has a JVM installed.</p>
+            
+            <h3>JVM Architecture:</h3>
+            <ul>
+                <li>Class Loader</li>
+                <li>Runtime Data Areas</li>
+                <li>Execution Engine</li>
+                <li>Native Method Interface</li>
+                <li>Native Method Libraries</li>
+            </ul>
+
+            <div class="note">
+                <p><strong>Note:</strong> JVM is platform-dependent, but Java bytecode is platform-independent.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Java Editions</h2>
+            <p>Java comes in different editions for different purposes:</p>
+            
+            <ul>
+                <li><strong>Java SE (Standard Edition)</strong>: Core Java platform</li>
+                <li><strong>Java EE (Enterprise Edition)</strong>: For enterprise applications</li>
+                <li><strong>Java ME (Micro Edition)</strong>: For mobile and embedded devices</li>
+                <li><strong>Java FX</strong>: For rich client applications</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Java Development Tools</h2>
+            <p>Popular tools and IDEs for Java development:</p>
+            
+            <ul>
+                <li>Eclipse</li>
+                <li>IntelliJ IDEA</li>
+                <li>NetBeans</li>
+                <li>Visual Studio Code</li>
+                <li>Maven (Build Tool)</li>
+                <li>Gradle (Build Tool)</li>
+            </ul>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Choose an IDE that best fits your development needs and workflow.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Java Documentation</h2>
+            <p>Java provides comprehensive documentation through Javadoc. Here's how to write documentation comments:</p>
+            
+            <pre><code>/**
+ * This class represents a simple calculator.
+ * It provides basic arithmetic operations.
+ * 
+ * @author John Doe
+ * @version 1.0
+ */
+public class Calculator {
+    /**
+     * Adds two numbers.
+     * 
+     * @param a First number
+     * @param b Second number
+     * @return Sum of a and b
+     */
+    public int add(int a, int b) {
+        return a + b;
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Always document your code using Javadoc comments for better maintainability.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

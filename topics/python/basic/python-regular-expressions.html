@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Regular Expressions - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Regular Expressions</h1>
+            <p>Pattern matching and text manipulation with regex</p>
+        </header>
+
+        <div class="card">
+            <section id="basic-patterns">
+                <h2>Basic Patterns</h2>
+                <p>Common regex patterns:</p>
+                <ul>
+                    <li><code>.</code> - Any character (except newline)</li>
+                    <li><code>\d</code> - Digit (0-9)</li>
+                    <li><code>\D</code> - Non-digit</li>
+                    <li><code>\w</code> - Word character (a-z, A-Z, 0-9, _)</li>
+                    <li><code>\W</code> - Non-word character</li>
+                    <li><code>\s</code> - Whitespace</li>
+                    <li><code>\S</code> - Non-whitespace</li>
+                    <li><code>^</code> - Start of string</li>
+                    <li><code>$</code> - End of string</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="quantifiers">
+                <h2>Quantifiers</h2>
+                <p>Pattern repetition:</p>
+                <ul>
+                    <li><code>*</code> - 0 or more</li>
+                    <li><code>+</code> - 1 or more</li>
+                    <li><code>?</code> - 0 or 1</li>
+                    <li><code>{n}</code> - Exactly n times</li>
+                    <li><code>{n,}</code> - n or more times</li>
+                    <li><code>{n,m}</code> - Between n and m times</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="character-classes">
+                <h2>Character Classes</h2>
+                <p>Defining character sets:</p>
+                <pre><code class="language-python">import re
+
+# Basic character class
+pattern = r'[aeiou]'  # Match any vowel
+text = "Hello World"
+matches = re.findall(pattern, text)
+print(matches)  # ['e', 'o', 'o']
+
+# Range in character class
+pattern = r'[a-z]'  # Match any lowercase letter
+pattern = r'[0-9]'  # Match any digit
+pattern = r'[A-Za-z]'  # Match any letter
+
+# Negated character class
+pattern = r'[^0-9]'  # Match any non-digit
+
+# Special characters in character class
+pattern = r'[\[\]]'  # Match [ or ]</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="groups">
+                <h2>Groups and Capturing</h2>
+                <p>Using groups in regex:</p>
+                <pre><code class="language-python">import re
+
+# Basic group
+pattern = r'(\d{3})-(\d{3})-(\d{4})'  # Phone number
+text = "Phone: 123-456-7890"
+match = re.search(pattern, text)
+if match:
+    print(match.group(0))  # 123-456-7890
+    print(match.group(1))  # 123
+    print(match.group(2))  # 456
+    print(match.group(3))  # 7890
+
+# Named groups
+pattern = r'(?P<area>\d{3})-(?P<prefix>\d{3})-(?P<line>\d{4})'
+match = re.search(pattern, text)
+if match:
+    print(match.group('area'))  # 123
+    print(match.group('prefix'))  # 456
+    print(match.group('line'))  # 7890
+
+# Non-capturing group
+pattern = r'(?:Mr|Mrs|Ms)\. (\w+)'</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="re-functions">
+                <h2>re Module Functions</h2>
+                <p>Common regex functions:</p>
+                <pre><code class="language-python">import re
+
+# re.search() - Find first match
+text = "The quick brown fox"
+match = re.search(r'fox', text)
+if match:
+    print(match.group())  # fox
+
+# re.findall() - Find all matches
+text = "1, 2, 3, 4, 5"
+numbers = re.findall(r'\d+', text)
+print(numbers)  # ['1', '2', '3', '4', '5']
+
+# re.sub() - Replace matches
+text = "Hello World"
+new_text = re.sub(r'World', 'Python', text)
+print(new_text)  # Hello Python
+
+# re.split() - Split by pattern
+text = "one,two,three,four"
+parts = re.split(r',', text)
+print(parts)  # ['one', 'two', 'three', 'four']
+
+# re.compile() - Compile pattern
+pattern = re.compile(r'\d+')
+matches = pattern.findall("123 abc 456")
+print(matches)  # ['123', '456']</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="flags">
+                <h2>Regex Flags</h2>
+                <p>Common regex flags:</p>
+                <ul>
+                    <li><code>re.IGNORECASE</code> or <code>re.I</code> - Case-insensitive matching</li>
+                    <li><code>re.MULTILINE</code> or <code>re.M</code> - ^ and $ match start/end of line</li>
+                    <li><code>re.DOTALL</code> or <code>re.S</code> - . matches newline</li>
+                    <li><code>re.VERBOSE</code> or <code>re.X</code> - Allow comments and whitespace</li>
+                </ul>
+                <pre><code class="language-python">import re
+
+# Using flags
+text = "Hello\nWorld"
+pattern = r'^world$'
+match = re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
+if match:
+    print(match.group())  # World
+
+# Verbose regex
+pattern = re.compile(r'''
+    \d{3}    # area code
+    -        # separator
+    \d{3}    # prefix
+    -        # separator
+    \d{4}    # line number
+''', re.VERBOSE)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="common-patterns">
+                <h2>Common Patterns</h2>
+                <p>Useful regex patterns:</p>
+                <pre><code class="language-python">import re
+
+# Email validation
+email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+email = "user@example.com"
+if re.match(email_pattern, email):
+    print("Valid email")
+
+# URL validation
+url_pattern = r'^https?://(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:/\S*)?$'
+url = "https://example.com"
+if re.match(url_pattern, url):
+    print("Valid URL")
+
+# Phone number
+phone_pattern = r'^\+?1?\d{9,15}$'
+phone = "+1234567890"
+if re.match(phone_pattern, phone):
+    print("Valid phone number")
+
+# Password strength
+password_pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+password = "Password123!"
+if re.match(password_pattern, password):
+    print("Strong password")</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use raw strings (r'pattern') for regex patterns</li>
+                    <li>Compile frequently used patterns with re.compile()</li>
+                    <li>Use specific patterns instead of .* when possible</li>
+                    <li>Consider using named groups for better readability</li>
+                    <li>Test patterns with various inputs</li>
+                    <li>Use comments in complex patterns (re.VERBOSE)</li>
+                    <li>Consider performance implications of greedy vs non-greedy matching</li>
+                    <li>Handle edge cases and invalid inputs</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

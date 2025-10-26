@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Methods - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .method-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .method-card h3 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--code-border);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .method-signature {
+            font-family: monospace;
+            background-color: var(--code-bg);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .method-description {
+            margin-bottom: 15px;
+        }
+
+        .method-example {
+            background-color: var(--code-bg);
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .method-mutates {
+            display: inline-block;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .method-returns-new {
+            display: inline-block;
+            background-color: #4ecdc4;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        .method-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .method-category {
+            background-color: var(--card-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 25px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .method-category:hover, .method-category.active {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Array Methods</h1>
+        
+        <p>JavaScript arrays come with a rich set of built-in methods that make data manipulation easier and more efficient. These methods allow you to transform, search, filter, and reorganize array data without writing complex loops and conditions.</p>
+        
+        <div class="tip-box">
+            <h4>Method Types</h4>
+            <p>Array methods can be categorized by whether they modify the original array or return a new array:</p>
+            <ul>
+                <li><span class="method-mutates">Mutating</span> - Methods that modify the original array</li>
+                <li><span class="method-returns-new">Non-mutating</span> - Methods that return a new array without modifying the original</li>
+            </ul>
+        </div>
+        
+        <h2>Array Transformation Methods</h2>
+        
+        <div class="method-card">
+            <h3>map() <span class="method-returns-new">Returns New Array</span></h3>
+            <div class="method-signature">array.map(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Creates a new array with the results of calling a provided function on every element in the array.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+console.log(numbers); // Original array unchanged: [1, 2, 3, 4, 5]
+
+// With index parameter
+const indexed = numbers.map((num, index) => `${index}: ${num}`);
+console.log(indexed); // ["0: 1", "1: 2", "2: 3", "3: 4", "4: 5"]
+
+// Transforming an array of objects
+const users = [
+  { id: 1, name: 'John' },
+  { id: 2, name: 'Jane' },
+  { id: 3, name: 'Bob' }
+];
+const usernames = users.map(user => user.name);
+console.log(usernames); // ["John", "Jane", "Bob"]</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>filter() <span class="method-returns-new">Returns New Array</span></h3>
+            <div class="method-signature">array.filter(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Creates a new array with all elements that pass the test implemented by the provided function.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const evens = numbers.filter(num => num % 2 === 0);
+console.log(evens); // [2, 4, 6, 8, 10]
+
+// Filtering objects
+const products = [
+  { name: 'Phone', price: 699, inStock: true },
+  { name: 'Laptop', price: 1299, inStock: true },
+  { name: 'Tablet', price: 499, inStock: false },
+  { name: 'Watch', price: 399, inStock: true }
+];
+
+const availableProducts = products.filter(product => product.inStock);
+console.log(availableProducts); 
+// [{ name: 'Phone', price: 699, inStock: true }, 
+//  { name: 'Laptop', price: 1299, inStock: true }, 
+//  { name: 'Watch', price: 399, inStock: true }]
+
+// Combining filter with other conditions
+const affordableInStock = products.filter(
+  product => product.inStock && product.price < 500
+);
+console.log(affordableInStock); 
+// [{ name: 'Watch', price: 399, inStock: true }]</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>reduce() <span class="method-returns-new">Returns Value</span></h3>
+            <div class="method-signature">array.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])</div>
+            <div class="method-description">
+                <p>Executes a reducer function on each element of the array, resulting in a single output value.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// Sum all numbers
+const sum = numbers.reduce((total, num) => total + num, 0);
+console.log(sum); // 15
+
+// Without initial value (uses first element as initial accumulator)
+const product = numbers.reduce((total, num) => total * num);
+console.log(product); // 120 (1*2*3*4*5)
+
+// Creating an object from an array
+const fruits = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple'];
+const fruitCount = fruits.reduce((count, fruit) => {
+  count[fruit] = (count[fruit] || 0) + 1;
+  return count;
+}, {});
+console.log(fruitCount); // { apple: 3, banana: 2, orange: 1 }
+
+// Flattening an array of arrays
+const nestedArrays = [[1, 2], [3, 4], [5, 6]];
+const flattened = nestedArrays.reduce((flat, current) => flat.concat(current), []);
+console.log(flattened); // [1, 2, 3, 4, 5, 6]</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>forEach() <span class="method-returns-new">Returns undefined</span></h3>
+            <div class="method-signature">array.forEach(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Executes a provided function once for each array element. Unlike map, it doesn't return a new array.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// Simple iteration
+numbers.forEach(num => console.log(num));
+// Logs: 1, 2, 3, 4, 5
+
+// With index parameter
+numbers.forEach((num, index) => {
+  console.log(`Element at index ${index} is ${num}`);
+});
+// Logs: 
+// Element at index 0 is 1
+// Element at index 1 is 2
+// ...
+
+// Modifying an external variable
+let sum = 0;
+numbers.forEach(num => {
+  sum += num;
+});
+console.log(sum); // 15
+
+// Note: forEach doesn't return anything useful
+const result = numbers.forEach(num => num * 2);
+console.log(result); // undefined</code></pre>
+            </div>
+        </div>
+        
+        <h2>Array Search and Filter Methods</h2>
+        
+        <div class="method-card">
+            <h3>find() <span class="method-returns-new">Returns Element</span></h3>
+            <div class="method-signature">array.find(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Returns the first element in the array that satisfies the provided testing function.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [5, 12, 8, 130, 44];
+
+const found = numbers.find(num => num > 10);
+console.log(found); // 12 (first number greater than 10)
+
+// Finding in an array of objects
+const users = [
+  { id: 1, name: 'John', age: 28 },
+  { id: 2, name: 'Jane', age: 32 },
+  { id: 3, name: 'Bob', age: 24 }
+];
+
+const user = users.find(user => user.id === 2);
+console.log(user); // { id: 2, name: 'Jane', age: 32 }
+
+// Returns undefined if no element matches
+const notFound = users.find(user => user.id === 99);
+console.log(notFound); // undefined</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>findIndex() <span class="method-returns-new">Returns Index</span></h3>
+            <div class="method-signature">array.findIndex(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Returns the index of the first element in the array that satisfies the provided testing function. Otherwise, it returns -1.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [5, 12, 8, 130, 44];
+
+const index = numbers.findIndex(num => num > 10);
+console.log(index); // 1 (index of first number greater than 10)
+
+// Finding index in an array of objects
+const users = [
+  { id: 1, name: 'John', age: 28 },
+  { id: 2, name: 'Jane', age: 32 },
+  { id: 3, name: 'Bob', age: 24 }
+];
+
+const userIndex = users.findIndex(user => user.name === 'Bob');
+console.log(userIndex); // 2
+
+// Returns -1 if no element matches
+const notFoundIndex = users.findIndex(user => user.id === 99);
+console.log(notFoundIndex); // -1</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>includes() <span class="method-returns-new">Returns Boolean</span></h3>
+            <div class="method-signature">array.includes(valueToFind[, fromIndex])</div>
+            <div class="method-description">
+                <p>Determines whether an array includes a certain value among its entries, returning true or false as appropriate.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const fruits = ['apple', 'banana', 'orange', 'mango'];
+
+console.log(fruits.includes('banana')); // true
+console.log(fruits.includes('grape'));  // false
+
+// With fromIndex parameter
+console.log(fruits.includes('apple', 1)); // false (starts searching from index 1)
+
+// Works with numbers too
+const numbers = [1, 2, 3, 4, 5];
+console.log(numbers.includes(3)); // true
+
+// Note: includes uses strict equality (===)
+const objArray = [{ name: 'John' }, { name: 'Jane' }];
+console.log(objArray.includes({ name: 'John' })); // false (different object references)</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>some() <span class="method-returns-new">Returns Boolean</span></h3>
+            <div class="method-signature">array.some(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Tests whether at least one element in the array passes the test implemented by the provided function.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// Check if any number is even
+const hasEven = numbers.some(num => num % 2 === 0);
+console.log(hasEven); // true
+
+// Check if any number is greater than 10
+const hasLarge = numbers.some(num => num > 10);
+console.log(hasLarge); // false
+
+// Checking in an array of objects
+const users = [
+  { name: 'John', active: true },
+  { name: 'Jane', active: false },
+  { name: 'Bob', active: false }
+];
+
+const hasActiveUser = users.some(user => user.active);
+console.log(hasActiveUser); // true</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>every() <span class="method-returns-new">Returns Boolean</span></h3>
+            <div class="method-signature">array.every(callback(element[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>Tests whether all elements in the array pass the test implemented by the provided function.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// Check if all numbers are positive
+const allPositive = numbers.every(num => num > 0);
+console.log(allPositive); // true
+
+// Check if all numbers are even
+const allEven = numbers.every(num => num % 2 === 0);
+console.log(allEven); // false
+
+// Checking in an array of objects
+const users = [
+  { name: 'John', active: true },
+  { name: 'Jane', active: false },
+  { name: 'Bob', active: true }
+];
+
+const allActive = users.every(user => user.active);
+console.log(allActive); // false</code></pre>
+            </div>
+        </div>
+        
+        <h2>Array Modification Methods</h2>
+        
+        <div class="method-card">
+            <h3>sort() <span class="method-mutates">Mutates Array</span></h3>
+            <div class="method-signature">array.sort([compareFunction])</div>
+            <div class="method-description">
+                <p>Sorts the elements of an array in place and returns the sorted array. The default sort order is ascending, built upon converting the elements into strings.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>// Simple string sort (alphabetical)
+const fruits = ['banana', 'apple', 'orange', 'mango'];
+fruits.sort();
+console.log(fruits); // ['apple', 'banana', 'mango', 'orange']
+
+// Default sort converts elements to strings
+const numbers = [1, 30, 4, 21, 100000];
+numbers.sort();
+console.log(numbers); // [1, 100000, 21, 30, 4] (string comparison!)
+
+// Numeric sort (ascending)
+numbers.sort((a, b) => a - b);
+console.log(numbers); // [1, 4, 21, 30, 100000]
+
+// Numeric sort (descending)
+numbers.sort((a, b) => b - a);
+console.log(numbers); // [100000, 30, 21, 4, 1]
+
+// Sorting objects by property
+const users = [
+  { name: 'John', age: 28 },
+  { name: 'Jane', age: 32 },
+  { name: 'Bob', age: 24 }
+];
+
+// Sort by age (ascending)
+users.sort((a, b) => a.age - b.age);
+console.log(users);
+// [{ name: 'Bob', age: 24 }, { name: 'John', age: 28 }, { name: 'Jane', age: 32 }]
+
+// Sort by name (alphabetical)
+users.sort((a, b) => a.name.localeCompare(b.name));
+console.log(users);
+// [{ name: 'Bob', age: 24 }, { name: 'Jane', age: 32 }, { name: 'John', age: 28 }]</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>splice() <span class="method-mutates">Mutates Array</span></h3>
+            <div class="method-signature">array.splice(start[, deleteCount[, item1[, item2[, ...]]]])</div>
+            <div class="method-description">
+                <p>Changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const months = ['Jan', 'March', 'April', 'June'];
+
+// Insert at index 1
+months.splice(1, 0, 'Feb');
+console.log(months); // ['Jan', 'Feb', 'March', 'April', 'June']
+
+// Replace 1 element at index 4
+months.splice(4, 1, 'May');
+console.log(months); // ['Jan', 'Feb', 'March', 'April', 'May']
+
+// Remove 2 elements starting at index 2
+const removed = months.splice(2, 2);
+console.log(months);  // ['Jan', 'Feb', 'May']
+console.log(removed); // ['March', 'April']
+
+// Add multiple elements
+months.splice(2, 0, 'March', 'April');
+console.log(months); // ['Jan', 'Feb', 'March', 'April', 'May']
+
+// Negative index (counts from the end)
+months.splice(-1, 1, 'June');
+console.log(months); // ['Jan', 'Feb', 'March', 'April', 'June']</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>slice() <span class="method-returns-new">Returns New Array</span></h3>
+            <div class="method-signature">array.slice([begin[, end]])</div>
+            <div class="method-description">
+                <p>Returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included).</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const fruits = ['apple', 'banana', 'orange', 'mango', 'kiwi'];
+
+// Extract from index 1 to 3 (not including 3)
+const citrus = fruits.slice(1, 3);
+console.log(citrus); // ['banana', 'orange']
+console.log(fruits); // Original array unchanged
+
+// Extract from index 2 to the end
+const end = fruits.slice(2);
+console.log(end); // ['orange', 'mango', 'kiwi']
+
+// Negative indices (count from the end)
+const last = fruits.slice(-2);
+console.log(last); // ['mango', 'kiwi']
+
+// Clone an array
+const fruitsCopy = fruits.slice();
+console.log(fruitsCopy); // ['apple', 'banana', 'orange', 'mango', 'kiwi']</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>concat() <span class="method-returns-new">Returns New Array</span></h3>
+            <div class="method-signature">array.concat([value1[, value2[, ...[, valueN]]]])</div>
+            <div class="method-description">
+                <p>Merges two or more arrays by returning a new array.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const array1 = ['a', 'b', 'c'];
+const array2 = ['d', 'e', 'f'];
+const array3 = ['g', 'h', 'i'];
+
+// Concatenate two arrays
+const combined = array1.concat(array2);
+console.log(combined); // ['a', 'b', 'c', 'd', 'e', 'f']
+console.log(array1);   // Original array unchanged: ['a', 'b', 'c']
+
+// Concatenate multiple arrays
+const combined2 = array1.concat(array2, array3);
+console.log(combined2); // ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+
+// Concatenate arrays and values
+const withValues = array1.concat('d', ['e', 'f'], 'g');
+console.log(withValues); // ['a', 'b', 'c', 'd', 'e', 'f', 'g']</code></pre>
+            </div>
+        </div>
+        
+        <h2>Array Utility Methods</h2>
+        
+        <div class="method-card">
+            <h3>join() <span class="method-returns-new">Returns String</span></h3>
+            <div class="method-signature">array.join([separator])</div>
+            <div class="method-description">
+                <p>Creates and returns a new string by concatenating all of the elements in an array, separated by a specified separator string.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const elements = ['Fire', 'Air', 'Water', 'Earth'];
+
+// Default separator is comma
+console.log(elements.join()); // "Fire,Air,Water,Earth"
+
+// Empty string separator (concatenates without separator)
+console.log(elements.join('')); // "FireAirWaterEarth"
+
+// Custom separator
+console.log(elements.join(' - ')); // "Fire - Air - Water - Earth"
+console.log(elements.join(', ')); // "Fire, Air, Water, Earth"
+
+// Useful for creating CSV data
+const data = [
+  ['name', 'age', 'city'],
+  ['John', 28, 'New York'],
+  ['Jane', 32, 'San Francisco']
+];
+
+const csv = data.map(row => row.join(',')).join('\n');
+console.log(csv);
+// name,age,city
+// John,28,New York
+// Jane,32,San Francisco</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>flat() <span class="method-returns-new">Returns New Array</span></h3>
+            <div class="method-signature">array.flat([depth])</div>
+            <div class="method-description">
+                <p>Creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const nestedArray = [1, 2, [3, 4, [5, 6]]];
+
+// Default depth is 1
+console.log(nestedArray.flat());
+// [1, 2, 3, 4, [5, 6]]
+
+// Specify depth
+console.log(nestedArray.flat(2));
+// [1, 2, 3, 4, 5, 6]
+
+// Flatten all levels with Infinity
+const deeplyNested = [1, [2, [3, [4, [5]]]]];
+console.log(deeplyNested.flat(Infinity));
+// [1, 2, 3, 4, 5]
+
+// Removing empty slots
+const arrayWithEmptySlots = [1, 2, , 4, 5];
+console.log(arrayWithEmptySlots.flat());
+// [1, 2, 4, 5]</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <h3>flatMap() <span class="method-returns-new">Returns New Array</span></h3>
+            <div class="method-signature">array.flatMap(callback(currentValue[, index[, array]])[, thisArg])</div>
+            <div class="method-description">
+                <p>First maps each element using a mapping function, then flattens the result into a new array. It's identical to a map() followed by a flat() of depth 1.</p>
+            </div>
+            <div class="method-example">
+                <pre><code>const numbers = [1, 2, 3, 4];
+
+// Map and then flatten
+const result = numbers.flatMap(x => [x, x * 2]);
+console.log(result);
+// [1, 2, 2, 4, 3, 6, 4, 8]
+
+// Equivalent to:
+// numbers.map(x => [x, x * 2]).flat();
+
+// Practical example: Create a list of words from sentences
+const sentences = ["Hello world", "How are you?"];
+const words = sentences.flatMap(sentence => sentence.split(' '));
+console.log(words);
+// ["Hello", "world", "How", "are", "you?"]
+
+// Filtering with flatMap
+const mixed = [1, 2, 3, 4, 5];
+const evenDoubled = mixed.flatMap(n => n % 2 === 0 ? [n * 2] : []);
+console.log(evenDoubled);
+// [4, 8]</code></pre>
+            </div>
+        </div>
+        
+        <h2>Practical Examples</h2>
+        
+        <h3>Example 1: Data Processing Pipeline</h3>
+        
+        <pre><code>// Sample data: Array of user objects
+const users = [
+  { id: 1, name: 'John', age: 28, active: true, purchases: [100, 200, 300] },
+  { id: 2, name: 'Jane', age: 32, active: false, purchases: [150, 250] },
+  { id: 3, name: 'Bob', age: 24, active: true, purchases: [] },
+  { id: 4, name: 'Alice', age: 36, active: true, purchases: [120, 80, 500, 50] }
+];
+
+// Task: Get the total purchase amount of active users over 25
+const totalPurchases = users
+  .filter(user => user.active && user.age > 25) // Filter active users over 25
+  .flatMap(user => user.purchases)              // Get all purchases in a flat array
+  .reduce((sum, amount) => sum + amount, 0);    // Sum all purchase amounts
+
+console.log(totalPurchases); // 1350 (John: 600 + Alice: 750)
+
+// Task: Create a summary of users with their total purchases
+const userSummaries = users
+  .map(user => {
+    const totalSpent = user.purchases.reduce((sum, amount) => sum + amount, 0);
+    const status = user.active ? 'Active' : 'Inactive';
+    
+    return {
+      id: user.id,
+      name: user.name,
+      status,
+      totalSpent,
+      purchaseCount: user.purchases.length
+    };
+  })
+  .sort((a, b) => b.totalSpent - a.totalSpent); // Sort by total spent (descending)
+
+console.log(userSummaries);
+// [
+//   { id: 1, name: 'John', status: 'Active', totalSpent: 600, purchaseCount: 3 },
+//   { id: 4, name: 'Alice', status: 'Active', totalSpent: 750, purchaseCount: 4 },
+//   { id: 2, name: 'Jane', status: 'Inactive', totalSpent: 400, purchaseCount: 2 },
+//   { id: 3, name: 'Bob', status: 'Active', totalSpent: 0, purchaseCount: 0 }
+// ]</code></pre>
+        
+        <h3>Example 2: Working with Nested Data</h3>
+        
+        <pre><code>// Sample data: Nested structure of departments and employees
+const company = [
+  {
+    department: 'Engineering',
+    employees: [
+      { id: 101, name: 'Alice', salary: 85000, skills: ['JavaScript', 'React', 'Node'] },
+      { id: 102, name: 'Bob', salary: 75000, skills: ['Python', 'Django', 'PostgreSQL'] },
+      { id: 103, name: 'Charlie', salary: 95000, skills: ['JavaScript', 'React', 'GraphQL'] }
+    ]
+  },
+  {
+    department: 'Marketing',
+    employees: [
+      { id: 201, name: 'Diana', salary: 70000, skills: ['SEO', 'SEM', 'Content'] },
+      { id: 202, name: 'Evan', salary: 65000, skills: ['Social Media', 'Copywriting'] }
+    ]
+  },
+  {
+    department: 'Finance',
+    employees: [
+      { id: 301, name: 'Frank', salary: 110000, skills: ['Accounting', 'Investment'] },
+      { id: 302, name: 'Grace', salary: 90000, skills: ['Taxation', 'Compliance'] }
+    ]
+  }
+];
+
+// Task 1: Get all employees across all departments
+const allEmployees = company.flatMap(dept => dept.employees);
+console.log(allEmployees.length); // 7
+
+// Task 2: Find employees with JavaScript skills
+const jsDevs = allEmployees.filter(emp => 
+  emp.skills.includes('JavaScript')
+);
+console.log(jsDevs.map(dev => dev.name)); // ['Alice', 'Charlie']
+
+// Task 3: Calculate average salary by department
+const departmentStats = company.map(dept => {
+  const totalSalary = dept.employees.reduce((sum, emp) => sum + emp.salary, 0);
+  const avgSalary = totalSalary / dept.employees.length;
+  
+  return {
+    department: dept.department,
+    employeeCount: dept.employees.length,
+    totalSalary,
+    averageSalary: avgSalary
+  };
+});
+
+console.log(departmentStats);
+// [
+//   { department: 'Engineering', employeeCount: 3, totalSalary: 255000, averageSalary: 85000 },
+//   { department: 'Marketing', employeeCount: 2, totalSalary: 135000, averageSalary: 67500 },
+//   { department: 'Finance', employeeCount: 2, totalSalary: 200000, averageSalary: 100000 }
+// ]
+
+// Task 4: Find the most common skill across all employees
+const skillFrequency = allEmployees
+  .flatMap(emp => emp.skills)
+  .reduce((freq, skill) => {
+    freq[skill] = (freq[skill] || 0) + 1;
+    return freq;
+  }, {});
+
+const mostCommonSkill = Object.entries(skillFrequency)
+  .sort((a, b) => b[1] - a[1])[0][0];
+
+console.log(skillFrequency); // Frequency of each skill
+console.log(`Most common skill: ${mostCommonSkill}`); // Most common skill: React</code></pre>
+        
+        <h3>Example 3: Building a Custom Collection Class</h3>
+        
+        <pre><code>class Collection {
+  constructor(items = []) {
+    this.items = items;
+  }
+  
+  // Add methods that return a new Collection instance
+  filter(callback) {
+    return new Collection(this.items.filter(callback));
+  }
+  
+  map(callback) {
+    return new Collection(this.items.map(callback));
+  }
+  
+  sort(compareFunction) {
+    // Create a copy to avoid mutating the original
+    const sortedItems = [...this.items].sort(compareFunction);
+    return new Collection(sortedItems);
+  }
+  
+  // Terminal operations that return values
+  toArray() {
+    return [...this.items];
+  }
+  
+  count() {
+    return this.items.length;
+  }
+  
+  sum(propertyName) {
+    if (propertyName) {
+      return this.items.reduce((total, item) => total + item[propertyName], 0);
+    }
+    return this.items.reduce((total, item) => total + item, 0);
+  }
+  
+  average(propertyName) {
+    return this.count() > 0 ? this.sum(propertyName) / this.count() : 0;
+  }
+  
+  groupBy(keyFunction) {
+    return this.items.reduce((groups, item) => {
+      const key = keyFunction(item);
+      groups[key] = groups[key] || [];
+      groups[key].push(item);
+      return groups;
+    }, {});
+  }
+}
+
+// Usage example
+const products = new Collection([
+  { id: 1, name: 'Laptop', price: 1200, category: 'Electronics' },
+  { id: 2, name: 'Headphones', price: 100, category: 'Electronics' },
+  { id: 3, name: 'Desk', price: 300, category: 'Furniture' },
+  { id: 4, name: 'Chair', price: 150, category: 'Furniture' },
+  { id: 5, name: 'Phone', price: 800, category: 'Electronics' }
+]);
+
+// Chain operations
+const expensiveElectronics = products
+  .filter(product => product.category === 'Electronics')
+  .filter(product => product.price > 500)
+  .map(product => ({
+    id: product.id,
+    name: product.name,
+    priceWithTax: product.price * 1.1
+  }))
+  .sort((a, b) => a.priceWithTax - b.priceWithTax);
+
+console.log(expensiveElectronics.toArray());
+// [
+//   { id: 5, name: 'Phone', priceWithTax: 880 },
+//   { id: 1, name: 'Laptop', priceWithTax: 1320 }
+// ]
+
+// Calculate statistics
+console.log(`Average price: $${products.average('price')}`); // $510
+
+// Group by category
+const byCategory = products.groupBy(product => product.category);
+console.log(byCategory);
+// {
+//   Electronics: [
+//     { id: 1, name: 'Laptop', price: 1200, category: 'Electronics' },
+//     { id: 2, name: 'Headphones', price: 100, category: 'Electronics' },
+//     { id: 5, name: 'Phone', price: 800, category: 'Electronics' }
+//   ],
+//   Furniture: [
+//     { id: 3, name: 'Desk', price: 300, category: 'Furniture' },
+//     { id: 4, name: 'Chair', price: 150, category: 'Furniture' }
+//   ]
+// }</code></pre>
+        
+        <div class="warning-box">
+            <h4>Performance Considerations</h4>
+            <ul>
+                <li><strong>Chaining many methods</strong> can create multiple intermediate arrays, which may impact performance with large datasets</li>
+                <li><strong>forEach vs. for loops</strong>: Traditional for loops can be faster for simple operations</li>
+                <li><strong>Early termination</strong>: Methods like find() and some() stop iterating once they find a match</li>
+                <li><strong>Mutating vs. non-mutating</strong>: Be aware of which methods modify the original array</li>
+            </ul>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">MDN: JavaScript Array Reference</a></li>
+                <li><a href="https://javascript.info/array-methods" target="_blank">JavaScript.info: Array methods</a></li>
+                <li><a href="https://www.freecodecamp.org/news/the-javascript-array-handbook/" target="_blank">The JavaScript Array Handbook</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap" target="_blank">MDN: Array.prototype.flatMap()</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce" target="_blank">MDN: Array.prototype.reduce()</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

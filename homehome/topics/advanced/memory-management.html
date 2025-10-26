@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Management in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Memory Management in C++</h1>
+            <p>Understanding and implementing efficient memory management techniques</p>
+        </header>
+
+        <div class="card">
+            <h2>Smart Pointers</h2>
+            <p>Smart pointers provide automatic memory management and prevent memory leaks.</p>
+            
+            <pre><code>#include <memory>
+
+// Unique pointer (exclusive ownership)
+std::unique_ptr<int> uptr = std::make_unique<int>(42);
+
+// Shared pointer (shared ownership)
+std::shared_ptr<int> sptr = std::make_shared<int>(42);
+
+// Weak pointer (non-owning reference)
+std::weak_ptr<int> wptr = sptr;
+
+// Custom deleter
+auto deleter = [](int* p) {
+    std::cout << "Deleting " << *p << std::endl;
+    delete p;
+};
+std::unique_ptr<int, decltype(deleter)> customPtr(new int(42), deleter);</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Prefer smart pointers over raw pointers for automatic memory management.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Custom Memory Allocators</h2>
+            <p>Custom memory allocators allow you to control how memory is allocated and deallocated.</p>
+            
+            <pre><code>class CustomAllocator {
+private:
+    static const size_t BLOCK_SIZE = 4096;
+    struct Block {
+        Block* next;
+        char data[BLOCK_SIZE];
+    };
+    Block* currentBlock = nullptr;
+    size_t currentOffset = 0;
+
+public:
+    void* allocate(size_t size) {
+        if (currentBlock == nullptr || 
+            currentOffset + size > BLOCK_SIZE) {
+            Block* newBlock = new Block;
+            newBlock->next = currentBlock;
+            currentBlock = newBlock;
+            currentOffset = 0;
+        }
+        void* ptr = &currentBlock->data[currentOffset];
+        currentOffset += size;
+        return ptr;
+    }
+
+    void deallocate() {
+        while (currentBlock) {
+            Block* next = currentBlock->next;
+            delete currentBlock;
+            currentBlock = next;
+        }
+        currentOffset = 0;
+    }
+};</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Custom allocators must be carefully implemented to avoid memory leaks and fragmentation.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Memory Pools</h2>
+            <p>Memory pools improve performance by pre-allocating memory for objects of the same size.</p>
+            
+            <pre><code>template <typename T>
+class MemoryPool {
+private:
+    struct Node {
+        Node* next;
+    };
+    Node* freeList = nullptr;
+    std::vector<T*> blocks;
+    static const size_t BLOCK_SIZE = 1024;
+
+public:
+    T* allocate() {
+        if (!freeList) {
+            T* newBlock = new T[BLOCK_SIZE];
+            blocks.push_back(newBlock);
+            
+            for (size_t i = 0; i < BLOCK_SIZE; ++i) {
+                Node* node = reinterpret_cast<Node*>(&newBlock[i]);
+                node->next = freeList;
+                freeList = node;
+            }
+        }
+        
+        Node* node = freeList;
+        freeList = freeList->next;
+        return reinterpret_cast<T*>(node);
+    }
+
+    void deallocate(T* ptr) {
+        Node* node = reinterpret_cast<Node*>(ptr);
+        node->next = freeList;
+        freeList = node;
+    }
+
+    ~MemoryPool() {
+        for (T* block : blocks) {
+            delete[] block;
+        }
+    }
+};</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Placement New</h2>
+            <p>Placement new allows you to construct objects in pre-allocated memory.</p>
+            
+            <pre><code>class Object {
+public:
+    Object(int value) : data(value) {}
+    int data;
+};
+
+// Pre-allocate memory
+char buffer[sizeof(Object)];
+
+// Construct object in pre-allocated memory
+Object* obj = new (buffer) Object(42);
+
+// Explicitly call destructor
+obj->~Object();</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Placement new is useful for custom memory management and implementing containers.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Memory Alignment</h2>
+            <p>Proper memory alignment is crucial for performance and hardware compatibility.</p>
+            
+            <pre><code>#include <cstdint>
+
+// Aligned structure
+struct alignas(16) AlignedStruct {
+    int32_t a;
+    int64_t b;
+    char c;
+};
+
+// Dynamic alignment
+void* allocateAligned(size_t size, size_t alignment) {
+    void* ptr = nullptr;
+    if (posix_memalign(&ptr, alignment, size) != 0) {
+        throw std::bad_alloc();
+    }
+    return ptr;
+}
+
+// Usage
+void* alignedMemory = allocateAligned(1024, 64);</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Misaligned memory access can cause performance penalties or hardware exceptions.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Memory Leak Detection</h2>
+            <p>Techniques for detecting and preventing memory leaks.</p>
+            
+            <pre><code>#ifdef _DEBUG
+class MemoryTracker {
+private:
+    static std::map<void*, size_t> allocations;
+    static std::mutex mutex;
+
+public:
+    static void* allocate(size_t size) {
+        void* ptr = malloc(size);
+        std::lock_guard<std::mutex> lock(mutex);
+        allocations[ptr] = size;
+        return ptr;
+    }
+
+    static void deallocate(void* ptr) {
+        std::lock_guard<std::mutex> lock(mutex);
+        allocations.erase(ptr);
+        free(ptr);
+    }
+
+    static void reportLeaks() {
+        std::lock_guard<std::mutex> lock(mutex);
+        for (const auto& [ptr, size] : allocations) {
+            std::cerr << "Memory leak: " << size 
+                      << " bytes at " << ptr << std::endl;
+        }
+    }
+};
+
+// Override global new/delete
+void* operator new(size_t size) {
+    return MemoryTracker::allocate(size);
+}
+
+void operator delete(void* ptr) noexcept {
+    MemoryTracker::deallocate(ptr);
+}
+#endif</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use memory leak detection tools during development and testing.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

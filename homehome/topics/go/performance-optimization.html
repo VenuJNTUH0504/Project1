@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Performance Optimization - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+            --gradient-start: #00ADD8;
+            --gradient-end: #5D4037;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+            --gradient-start: #00ADD8;
+            --gradient-end: #8D6E63;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent var(--primary-color) transparent transparent;
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .note::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .warning::before {
+            content: '⚠️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Performance Optimization</h1>
+            <p>Techniques and best practices for optimizing Go code</p>
+        </header>
+
+        <div class="card">
+            <section id="memory-optimization">
+                <h2>Memory Optimization</h2>
+                <p>Optimizing memory usage:</p>
+                <pre><code class="language-go">// Using sync.Pool for object reuse
+var pool = sync.Pool{
+    New: func() interface{} {
+        return make([]byte, 1024)
+    },
+}
+
+func processData() {
+    // Get buffer from pool
+    buf := pool.Get().([]byte)
+    defer pool.Put(buf)
+    
+    // Use buffer
+    // ...
+}
+
+// Pre-allocating slices
+func processItems(items []Item) {
+    // Pre-allocate result slice
+    results := make([]Result, 0, len(items))
+    
+    for _, item := range items {
+        results = append(results, processItem(item))
+    }
+    
+    return results
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="cpu-optimization">
+                <h2>CPU Optimization</h2>
+                <p>Optimizing CPU usage:</p>
+                <pre><code class="language-go">// Using worker pools
+func processWorkers(items []Item) []Result {
+    numWorkers := runtime.NumCPU()
+    results := make([]Result, len(items))
+    
+    var wg sync.WaitGroup
+    wg.Add(numWorkers)
+    
+    workChan := make(chan int, len(items))
+    for i := range items {
+        workChan <- i
+    }
+    close(workChan)
+    
+    for i := 0; i < numWorkers; i++ {
+        go func() {
+            defer wg.Done()
+            for idx := range workChan {
+                results[idx] = processItem(items[idx])
+            }
+        }()
+    }
+    
+    wg.Wait()
+    return results
+}
+
+// Using SIMD operations
+import "github.com/klauspost/cpuid/v2"
+
+func useSIMD() {
+    if cpuid.CPU.Supports(cpuid.AVX2) {
+        // Use AVX2 instructions
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="concurrency-optimization">
+                <h2>Concurrency Optimization</h2>
+                <p>Optimizing concurrent operations:</p>
+                <pre><code class="language-go">// Using bounded concurrency
+func processWithLimit(items []Item) []Result {
+    results := make([]Result, len(items))
+    sem := make(chan struct{}, 10) // Limit to 10 concurrent operations
+    
+    var wg sync.WaitGroup
+    for i, item := range items {
+        wg.Add(1)
+        go func(idx int, it Item) {
+            defer wg.Done()
+            sem <- struct{}{}        // Acquire semaphore
+            defer func() { <-sem }() // Release semaphore
+            
+            results[idx] = processItem(it)
+        }(i, item)
+    }
+    
+    wg.Wait()
+    return results
+}
+
+// Using context for cancellation
+func processWithTimeout(ctx context.Context, items []Item) ([]Result, error) {
+    ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+    defer cancel()
+    
+    results := make([]Result, len(items))
+    errChan := make(chan error, 1)
+    
+    go func() {
+        for i, item := range items {
+            select {
+            case <-ctx.Done():
+                return
+            default:
+                results[i] = processItem(item)
+            }
+        }
+        errChan <- nil
+    }()
+    
+    select {
+    case err := <-errChan:
+        return results, err
+    case <-ctx.Done():
+        return nil, ctx.Err()
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="io-optimization">
+                <h2>I/O Optimization</h2>
+                <p>Optimizing I/O operations:</p>
+                <pre><code class="language-go">// Using buffered I/O
+func processFile(filename string) error {
+    file, err := os.Open(filename)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+    
+    // Use buffered reader
+    reader := bufio.NewReader(file)
+    
+    for {
+        line, err := reader.ReadString('\n')
+        if err != nil {
+            if err == io.EOF {
+                break
+            }
+            return err
+        }
+        // Process line
+    }
+    return nil
+}
+
+// Using connection pooling
+var db *sql.DB
+
+func init() {
+    var err error
+    db, err = sql.Open("postgres", "user=postgres dbname=mydb sslmode=disable")
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    // Set connection pool parameters
+    db.SetMaxOpenConns(25)
+    db.SetMaxIdleConns(25)
+    db.SetConnMaxLifetime(5 * time.Minute)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="compiler-optimization">
+                <h2>Compiler Optimization</h2>
+                <p>Using compiler optimizations:</p>
+                <pre><code class="language-go">// Using compiler directives
+//go:noinline
+func noInlineFunction() {
+    // Function that shouldn't be inlined
+}
+
+// Using build tags
+// +build !debug
+
+// Using assembly optimizations
+//go:noescape
+func optimizedFunction() {
+    // Function that doesn't escape to heap
+}
+
+// Using profile-guided optimization
+// go build -gcflags="-m -m" main.go
+// go build -gcflags="-m=2" main.go</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Profile before optimizing</li>
+                    <li>Use appropriate data structures</li>
+                    <li>Minimize allocations</li>
+                    <li>Use appropriate concurrency patterns</li>
+                    <li>Optimize I/O operations</li>
+                    <li>Use compiler optimizations</li>
+                    <li>Monitor and measure performance</li>
+                    <li>Consider trade-offs between memory and CPU</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

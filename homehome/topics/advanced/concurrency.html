@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concurrency & Multithreading in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Concurrency & Multithreading in C++</h1>
+            <p>Mastering parallel programming and thread management in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Thread Management</h2>
+            <p>Basic thread creation and management using the C++ standard library.</p>
+            
+            <pre><code>#include <thread>
+#include <iostream>
+
+void threadFunction(int id) {
+    std::cout << "Thread " << id << " is running\n";
+}
+
+int main() {
+    std::thread t1(threadFunction, 1);
+    std::thread t2(threadFunction, 2);
+    
+    t1.join();  // Wait for t1 to finish
+    t2.join();  // Wait for t2 to finish
+    
+    return 0;
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always join or detach threads before they go out of scope to avoid program termination.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Mutex and Lock Guards</h2>
+            <p>Protecting shared resources from concurrent access using mutexes.</p>
+            
+            <pre><code>#include <mutex>
+#include <thread>
+#include <vector>
+
+std::mutex mtx;
+int sharedData = 0;
+
+void increment() {
+    std::lock_guard<std::mutex> lock(mtx);
+    ++sharedData;
+}
+
+int main() {
+    std::vector<std::thread> threads;
+    for (int i = 0; i < 10; ++i) {
+        threads.emplace_back(increment);
+    }
+    
+    for (auto& t : threads) {
+        t.join();
+    }
+    
+    std::cout << "Final value: " << sharedData << std::endl;
+    return 0;
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use RAII-style lock guards to ensure mutexes are always properly released.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Condition Variables</h2>
+            <p>Synchronizing threads using condition variables for efficient waiting.</p>
+            
+            <pre><code>#include <condition_variable>
+#include <mutex>
+#include <queue>
+#include <thread>
+
+std::mutex mtx;
+std::condition_variable cv;
+std::queue<int> dataQueue;
+bool finished = false;
+
+void producer() {
+    for (int i = 0; i < 5; ++i) {
+        std::lock_guard<std::mutex> lock(mtx);
+        dataQueue.push(i);
+        cv.notify_one();
+    }
+    finished = true;
+    cv.notify_all();
+}
+
+void consumer() {
+    while (true) {
+        std::unique_lock<std::mutex> lock(mtx);
+        cv.wait(lock, []{ return !dataQueue.empty() || finished; });
+        
+        if (finished && dataQueue.empty()) break;
+        
+        int value = dataQueue.front();
+        dataQueue.pop();
+        lock.unlock();
+        
+        std::cout << "Consumed: " << value << std::endl;
+    }
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Atomic Operations</h2>
+            <p>Using atomic types for thread-safe operations without mutexes.</p>
+            
+            <pre><code>#include <atomic>
+#include <thread>
+#include <vector>
+
+std::atomic<int> counter(0);
+
+void increment() {
+    for (int i = 0; i < 1000; ++i) {
+        counter.fetch_add(1, std::memory_order_relaxed);
+    }
+}
+
+int main() {
+    std::vector<std::thread> threads;
+    for (int i = 0; i < 10; ++i) {
+        threads.emplace_back(increment);
+    }
+    
+    for (auto& t : threads) {
+        t.join();
+    }
+    
+    std::cout << "Final counter value: " << counter << std::endl;
+    return 0;
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Atomic operations are generally faster than mutex-based synchronization but have more limited use cases.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Async and Futures</h2>
+            <p>Asynchronous programming using std::async and std::future.</p>
+            
+            <pre><code>#include <future>
+#include <iostream>
+#include <vector>
+
+int compute(int x) {
+    // Simulate some work
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    return x * x;
+}
+
+int main() {
+    std::vector<std::future<int>> futures;
+    
+    // Launch multiple async tasks
+    for (int i = 1; i <= 5; ++i) {
+        futures.push_back(std::async(std::launch::async, compute, i));
+    }
+    
+    // Get results
+    for (auto& f : futures) {
+        std::cout << "Result: " << f.get() << std::endl;
+    }
+    
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Thread Pools</h2>
+            <p>Implementing a simple thread pool for efficient task execution.</p>
+            
+            <pre><code>#include <thread>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <functional>
+#include <vector>
+
+class ThreadPool {
+private:
+    std::vector<std::thread> workers;
+    std::queue<std::function<void()>> tasks;
+    std::mutex queueMutex;
+    std::condition_variable condition;
+    bool stop = false;
+
+public:
+    ThreadPool(size_t threads) {
+        for (size_t i = 0; i < threads; ++i) {
+            workers.emplace_back([this] {
+                while (true) {
+                    std::function<void()> task;
+                    {
+                        std::unique_lock<std::mutex> lock(queueMutex);
+                        condition.wait(lock, [this] {
+                            return stop || !tasks.empty();
+                        });
+                        if (stop && tasks.empty()) return;
+                        task = std::move(tasks.front());
+                        tasks.pop();
+                    }
+                    task();
+                }
+            });
+        }
+    }
+
+    template<class F>
+    void enqueue(F&& f) {
+        {
+            std::unique_lock<std::mutex> lock(queueMutex);
+            tasks.emplace(std::forward<F>(f));
+        }
+        condition.notify_one();
+    }
+
+    ~ThreadPool() {
+        {
+            std::unique_lock<std::mutex> lock(queueMutex);
+            stop = true;
+        }
+        condition.notify_all();
+        for (std::thread& worker : workers) {
+            worker.join();
+        }
+    }
+};</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Thread pools require careful management of resources and task lifetimes.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

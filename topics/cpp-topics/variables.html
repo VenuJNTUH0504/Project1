@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Basic Syntax</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid var(--text-color);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>C++ Basic Syntax</h1>
+            <p>Understanding the fundamental building blocks of C++ programs</p>
+        </header>
+
+        <div class="card">
+            <h2>Program Structure</h2>
+            <p>A C++ program consists of various components, including:</p>
+            <ul>
+                <li>Preprocessor directives</li>
+                <li>The main function</li>
+                <li>Statements and expressions</li>
+                <li>Comments</li>
+                <li>Variables and data types</li>
+                <li>Functions</li>
+                <li>Classes and objects</li>
+            </ul>
+            
+            <p>Here's a simple C++ program that demonstrates the basic structure:</p>
+            
+            <pre><code>// This is a comment
+#include &lt;iostream&gt;  // Preprocessor directive
+
+// The main function - entry point of the program
+int main() {
+    // Statement that prints "Hello, World!" to the console
+    std::cout << "Hello, World!" << std::endl;
+    
+    // Return statement
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Comments</h2>
+            <p>Comments are used to add explanatory notes to your code. They are ignored by the compiler.</p>
+            
+            <h3>Single-line Comments</h3>
+            <pre><code>// This is a single-line comment</code></pre>
+            
+            <h3>Multi-line Comments</h3>
+            <pre><code>/* This is a multi-line comment.
+   It can span multiple lines.
+   The compiler ignores everything between the opening and closing markers. */</code></pre>
+            
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use comments to explain why you're doing something, not what you're doing (the code itself should be clear enough to show what's happening).</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Variables and Data Types</h2>
+            <p>Variables are named storage locations that hold data. Before using a variable in C++, you must declare it with a specific data type.</p>
+            
+            <h3>Basic Data Types</h3>
+            <table>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Description</th>
+                    <th>Size (typical)</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><code>int</code></td>
+                    <td>Integer (whole number)</td>
+                    <td>4 bytes</td>
+                    <td><code>int age = 25;</code></td>
+                </tr>
+                <tr>
+                    <td><code>float</code></td>
+                    <td>Single-precision floating-point</td>
+                    <td>4 bytes</td>
+                    <td><code>float price = 19.99f;</code></td>
+                </tr>
+                <tr>
+                    <td><code>double</code></td>
+                    <td>Double-precision floating-point</td>
+                    <td>8 bytes</td>
+                    <td><code>double pi = 3.14159265359;</code></td>
+                </tr>
+                <tr>
+                    <td><code>char</code></td>
+                    <td>Single character</td>
+                    <td>1 byte</td>
+                    <td><code>char grade = 'A';</code></td>
+                </tr>
+                <tr>
+                    <td><code>bool</code></td>
+                    <td>Boolean (true/false)</td>
+                    <td>1 byte</td>
+                    <td><code>bool isActive = true;</code></td>
+                </tr>
+            </table>
+            
+            <h3>Variable Declaration and Initialization</h3>
+            <pre><code>// Declaration
+int age;
+
+// Declaration with initialization
+int score = 100;
+
+// Multiple variables of the same type
+int x = 10, y = 20, z = 30;
+
+// Constants (values that cannot be changed)
+const double PI = 3.14159265359;</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> In C++, variables must be declared before they are used. Using an undeclared variable will result in a compilation error.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Type Modifiers</h2>
+            <p>Type modifiers can be used to alter the size and range of basic data types:</p>
+            
+            <table>
+                <tr>
+                    <th>Modifier</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><code>short</code></td>
+                    <td>Reduces the size of an integer</td>
+                    <td><code>short int smallNumber = 100;</code></td>
+                </tr>
+                <tr>
+                    <td><code>long</code></td>
+                    <td>Increases the size of an integer or double</td>
+                    <td><code>long int bigNumber = 1000000L;</code></td>
+                </tr>
+                <tr>
+                    <td><code>unsigned</code></td>
+                    <td>Allows only positive values, doubling the positive range</td>
+                    <td><code>unsigned int positiveOnly = 100;</code></td>
+                </tr>
+                <tr>
+                    <td><code>signed</code></td>
+                    <td>Allows both positive and negative values (default)</td>
+                    <td><code>signed int withSign = -100;</code></td>
+                </tr>
+            </table>
+            
+            <pre><code>// Examples of type modifiers
+short int smallNumber = 32767;
+long int bigNumber = 2147483647L;
+unsigned int positiveOnly = 4294967295U;
+long double preciseValue = 3.14159265359L;</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Derived Data Types</h2>
+            <p>C++ also supports several derived data types:</p>
+            
+            <h3>Arrays</h3>
+            <pre><code>// Array declaration and initialization
+int numbers[5] = {1, 2, 3, 4, 5};
+char name[10] = "C++";
+
+// Accessing array elements (zero-indexed)
+int firstNumber = numbers[0];  // Gets the first element (1)</code></pre>
+            
+            <h3>Pointers</h3>
+            <pre><code>// Pointer declaration and initialization
+int number = 42;
+int* ptr = &number;  // ptr holds the memory address of number
+
+// Dereferencing a pointer (accessing the value it points to)
+int value = *ptr;  // value is now 42</code></pre>
+            
+            <h3>References</h3>
+            <pre><code>// Reference declaration and initialization
+int number = 42;
+int& ref = number;  // ref is an alias for number
+
+// Modifying through the reference
+ref = 100;  // number is now 100 as well</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Type Conversion</h2>
+            <p>C++ supports both implicit (automatic) and explicit type conversions:</p>
+            
+            <h3>Implicit Conversion</h3>
+            <pre><code>int i = 10;
+double d = i;  // Implicit conversion from int to double (d = 10.0)</code></pre>
+            
+            <h3>Explicit Conversion (Casting)</h3>
+            <pre><code>// C-style cast (not recommended in modern C++)
+double d = 3.14;
+int i = (int)d;  // i = 3
+
+// C++ style casts
+double value = 3.14;
+int intValue = static_cast<int>(value);  // Preferred method in modern C++</code></pre>
+            
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use C++ style casts (<code>static_cast</code>, <code>dynamic_cast</code>, <code>const_cast</code>, <code>reinterpret_cast</code>) instead of C-style casts for better type safety and clarity.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Operators</h2>
+            <p>C++ provides a rich set of operators for performing various operations:</p>
+            
+            <h3>Arithmetic Operators</h3>
+            <pre><code>int a = 10, b = 3;
+int sum = a + b;        // Addition: 13
+int difference = a - b; // Subtraction: 7
+int product = a * b;    // Multiplication: 30
+int quotient = a / b;   // Division: 3 (integer division)
+int remainder = a % b;  // Modulus: 1 (remainder of a/b)</code></pre>
+            
+            <h3>Relational Operators</h3>
+            <pre><code>int x = 5, y = 10;
+bool isEqual = (x == y);      // Equal to: false
+bool isNotEqual = (x != y);   // Not equal to: true
+bool isGreater = (x > y);     // Greater than: false
+bool isLess = (x < y);        // Less than: true
+bool isGreaterEqual = (x >= y); // Greater than or equal to: false
+bool isLessEqual = (x <= y);  // Less than or equal to: true</code></pre>
+            
+            <h3>Logical Operators</h3>
+            <pre><code>bool a = true, b = false;
+bool andResult = a && b;  // Logical AND: false
+bool orResult = a || b;   // Logical OR: true
+bool notResult = !a;      // Logical NOT: false</code></pre>
+            
+            <h3>Assignment Operators</h3>
+            <pre><code>int x = 10;
+x += 5;  // Same as: x = x + 5; (x is now 15)
+x -= 3;  // Same as: x = x - 3; (x is now 12)
+x *= 2;  // Same as: x = x * 2; (x is now 24)
+x /= 4;  // Same as: x = x / 4; (x is now 6)
+x %= 4;  // Same as: x = x % 4; (x is now 2)</code></pre>
+            
+            <h3>Increment and Decrement Operators</h3>
+            <pre><code>int a = 5;
+int b = ++a;  // Pre-increment: a is incremented to 6, then b is assigned 6
+int c = 5;
+int d = c++;  // Post-increment: d is assigned 5, then c is incremented to 6</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Input and Output</h2>
+            <p>C++ uses streams for input and output operations:</p>
+            
+            <h3>Output with <code>cout</code></h3>
+            <pre><code>#include &lt;iostream&gt;
+
+int main() {
+    int age = 25;
+    std::cout << "Hello, World!" << std::endl;
+    std::cout << "I am " << age << " years old." << std::endl;
+    return 0;
+}</code></pre>
+            
+            <h3>Input with <code>cin</code></h3>
+            <pre><code>#include &lt;iostream&gt;
+
+int main() {
+    int age;
+    std::cout << "Enter your age: ";
+    std::cin >> age;
+    std::cout << "You are " << age << " years old." << std::endl;
+    return 0;
+}</code></pre>
+            
+            <h3>Using the <code>using namespace std;</code> Directive</h3>
+            <pre><code>#include &lt;iostream&gt;
+using namespace std;  // Makes std:: prefix unnecessary
+
+int main() {
+    int number;
+    cout << "Enter a number: ";
+    cin >> number;
+    cout << "You entered: " << number << endl;
+    return 0;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> While <code>using namespace std;</code> makes code shorter, it's generally not recommended in larger projects as it can lead to naming conflicts. It's better to use the <code>std::</code> prefix explicitly.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Scope and Lifetime of Variables</h2>
+            <p>The scope of a variable determines where in the code it can be accessed, while its lifetime determines when it's created and destroyed.</p>
+            
+            <h3>Local Variables</h3>
+            <pre><code>void function() {
+    int localVar = 10;  // Local variable, scope limited to this function
+    // localVar can be used here
+}
+// localVar cannot be accessed here</code></pre>
+            
+            <h3>Global Variables</h3>
+            <pre><code>int globalVar = 100;  // Global variable, accessible throughout the program
+
+void function() {
+    // globalVar can be accessed here
+    globalVar = 200;
+}
+
+int main() {
+    // globalVar can be accessed here too
+    return 0;
+}</code></pre>
+            
+            <h3>Block Scope</h3>
+            <pre><code>int main() {
+    // Outer block
+    int x = 10;
+    
+    {
+        // Inner block
+        int y = 20;  // y is only accessible within this block
+        x = 30;      // x is accessible here
+    }
+    
+    // y is not accessible here
+    // x is still accessible
+    
+    return 0;
+}</code></pre>
+            
+            <div class="note">
+                <p><strong>Best Practice:</strong> Limit the scope of variables as much as possible to reduce complexity and potential bugs. Prefer local variables over global ones.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Naming Conventions</h2>
+            <p>While C++ doesn't enforce specific naming conventions, following consistent rules makes your code more readable:</p>
+            
+            <h3>Common Naming Conventions</h3>
+            <ul>
+                <li><strong>Variables and Functions:</strong> camelCase (e.g., <code>myVariable</code>, <code>calculateTotal</code>)</li>
+                <li><strong>Classes:</strong> PascalCase (e.g., <code>MyClass</code>, <code>StudentRecord</code>)</li>
+                <li><strong>Constants:</strong> ALL_CAPS with underscores (e.g., <code>MAX_SIZE</code>, <code>PI_VALUE</code>)</li>
+                <li><strong>Private Member Variables:</strong> Often prefixed with m_ or _ (e.g., <code>m_count</code>, <code>_name</code>)</li>
+            </ul>
+            
+            <h3>Valid and Invalid Identifiers</h3>
+            <p>Rules for naming variables, functions, classes, etc.:</p>
+            <ul>
+                <li>Must begin with a letter or underscore</li>
+                <li>Can contain letters, digits, and underscores</li>
+                <li>Cannot use C++ keywords</li>
+                <li>Case-sensitive (<code>count</code> and <code>Count</code> are different)</li>
+            </ul>
+            
+            <pre><code>// Valid identifiers
+int age;
+double _value;
+char firstName[20];
+bool isValid_1;
+
+// Invalid identifiers
+int 1stNumber;    // Cannot start with a digit
+float my-value;   // Cannot contain hyphens
+char class;       // Cannot use C++ keywords</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Preprocessor Directives</h2>
+            <p>Preprocessor directives are instructions to the preprocessor, which runs before the actual compilation. They start with a # symbol.</p>
+            
+            <h3>Common Preprocessor Directives</h3>
+            <pre><code>// Include directive - includes the content of a file
+#include &lt;iostream&gt;  // Standard library header
+#include "myheader.h"  // User-defined header
+
+// Define directive - creates a macro
+#define PI 3.14159
+#define SQUARE(x) ((x) * (x))
+
+// Conditional compilation
+#ifdef DEBUG
+    // Code that will only be compiled if DEBUG is defined
+    std::cout << "Debug mode is on" << std::endl;
+#endif
+
+// Prevent multiple inclusions of a header file
+#ifndef MY_HEADER_H
+#define MY_HEADER_H
+    // Header file content
+#endif</code></pre>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Modern C++ often prefers <code>const</code> variables and inline functions over macros defined with <code>#define</code> for better type safety and debugging.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

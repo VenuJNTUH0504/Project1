@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Links & Images Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #27ae60;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #27ae60;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background-color: #f1f8f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #27ae60;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #219a52;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .demo-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Links & Images Guide</h1>
+
+        <h2>HTML Links (Hyperlinks)</h2>
+        <p>Links are one of the most fundamental elements of HTML, allowing users to navigate between pages and websites. Links are created using the <code>&lt;a&gt;</code> (anchor) tag.</p>
+        
+        <div class="code-box">
+            &lt;a href="https://www.example.com"&gt;Visit Example.com&lt;/a&gt;
+        </div>
+
+        <h2>Types of Links</h2>
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>Absolute URLs</td>
+                <td>&lt;a href="https://www.example.com"&gt;External Link&lt;/a&gt;</td>
+            </tr>
+            <tr>
+                <td>Relative URLs</td>
+                <td>&lt;a href="about.html"&gt;Internal Link&lt;/a&gt;</td>
+            </tr>
+            <tr>
+                <td>Email Links</td>
+                <td>&lt;a href="mailto:example@email.com"&gt;Send Email&lt;/a&gt;</td>
+            </tr>
+            <tr>
+                <td>Phone Links</td>
+                <td>&lt;a href="tel:+1234567890"&gt;Call Us&lt;/a&gt;</td>
+            </tr>
+        </table>
+
+        <h2>Link Attributes</h2>
+        <p>Important attributes for links include:</p>
+        <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <li><strong>href</strong> - Specifies the destination URL</li>
+            <li><strong>target</strong> - Specifies where to open the link (_blank, _self, etc.)</li>
+            <li><strong>title</strong> - Provides additional information about the link</li>
+            <li><strong>rel</strong> - Specifies the relationship between current and linked document</li>
+        </ul>
+
+        <h2>HTML Images</h2>
+        <p>Images are added to HTML pages using the <code>&lt;img&gt;</code> tag. This is a self-closing tag that requires a source (src) attribute to specify the image location.</p>
+
+        <div class="code-box">
+            &lt;img src="image.jpg" alt="Description of image" width="300" height="200"&gt;
+        </div>
+
+        <h2>Image Attributes</h2>
+        <div class="example-box">
+            <ul style="list-style-type: none;">
+                <li><strong>src</strong> - Required. Specifies the path to the image</li>
+                <li><strong>alt</strong> - Required. Provides alternative text for accessibility</li>
+                <li><strong>width</strong> - Specifies the width of the image</li>
+                <li><strong>height</strong> - Specifies the height of the image</li>
+                <li><strong>loading</strong> - Specifies how the browser should load the image</li>
+            </ul>
+        </div>
+
+        <h2>Image Best Practices</h2>
+        <div class="note">
+            <p><strong>Important Tips:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Always include alt text for accessibility</li>
+                <li>Optimize images for web use</li>
+                <li>Use appropriate image formats (JPG, PNG, WebP)</li>
+                <li>Specify image dimensions to prevent layout shifts</li>
+                <li>Consider responsive images using srcset</li>
+            </ul>
+        </div>
+
+        <h2>Responsive Images</h2>
+        <p>Make images responsive using CSS:</p>
+        <div class="code-box">
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        </div>
+
+        <h2>Image Formats</h2>
+        <table>
+            <tr>
+                <th>Format</th>
+                <th>Best Use Case</th>
+            </tr>
+            <tr>
+                <td>JPEG/JPG</td>
+                <td>Photographs and complex images with many colors</td>
+            </tr>
+            <tr>
+                <td>PNG</td>
+                <td>Images requiring transparency or screenshots</td>
+            </tr>
+            <tr>
+                <td>WebP</td>
+                <td>Modern format offering better compression</td>
+            </tr>
+            <tr>
+                <td>SVG</td>
+                <td>Logos, icons, and scalable graphics</td>
+            </tr>
+        </table>
+
+        <h2>Combining Links and Images</h2>
+        <p>You can wrap images in anchor tags to create clickable images:</p>
+        <div class="code-box">
+            &lt;a href="https://example.com"&gt;
+                &lt;img src="image.jpg" alt="Click me" width="200"&gt;
+            &lt;/a&gt;
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

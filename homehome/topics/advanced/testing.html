@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Testing - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Testing</h1>
+            <p>Writing and running tests in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Testing</h2>
+                <p>Testing is a crucial part of software development that helps ensure code quality and reliability.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="unittest">
+                <h2>unittest</h2>
+                <p>Using Python's built-in unittest framework:</p>
+                <pre><code class="language-python">import unittest
+
+def add(a, b):
+    return a + b
+
+class TestAddFunction(unittest.TestCase):
+    def test_add_positive_numbers(self):
+        self.assertEqual(add(2, 3), 5)
+    
+    def test_add_negative_numbers(self):
+        self.assertEqual(add(-1, -1), -2)
+    
+    def test_add_zero(self):
+        self.assertEqual(add(0, 0), 0)
+    
+    def test_add_mixed_numbers(self):
+        self.assertEqual(add(-1, 1), 0)
+
+if __name__ == '__main__':
+    unittest.main()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="pytest">
+                <h2>pytest</h2>
+                <p>Using pytest for more concise and powerful testing:</p>
+                <pre><code class="language-python">def add(a, b):
+    return a + b
+
+def test_add_positive_numbers():
+    assert add(2, 3) == 5
+
+def test_add_negative_numbers():
+    assert add(-1, -1) == -2
+
+def test_add_zero():
+    assert add(0, 0) == 0
+
+def test_add_mixed_numbers():
+    assert add(-1, 1) == 0
+
+# Using fixtures
+import pytest
+
+@pytest.fixture
+def sample_data():
+    return [1, 2, 3, 4, 5]
+
+def test_sum(sample_data):
+    assert sum(sample_data) == 15</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="doctest">
+                <h2>doctest</h2>
+                <p>Using doctest for documentation and testing:</p>
+                <pre><code class="language-python">def factorial(n):
+    """
+    Calculate the factorial of a number.
+    
+    >>> factorial(0)
+    1
+    >>> factorial(1)
+    1
+    >>> factorial(5)
+    120
+    >>> factorial(-1)
+    Traceback (most recent call last):
+        ...
+    ValueError: n must be >= 0
+    """
+    if n < 0:
+        raise ValueError("n must be >= 0")
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="test-coverage">
+                <h2>Test Coverage</h2>
+                <p>Measuring test coverage with coverage.py:</p>
+                <pre><code class="language-python"># Install coverage.py
+# pip install coverage
+
+# Run tests with coverage
+# coverage run -m pytest
+
+# Generate coverage report
+# coverage report -m
+
+# Generate HTML report
+# coverage html</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Write tests before writing code (Test-Driven Development)</li>
+                    <li>Keep tests simple and focused</li>
+                    <li>Use meaningful test names</li>
+                    <li>Test both success and failure cases</li>
+                    <li>Use fixtures for setup and teardown</li>
+                    <li>Maintain good test coverage</li>
+                    <li>Run tests automatically in CI/CD pipelines</li>
+                    <li>Document test requirements</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

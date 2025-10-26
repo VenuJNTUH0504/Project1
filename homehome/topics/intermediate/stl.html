@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standard Template Library (STL) in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Standard Template Library (STL) in C++</h1>
+            <p>Understanding the powerful collection of template classes and functions</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to STL</h2>
+            <p>The Standard Template Library (STL) is a powerful set of C++ template classes that provide general-purpose classes and functions with templates that implement many popular and commonly used algorithms and data structures.</p>
+            
+            <div class="note">
+                <p><strong>Note:</strong> STL components are highly optimized and provide excellent performance. They are also type-safe and generic.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Containers</h2>
+            <p>STL containers are data structures that store collections of objects. They are implemented as class templates, which allows them to be used with any type.</p>
+            
+            <pre><code>#include <vector>
+#include <list>
+#include <map>
+
+// Vector (dynamic array)
+vector<int> numbers = {1, 2, 3, 4, 5};
+
+// List (doubly linked list)
+list<string> names = {"Alice", "Bob", "Charlie"};
+
+// Map (key-value pairs)
+map<string, int> ages = {
+    {"Alice", 25},
+    {"Bob", 30},
+    {"Charlie", 35}
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Choose the appropriate container based on your specific needs for insertion, deletion, and access patterns.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Algorithms</h2>
+            <p>STL provides a rich set of algorithms that can be used with containers. These algorithms are implemented as function templates.</p>
+            
+            <pre><code>#include <algorithm>
+
+vector<int> numbers = {5, 2, 8, 1, 9};
+
+// Sort the vector
+sort(numbers.begin(), numbers.end());
+
+// Find an element
+auto it = find(numbers.begin(), numbers.end(), 8);
+
+// Transform elements
+transform(numbers.begin(), numbers.end(), 
+          numbers.begin(), [](int x) { return x * 2; });</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> STL algorithms work with iterators, making them extremely flexible and reusable.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Iterators</h2>
+            <p>Iterators are objects that point to elements in a container. They provide a way to access and traverse container elements.</p>
+            
+            <pre><code>vector<int> numbers = {1, 2, 3, 4, 5};
+
+// Using iterators
+for (auto it = numbers.begin(); it != numbers.end(); ++it) {
+    cout << *it << " ";
+}
+
+// Range-based for loop (C++11)
+for (int num : numbers) {
+    cout << num << " ";
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Be careful when modifying containers while iterating through them, as it can invalidate iterators.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Function Objects</h2>
+            <p>Function objects (functors) are objects that can be called like functions. They are often used with STL algorithms.</p>
+            
+            <pre><code>// Function object
+struct Square {
+    int operator()(int x) const {
+        return x * x;
+    }
+};
+
+vector<int> numbers = {1, 2, 3, 4, 5};
+Square square;
+
+// Using function object
+transform(numbers.begin(), numbers.end(), 
+          numbers.begin(), square);
+
+// Using lambda (C++11)
+transform(numbers.begin(), numbers.end(), 
+          numbers.begin(), [](int x) { return x * x; });</code></pre>
+
+            <div class="note">
+                <p><strong>Modern C++:</strong> Prefer lambda expressions over function objects when the logic is simple and used only once.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

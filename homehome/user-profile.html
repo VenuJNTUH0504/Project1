@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Code Pathway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--secondary-color);
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .profile-sidebar {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            height: fit-content;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+        }
+
+        .profile-image i {
+            font-size: 4rem;
+            color: var(--secondary-color);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h2 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            text-align: center;
+            color: var(--dark-color);
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background-color: var(--light-color);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--dark-color);
+            opacity: 0.7;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .profile-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .profile-btn.secondary {
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+        }
+
+        .profile-btn.secondary:hover {
+            background-color: #d5dbdb;
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.5rem;
+            background-color: var(--light-color);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-body {
+            padding: 1.5rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-title {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .progress-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .icon-code { background-color: var(--primary-color); }
+        .icon-login { background-color: var(--success-color); }
+        .icon-course { background-color: var(--warning-color); }
+        .icon-quiz { background-color: var(--accent-color); }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--dark-color);
+            opacity: 0.7;
+        }
+
+        .activity-time {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--dark-color);
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
+
+        .badge-error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+        }
+
+        .badge-info {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--primary-color);
+        }
+
+        .view-more {
+            display: block;
+            text-align: center;
+            padding: 0.75rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .view-more:hover {
+            background-color: var(--light-color);
+        }
+
+        .code-preview {
+            background-color: var(--light-color);
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-top: 0.5rem;
+            max-height: 100px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>User Profile</h1>
+            <a href="homepage.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+
+        <div class="profile-container">
+            <!-- Profile Sidebar -->
+            <div class="profile-sidebar">
+                <div class="profile-image">
+                    <i class="fas fa-user"></i>
+                    <!-- <img src="user-avatar.jpg" alt="User Avatar"> -->
+                </div>
+                <div class="profile-info">
+                    <h2 id="user-name">John Doe</h2>
+                    <p id="user-email">john@example.com</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="code-executions">24</div>
+                        <div class="stat-label">Code Executions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="courses-completed">3</div>
+                        <div class="stat-label">Courses Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="success-rate">85%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="login-days">12</div>
+                        <div class="stat-label">Active Days</div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="#" class="profile-btn">Edit Profile</a>
+                    <a href="#" class="profile-btn secondary">Change Password</a>
+                    <a href="login.html" class="profile-btn secondary">Logout</a>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Course Progress Section -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <span>Course Progress</span>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="section-body">
+                        <div class="progress-container">
+                            <div class="progress-header">
+                                <div class="progress-title">C++ Fundamentals</div>
+                                <div class="progress-value">75%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header">
+                                <div class="progress-title">Python for Beginners</div>
+                                <div class="progress-value">100%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header">
+                                <div class="progress-title">Java Programming</div>
+                                <div class="progress-value">40%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header">
+                                <div class="progress-title">Web Development</div>
+                                <div class="progress-value">20%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 20%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <span>Recent Activity</span>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="section-body">
+                        <ul class="activity-list" id="activity-list">
+                            <!-- Activity items will be populated by JavaScript -->
+                        </ul>
+                        <a href="#" class="view-more">View More Activities</a>
+                    </div>
+                </div>
+
+                <!-- Achievements Section -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <span>Achievements</span>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="section-body">
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <div class="activity-icon" style="background-color: #f1c40f;">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-title">First Code Execution</div>
+                                    <div class="activity-meta">
+                                        <span>Completed your first code execution</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success">Earned</span>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon" style="background-color: #f1c40f;">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-title">Course Completion: Python</div>
+                                    <div class="activity-meta">
+                                        <span>Completed the Python for Beginners course</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success">Earned</span>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon" style="background-color: #f1c40f;">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-title">Code Streak: 7 Days</div>
+                                    <div class="activity-meta">
+                                        <span>Executed code for 7 consecutive days</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success">Earned</span>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon" style="background-color: #bdc3c7;">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-title">C++ Master</div>
+                                    <div class="activity-meta">
+                                        <span>Complete all C++ courses</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-info">In Progress</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample user data
+        const userData = {
+            id: 1,
+            name: 'John Doe',
+            email: 'john@example.com',
+            stats: {
+                codeExecutions: 24,
+                coursesCompleted: 3,
+                successRate: '85%',
+                loginDays: 12
+            }
+        };
+
+        // Sample activity data
+        const activityData = [
+            {
+                id: 1,
+                type: 'code_execution',
+                language: 'cpp',
+                title: 'C++ Code Execution',
+                description: 'Executed C++ code successfully',
+                code: '#include <iostream>\n\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}',
+                result: 'Hello, World!',
+                success: true,
+                timestamp: '2023-05-17T14:30:00'
+            },
+            {
+                id: 2,
+                type: 'login',
+                title: 'Logged In',
+                description: 'Logged into the platform',
+                success: true,
+                timestamp: '2023-05-17T10:15:00'
+            },
+            {
+                id: 3,
+                type: 'course_completion',
+                title: 'Course Completed',
+                description: 'Completed Python for Beginners course',
+                success: true,
+                timestamp: '2023-05-16T16:45:00'
+            },
+            {
+                id: 4,
+                type: 'code_execution',
+                language: 'python',
+                title: 'Python Code Execution',
+                description: 'Executed Python code with errors',
+                code: 'print("Hello, World!"',
+                result: 'SyntaxError: unexpected EOF while parsing',
+                success: false,
+                timestamp: '2023-05-16T14:20:00'
+            },
+            {
+                id: 5,
+                type: 'quiz_completion',
+                title: 'Quiz Completed',
+                description: 'Completed C++ Basics Quiz with score 85%',
+                success: true,
+                timestamp: '2023-05-15T11:30:00'
+            }
+        ];
+
+        // Initialize user profile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set user info
+            document.getElementById('user-name').textContent = userData.name;
+            document.getElementById('user-email').textContent = userData.email;
+            
+            // Set user stats
+            document.getElementById('code-executions').textContent = userData.stats.codeExecutions;
+            document.getElementById('courses-completed').textContent = userData.stats.coursesCompleted;
+            document.getElementById('success-rate').textContent = userData.stats.successRate;
+            document.getElementById('login-days').textContent = userData.stats.loginDays;
+            
+            // Load activity data
+            loadActivityData();
+        });
+
+        // Load activity data
+        function loadActivityData() {
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+            
+            activityData.forEach(activity => {
+                const li = document.createElement('li');
+                li.className = 'activity-item';
+                
+                // Format date
+                const date = new Date(activity.timestamp);
+                const formattedDate = formatTimeAgo(date);
+                
+                // Determine icon class based on activity type
+                let iconClass = '';
+                switch(activity.type) {
+                    case 'code_execution': iconClass = 'icon-code'; break;
+                    case 'login': iconClass = 'icon-login'; break;
+                    case 'course_completion': iconClass = 'icon-course'; break;
+                    case 'quiz_completion': iconClass = 'icon-quiz'; break;
+                    default: iconClass = 'icon-code';
+                }
+                
+                // Determine icon
+                let icon = '';
+                switch(activity.type) {
+                    case 'code_execution': icon = 'fa-code'; break;
+                    case 'login': icon = 'fa-sign-in-alt'; break;
+                    case 'course_completion': icon = 'fa-graduation-cap'; break;
+                    case 'quiz_completion': icon = 'fa-tasks'; break;
+                    default: icon = 'fa-code';
+                }
+                
+                // Determine status badge
+                const statusBadge = activity.success 
+                    ? '<span class="badge badge-success">Success</span>' 
+                    : '<span class="badge badge-error">Error</span>';
+                
+                // Build activity item HTML
+                let activityHTML = `
+                    <div class="activity-icon ${iconClass}">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-meta">
+                            <span>${activity.description}</span>
+                            ${activity.language ? `<span>Language: ${activity.language}</span>` : ''}
+                        </div>
+                `;
+                
+                // Add code preview for code executions
+                if (activity.type === 'code_execution' && activity.code) {
+                    activityHTML += `<div class="code-preview">${activity.code}</div>`;
+                }
+                
+                activityHTML += `
+                    </div>
+                    <div>
+                        ${statusBadge}
+                        <div class="activity-time">${formattedDate}</div>
+                    </div>
+                `;
+                
+                li.innerHTML = activityHTML;
+                activityList.appendChild(li);
+            });
+        }
+
+        // Format time ago
+        function formatTimeAgo(date) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            if (diffInSeconds < 60) {
+                return 'Just now';
+            }
+            
+            const diffInMinutes = Math.floor(diffInSeconds / 60);
+            if (diffInMinutes < 60) {
+                return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+            }
+            
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            if (diffInHours < 24) {
+                return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+            }
+            
+            const diffInDays = Math.floor(diffInHours / 24);
+            if (diffInDays < 30) {
+                return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+            }
+            
+            const diffInMonths = Math.floor(diffInDays / 30);
+            if (diffInMonths < 12) {
+                return `${diffInMonths} month${diffInMonths > 1 ? 's' : ''} ago`;
+            }
+            
+            const diffInYears = Math.floor(diffInMonths / 12);
+            return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
+        }
+
+        // In a real application, these functions would make API calls to the server
+        async function fetchUserData(userId) {
+            // This would be an API call in a real application
+            console.log(`Fetching user data for user ${userId}`);
+            return userData;
+        }
+
+        async function fetchUserActivity(userId) {
+            // This would be an API call in a real application
+            console.log(`Fetching activity data for user ${userId}`);
+            return activityData;
+        }
+    </script>
+    
+    <script src="js/user-profile.js"></script>
+</body>
+</html>

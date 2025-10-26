@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced File I/O in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Advanced File I/O in C++</h1>
+            <p>Mastering file operations and stream handling in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>File Streams and Modes</h2>
+            <p>C++ provides different file stream classes and modes for various file operations.</p>
+            
+            <pre><code>#include <fstream>
+#include <iostream>
+
+int main() {
+    // Open file for writing (truncate if exists)
+    std::ofstream outFile("data.txt", std::ios::out | std::ios::trunc);
+    
+    // Open file for reading and writing (preserve content)
+    std::fstream inOutFile("data.txt", 
+        std::ios::in | std::ios::out | std::ios::app);
+    
+    // Open file for binary operations
+    std::ofstream binaryFile("data.bin", 
+        std::ios::binary | std::ios::out);
+    
+    // Check if file is open
+    if (outFile.is_open()) {
+        outFile << "Hello, World!" << std::endl;
+        outFile.close();
+    }
+    
+    return 0;
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Always check if the file is successfully opened before performing operations.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Binary File Operations</h2>
+            <p>Binary file operations allow direct reading and writing of raw data.</p>
+            
+            <pre><code>struct Record {
+    int id;
+    char name[50];
+    double value;
+};
+
+void writeBinary(const std::string& filename) {
+    std::ofstream file(filename, std::ios::binary);
+    if (file) {
+        Record record = {1, "Test", 3.14};
+        file.write(reinterpret_cast<const char*>(&record), 
+                  sizeof(Record));
+    }
+}
+
+void readBinary(const std::string& filename) {
+    std::ifstream file(filename, std::ios::binary);
+    if (file) {
+        Record record;
+        file.read(reinterpret_cast<char*>(&record), 
+                 sizeof(Record));
+    }
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Binary operations require careful handling of data alignment and endianness.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>File Position and Seeking</h2>
+            <p>Controlling file position and seeking to specific locations in a file.</p>
+            
+            <pre><code>void filePositioning() {
+    std::fstream file("data.txt", 
+        std::ios::in | std::ios::out);
+    
+    if (file) {
+        // Get current position
+        std::streampos pos = file.tellg();
+        
+        // Seek to beginning
+        file.seekg(0, std::ios::beg);
+        
+        // Seek to end
+        file.seekg(0, std::ios::end);
+        
+        // Get file size
+        std::streampos size = file.tellg();
+        
+        // Seek to specific position
+        file.seekg(10, std::ios::beg);
+        
+        // Relative seeking
+        file.seekg(5, std::ios::cur);
+    }
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>String Streams</h2>
+            <p>String streams provide in-memory string manipulation with stream-like operations.</p>
+            
+            <pre><code>#include <sstream>
+#include <string>
+
+void stringStreamExample() {
+    // Writing to string stream
+    std::ostringstream oss;
+    oss << "Value: " << 42 << " Pi: " << 3.14159;
+    std::string result = oss.str();
+    
+    // Reading from string stream
+    std::istringstream iss("100 3.14 Hello");
+    int i;
+    double d;
+    std::string s;
+    iss >> i >> d >> s;
+    
+    // String stream for formatting
+    std::stringstream ss;
+    ss << std::hex << 255;  // Converts to "ff"
+    ss << std::setprecision(2) << 3.14159;  // "3.14"
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> String streams are useful for type conversion and string formatting.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Custom Stream Buffers</h2>
+            <p>Creating custom stream buffers for specialized I/O operations.</p>
+            
+            <pre><code>class CustomBuffer : public std::streambuf {
+private:
+    char buffer[1024];
+    
+protected:
+    int_type overflow(int_type c) override {
+        if (c != EOF) {
+            // Process the character
+            // ...
+            return c;
+        }
+        return EOF;
+    }
+    
+    int_type underflow() override {
+        // Read data into buffer
+        // ...
+        return traits_type::to_int_type(*gptr());
+    }
+};
+
+void useCustomBuffer() {
+    CustomBuffer buffer;
+    std::ostream customStream(&buffer);
+    customStream << "Custom stream output";
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Custom stream buffers require careful implementation of virtual functions.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>File System Operations (C++17)</h2>
+            <p>Modern file system operations using the filesystem library.</p>
+            
+            <pre><code>#include <filesystem>
+namespace fs = std::filesystem;
+
+void fileSystemOperations() {
+    // Create directory
+    fs::create_directory("new_folder");
+    
+    // Check if path exists
+    if (fs::exists("file.txt")) {
+        // Get file size
+        auto size = fs::file_size("file.txt");
+        
+        // Get last write time
+        auto time = fs::last_write_time("file.txt");
+        
+        // Copy file
+        fs::copy_file("source.txt", "destination.txt");
+        
+        // Remove file
+        fs::remove("file.txt");
+        
+        // Iterate directory
+        for (const auto& entry : fs::directory_iterator(".")) {
+            std::cout << entry.path() << std::endl;
+        }
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Modern C++:</strong> The filesystem library provides a modern, cross-platform way to handle file operations.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Memory-Mapped Files</h2>
+            <p>Using memory-mapped files for efficient large file handling.</p>
+            
+            <pre><code>#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+class MemoryMappedFile {
+private:
+    int fd;
+    void* mapped;
+    size_t size;
+    
+public:
+    MemoryMappedFile(const std::string& filename) {
+        fd = open(filename.c_str(), O_RDWR);
+        if (fd == -1) return;
+        
+        size = lseek(fd, 0, SEEK_END);
+        lseek(fd, 0, SEEK_SET);
+        
+        mapped = mmap(nullptr, size, 
+            PROT_READ | PROT_WRITE, 
+            MAP_SHARED, fd, 0);
+    }
+    
+    ~MemoryMappedFile() {
+        if (mapped) munmap(mapped, size);
+        if (fd != -1) close(fd);
+    }
+    
+    void* data() const { return mapped; }
+    size_t length() const { return size; }
+};</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Memory-mapped files require careful handling of system resources and synchronization.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Asynchronous File I/O</h2>
+            <p>Performing asynchronous file operations using futures and async.</p>
+            
+            <pre><code>#include <future>
+#include <fstream>
+#include <vector>
+
+std::future<std::vector<char>> readFileAsync(
+    const std::string& filename) {
+    return std::async(std::launch::async, 
+        [filename]() {
+            std::ifstream file(filename, 
+                std::ios::binary | std::ios::ate);
+            if (!file) return std::vector<char>();
+            
+            auto size = file.tellg();
+            file.seekg(0);
+            
+            std::vector<char> buffer(size);
+            file.read(buffer.data(), size);
+            
+            return buffer;
+        });
+}
+
+void useAsyncIO() {
+    auto future = readFileAsync("large_file.bin");
+    // Do other work while file is being read
+    
+    // Get the result when needed
+    auto data = future.get();
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Asynchronous I/O is particularly useful for handling large files or network operations.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

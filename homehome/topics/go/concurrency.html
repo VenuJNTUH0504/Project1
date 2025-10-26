@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Concurrency - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+            --gradient-start: #00ADD8;
+            --gradient-end: #5D4037;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+            --gradient-start: #00ADD8;
+            --gradient-end: #8D6E63;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent var(--primary-color) transparent transparent;
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .note::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .warning::before {
+            content: '⚠️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Concurrency</h1>
+            <p>Understanding concurrency in Go</p>
+        </header>
+
+        <div class="card">
+            <section id="goroutines">
+                <h2>Goroutines</h2>
+                <p>Goroutines are lightweight threads managed by the Go runtime:</p>
+                <pre><code class="language-go">// Basic goroutine
+go func() {
+    fmt.Println("Hello from goroutine")
+}()
+
+// Goroutine with parameters
+go func(msg string) {
+    fmt.Println(msg)
+}("Hello")
+
+// Multiple goroutines
+for i := 0; i < 5; i++ {
+    go func(id int) {
+        fmt.Printf("Goroutine %d\n", id)
+    }(i)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="channels">
+                <h2>Channels</h2>
+                <p>Channels are typed conduits for communication between goroutines:</p>
+                <pre><code class="language-go">// Channel creation
+ch := make(chan int)
+
+// Sending and receiving
+go func() {
+    ch <- 42
+}()
+
+value := <-ch
+fmt.Println(value) // 42
+
+// Buffered channels
+ch := make(chan int, 3)
+ch <- 1
+ch <- 2
+ch <- 3
+
+// Channel operations
+close(ch)
+value, ok := <-ch</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="select">
+                <h2>Select Statement</h2>
+                <p>The select statement lets a goroutine wait on multiple communication operations:</p>
+                <pre><code class="language-go">// Basic select
+select {
+case msg1 := <-ch1:
+    fmt.Println("Received", msg1)
+case msg2 := <-ch2:
+    fmt.Println("Received", msg2)
+case ch3 <- 3:
+    fmt.Println("Sent 3")
+default:
+    fmt.Println("No communication")
+}
+
+// Timeout with select
+select {
+case msg := <-ch:
+    fmt.Println("Received", msg)
+case <-time.After(1 * time.Second):
+    fmt.Println("Timeout")
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="sync">
+                <h2>Sync Package</h2>
+                <p>The sync package provides synchronization primitives:</p>
+                <pre><code class="language-go">// WaitGroup
+var wg sync.WaitGroup
+for i := 0; i < 5; i++ {
+    wg.Add(1)
+    go func(id int) {
+        defer wg.Done()
+        fmt.Printf("Worker %d\n", id)
+    }(i)
+}
+wg.Wait()
+
+// Mutex
+var mu sync.Mutex
+var counter int
+for i := 0; i < 1000; i++ {
+    go func() {
+        mu.Lock()
+        counter++
+        mu.Unlock()
+    }()
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="patterns">
+                <h2>Concurrency Patterns</h2>
+                <p>Common concurrency patterns in Go:</p>
+                <pre><code class="language-go">// Worker pool
+func worker(id int, jobs <-chan int, results chan<- int) {
+    for j := range jobs {
+        fmt.Printf("Worker %d processing job %d\n", id, j)
+        results <- j * 2
+    }
+}
+
+// Fan-out, fan-in
+func fanOut(in <-chan int, out chan<- int) {
+    for n := range in {
+        out <- n * n
+    }
+}
+
+// Pipeline
+func pipeline(in <-chan int) <-chan int {
+    out := make(chan int)
+    go func() {
+        for n := range in {
+            out <- n * 2
+        }
+        close(out)
+    }()
+    return out
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use goroutines for concurrent tasks</li>
+                    <li>Prefer channels for communication</li>
+                    <li>Use sync primitives when needed</li>
+                    <li>Handle goroutine leaks</li>
+                    <li>Use context for cancellation</li>
+                    <li>Consider worker pools for heavy tasks</li>
+                    <li>Use select for non-blocking operations</li>
+                    <li>Document concurrent behavior</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

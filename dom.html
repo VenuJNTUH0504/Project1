@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript DOM Manipulation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.js"></script>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f9fa;
+            --code-border: #e9ecef;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2a2a2a;
+            --code-border: #3a3a3a;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--code-border);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+
+        .example-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--code-bg);
+            border-radius: 10px;
+        }
+
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .note {
+            background-color: rgba(255, 243, 205, 0.3);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background-color: rgba(248, 215, 218, 0.3);
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background-color: rgba(209, 231, 221, 0.3);
+            border-left: 4px solid #198754;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--code-border);
+        }
+
+        th {
+            background-color: var(--code-bg);
+        }
+
+        .editor-container {
+            margin: 20px 0;
+        }
+
+        .CodeMirror {
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .demo-container {
+            border: 2px solid var(--code-border);
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .demo-result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            min-height: 50px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+
+        .tab.active {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--card-bg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab-content {
+            display: none;
+            border: 1px solid var(--code-border);
+            border-radius: 0 5px 5px 5px;
+            padding: 15px;
+            margin-top: -1px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+    <div class="container">
+        <a href="javascript.html" class="back-button">← Back to JavaScript Home</a>
+        
+        <div class="header">
+            <h1>JavaScript DOM Manipulation</h1>
+        </div>
+
+        <section>
+            <h2>What is the DOM?</h2>
+            <p>The Document Object Model (DOM) is a programming interface for web documents. It represents the page so that programs can change the document structure, style, and content. The DOM represents the document as nodes and objects; that way, programming languages like JavaScript can interact with the page.</p>
+            
+            <div class="note">
+                <strong>Note:</strong> The DOM is not part of JavaScript; it's a Web API used by JavaScript to interact with HTML and XML documents.
+            </div>
+        </section>
+
+        <section>
+            <h2>DOM Tree Structure</h2>
+            <p>The DOM represents an HTML document as a tree-like structure where each node is an object representing a part of the document.</p>
+            
+            <div class="code-block">
+                <pre><!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <div id="container">
+        <p>This is a paragraph.</p>
+        <p>This is another paragraph.</p>
+    </div>
+</body>
+</html></pre>
+            </div>
+            
+            <p>The DOM tree for the above HTML would look like:</p>
+            <ul>
+                <li>Document
+                    <ul>
+                        <li>html
+                            <ul>
+                                <li>head
+                                    <ul>
+                                        <li>title
+                                            <ul>
+                                                <li>"My Page" (text node)</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>body
+                                    <ul>
+                                        <li>h1
+                                            <ul>
+                                                <li>"Welcome" (text node)</li>
+                                            </ul>
+                                        </li>
+                                        <li>div (id="container")
+                                            <ul>
+                                                <li>p
+                                                    <ul>
+                                                        <li>"This is a paragraph." (text node)</li>
+                                                    </ul>
+                                                </li>
+                                                <li>p
+                                                    <ul>
+                                                        <li>"This is another paragraph." (text node)</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Accessing DOM Elements</h2>
+            <p>JavaScript provides several methods to access elements in the DOM:</p>
+            
+            <h3>1. By ID</h3>
+            <div class="code-block">
+                <pre>// Returns the element with the specified ID
+const element = document.getElementById("container");</pre>
+            </div>
+            
+            <h3>2. By Class Name</h3>
+            <div class="code-block">
+                <pre>// Returns a live HTMLCollection of elements with the specified class
+const elements = document.getElementsByClassName("item");</pre>
+            </div>
+            
+            <h3>3. By Tag Name</h3>
+            <div class="code-block">
+                <pre>// Returns a live HTMLCollection of elements with the specified tag name
+const paragraphs = document.getElementsByTagName("p");</pre>
+            </div>
+            
+            <h3>4. By CSS Selector</h3>
+            <div class="code-block">
+                <pre>// Returns the first element that matches the specified CSS selector
+const element = document.querySelector(".container p");
+
+// Returns all elements that match the specified CSS selector
+const elements = document.querySelectorAll(".container p");</pre>
+            </div>
+            
+            <div class="tip">
+                <strong>Best Practice:</strong> <code>querySelector</code> and <code>querySelectorAll</code> are more versatile and often preferred in modern JavaScript, as they allow you to use CSS selectors to target elements.
+            </div>
+        </section>
+
+        <section>
+            <h2>Manipulating DOM Elements</h2>
+            
+            <h3>Changing Content</h3>
+            <div class="code-block">
+                <pre>// Get the element
+const element = document.getElementById("myElement");
+
+// Change text content
+element.textContent = "New text content";
+
+// Change HTML content
+element.innerHTML = "<strong>New</strong> HTML content";</pre>
+            </div>
+            
+            <div class="warning">
+                <strong>Security Warning:</strong> Using <code>innerHTML</code> with user-provided content can lead to cross-site scripting (XSS) attacks. Always sanitize user input before using it with <code>innerHTML</code>.
+            </div>
+            
+            <h3>Changing Attributes</h3>
+            <div class="code-block">
+                <pre>// Get the element
+const element = document.getElementById("myImage");
+
+// Change attributes
+element.src = "new-image.jpg";
+element.alt = "New image description";
+
+// Using setAttribute
+element.setAttribute("width", "300");
+element.setAttribute("data-custom", "value");
+
+// Getting attributes
+const src = element.src;
+const alt = element.getAttribute("alt");</pre>
+            </div>
+            
+            <h3>Changing Styles</h3>
+            <div class="code-block">
+                <pre>// Get the element
+const element = document.getElementById("myElement");
+
+// Change inline styles
+element.style.color = "red";
+element.style.backgroundColor = "#f0f0f0";
+element.style.fontSize = "16px";
+
+// Add or remove classes
+element.classList.add("highlight");
+element.classList.remove("hidden");
+element.classList.toggle("active");
+element.classList.contains("highlight"); // returns true or false</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Creating and Modifying Elements</h2>
+            
+            <h3>Creating Elements</h3>
+            <div class="code-block">
+                <pre>// Create a new element
+const newParagraph = document.createElement("p");
+
+// Create a text node
+const textNode = document.createTextNode("This is a new paragraph.");
+
+// Append the text node to the paragraph
+newParagraph.appendChild(textNode);
+
+// Alternative way to set text content
+// newParagraph.textContent = "This is a new paragraph.";</pre>
+            </div>
+            
+            <h3>Adding Elements to the DOM</h3>
+            <div class="code-block">
+                <pre>// Get the parent element
+const container = document.getElementById("container");
+
+// Append the new element as the last child
+container.appendChild(newParagraph);
+
+// Insert before a specific child
+const referenceElement = document.getElementById("existingElement");
+container.insertBefore(newParagraph, referenceElement);
+
+// Modern methods (not supported in older browsers)
+container.append(newParagraph); // Adds at the end
+container.prepend(newParagraph); // Adds at the beginning
+referenceElement.before(newParagraph); // Adds before the reference element
+referenceElement.after(newParagraph); // Adds after the reference element</pre>
+            </div>
+            
+            <h3>Removing Elements</h3>
+            <div class="code-block">
+                <pre>// Get the element to remove
+const elementToRemove = document.getElementById("oldElement");
+
+// Remove the element
+elementToRemove.remove(); // Modern method
+
+// Alternative for older browsers
+elementToRemove.parentNode.removeChild(elementToRemove);</pre>
+            </div>
+            
+            <h3>Replacing Elements</h3>
+            <div class="code-block">
+                <pre>// Get the element to replace
+const oldElement = document.getElementById("oldElement");
+
+// Create a new element
+const newElement = document.createElement("div");
+newElement.textContent = "This is a replacement element.";
+
+// Replace the old element with the new one
+oldElement.parentNode.replaceChild(newElement, oldElement);</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>DOM Events</h2>
+            <p>DOM events allow JavaScript to register different event handlers on elements in an HTML document.</p>
+            
+            <h3>Adding Event Listeners</h3>
+            <div class="code-block">
+                <pre>// Get the element
+const button = document.getElementById("myButton");
+
+// Add event listener
+button.addEventListener("click", function(event) {
+    console.log("Button clicked!");
+    console.log("Event object:", event);
+});
+
+// Using arrow function
+button.addEventListener("click", (event) => {
+    console.log("Button clicked with arrow function!");
+});</pre>
+            </div>
+            
+            <h3>Removing Event Listeners</h3>
+            <div class="code-block">
+                <pre>// Define the event handler function
+function handleClick(event) {
+    console.log("Button clicked!");
+}
+
+// Add event listener
+button.addEventListener("click", handleClick);
+
+// Remove event listener
+button.removeEventListener("click", handleClick);</pre>
+            </div>
+            
+            <div class="note">
+                <strong>Note:</strong> To remove an event listener, you need to reference the same function that was used to add it. Anonymous functions cannot be removed.
+            </div>
+            
+            <h3>Common DOM Events</h3>
+            <table>
+                <tr>
+                    <th>Event Category</th>
+                    <th>Event Names</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Mouse Events</td>
+                    <td>click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave</td>
+                    <td>Events triggered by mouse interactions</td>
+                </tr>
+                <tr>
+                    <td>Keyboard Events</td>
+                    <td>keydown, keyup, keypress</td>
+                    <td>Events triggered by keyboard interactions</td>
+                </tr>
+                <tr>
+                    <td>Form Events</td>
+                    <td>submit, reset, change, input, focus, blur</td>
+                    <td>Events triggered by form interactions</td>
+                </tr>
+                <tr>
+                    <td>Document/Window Events</td>
+                    <td>load, resize, scroll, unload, beforeunload</td>
+                    <td>Events triggered by document or window</td>
+                </tr>
+                <tr>
+                    <td>Drag Events</td>
+                    <td>dragstart, drag, dragend, dragenter, dragover, dragleave, drop</td>
+                    <td>Events triggered by drag and drop interactions</td>
+                </tr>
+            </table>
+            
+            <h3>Event Propagation</h3>
+            <p>DOM events propagate in three phases:</p>
+            <ol>
+                <li><strong>Capturing Phase:</strong> The event travels from the window down to the target element.</li>
+                <li><strong>Target Phase:</strong> The event reaches the target element.</li>
+                <li><strong>Bubbling Phase:</strong> The event bubbles up from the target element to the window.</li>
+            </ol>
+            
+            <div class="code-block">
+                <pre>// The third parameter specifies whether to use the capturing phase (true) or bubbling phase (false, default)
+element.addEventListener("click", handleClick, true); // Capturing phase
+element.addEventListener("click", handleClick, false); // Bubbling phase (default)
+
+// Stop event propagation
+function handleClick(event) {
+    event.stopPropagation(); // Prevents the event from bubbling up or capturing down
+    console.log("Event handled and stopped!");
+}
+
+// Prevent default behavior
+function handleSubmit(event) {
+    event.preventDefault(); // Prevents the form from submitting
+    console.log("Form submission prevented!");
+}</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>DOM Traversal</h2>
+            <p>DOM traversal allows you to navigate through the DOM tree structure.</p>
+            
+            <h3>Parent, Children, and Siblings</h3>
+            <div class="code-block">
+                <pre>// Get the element
+const element = document.getElementById("myElement");
+
+// Parent node
+const parent = element.parentNode; // Returns the parent node
+const parentElement = element.parentElement; // Returns the parent element (excludes non-element parents)
+
+// Children
+const children = element.childNodes; // Returns all child nodes (including text nodes, comments, etc.)
+const childElements = element.children; // Returns only child elements
+const firstChild = element.firstChild; // Returns the first child node
+const firstChildElement = element.firstElementChild; // Returns the first child element
+const lastChild = element.lastChild; // Returns the last child node
+const lastChildElement = element.lastElementChild; // Returns the last child element
+
+// Siblings
+const nextSibling = element.nextSibling; // Returns the next sibling node
+const nextElementSibling = element.nextElementSibling; // Returns the next sibling element
+const previousSibling = element.previousSibling; // Returns the previous sibling node
+const previousElementSibling = element.previousElementSibling; // Returns the previous sibling element</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Interactive Examples</h2>
+            
+            <h3>Example 1: DOM Selection and Manipulation</h3>
+            <div class="demo-container">
+                <div id="demo1">
+                    <h4>DOM Selection Demo</h4>
+                    <p id="demo-p1" class="demo-paragraph">This is paragraph 1.</p>
+                    <p id="demo-p2" class="demo-paragraph">This is paragraph 2.</p>
+                    <p id="demo-p3" class="demo-paragraph">This is paragraph 3.</p>
+                    <div class="demo-buttons">
+                        <button id="btn-select-id">Select by ID</button>
+                        <button id="btn-select-class">Select by Class</button>
+                        <button id="btn-select-tag">Select by Tag</button>
+                        <button id="btn-select-query">Select by Query</button>
+                    </div>
+                    <div id="demo1-result" class="demo-result">Results will appear here...</div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('demo1-js')">JavaScript</div>
+                    <div class="tab" onclick="showTab('demo1-html')">HTML</div>
+                </div>
+                <div id="demo1-js" class="tab-content active">
+                    <div class="editor-container">
+                        <textarea id="editor1-js">
+// Select by ID
+document.getElementById('btn-select-id').addEventListener('click', function() {
+    const element = document.getElementById('demo-p2');
+    
+    // Highlight the selected element
+    resetHighlights();
+    element.style.backgroundColor = '#ffeb3b';
+    
+    // Show the result
+    document.getElementById('demo1-result').textContent = 
+        `Selected element by ID: ${element.id}\nContent: "${element.textContent}"`;
+});
+
+// Select by Class
+document.getElementById('btn-select-class').addEventListener('click', function() {
+    const elements = document.getElementsByClassName('demo-paragraph');
+    
+    // Highlight the selected elements
+    resetHighlights();
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.backgroundColor = '#ffeb3b';
+    }
+    
+    // Show the result
+    document.getElementById('demo1-result').textContent = 
+        `Selected ${elements.length} elements by class 'demo-paragraph'`;
+});
+
+// Select by Tag
+document.getElementById('btn-select-tag').addEventListener('click', function() {
+    const elements = document.getElementsByTagName('p');
+    
+    // Highlight the selected elements
+    resetHighlights();
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.backgroundColor = '#ffeb3b';
+    }
+    
+    // Show the result
+    document.getElementById('demo1-result').textContent = 
+        `Selected ${elements.length} elements by tag 'p'`;
+});
+
+// Select by Query
+document.getElementById('btn-select-query').addEventListener('click', function() {
+    const element = document.querySelector('#demo-p3');
+    
+    // Highlight the selected element
+    resetHighlights();
+    element.style.backgroundColor = '#ffeb3b';
+    
+    // Show the result
+    document.getElementById('demo1-result').textContent = 
+        `Selected element by query: ${element.id}\nContent: "${element.textContent}"`;
+});
+
+// Helper function to reset highlights
+function resetHighlights() {
+    const paragraphs = document.getElementsByClassName('demo-paragraph');
+    for (let i = 0; i < paragraphs.length; i++) {
+        paragraphs[i].style.backgroundColor = '';
+    }
+}
+
+// Initialize
+resetHighlights();
+</textarea>
+                    </div>
+                </div>
+                <div id="demo1-html" class="tab-content">
+                    <div class="editor-container">
+                        <textarea id="editor1-html">
+<div id="demo1">
+    <h4>DOM Selection Demo</h4>
+    <p id="demo-p1" class="demo-paragraph">This is paragraph 1.</p>
+    <p id="demo-p2" class="demo-paragraph">This is paragraph 2.</p>
+    <p id="demo-p3" class="demo-paragraph">This is paragraph 3.</p>
+    <div class="demo-buttons">
+        <button id="btn-select-id">Select by ID</button>
+        <button id="btn-select-class">Select by Class</button>
+        <button id="btn-select-tag">Select by Tag</button>
+        <button id="btn-select-query">Select by Query</button>
+    </div>
+    <div id="demo1-result" class="demo-result">Results will appear here...</div>
+</div>
+</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Example 2: Creating and Modifying Elements</h3>
+            <div class="demo-container">
+                <div id="demo2">
+                    <h4>DOM Manipulation Demo</h4>
+                    <div id="demo2-container" class="demo-content">
+                        <p>This is the original content.</p>
+                    </div>
+                    <div class="demo-buttons">
+                        <button id="btn-add-element">Add Element</button>
+                        <button id="btn-modify-element">Modify Element</button>
+                        <button id="btn-remove-element">Remove Element</button>
+                        <button id="btn-reset-demo">Reset Demo</button>
+                    </div>
+                    <div id="demo2-result" class="demo-result">Results will appear here...</div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('demo2-js')">JavaScript</div>
+                    <div class="tab" onclick="showTab('demo2-html')">HTML</div>
+                </div>
+                <div id="demo2-js" class="tab-content active">
+                    <div class="editor-container">
+                        <textarea id="editor2-js">
+// Add Element
+document.getElementById('btn-add-element').addEventListener('click', function() {
+    // Create a new element
+    const newElement = document.createElement('div');
+    newElement.className = 'new-element';
+    newElement.textContent = 'This is a new element added at ' + new Date().toLocaleTimeString();
+    newElement.style.padding = '10px';
+    newElement.style.margin = '10px 0';
+    newElement.style.backgroundColor = '#e3f2fd';
+    newElement.style.borderRadius = '5px';
+    
+    // Add the element to the container
+    const container = document.getElementById('demo2-container');
+    container.appendChild(newElement);
+    
+    // Show the result
+    document.getElementById('demo2-result').textContent = 'Added a new element to the container';
+});
+
+// Modify Element
+document.getElementById('btn-modify-element').addEventListener('click', function() {
+    // Find the elements to modify
+    const elements = document.querySelectorAll('#demo2-container div.new-element');
+    
+    if (elements.length === 0) {
+        document.getElementById('demo2-result').textContent = 'No elements to modify. Add an element first.';
+        return;
+    }
+    
+    // Modify each element
+    elements.forEach((element, index) => {
+        element.style.backgroundColor = getRandomColor();
+        element.style.color = '#ffffff';
+        element.style.fontWeight = 'bold';
+        element.textContent = `Modified element ${index + 1} at ${new Date().toLocaleTimeString()}`;
+    });
+    
+    // Show the result
+    document.getElementById('demo2-result').textContent = `Modified ${elements.length} element(s)`;
+});
+
+// Remove Element
+document.getElementById('btn-remove-element').addEventListener('click', function() {
+    // Find the elements to remove
+    const elements = document.querySelectorAll('#demo2-container div.new-element');
+    
+    if (elements.length === 0) {
+        document.getElementById('demo2-result').textContent = 'No elements to remove. Add an element first.';
+        return;
+    }
+    
+    // Remove the last element
+    const lastElement = elements[elements.length - 1];
+    lastElement.parentNode.removeChild(lastElement);
+    
+    // Show the result
+    document.getElementById('demo2-result').textContent = 'Removed the last added element';
+});
+
+// Reset Demo
+document.getElementById('btn-reset-demo').addEventListener('click', function() {
+    // Reset the container to its original state
+    const container = document.getElementById('demo2-container');
+    container.innerHTML = '<p>This is the original content.</p>';
+    
+    // Show the result
+    document.getElementById('demo2-result').textContent = 'Reset the demo to its original state';
+});
+
+// Helper function to generate random colors
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+</textarea>
+                    </div>
+                </div>
+                <div id="demo2-html" class="tab-content">
+                    <div class="editor-container">
+                        <textarea id="editor2-html">
+<div id="demo2">
+    <h4>DOM Manipulation Demo</h4>
+    <div id="demo2-container" class="demo-content">
+        <p>This is the original content.</p>
+    </div>
+    <div class="demo-buttons">
+        <button id="btn-add-element">Add Element</button>
+        <button id="btn-modify-element">Modify Element</button>
+        <button id="btn-remove-element">Remove Element</button>
+        <button id="btn-reset-demo">Reset Demo</button>
+    </div>
+    <div id="demo2-result" class="demo-result">Results will appear here...</div>
+</div>
+</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Example 3: Event Handling</h3>
+            <div class="demo-container">
+                <div id="demo3">
+                    <h4>Event Handling Demo</h4>
+                    <div id="demo3-container" class="demo-content">
+                        <div id="outer-box" style="padding: 20px; background-color: #e3f2fd; border-radius: 5px;">
+                            <div id="middle-box" style="padding: 20px; background-color: #bbdefb; border-radius: 5px;">
+                                <div id="inner-box" style="padding: 20px; background-color: #90caf9; border-radius: 5px; text-align: center;">
+                                    <button id="event-button">Click Me</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <label>
+                                <input type="checkbox" id="stop-propagation"> Stop Propagation
+                            </label>
+                            <button id="reset-events">Reset Events</button>
+                        </div>
+                    </div>
+                    <div id="demo3-result" class="demo-result">Click on the elements to see event propagation...</div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('demo3-js')">JavaScript</div>
+                    <div class="tab" onclick="showTab('demo3-html')">HTML</div>
+                </div>
+                <div id="demo3-js" class="tab-content active">
+                    <div class="editor-container">
+                        <textarea id="editor3-js">
+// Get elements
+const outerBox = document.getElementById('outer-box');
+const middleBox = document.getElementById('middle-box');
+const innerBox = document.getElementById('inner-box');
+const eventButton = document.getElementById('event-button');
+const stopPropagation = document.getElementById('stop-propagation');
+const resetEvents = document.getElementById('reset-events');
+const resultBox = document.getElementById('demo3-result');
+
+// Event counter
+let eventCount = 0;
+
+// Function to add event message
+function addEventMessage(message) {
+    eventCount++;
+    resultBox.innerHTML += `<div>${eventCount}. ${message}</div>`;
+    resultBox.scrollTop = resultBox.scrollHeight;
+}
+
+// Function to handle events
+function handleEvent(event) {
+    const shouldStop = stopPropagation.checked;
+    const elementId = event.currentTarget.id;
+    const phase = event.eventPhase === 1 ? 'Capturing' : 
+                 event.eventPhase === 2 ? 'Target' : 'Bubbling';
+    
+    addEventMessage(`${phase} phase: ${elementId} was clicked`);
+    
+    if (shouldStop) {
+        event.stopPropagation();
+        addEventMessage(`Event propagation stopped at ${elementId}`);
+    }
+}
+
+// Add event listeners for capturing phase (true)
+outerBox.addEventListener('click', handleEvent, true);
+middleBox.addEventListener('click', handleEvent, true);
+innerBox.addEventListener('click', handleEvent, true);
+eventButton.addEventListener('click', handleEvent, true);
+
+// Add event listeners for bubbling phase (false)
+outerBox.addEventListener('click', handleEvent, false);
+middleBox.addEventListener('click', handleEvent, false);
+innerBox.addEventListener('click', handleEvent, false);
+eventButton.addEventListener('click', handleEvent, false);
+
+// Reset events button
+resetEvents.addEventListener('click', function() {
+    resultBox.innerHTML = 'Click on the elements to see event propagation...';
+    eventCount = 0;
+});
+
+// Initialize
+resultBox.innerHTML = 'Click on the elements to see event propagation...';
+</textarea>
+                    </div>
+                </div>
+                <div id="demo3-html" class="tab-content">
+                    <div class="editor-container">
+                        <textarea id="editor3-html">
+<div id="demo3">
+    <h4>Event Handling Demo</h4>
+    <div id="demo3-container" class="demo-content">
+        <div id="outer-box" style="padding: 20px; background-color: #e3f2fd; border-radius: 5px;">
+            <div id="middle-box" style="padding: 20px; background-color: #bbdefb; border-radius: 5px;">
+                <div id="inner-box" style="padding: 20px; background-color: #90caf9; border-radius: 5px; text-align: center;">
+                    <button id="event-button">Click Me</button>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 20px;">
+            <label>
+                <input type="checkbox" id="stop-propagation"> Stop Propagation
+            </label>
+            <button id="reset-events">Reset Events</button>
+        </div>
+    </div>
+    <div id="demo3-result" class="demo-result">Click on the elements to see event propagation...</div>
+</div>
+</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+
+        function showTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activate the clicked tab
+            const clickedTab = document.querySelector(`.tab[onclick="showTab('${tabId}')"]`);
+            clickedTab.classList.add('active');
+        }
+
+        // Initialize CodeMirror editors
+        const editor1Js = CodeMirror.fromTextArea(document.getElementById("editor1-js"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: true
+        });
+
+        const editor1Html = CodeMirror.fromTextArea(document.getElementById("editor1-html"), {
+            mode: "htmlmixed",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: true
+        });
+
+        const editor2Js = CodeMirror.fromTextArea(document.getElementById("editor2-js"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: true
+        });
+
+        const editor2Html = CodeMirror.fromTextArea(document.getElementById("editor2-html"), {
+            mode: "htmlmixed",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: true
+        });
+
+        const editor3Js = CodeMirror.fromTextArea(document.getElementById("editor3-js"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: true
+        });
+
+        const editor3Html = CodeMirror.fromTextArea(document.getElementById("editor3-html"), {
+            mode: "htmlmixed",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: true
+        });
+
+        // Demo 1: DOM Selection
+        // Select by ID
+        document.getElementById('btn-select-id').addEventListener('click', function() {
+            const element = document.getElementById('demo-p2');
+            
+            // Highlight the selected element
+            resetHighlights();
+            element.style.backgroundColor = '#ffeb3b';
+            
+            // Show the result
+            document.getElementById('demo1-result').textContent = 
+                `Selected element by ID: ${element.id}\nContent: "${element.textContent}"`;
+        });
+
+        // Select by Class
+        document.getElementById('btn-select-class').addEventListener('click', function() {
+            const elements = document.getElementsByClassName('demo-paragraph');
+            
+            // Highlight the selected elements
+            resetHighlights();
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.backgroundColor = '#ffeb3b';
+            }
+            
+            // Show the result
+            document.getElementById('demo1-result').textContent = 
+                `Selected ${elements.length} elements by class 'demo-paragraph'`;
+        });
+
+        // Select by Tag
+        document.getElementById('btn-select-tag').addEventListener('click', function() {
+            const elements = document.getElementsByTagName('p');
+            
+            // Highlight the selected elements
+            resetHighlights();
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].closest('#demo1')) {
+                    elements[i].style.backgroundColor = '#ffeb3b';
+                }
+            }
+            
+            // Show the result
+            let count = 0;
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].closest('#demo1')) {
+                    count++;
+                }
+            }
+            document.getElementById('demo1-result').textContent = 
+                `Selected ${count} elements by tag 'p'`;
+        });
+
+        // Select by Query
+        document.getElementById('btn-select-query').addEventListener('click', function() {
+            const element = document.querySelector('#demo-p3');
+            
+            // Highlight the selected element
+            resetHighlights();
+            element.style.backgroundColor = '#ffeb3b';
+            
+            // Show the result
+            document.getElementById('demo1-result').textContent = 
+                `Selected element by query: ${element.id}\nContent: "${element.textContent}"`;
+        });
+
+        // Helper function to reset highlights
+        function resetHighlights() {
+            const paragraphs = document.getElementsByClassName('demo-paragraph');
+            for (let i = 0; i < paragraphs.length; i++) {
+                paragraphs[i].style.backgroundColor = '';
+            }
+        }
+
+        // Demo 2: DOM Manipulation
+        // Add Element
+        document.getElementById('btn-add-element').addEventListener('click', function() {
+            // Create a new element
+            const newElement = document.createElement('div');
+            newElement.className = 'new-element';
+            newElement.textContent = 'This is a new element added at ' + new Date().toLocaleTimeString();
+            newElement.style.padding = '10px';
+            newElement.style.margin = '10px 0';
+            newElement.style.backgroundColor = '#e3f2fd';
+            newElement.style.borderRadius = '5px';
+            
+            // Add the element to the container
+            const container = document.getElementById('demo2-container');
+            container.appendChild(newElement);
+            
+            // Show the result
+            document.getElementById('demo2-result').textContent = 'Added a new element to the container';
+        });
+
+        // Modify Element
+        document.getElementById('btn-modify-element').addEventListener('click', function() {
+            // Find the elements to modify
+            const elements = document.querySelectorAll('#demo2-container div.new-element');
+            
+            if (elements.length === 0) {
+                document.getElementById('demo2-result').textContent = 'No elements to modify. Add an element first.';
+                return;
+            }
+            
+            // Modify each element
+            elements.forEach((element, index) => {
+                element.style.backgroundColor = getRandomColor();
+                element.style.color = '#ffffff';
+                element.style.fontWeight = 'bold';
+                element.textContent = `Modified element ${index + 1} at ${new Date().toLocaleTimeString()}`;
+            });
+            
+            // Show the result
+            document.getElementById('demo2-result').textContent = `Modified ${elements.length} element(s)`;
+        });
+
+        // Remove Element
+        document.getElementById('btn-remove-element').addEventListener('click', function() {
+            // Find the elements to remove
+            const elements = document.querySelectorAll('#demo2-container div.new-element');
+            
+            if (elements.length === 0) {
+                document.getElementById('demo2-result').textContent = 'No elements to remove. Add an element first.';
+                return;
+            }
+            
+            // Remove the last element
+            const lastElement = elements[elements.length - 1];
+            lastElement.parentNode.removeChild(lastElement);
+            
+            // Show the result
+            document.getElementById('demo2-result').textContent = 'Removed the last added element';
+        });
+
+        // Reset Demo
+        document.getElementById('btn-reset-demo').addEventListener('click', function() {
+            // Reset the container to its original state
+            const container = document.getElementById('demo2-container');
+            container.innerHTML = '<p>This is the original content.</p>';
+            
+            // Show the result
+            document.getElementById('demo2-result').textContent = 'Reset the demo to its original state';
+        });
+
+        // Helper function to generate random colors
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // Demo 3: Event Handling
+        // Get elements
+        const outerBox = document.getElementById('outer-box');
+        const middleBox = document.getElementById('middle-box');
+        const innerBox = document.getElementById('inner-box');
+        const eventButton = document.getElementById('event-button');
+        const stopPropagation = document.getElementById('stop-propagation');
+        const resetEvents = document.getElementById('reset-events');
+        const resultBox = document.getElementById('demo3-result');
+
+        // Event counter
+        let eventCount = 0;
+
+        // Function to add event message
+        function addEventMessage(message) {
+            eventCount++;
+            resultBox.innerHTML += `<div>${eventCount}. ${message}</div>`;
+            resultBox.scrollTop = resultBox.scrollHeight;
+        }
+
+        // Function to handle events
+        function handleEvent(event) {
+            const shouldStop = stopPropagation.checked;
+            const elementId = event.currentTarget.id;
+            const phase = event.eventPhase === 1 ? 'Capturing' : 
+                        event.eventPhase === 2 ? 'Target' : 'Bubbling';
+            
+            addEventMessage(`${phase} phase: ${elementId} was clicked`);
+            
+            if (shouldStop) {
+                event.stopPropagation();
+                addEventMessage(`Event propagation stopped at ${elementId}`);
+            }
+        }
+
+        // Add event listeners for capturing phase (true)
+        outerBox.addEventListener('click', handleEvent, true);
+        middleBox.addEventListener('click', handleEvent, true);
+        innerBox.addEventListener('click', handleEvent, true);
+        eventButton.addEventListener('click', handleEvent, true);
+
+        // Add event listeners for bubbling phase (false)
+        outerBox.addEventListener('click', handleEvent, false);
+        middleBox.addEventListener('click', handleEvent, false);
+        innerBox.addEventListener('click', handleEvent, false);
+        eventButton.addEventListener('click', handleEvent, false);
+
+        // Reset events button
+        resetEvents.addEventListener('click', function() {
+            resultBox.innerHTML = 'Click on the elements to see event propagation...';
+            eventCount = 0;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Functions</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid var(--text-color);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .function-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .function-box {
+            width: 80%;
+            max-width: 600px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            background-color: var(--card-bg);
+        }
+
+        .function-header {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background-color: var(--card-bg);
+            padding: 0 10px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .function-content {
+            margin-top: 10px;
+        }
+
+        .arrow-down {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid var(--primary-color);
+            margin: 15px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--text-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>C++ Functions</h1>
+            <p>Building blocks for modular and reusable code</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to Functions</h2>
+            <p>A function is a block of code designed to perform a specific task. Functions help in organizing code, making it more modular, reusable, and easier to maintain. They are fundamental building blocks in C++ programming.</p>
+            
+            <div class="function-diagram">
+                <div class="function-box">
+                    <div class="function-header">Function</div>
+                    <div class="function-content">
+                        <p><strong>Input:</strong> Parameters/Arguments</p>
+                        <p><strong>Process:</strong> Statements that perform operations</p>
+                        <p><strong>Output:</strong> Return value (optional)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p>Key benefits of using functions:</p>
+            <ul>
+                <li><strong>Code Reusability:</strong> Write once, use multiple times</li>
+                <li><strong>Modularity:</strong> Break complex problems into smaller, manageable parts</li>
+                <li><strong>Abstraction:</strong> Hide implementation details</li>
+                <li><strong>Maintainability:</strong> Easier to debug and update</li>
+                <li><strong>Readability:</strong> Makes code more organized and understandable</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Function Declaration and Definition</h2>
+            
+            <h3>Function Declaration (Prototype)</h3>
+            <p>A function declaration tells the compiler about a function's name, return type, and parameters. It doesn't contain the function body.</p>
+            
+            <pre><code>return_type function_name(parameter_list);
+
+// Examples
+int add(int a, int b);
+void printMessage(std::string message);
+double calculateAverage(double numbers[], int size);</code></pre>
+            
+            <h3>Function Definition</h3>
+            <p>A function definition includes the function body, which contains the statements that perform the function's task.</p>
+            
+            <pre><code>return_type function_name(parameter_list) {
+    // Function body
+    // Statements
+    return value;  // Optional, required if return_type is not void
+}</code></pre>
+            
+            <p>Example of a complete function:</p>
+            <pre><code>// Function to add two integers
+int add(int a, int b) {
+    int sum = a + b;
+    return sum;
+}</code></pre>
+            
+            <div class="note">
+                <p><strong>Note:</strong> In C++, you can declare a function in one place (typically in a header file) and define it elsewhere (in a source file). This separation is common in larger projects.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Function Parameters and Arguments</h2>
+            
+            <h3>Parameters vs. Arguments</h3>
+            <ul>
+                <li><strong>Parameters:</strong> Variables listed in the function declaration</li>
+                <li><strong>Arguments:</strong> Actual values passed to the function when it is called</li>
+            </ul>
+            
+            <pre><code>// Function with parameters
+void greet(std::string name, int age) {
+    std::cout << "Hello, " << name << "! You are " << age << " years old." << std::endl;
+}
+
+// Function call with arguments
+greet("Alice", 30);  // "Alice" and 30 are arguments</code></pre>
+            
+            <h3>Parameter Passing Methods</h3>
+            
+            <h4>1. Pass by Value</h4>
+            <p>A copy of the argument is passed to the function. Changes to the parameter inside the function do not affect the original argument.</p>
+            
+            <pre><code>void modifyValue(int x) {
+    x = x * 2;  // Modifies the local copy, not the original
+    std::cout << "Inside function: " << x << std::endl;
+}
+
+int main() {
+    int num = 10;
+    modifyValue(num);
+    std::cout << "In main: " << num << std::endl;  // Still 10
+    return 0;
+}</code></pre>
+            
+            <h4>2. Pass by Reference</h4>
+            <p>A reference to the original argument is passed. Changes to the parameter affect the original argument.</p>
+            
+            <pre><code>void modifyValue(int &x) {
+    x = x * 2;  // Modifies the original value
+    std::cout << "Inside function: " << x << std::endl;
+}
+
+int main() {
+    int num = 10;
+    modifyValue(num);
+    std::cout << "In main: " << num << std::endl;  // Now 20
+    return 0;
+}</code></pre>
+            
+            <h4>3. Pass by Pointer</h4>
+            <p>A pointer to the original argument is passed. Changes to the value pointed to by the parameter affect the original argument.</p>
+            
+            <pre><code>void modifyValue(int *x) {
+    *x = *x * 2;  // Modifies the value at the memory address
+    std::cout << "Inside function: " << *x << std::endl;
+}
+
+int main() {
+    int num = 10;
+    modifyValue(&num);  // Pass the address of num
+    std::cout << "In main: " << num << std::endl;  // Now 20
+    return 0;
+}</code></pre>
+            
+            <h3>Default Parameters</h3>
+            <p>You can assign default values to parameters, which are used when arguments are not provided.</p>
+            
+            <pre><code>void printDetails(std::string name, int age = 30, std::string country = "USA") {
+    std::cout << name << " is " << age << " years old and from " << country << std::endl;
+}
+
+int main() {
+    printDetails("Alice");                  // Uses default age and country
+    printDetails("Bob", 25);                // Uses default country
+    printDetails("Charlie", 40, "Canada");  // Uses no defaults
+    return 0;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Important:</strong> Default parameters must be defined from right to left. You cannot have a parameter with a default value followed by one without a default value.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Return Values</h2>
+            <p>Functions can return values to the caller using the <code>return</code> statement.</p>
+            
+            <h3>Returning Basic Types</h3>
+            <pre><code>int square(int x) {
+    return x * x;
+}
+
+double calculateArea(double radius) {
+    return 3.14159 * radius * radius;
+}
+
+bool isEven(int number) {
+    return (number % 2 == 0);
+}</code></pre>
+            
+            <h3>Returning by Value vs. Reference</h3>
+            
+            <h4>Return by Value</h4>
+            <pre><code>std::string concatenate(std::string a, std::string b) {
+    return a + b;  // Returns a copy of the result
+}</code></pre>
+            
+            <h4>Return by Reference</h4>
+            <pre><code>// Return a reference to an existing object
+int& getElement(std::vector<int>& vec, int index) {
+    return vec[index];  // Returns a reference to the element
+}
+
+int main() {
+    std::vector<int> numbers = {10, 20, 30};
+    getElement(numbers, 1) = 50;  // Modifies the original vector
+    std::cout << numbers[1] << std::endl;  // Outputs 50
+    return 0;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> Never return a reference to a local variable, as it will be destroyed when the function exits, resulting in a dangling reference.</p>
+            </div>
+            
+            <h3>Multiple Return Values</h3>
+            <p>C++ doesn't directly support multiple return values, but there are several ways to achieve this:</p>
+            
+            <h4>1. Using Output Parameters</h4>
+            <pre><code>void getMinMax(int arr[], int size, int& min, int& max) {
+    min = max = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < min) min = arr[i];
+        if (arr[i] > max) max = arr[i];
+    }
+}
+
+int main() {
+    int numbers[] = {5, 3, 8, 1, 9, 4};
+    int min, max;
+    getMinMax(numbers, 6, min, max);
+    std::cout << "Min: " << min << ", Max: " << max << std::endl;
+    return 0;
+}</code></pre>
+            
+            <h4>2. Using Structures or Classes</h4>
+            <pre><code>struct Result {
+    int min;
+    int max;
+};
+
+Result getMinMax(int arr[], int size) {
+    Result result;
+    result.min = result.max = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < result.min) result.min = arr[i];
+        if (arr[i] > result.max) result.max = arr[i];
+    }
+    return result;
+}
+
+int main() {
+    int numbers[] = {5, 3, 8, 1, 9, 4};
+    Result result = getMinMax(numbers, 6);
+    std::cout << "Min: " << result.min << ", Max: " << result.max << std::endl;
+    return 0;
+}</code></pre>
+            
+            <h4>3. Using std::pair or std::tuple (C++11)</h4>
+            <pre><code>#include <utility>  // For std::pair
+#include <tuple>    // For std::tuple
+
+std::pair<int, int> getMinMax(int arr[], int size) {
+    int min = arr[0], max = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < min) min = arr[i];
+        if (arr[i] > max) max = arr[i];
+    }
+    return std::make_pair(min, max);
+}
+
+std::tuple<int, int, double> getStats(int arr[], int size) {
+    int min = arr[0], max = arr[0];
+    double sum = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < min) min = arr[i];
+        if (arr[i] > max) max = arr[i];
+        sum += arr[i];
+    }
+    double avg = sum / size;
+    return std::make_tuple(min, max, avg);
+}
+
+int main() {
+    int numbers[] = {5, 3, 8, 1, 9, 4};
+    
+    // Using pair
+    auto result = getMinMax(numbers, 6);
+    std::cout << "Min: " << result.first << ", Max: " << result.second << std::endl;
+    
+    // Using tuple
+    auto stats = getStats(numbers, 6);
+    std::cout << "Min: " << std::get<0>(stats) 
+              << ", Max: " << std::get<1>(stats)
+              << ", Avg: " << std::get<2>(stats) << std::endl;
+    
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Function Overloading</h2>
+            <p>Function overloading allows you to define multiple functions with the same name but different parameter lists. The compiler determines which function to call based on the arguments provided.</p>
+            
+            <pre><code>// Overloaded functions
+int add(int a, int b) {
+    return a + b;
+}
+
+double add(double a, double b) {
+    return a + b;
+}
+
+std::string add(std::string a, std::string b) {
+    return a + b;
+}
+
+int main() {
+    std::cout << add(5, 3) << std::endl;                // Calls int version
+    std::cout << add(5.2, 3.7) << std::endl;            // Calls double version
+    std::cout << add(std::string("Hello, "), std::string("World!")) << std::endl;  // Calls string version
+    return 0;
+}</code></pre>
+            
+            <h3>Rules for Function Overloading</h3>
+            <ul>
+                <li>Functions must differ in the number or types of parameters.</li>
+                <li>Functions cannot be overloaded based only on return type.</li>
+                <li>Functions cannot be overloaded based only on whether a parameter is const or volatile.</li>
+                <li>Member functions can be overloaded based on whether they are const or not.</li>
+            </ul>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Function overloading is a form of compile-time polymorphism (also known as static binding or early binding).</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Inline Functions</h2>
+            <p>Inline functions suggest to the compiler to insert the function's code directly at the call site, potentially improving performance by eliminating function call overhead.</p>
+            
+            <pre><code>inline int square(int x) {
+    return x * x;
+}
+
+int main() {
+    int result = square(5);  // The compiler might replace this with: int result = 5 * 5;
+    std::cout << result << std::endl;
+    return 0;
+}</code></pre>
+            
+            <div class="note">
+                <p><strong>Note:</strong> The <code>inline</code> keyword is just a suggestion to the compiler. Modern compilers make their own decisions about inlining based on optimization settings, regardless of whether the <code>inline</code> keyword is used.</p>
+            </div>
+            
+            <h3>When to Use Inline Functions</h3>
+            <ul>
+                <li>For small, frequently called functions</li>
+                <li>When function call overhead is significant compared to the function's execution time</li>
+                <li>In performance-critical code sections</li>
+            </ul>
+            
+            <h3>When Not to Use Inline Functions</h3>
+            <ul>
+                <li>For large functions (increases code size)</li>
+                <li>For functions that are rarely called</li>
+                <li>For recursive functions (can lead to excessive code expansion)</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Recursive Functions</h2>
+            <p>A recursive function is one that calls itself directly or indirectly. Recursion is useful for solving problems that can be broken down into smaller, similar subproblems.</p>
+            
+            <h3>Example: Factorial Calculation</h3>
+            <pre><code>// Recursive function to calculate factorial
+int factorial(int n) {
+    // Base case
+    if (n <= 1) {
+        return 1;
+    }
+    // Recursive case
+    else {
+        return n * factorial(n - 1);
+    }
+}
+
+int main() {
+    std::cout << "Factorial of 5: " << factorial(5) << std::endl;  // Outputs: 120
+    return 0;
+}</code></pre>
+            
+            <div class="function-diagram">
+                <div class="function-box">
+                    <div class="function-header">factorial(5)</div>
+                    <div class="function-content">
+                        <p>5 * factorial(4)</p>
+                    </div>
+                </div>
+                <div class="arrow-down"></div>
+                <div class="function-box">
+                    <div class="function-header">factorial(4)</div>
+                    <div class="function-content">
+                        <p>4 * factorial(3)</p>
+                    </div>
+                </div>
+                <div class="arrow-down"></div>
+                <div class="function-box">
+                    <div class="function-header">factorial(3)</div>
+                    <div class="function-content">
+                        <p>3 * factorial(2)</p>
+                    </div>
+                </div>
+                <div class="arrow-down"></div>
+                <div class="function-box">
+                    <div class="function-header">factorial(2)</div>
+                    <div class="function-content">
+                        <p>2 * factorial(1)</p>
+                    </div>
+                </div>
+                <div class="arrow-down"></div>
+                <div class="function-box">
+                    <div class="function-header">factorial(1)</div>
+                    <div class="function-content">
+                        <p>Return 1 (base case)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Example: Fibonacci Sequence</h3>
+            <pre><code>// Recursive function to calculate Fibonacci numbers
+int fibonacci(int n) {
+    // Base cases
+    if (n <= 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    // Recursive case
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int main() {
+    std::cout << "Fibonacci(6): " << fibonacci(6) << std::endl;  // Outputs: 8
+    return 0;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> Recursive functions can lead to stack overflow if the recursion is too deep. Always ensure there's a proper base case to terminate the recursion.</p>
+            </div>
+            
+            <h3>Tail Recursion</h3>
+            <p>Tail recursion is a special case of recursion where the recursive call is the last operation in the function. Some compilers can optimize tail-recursive functions to avoid stack overflow.</p>
+            
+            <pre><code>// Tail-recursive factorial function
+int factorialTail(int n, int result = 1) {
+    if (n <= 1) {
+        return result;
+    }
+    return factorialTail(n - 1, n * result);
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Function Templates</h2>
+            <p>Function templates allow you to write generic functions that can work with different data types without having to rewrite the function for each type.</p>
+            
+            <pre><code>// Template function to find the maximum of two values
+template <typename T>
+T max(T a, T b) {
+    return (a > b) ? a : b;
+}
+
+int main() {
+    std::cout << "Max of 5 and 10: " << max(5, 10) << std::endl;          // int version
+    std::cout << "Max of 3.5 and 7.2: " << max(3.5, 7.2) << std::endl;    // double version
+    std::cout << "Max of 'a' and 'z': " << max('a', 'z') << std::endl;    // char version
+    return 0;
+}</code></pre>
+            
+            <h3>Multiple Template Parameters</h3>
+            <pre><code>template <typename T, typename U>
+auto add(T a, U b) -> decltype(a + b) {  // C++11 trailing return type
+    return a + b;
+}
+
+int main() {
+    std::cout << add(5, 3.5) << std::endl;  // int + double = double
+    return 0;
+}</code></pre>
+            
+            <h3>Template Specialization</h3>
+            <p>You can provide a specialized implementation for specific types.</p>
+            
+            <pre><code>// General template
+template <typename T>
+T max(T a, T b) {
+    std::cout << "General template" << std::endl;
+    return (a > b) ? a : b;
+}
+
+// Specialization for char*
+template <>
+const char* max<const char*>(const char* a, const char* b) {
+    std::cout << "Specialized template for const char*" << std::endl;
+    return (strcmp(a, b) > 0) ? a : b;
+}
+
+int main() {
+    std::cout << max(5, 10) << std::endl;                      // Uses general template
+    std::cout << max("apple", "banana") << std::endl;          // Uses specialized template
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Lambda Functions (C++11)</h2>
+            <p>Lambda functions (or lambda expressions) allow you to define anonymous functions inline. They are particularly useful for short functions that are used only once, such as in algorithms or callbacks.</p>
+            
+            <h3>Basic Syntax</h3>
+            <pre><code>[ capture-list ] ( parameters ) -> return-type { function-body }</code></pre>
+            
+            <h3>Examples</h3>
+            <pre><code>// Simple lambda function
+auto greet = []() { std::cout << "Hello, World!" << std::endl; };
+greet();  // Calls the lambda function
+
+// Lambda with parameters
+auto add = [](int a, int b) { return a + b; };
+std::cout << add(5, 3) << std::endl;  // Outputs: 8
+
+// Lambda with capture
+int multiplier = 3;
+auto multiply = [multiplier](int value) { return value * multiplier; };
+std::cout << multiply(5) << std::endl;  // Outputs: 15
+
+// Lambda with mutable capture
+int counter = 0;
+auto increment = [counter]() mutable { return ++counter; };
+std::cout << increment() << std::endl;  // Outputs: 1
+std::cout << increment() << std::endl;  // Outputs: 2
+std::cout << "Original counter: " << counter << std::endl;  // Still 0
+
+// Using lambda with standard algorithms
+std::vector<int> numbers = {1, 2, 3, 4, 5};
+std::for_each(numbers.begin(), numbers.end(), [](int n) {
+    std::cout << n * n << " ";
+});  // Outputs: 1 4 9 16 25</code></pre>
+            
+            <h3>Capture Modes</h3>
+            <table>
+                <tr>
+                    <th>Capture Mode</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><code>[]</code></td>
+                    <td>Capture nothing</td>
+                    <td><code>[]() { return 42; }</code></td>
+                </tr>
+                <tr>
+                    <td><code>[var]</code></td>
+                    <td>Capture var by value</td>
+                    <td><code>[x]() { return x; }</code></td>
+                </tr>
+                <tr>
+                    <td><code>[&var]</code></td>
+                    <td>Capture var by reference</td>
+                    <td><code>[&x]() { x = 42; }</code></td>
+                </tr>
+                <tr>
+                    <td><code>[=]</code></td>
+                    <td>Capture all variables by value</td>
+                    <td><code>[=]() { return x + y; }</code></td>
+                </tr>
+                <tr>
+                    <td><code>[&]</code></td>
+                    <td>Capture all variables by reference</td>
+                    <td><code>[&]() { x = 42; y = 10; }</code></td>
+                </tr>
+                <tr>
+                    <td><code>[=, &var]</code></td>
+                    <td>Capture all by value, var by reference</td>
+                    <td><code>[=, &x]() { x = y + z; }</code></td>
+                </tr>
+                <tr>
+                    <td><code>[&, var]</code></td>
+                    <td>Capture all by reference, var by value</td>
+                    <td><code>[&, x]() { y = x + z; }</code></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Function Pointers</h2>
+            <p>Function pointers allow you to store and pass functions as arguments to other functions, enabling callback mechanisms and more flexible code design.</p>
+            
+            <h3>Declaring Function Pointers</h3>
+            <pre><code>// Syntax: return_type (*pointer_name)(parameter_types);
+
+// Example: Pointer to a function that takes two ints and returns an int
+int (*operation)(int, int);
+
+// Assigning a function to a function pointer
+int add(int a, int b) {
+    return a + b;
+}
+
+int subtract(int a, int b) {
+    return a - b;
+}
+
+int main() {
+    operation = add;
+    std::cout << "Result of add: " << operation(5, 3) << std::endl;  // Outputs: 8
+    
+    operation = subtract;
+    std::cout << "Result of subtract: " << operation(5, 3) << std::endl;  // Outputs: 2
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Using Function Pointers as Parameters</h3>
+            <pre><code>// Function that takes a function pointer as a parameter
+int calculate(int a, int b, int (*operation)(int, int)) {
+    return operation(a, b);
+}
+
+int main() {
+    std::cout << "Add: " << calculate(5, 3, add) << std::endl;
+    std::cout << "Subtract: " << calculate(5, 3, subtract) << std::endl;
+    return 0;
+}</code></pre>
+            
+            <h3>Using std::function (C++11)</h3>
+            <p>C++11 introduced <code>std::function</code>, which provides a more flexible and type-safe way to work with callable objects.</p>
+            
+            <pre><code>#include <functional>
+
+// Using std::function
+void performOperation(int a, int b, std::function<int(int, int)> operation) {
+    std::cout << "Result: " << operation(a, b) << std::endl;
+}
+
+int main() {
+    // Using with regular functions
+    performOperation(5, 3, add);
+    
+    // Using with lambda functions
+    performOperation(5, 3, [](int a, int b) { return a * b; });
+    
+    // Using with function objects
+    struct Multiplier {
+        int operator()(int a, int b) const {
+            return a * b;
+        }
+    };
+    performOperation(5, 3, Multiplier());
+    
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Best Practices for Functions</h2>
+            
+            <h3>Function Design</h3>
+            <ul>
+                <li><strong>Single Responsibility:</strong> Each function should do one thing and do it well.</li>
+                <li><strong>Keep Functions Short:</strong> Aim for functions that fit on a single screen (20-30 lines).</li>
+                <li><strong>Meaningful Names:</strong> Use descriptive names that indicate what the function does.</li>
+                <li><strong>Consistent Parameter Order:</strong> Maintain a consistent order of parameters across similar functions.</li>
+                <li><strong>Limit Parameters:</strong> Try to keep the number of parameters small (ideally 3 or fewer).</li>
+            </ul>
+            
+            <h3>Parameter Passing</h3>
+            <ul>
+                <li>Pass small objects (like built-in types) by value.</li>
+                <li>Pass large objects by const reference to avoid copying.</li>
+                <li>Use non-const references only when the function needs to modify the parameter.</li>
+                <li>Consider using pointers for optional parameters (can pass nullptr).</li>
+            </ul>
+            
+            <h3>Return Values</h3>
+            <ul>
+                <li>Return by value for small objects or when a new object is created.</li>
+                <li>Return by reference only when returning an existing object that outlives the function.</li>
+                <li>Consider using std::optional (C++17) for functions that might not return a value.</li>
+                <li>Use std::pair, std::tuple, or custom structs for multiple return values.</li>
+            </ul>
+            
+            <h3>Error Handling</h3>
+            <ul>
+                <li>Use exceptions for exceptional conditions rather than error codes.</li>
+                <li>Document the exceptions that your function might throw.</li>
+                <li>Consider using std::optional or std::variant (C++17) for functions that might fail.</li>
+            </ul>
+            
+            <h3>Documentation</h3>
+            <ul>
+                <li>Document the purpose, parameters, return value, and exceptions of each function.</li>
+                <li>Include examples for complex functions.</li>
+                <li>Document any assumptions or preconditions.</li>
+            </ul>
+            
+            <div class="note">
+                <p><strong>Remember:</strong> Well-designed functions make your code more readable, maintainable, and reusable. Invest time in designing good functions, as they form the building blocks of your program.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Comparison of Function Types</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Regular Functions</th>
+                    <th>Inline Functions</th>
+                    <th>Function Templates</th>
+                    <th>Lambda Functions</th>
+                </tr>
+                <tr>
+                    <td>Definition</td>
+                    <td>Named block of code</td>
+                    <td>Function with inline suggestion</td>
+                    <td>Generic function pattern</td>
+                    <td>Anonymous function</td>
+                </tr>
+                <tr>
+                    <td>Syntax</td>
+                    <td><code>return_type name(params) {}</code></td>
+                    <td><code>inline return_type name(params) {}</code></td>
+                    <td><code>template &lt;typename T&gt; return_type name(params) {}</code></td>
+                    <td><code>[captures](params) {}</code></td>
+                </tr>
+                <tr>
+                    <td>Use Cases</td>
+                    <td>General-purpose code organization</td>
+                    <td>Small, frequently called functions</td>
+                    <td>Type-independent algorithms</td>
+                    <td>Short, one-off functions, callbacks</td>
+                </tr>
+                <tr>
+                    <td>Reusability</td>
+                    <td>High</td>
+                    <td>High</td>
+                    <td>Very High</td>
+                    <td>Low</td>
+                </tr>
+                <tr>
+                    <td>Type Safety</td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                    <td>Yes (compile-time)</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>Standard</td>
+                    <td>Potentially better (no call overhead)</td>
+                    <td>Standard</td>
+                    <td>Standard</td>
+                </tr>
+                <tr>
+                    <td>State Capture</td>
+                    <td>No (only via parameters)</td>
+                    <td>No (only via parameters)</td>
+                    <td>No (only via parameters)</td>
+                    <td>Yes (via capture list)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

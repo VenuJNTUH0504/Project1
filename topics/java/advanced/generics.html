@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generics - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Generics in Java</h1>
+            <p>Understanding type safety and generic programming in Java</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Generics</h2>
+                <p>Generics enable types (classes and interfaces) to be parameters when defining classes, interfaces, and methods.</p>
+                <div class="note">
+                    <p>Benefits of using generics:</p>
+                    <ul>
+                        <li>Type safety at compile time</li>
+                        <li>Elimination of type casting</li>
+                        <li>Better code reusability</li>
+                        <li>Improved code readability</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="generic-classes">
+                <h2>Generic Classes</h2>
+                <p>Generic classes are classes that can work with any data type.</p>
+                <div class="code-example">
+                    <h3>Example: Generic Box Class</h3>
+                    <pre><code>public class Box<T> {
+    private T content;
+    
+    public void setContent(T content) {
+        this.content = content;
+    }
+    
+    public T getContent() {
+        return content;
+    }
+}
+
+// Usage
+Box<String> stringBox = new Box<>();
+stringBox.setContent("Hello");
+String value = stringBox.getContent();
+
+Box<Integer> intBox = new Box<>();
+intBox.setContent(42);
+int number = intBox.getContent();</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="generic-methods">
+                <h2>Generic Methods</h2>
+                <p>Generic methods are methods that can work with any data type.</p>
+                <div class="code-example">
+                    <h3>Example: Generic Utility Methods</h3>
+                    <pre><code>public class Utils {
+    public static <T> T getFirstElement(List<T> list) {
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public static <T, U> void printPair(T first, U second) {
+        System.out.println("First: " + first + ", Second: " + second);
+    }
+}
+
+// Usage
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+String first = Utils.getFirstElement(names);
+
+Utils.printPair("Age", 25);</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="bounded-types">
+                <h2>Bounded Type Parameters</h2>
+                <p>Bounded type parameters restrict the types that can be used as type arguments.</p>
+                <div class="code-example">
+                    <h3>Example: Bounded Type Parameter</h3>
+                    <pre><code>public class NumberBox<T extends Number> {
+    private T number;
+    
+    public NumberBox(T number) {
+        this.number = number;
+    }
+    
+    public double getDoubleValue() {
+        return number.doubleValue();
+    }
+}
+
+// Usage
+NumberBox<Integer> intBox = new NumberBox<>(42);
+NumberBox<Double> doubleBox = new NumberBox<>(3.14);
+
+// This would cause a compile error
+// NumberBox<String> stringBox = new NumberBox<>("Hello");</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="wildcards">
+                <h2>Wildcards</h2>
+                <p>Wildcards provide flexibility when working with generic types.</p>
+                <div class="code-example">
+                    <h3>Example: Wildcard Usage</h3>
+                    <pre><code>public class WildcardExample {
+    // Upper bounded wildcard
+    public static double sumOfList(List<? extends Number> list) {
+        double sum = 0.0;
+        for (Number n : list) {
+            sum += n.doubleValue();
+        }
+        return sum;
+    }
+    
+    // Lower bounded wildcard
+    public static void addNumbers(List<? super Integer> list) {
+        for (int i = 1; i <= 10; i++) {
+            list.add(i);
+        }
+    }
+}
+
+// Usage
+List<Integer> integers = Arrays.asList(1, 2, 3);
+List<Double> doubles = Arrays.asList(1.1, 2.2, 3.3);
+
+double sum1 = WildcardExample.sumOfList(integers);
+double sum2 = WildcardExample.sumOfList(doubles);
+
+List<Number> numbers = new ArrayList<>();
+WildcardExample.addNumbers(numbers);</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="type-erasure">
+                <h2>Type Erasure</h2>
+                <p>Type erasure is the process by which the Java compiler removes all information related to type parameters and type arguments.</p>
+                <div class="code-example">
+                    <h3>Example: Type Erasure</h3>
+                    <pre><code>// At compile time
+List<String> stringList = new ArrayList<>();
+List<Integer> intList = new ArrayList<>();
+
+// After type erasure
+List stringList = new ArrayList();
+List intList = new ArrayList();</code></pre>
+                </div>
+                <div class="note">
+                    <p>Important points about type erasure:</p>
+                    <ul>
+                        <li>Generic types exist only at compile time</li>
+                        <li>Type information is erased at runtime</li>
+                        <li>Cannot use instanceof with parameterized types</li>
+                        <li>Cannot create arrays of parameterized types</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Generics Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for using generics:</p>
+                    <ul>
+                        <li>Use descriptive type parameter names (T, E, K, V)</li>
+                        <li>Prefer generic methods over raw types</li>
+                        <li>Use bounded wildcards to increase API flexibility</li>
+                        <li>Avoid using raw types in new code</li>
+                        <li>Consider using generic methods for static utility methods</li>
+                        <li>Document generic type parameters in Javadoc</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="file-io.html">File I/O</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

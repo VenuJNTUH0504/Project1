@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">JavaScript Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "What is the correct syntax for referring to an external script called 'app.js'?",
+            options: [
+                "&lt;script src='app.js'&gt;&lt;/script&gt;",
+                "&lt;script href='app.js'&gt;&lt;/script&gt;",
+                "&lt;script ref='app.js'&gt;&lt;/script&gt;",
+                "&lt;script name='app.js'&gt;&lt;/script&gt;"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you write 'Hello World' in an alert box?",
+            options: [
+                "msg('Hello World');",
+                "alertBox('Hello World');",
+                "alert('Hello World');",
+                "msgBox('Hello World');"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which of the following is a correct variable declaration in JavaScript?",
+            options: [
+                "var myVar;",
+                "variable myVar;",
+                "v myVar;",
+                "int myVar;"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you create a function in JavaScript?",
+            options: [
+                "function myFunction() {}",
+                "def myFunction() {}",
+                "create myFunction() {}",
+                "function:myFunction() {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you call a function named 'myFunction'?",
+            options: [
+                "call myFunction();",
+                "myFunction();",
+                "call function myFunction();",
+                "run myFunction();"
+            ],
+            answer: 1
+        },
+        {
+            question: "How to write an IF statement in JavaScript?",
+            options: [
+                "if i = 5 then",
+                "if (i == 5)",
+                "if i == 5",
+                "if i = 5"
+            ],
+            answer: 1
+        },
+        {
+            question: "How does a WHILE loop start?",
+            options: [
+                "while (i &lt;= 10; i++)",
+                "while (i &lt;= 10)",
+                "while i = 1 to 10",
+                "while (i++ &lt;= 10)"
+            ],
+            answer: 1
+        },
+        {
+            question: "How can you add a comment in JavaScript?",
+            options: [
+                "// This is a comment",
+                "' This is a comment",
+                "&lt;!-- This is a comment --&gt;",
+                "# This is a comment"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the correct way to write a JavaScript array?",
+            options: [
+                "var colors = (1:'red', 2:'green', 3:'blue')",
+                "var colors = ['red', 'green', 'blue']",
+                "var colors = 'red', 'green', 'blue'",
+                "var colors = 1 = ('red'), 2 = ('green'), 3 = ('blue')"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you round the number 7.25 to the nearest integer?",
+            options: [
+                "Math.rnd(7.25)",
+                "round(7.25)",
+                "Math.round(7.25)",
+                "rnd(7.25)"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which operator is used to assign a value to a variable?",
+            options: [
+                "*",
+                "-",
+                "=",
+                "x"
+            ],
+            answer: 2
+        },
+        {
+            question: "What is the correct JavaScript syntax to change the content of the HTML element below? &lt;p id='demo'&gt;This is a demonstration.&lt;/p&gt;",
+            options: [
+                "document.getElementById('demo').innerHTML = 'Hello World!';",
+                "document.getElement('p').innerHTML = 'Hello World!';",
+                "#demo.innerHTML = 'Hello World!';",
+                "document.getElementByName('p').innerHTML = 'Hello World!';"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you declare a JavaScript object?",
+            options: [
+                "var obj = {name: 'John', age: 30};",
+                "var obj = (name: 'John', age: 30);",
+                "var obj = [name: 'John', age: 30];",
+                "var obj = 'name: John, age: 30';"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which event occurs when the user clicks on an HTML element?",
+            options: [
+                "onmouseclick",
+                "onmouseover",
+                "onchange",
+                "onclick"
+            ],
+            answer: 3
+        },
+        {
+            question: "How do you find the number with the highest value of x and y?",
+            options: [
+                "Math.max(x, y)",
+                "top(x, y)",
+                "ceil(x, y)",
+                "Math.highest(x, y)"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method can be used to convert a string to lowercase?",
+            options: [
+                "toLowerCase()",
+                "lowerCase()",
+                "toLower()",
+                "changeCase('lower')"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a JavaScript data type?",
+            options: [
+                "Number",
+                "Boolean",
+                "Float",
+                "Undefined"
+            ],
+            answer: 2
+        },
+        {
+            question: "How do you write a single line comment in JavaScript?",
+            options: [
+                "// comment",
+                "&lt;!-- comment --&gt;",
+                "' comment",
+                "# comment"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which symbol is used for strict equality comparison?",
+            options: [
+                "==",
+                "===",
+                "=",
+                "!=="
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you create a new Date object in JavaScript?",
+            options: [
+                "var d = Date();",
+                "var d = new Date();",
+                "var d = new DateTime();",
+                "var d = date();"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which method removes the last element from an array?",
+            options: [
+                "pop()",
+                "push()",
+                "shift()",
+                "remove()"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you write a multi-line comment in JavaScript?",
+            options: [
+                "/* comment */",
+                "// comment //",
+                "&lt;!-- comment --&gt;",
+                "# comment #"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which keyword is used to declare a constant in JavaScript?",
+            options: [
+                "let",
+                "var",
+                "const",
+                "constant"
+            ],
+            answer: 2
+        },
+        {
+            question: "What will the following code output? console.log(typeof null);",
+            options: [
+                "'null'",
+                "'object'",
+                "'undefined'",
+                "'null object'"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which method joins array elements into a string?",
+            options: [
+                "concat()",
+                "join()",
+                "combine()",
+                "merge()"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you access the first element of an array named arr?",
+            options: [
+                "arr[0]",
+                "arr(0)",
+                "arr{0}",
+                "arr.first()"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a falsy value in JavaScript?",
+            options: [
+                "0",
+                "'0'",
+                "[]",
+                "{}"
+            ],
+            answer: 0
+        },
+        {
+            question: "What does the 'this' keyword refer to in a regular function?",
+            options: [
+                "The global object",
+                "The function itself",
+                "The parent object",
+                "It depends on how the function is called"
+            ],
+            answer: 3
+        },
+        {
+            question: "Which function is used to parse a string to an integer?",
+            options: [
+                "parseInt()",
+                "parseFloat()",
+                "Number()",
+                "int()"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you stop a setInterval timer?",
+            options: [
+                "clearInterval()",
+                "stopInterval()",
+                "interval.clear()",
+                "clearTimer()"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method adds one or more elements to the end of an array?",
+            options: [
+                "push()",
+                "pop()",
+                "shift()",
+                "unshift()"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the output of '2' + 2 in JavaScript?",
+            options: [
+                "4",
+                "'22'",
+                "NaN",
+                "Error"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which of the following is the correct way to write a for loop?",
+            options: [
+                "for (i = 0; i &lt; 5; i++)",
+                "for i = 1 to 5",
+                "for (i &lt; 5; i++)",
+                "for (i = 0; i &lt; 5)"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you write an arrow function in JavaScript?",
+            options: [
+                "const fn = () =&gt; {}",
+                "const fn = =&gt; {}",
+                "function =&gt; {}",
+                "fn() =&gt; {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method can be used to select an element by its ID?",
+            options: [
+                "getElementById()",
+                "getElement(id)",
+                "querySelectorId()",
+                "getById()"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the result of Boolean('false')?",
+            options: [
+                "false",
+                "true",
+                "undefined",
+                "null"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which operator is used to check both value and type?",
+            options: [
+                "==",
+                "===",
+                "=",
+                "!="
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you convert a string to a number?",
+            options: [
+                "Number('123')",
+                "parseNumber('123')",
+                "toNumber('123')",
+                "int('123')"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method returns the index of the first occurrence of a value in a string?",
+            options: [
+                "indexOf()",
+                "find()",
+                "search()",
+                "locate()"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you check if a variable is an array?",
+            options: [
+                "Array.isArray(var)",
+                "isArray(var)",
+                "var.isArray()",
+                "typeof var === 'array'"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which keyword is used to handle exceptions?",
+            options: [
+                "try...catch",
+                "catch...try",
+                "exception",
+                "error"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the output of typeof NaN?",
+            options: [
+                "'undefined'",
+                "'number'",
+                "'object'",
+                "'NaN'"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you write a template literal in JavaScript?",
+            options: [
+                "Using backticks ``",
+                "Using single quotes ''",
+                "Using double quotes \"\"",
+                "Using parentheses ()"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method is used to remove the first element from an array?",
+            options: [
+                "shift()",
+                "pop()",
+                "unshift()",
+                "removeFirst()"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you prevent the default behavior of an event?",
+            options: [
+                "event.preventDefault()",
+                "event.stopDefault()",
+                "event.cancel()",
+                "event.default(false)"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method is used to merge two or more arrays?",
+            options: [
+                "concat()",
+                "merge()",
+                "join()",
+                "combine()"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you get the length of a string 'str'?",
+            options: [
+                "str.length",
+                "str.size()",
+                "length(str)",
+                "str.length()"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method executes a function for each array element?",
+            options: [
+                "forEach()",
+                "each()",
+                "every()",
+                "mapEach()"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you declare a class in JavaScript?",
+            options: [
+                "class MyClass {}",
+                "MyClass class {}",
+                "declare class MyClass {}",
+                "class: MyClass {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which method can be used to convert an object to a JSON string?",
+            options: [
+                "JSON.stringify()",
+                "JSON.parse()",
+                "toJSON()",
+                "objectToString()"
+            ],
+            answer: 0
+        }
+    ];
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+            <div class="question-text">${q.question}</div>
+            <ul class="options">
+                ${q.options.map((opt, idx) => `
+                    <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                        ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                ${currentQuestion === questions.length - 1
+                    ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                    : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+                }
+            </div>
+        `;
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.onclick = function() {
+                const idx = Number(this.getAttribute('data-idx'));
+                userAnswers[currentQuestion] = idx;
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('next-btn').onclick = () => {
+                if (userAnswers[currentQuestion] !== null) {
+                    currentQuestion++;
+                    renderQuestion();
+                }
+            };
+        } else {
+            document.getElementById('submit-btn').onclick = showResult;
+        }
+    }
+
+    function showResult() {
+        let score = 0;
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].answer) score++;
+        });
+        document.getElementById('quiz-content').innerHTML = `
+            <div class="result">
+                You scored ${score} out of ${questions.length}!<br>
+                <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            </div>
+        `;
+    }
+
+    renderQuestion();
+    </script>
+</body>
+</html>

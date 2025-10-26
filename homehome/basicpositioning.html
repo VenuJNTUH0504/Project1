@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Positioning Basics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .position-example { position: relative; height: 120px; border: 2px solid #4a90e2; margin: 10px 0; background: #eaf1fb; }
+        .position-example .box { width: 80px; height: 80px; background: #4a90e2; color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; }
+        .static-example .box { position: static; left: 20px; top: 20px; }
+        .relative-example .box { position: relative; left: 20px; top: 20px; }
+        .absolute-example .box { position: absolute; left: 20px; top: 20px; }
+        .fixed-example .box { position: fixed; left: 20px; top: 20px; z-index: 10; }
+        .sticky-container { height: 150px; overflow: auto; border: 2px dashed #f39c12; background: #fffbe6; }
+        .sticky-example .box { position: sticky; top: 10px; background: #f39c12; }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Positioning Basics</h1>
+        <p>The <code>position</code> property in CSS determines how an element is positioned in the document. It is essential for creating layouts and controlling the placement of elements.</p>
+
+        <h2>Common Position Values</h2>
+        
+        <h3>1. Static</h3>
+        <p>This is the default position. Elements are positioned according to the normal flow of the document.</p>
+        <div class="example-box static-example">
+            <div class="position-example">
+                <div class="box">Static</div>
+            </div>
+            <code>position: static;</code>
+        </div>
+
+        <h3>2. Relative</h3>
+        <p>The element is positioned relative to its normal position. Use <code>top</code>, <code>right</code>, <code>bottom</code>, and <code>left</code> to move it.</p>
+        <div class="example-box relative-example">
+            <div class="position-example">
+                <div class="box">Relative</div>
+            </div>
+            <code>position: relative; left: 20px; top: 20px;</code>
+        </div>
+
+        <h3>3. Absolute</h3>
+        <p>The element is positioned absolutely to its nearest positioned ancestor (not static). It is removed from the normal flow.</p>
+        <div class="example-box absolute-example">
+            <div class="position-example" style="position: relative;">
+                <div class="box">Absolute</div>
+            </div>
+            <code>position: absolute; left: 20px; top: 20px;</code>
+        </div>
+
+        <h3>4. Fixed</h3>
+        <p>The element is positioned relative to the browser window. It stays in the same place even when the page is scrolled.</p>
+        <div class="example-box fixed-example">
+            <div class="position-example" style="height: 80px;">
+                <div class="box">Fixed</div>
+            </div>
+            <code>position: fixed; left: 20px; top: 20px;</code>
+        </div>
+
+        <h3>5. Sticky</h3>
+        <p>The element toggles between relative and fixed, depending on the scroll position.</p>
+        <div class="example-box sticky-example">
+            <div class="sticky-container">
+                <div style="height: 40px;"></div>
+                <div class="box">Sticky</div>
+                <div style="height: 120px;"></div>
+            </div>
+            <code>position: sticky; top: 10px;</code>
+        </div>
+
+        <h2>Position Properties Comparison</h2>
+        <ul>
+            <li><b>Static:</b> Default, follows normal flow</li>
+            <li><b>Relative:</b> Offset from normal position</li>
+            <li><b>Absolute:</b> Positioned to nearest ancestor, removed from flow</li>
+            <li><b>Fixed:</b> Positioned relative to viewport, stays on scroll</li>
+            <li><b>Sticky:</b> Scrolls until a threshold, then sticks</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

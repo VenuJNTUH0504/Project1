@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Lists and Tuples - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Lists and Tuples</h1>
+            <p>Understanding Python's sequence data types</p>
+        </header>
+
+        <div class="card">
+            <section id="lists">
+                <h2>Lists</h2>
+                <p>Lists are mutable sequences of items:</p>
+                <pre><code class="language-python"># Creating lists
+numbers = [1, 2, 3, 4, 5]
+fruits = ["apple", "banana", "cherry"]
+mixed = [1, "hello", 3.14, True]
+
+# Accessing elements
+print(numbers[0])      # Output: 1
+print(fruits[-1])      # Output: cherry
+print(mixed[1:3])      # Output: ["hello", 3.14]
+
+# Modifying lists
+fruits[1] = "orange"   # Change element
+fruits.append("grape") # Add element
+fruits.remove("apple") # Remove element
+fruits.insert(1, "kiwi") # Insert element</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="list-methods">
+                <h2>List Methods</h2>
+                <p>Common list operations and methods:</p>
+                <pre><code class="language-python"># List methods
+numbers = [3, 1, 4, 1, 5, 9, 2, 6, 5]
+
+numbers.sort()          # Sort in place
+numbers.reverse()       # Reverse in place
+count = numbers.count(5) # Count occurrences
+index = numbers.index(4) # Find index
+
+# List operations
+combined = numbers + [7, 8, 9]  # Concatenation
+repeated = [1, 2] * 3          # Repetition
+length = len(numbers)           # Length
+
+# List comprehension
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="tuples">
+                <h2>Tuples</h2>
+                <p>Tuples are immutable sequences:</p>
+                <pre><code class="language-python"># Creating tuples
+coordinates = (10, 20)
+colors = ("red", "green", "blue")
+single = (42,)  # Note the comma for single-element tuple
+
+# Accessing elements
+print(coordinates[0])  # Output: 10
+print(colors[-1])      # Output: blue
+print(colors[1:])      # Output: ("green", "blue")
+
+# Tuple unpacking
+x, y = coordinates
+r, g, b = colors
+
+# Tuple operations
+combined = coordinates + (30, 40)
+repeated = colors * 2
+length = len(colors)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="list-vs-tuple">
+                <h2>Lists vs Tuples</h2>
+                <p>Key differences between lists and tuples:</p>
+                <ul>
+                    <li>Lists are mutable, tuples are immutable</li>
+                    <li>Lists use square brackets <code>[]</code>, tuples use parentheses <code>()</code></li>
+                    <li>Lists have more built-in methods</li>
+                    <li>Tuples are generally faster than lists</li>
+                    <li>Tuples can be used as dictionary keys, lists cannot</li>
+                    <li>Tuples are often used for heterogeneous data, lists for homogeneous data</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="nested-sequences">
+                <h2>Nested Sequences</h2>
+                <p>Working with nested lists and tuples:</p>
+                <pre><code class="language-python"># Nested lists
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Accessing nested elements
+print(matrix[1][2])  # Output: 6
+
+# Nested tuples
+points = ((1, 2), (3, 4), (5, 6))
+
+# List of tuples
+student_grades = [
+    ("Alice", 85),
+    ("Bob", 92),
+    ("Charlie", 78)
+]
+
+# Dictionary with tuple keys
+coordinate_map = {
+    (0, 0): "origin",
+    (1, 1): "point one"
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use lists when you need to modify the sequence</li>
+                    <li>Use tuples for fixed collections of items</li>
+                    <li>Prefer list comprehensions over loops when possible</li>
+                    <li>Use meaningful variable names for sequences</li>
+                    <li>Consider using tuples for function return values</li>
+                    <li>Use appropriate sequence types for the data</li>
+                    <li>Document complex nested structures</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

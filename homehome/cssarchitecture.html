@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Architecture & Organization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .display-example { border: 2px solid #4a90e2; padding: 10px; margin: 10px 0; }
+        .inline-example span { background: #4a90e2; color: white; padding: 5px; margin: 5px; }
+        .block-example div { background: #f39c12; color: white; padding: 10px; margin: 5px; }
+        .flex-example { display: flex; gap: 10px; }
+        .flex-example div { background: #4a90e2; color: white; padding: 10px; flex: 1; }
+        .grid-example { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-example div { background: #f39c12; color: white; padding: 10px; }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Architecture & Organization</h1>
+        <p>Well-structured CSS is essential for scalable, maintainable, and efficient web development. CSS architecture refers to the methodologies and best practices used to organize and manage CSS codebases.</p>
+
+        <h2>Common CSS Architecture Methodologies</h2>
+        
+        <h3>1. BEM (Block Element Modifier)</h3>
+        <p>BEM is a naming convention for classes that helps keep CSS modular and reusable.</p>
+        <div class="example-box">
+            <div class="block-example">
+                <div class="button button--primary">Button</div>
+                <div class="button button--secondary">Button</div>
+            </div>
+            <code>.block__element--modifier</code>
+        </div>
+
+        <h3>2. OOCSS (Object-Oriented CSS)</h3>
+        <p>OOCSS encourages separating structure and skin, and reusing visual patterns as objects.</p>
+        <div class="example-box">
+            <div class="inline-example">
+                <span class="media">Media Object</span>
+                <span class="media--image">Image</span>
+            </div>
+            <code>.media, .media--image</code>
+        </div>
+
+        <h3>3. SMACSS (Scalable and Modular Architecture for CSS)</h3>
+        <p>SMACSS is a style guide for categorizing CSS rules into base, layout, module, state, and theme.</p>
+        <div class="example-box">
+            <div class="flex-example">
+                <div class="layout-header">Header</div>
+                <div class="module-card">Card</div>
+                <div class="state-active">Active</div>
+            </div>
+            <code>.layout-*, .module-*, .state-*</code>
+        </div>
+
+        <h3>4. ITCSS (Inverted Triangle CSS)</h3>
+        <p>ITCSS organizes CSS from generic to explicit, improving specificity and maintainability.</p>
+        <div class="example-box">
+            <div class="grid-example">
+                <div>Settings</div>
+                <div>Tools</div>
+                <div>Generic</div>
+                <div>Elements</div>
+                <div>Objects</div>
+                <div>Components</div>
+            </div>
+            <code>Settings → Tools → Generic → Elements → Objects → Components → Utilities</code>
+        </div>
+
+        <h3>5. Utility-First CSS</h3>
+        <p>Utility-first CSS uses small, single-purpose classes to construct designs directly in HTML.</p>
+        <div class="example-box">
+            <div>
+                <span class="text-blue-500 font-bold p-2">Utility Class Example</span>
+            </div>
+            <code>class="text-blue-500 font-bold p-2"</code>
+        </div>
+
+        <h2>Architecture Approaches Comparison</h2>
+        <ul>
+            <li><b>BEM:</b> Naming convention for modular, reusable CSS</li>
+            <li><b>OOCSS:</b> Reusable objects, separation of structure and skin</li>
+            <li><b>SMACSS:</b> Categorizes CSS for scalability</li>
+            <li><b>ITCSS:</b> Layered approach from generic to specific</li>
+            <li><b>Utility-First:</b> Small, composable utility classes</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

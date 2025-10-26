@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Design Patterns - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Java Design Patterns</h1>
+            <p>Understanding and implementing design patterns in Java</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Design Patterns</h2>
+                <p>Design patterns are reusable solutions to common problems in software design. They represent best practices and can help create more maintainable and flexible code.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="creational-patterns">
+                <h2>Creational Patterns</h2>
+                <h3>Singleton Pattern</h3>
+                <pre><code class="language-java">public class Singleton {
+    private static Singleton instance;
+    
+    private Singleton() {}
+    
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}</code></pre>
+
+                <h3>Factory Pattern</h3>
+                <pre><code class="language-java">interface Shape {
+    void draw();
+}
+
+class Circle implements Shape {
+    public void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+
+class Square implements Shape {
+    public void draw() {
+        System.out.println("Drawing Square");
+    }
+}
+
+class ShapeFactory {
+    public Shape getShape(String shapeType) {
+        if (shapeType == null) return null;
+        if (shapeType.equalsIgnoreCase("CIRCLE")) return new Circle();
+        if (shapeType.equalsIgnoreCase("SQUARE")) return new Square();
+        return null;
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="structural-patterns">
+                <h2>Structural Patterns</h2>
+                <h3>Adapter Pattern</h3>
+                <pre><code class="language-java">interface MediaPlayer {
+    void play(String audioType, String fileName);
+}
+
+interface AdvancedMediaPlayer {
+    void playVlc(String fileName);
+    void playMp4(String fileName);
+}
+
+class VlcPlayer implements AdvancedMediaPlayer {
+    public void playVlc(String fileName) {
+        System.out.println("Playing vlc file: " + fileName);
+    }
+    public void playMp4(String fileName) {}
+}
+
+class MediaAdapter implements MediaPlayer {
+    AdvancedMediaPlayer advancedMusicPlayer;
+
+    public MediaAdapter(String audioType) {
+        if (audioType.equalsIgnoreCase("vlc")) {
+            advancedMusicPlayer = new VlcPlayer();
+        }
+    }
+
+    public void play(String audioType, String fileName) {
+        if (audioType.equalsIgnoreCase("vlc")) {
+            advancedMusicPlayer.playVlc(fileName);
+        }
+    }
+}</code></pre>
+
+                <h3>Decorator Pattern</h3>
+                <pre><code class="language-java">interface Shape {
+    void draw();
+}
+
+class Circle implements Shape {
+    public void draw() {
+        System.out.println("Shape: Circle");
+    }
+}
+
+abstract class ShapeDecorator implements Shape {
+    protected Shape decoratedShape;
+
+    public ShapeDecorator(Shape decoratedShape) {
+        this.decoratedShape = decoratedShape;
+    }
+
+    public void draw() {
+        decoratedShape.draw();
+    }
+}
+
+class RedShapeDecorator extends ShapeDecorator {
+    public RedShapeDecorator(Shape decoratedShape) {
+        super(decoratedShape);
+    }
+
+    public void draw() {
+        decoratedShape.draw();
+        setRedBorder();
+    }
+
+    private void setRedBorder() {
+        System.out.println("Border Color: Red");
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="behavioral-patterns">
+                <h2>Behavioral Patterns</h2>
+                <h3>Observer Pattern</h3>
+                <pre><code class="language-java">interface Observer {
+    void update();
+}
+
+class Subject {
+    private List<Observer> observers = new ArrayList<>();
+    private int state;
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+        notifyAllObservers();
+    }
+
+    public void attach(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void notifyAllObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+}
+
+class BinaryObserver implements Observer {
+    private Subject subject;
+
+    public BinaryObserver(Subject subject) {
+        this.subject = subject;
+        this.subject.attach(this);
+    }
+
+    public void update() {
+        System.out.println("Binary String: " + 
+            Integer.toBinaryString(subject.getState()));
+    }
+}</code></pre>
+
+                <h3>Strategy Pattern</h3>
+                <pre><code class="language-java">interface Strategy {
+    int doOperation(int num1, int num2);
+}
+
+class OperationAdd implements Strategy {
+    public int doOperation(int num1, int num2) {
+        return num1 + num2;
+    }
+}
+
+class OperationSubtract implements Strategy {
+    public int doOperation(int num1, int num2) {
+        return num1 - num2;
+    }
+}
+
+class Context {
+    private Strategy strategy;
+
+    public Context(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public int executeStrategy(int num1, int num2) {
+        return strategy.doOperation(num1, num2);
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Choose patterns based on specific problems</li>
+                    <li>Keep implementations simple and clear</li>
+                    <li>Document pattern usage in code</li>
+                    <li>Consider performance implications</li>
+                    <li>Use patterns to improve code maintainability</li>
+                    <li>Don't overuse patterns</li>
+                    <li>Adapt patterns to your specific needs</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

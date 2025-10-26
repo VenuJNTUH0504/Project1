@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Basic Forms Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .demo-form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .code-box {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Basic Forms Guide</h1>
+
+        <h2>Introduction to HTML Forms</h2>
+        <p>HTML forms are essential elements of web pages that allow users to input data and interact with websites. Forms can include various input types, from simple text fields to complex file uploads.</p>
+
+        <h2>Basic Form Structure</h2>
+        <p>A form is created using the <code>&lt;form&gt;</code> element, which contains various form controls:</p>
+        <div class="code-box">
+            &lt;form action="/submit" method="POST"&gt;
+                &lt;!-- Form elements go here --&gt;
+            &lt;/form&gt;
+        </div>
+
+        <h2>Text Input Fields</h2>
+        <p>Text input fields are the most common form elements. They allow users to enter single-line text:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter username">
+            </div>
+            <div class="code-box">
+                &lt;label for="username"&gt;Username:&lt;/label&gt;
+                &lt;input type="text" id="username" name="username"&gt;
+            </div>
+        </div>
+
+        <h2>Password Fields</h2>
+        <p>Password fields hide the entered characters for security:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="code-box">
+                &lt;label for="password"&gt;Password:&lt;/label&gt;
+                &lt;input type="password" id="password" name="password"&gt;
+            </div>
+        </div>
+
+        <h2>Radio Buttons</h2>
+        <p>Radio buttons allow users to select one option from a group:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <label>Gender:</label>
+                <input type="radio" id="male" name="gender" value="male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="female">
+                <label for="female">Female</label>
+            </div>
+            <div class="code-box">
+                &lt;input type="radio" id="male" name="gender" value="male"&gt;
+                &lt;label for="male"&gt;Male&lt;/label&gt;
+                &lt;input type="radio" id="female" name="gender" value="female"&gt;
+                &lt;label for="female"&gt;Female&lt;/label&gt;
+            </div>
+        </div>
+
+        <h2>Checkboxes</h2>
+        <p>Checkboxes allow users to select multiple options:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <label>Interests:</label>
+                <input type="checkbox" id="coding" name="interests" value="coding">
+                <label for="coding">Coding</label>
+                <input type="checkbox" id="reading" name="interests" value="reading">
+                <label for="reading">Reading</label>
+            </div>
+            <div class="code-box">
+                &lt;input type="checkbox" id="coding" name="interests" value="coding"&gt;
+                &lt;label for="coding"&gt;Coding&lt;/label&gt;
+            </div>
+        </div>
+
+        <h2>Select Dropdown</h2>
+        <p>Dropdown menus allow users to select from a list of options:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <select id="country" name="country">
+                    <option value="">Select a country</option>
+                    <option value="usa">USA</option>
+                    <option value="uk">UK</option>
+                    <option value="canada">Canada</option>
+                </select>
+            </div>
+            <div class="code-box">
+                &lt;select id="country" name="country"&gt;
+                    &lt;option value=""&gt;Select a country&lt;/option&gt;
+                    &lt;option value="usa"&gt;USA&lt;/option&gt;
+                &lt;/select&gt;
+            </div>
+        </div>
+
+        <h2>Textarea</h2>
+        <p>Textarea fields allow users to enter multiple lines of text:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4"></textarea>
+            </div>
+            <div class="code-box">
+                &lt;textarea id="message" name="message" rows="4"&gt;&lt;/textarea&gt;
+            </div>
+        </div>
+
+        <h2>Submit Button</h2>
+        <p>A submit button is used to send the form data:</p>
+        <div class="demo-form">
+            <div class="form-group">
+                <button type="submit">Submit Form</button>
+            </div>
+            <div class="code-box">
+                &lt;button type="submit"&gt;Submit Form&lt;/button&gt;
+            </div>
+        </div>
+
+        <h2>Form Attributes</h2>
+        <div class="note">
+            <p>Important form attributes include:</p>
+            <ul>
+                <li><strong>action</strong> - Specifies where to send the form data</li>
+                <li><strong>method</strong> - Specifies how to send the form data (GET or POST)</li>
+                <li><strong>name</strong> - Names the form for reference</li>
+                <li><strong>target</strong> - Specifies where to display the response</li>
+            </ul>
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Always use labels with form controls</li>
+                <li>Include proper validation attributes</li>
+                <li>Use appropriate input types</li>
+                <li>Provide clear feedback for user actions</li>
+                <li>Ensure forms are accessible</li>
+                <li>Use proper form security measures</li>
+            </ul>
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

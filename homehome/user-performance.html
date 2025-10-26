@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Details - CodeMaster</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    h2 { margin-top: 1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; }
+    th { background: #3498db; color: #fff; }
+    pre { background: #f8f8f8; padding: 0.5rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div id="user-info"></div>
+  <h3>Quiz Results</h3>
+  <table id="quiz-table"><thead><tr><th>Topic</th><th>Score</th><th>Total</th><th>Date</th></tr></thead><tbody></tbody></table>
+  <h3>Code Submissions</h3>
+  <table id="code-table"><thead><tr><th>Language</th><th>Code</th><th>Output</th><th>Date</th></tr></thead><tbody></tbody></table>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    fetch(`/api/user/${id}`).then(res=>res.json()).then(data=>{
+      document.getElementById('user-info').innerHTML = `<h2>${data.user.fullname}</h2>
+        <p>Email: ${data.user.email}</p><p>Learning Path: ${data.user.learning_path}</p><p>Joined: ${data.user.created_at}</p>`;
+      data.quiz.forEach(q=>{
+        document.querySelector('#quiz-table tbody').innerHTML += `<tr>
+          <td>${q.quiz_topic}</td><td>${q.score}</td><td>${q.total}</td><td>${q.taken_at}</td></tr>`;
+      });
+      data.codes.forEach(c=>{
+        document.querySelector('#code-table tbody').innerHTML += `<tr>
+          <td>${c.language}</td><td><pre>${c.code}</pre></td><td><pre>${c.output}</pre></td><td>${c.submitted_at}</td></tr>`;
+      });
+    });
+  </script>
+</body>
+</html>

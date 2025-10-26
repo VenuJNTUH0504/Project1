@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Selectors Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #8E2DE2, #4A00E0);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #8E2DE2;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #4A00E0;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #8E2DE2;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #4A00E0;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .note {
+            background-color: #f3e5ff;
+            border-left: 4px solid #8E2DE2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #8E2DE2;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #4A00E0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Demo Styles */
+        .demo-element {
+            padding: 10px;
+            margin: 5px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+
+        #demo-id {
+            background-color: #8E2DE2;
+            color: white;
+        }
+
+        .demo-class {
+            border: 2px solid #4A00E0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f3e5ff;
+            color: #8E2DE2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSS Selectors Guide</h1>
+
+        <h2>Element Selectors</h2>
+        <p>Element selectors target HTML elements directly by their tag name.</p>
+        <div class="code-box">
+            p {
+                color: blue;
+                font-size: 16px;
+            }
+
+            div {
+                padding: 20px;
+                margin: 10px;
+            }
+        </div>
+        <div class="example-box">
+            <div class="demo-element">This is a div element</div>
+            <p class="demo-element">This is a paragraph element</p>
+        </div>
+
+        <h2>Class Selectors</h2>
+        <p>Class selectors target elements with specific class attributes. They start with a dot (.) followed by the class name.</p>
+        <div class="code-box">
+            .highlight {
+                background-color: yellow;
+            }
+
+            .button {
+                padding: 10px;
+                border-radius: 5px;
+            }
+        </div>
+        <div class="example-box">
+            <div class="demo-class">Element with demo-class</div>
+            <div class="demo-class">Another element with demo-class</div>
+        </div>
+
+        <h2>ID Selectors</h2>
+        <p>ID selectors target specific elements with unique ID attributes. They start with a hash (#) followed by the ID name.</p>
+        <div class="code-box">
+            #header {
+                background-color: black;
+                color: white;
+            }
+
+            #main-content {
+                padding: 20px;
+                margin: 10px;
+            }
+        </div>
+        <div class="example-box">
+            <div id="demo-id">Element with demo-id</div>
+        </div>
+
+        <h2>Selector Combinations</h2>
+        <div class="code-box">
+            /* Multiple Selectors */
+            h1, h2, h3 {
+                font-family: Arial;
+            }
+
+            /* Descendant Selector */
+            .container p {
+                margin: 10px;
+            }
+
+            /* Child Selector */
+            div > p {
+                padding: 5px;
+            }
+        </div>
+
+        <h2>Selector Specificity</h2>
+        <table>
+            <tr>
+                <th>Selector Type</th>
+                <th>Specificity Value</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>Element</td>
+                <td>1</td>
+                <td>p { }</td>
+            </tr>
+            <tr>
+                <td>Class</td>
+                <td>10</td>
+                <td>.class-name { }</td>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td>100</td>
+                <td>#id-name { }</td>
+            </tr>
+            <tr>
+                <td>Inline Style</td>
+                <td>1000</td>
+                <td>style="..."</td>
+            </tr>
+        </table>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Use meaningful class and ID names</li>
+                <li>Avoid overusing ID selectors</li>
+                <li>Keep selectors as simple as possible</li>
+                <li>Use classes for reusable styles</li>
+                <li>Follow naming conventions</li>
+                <li>Consider specificity impact</li>
+            </ul>
+        </div>
+
+        <h2>Common Use Cases</h2>
+        <div class="note">
+            <ul>
+                <li>Styling specific components</li>
+                <li>Creating reusable classes</li>
+                <li>Targeting unique elements</li>
+                <li>Building modular CSS</li>
+                <li>Implementing themes</li>
+                <li>Responsive design</li>
+            </ul>
+        </div>
+
+        <h2>Performance Tips</h2>
+        <div class="note">
+            <ul>
+                <li>Avoid deep nesting</li>
+                <li>Use efficient selectors</li>
+                <li>Minimize selector specificity</li>
+                <li>Group related selectors</li>
+                <li>Keep selectors short</li>
+                <li>Use appropriate naming</li>
+            </ul>
+        </div>
+
+        <a href="csshome.html" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html> 

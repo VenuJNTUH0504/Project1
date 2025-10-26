@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic HTML Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #e74c3c;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e74c3c;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-example {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .semantic-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .comparison-box h3 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .semantic-element {
+            background-color: #f5f6fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Understanding Semantic HTML</h1>
+
+        <h2>What is Semantic HTML?</h2>
+        <p>Semantic HTML refers to using HTML elements that carry meaning about their content, rather than just for presentation. These elements clearly describe their purpose to both the browser and the developer, making the code more readable and accessible.</p>
+
+        <h2>Why Use Semantic HTML?</h2>
+        <div class="semantic-element">
+            <ul>
+                <li><strong>Better Accessibility:</strong> Screen readers can better understand the content structure</li>
+                <li><strong>SEO Benefits:</strong> Search engines can better understand your content</li>
+                <li><strong>Easier Maintenance:</strong> Code is more organized and easier to maintain</li>
+                <li><strong>Better Mobile Experience:</strong> Semantic elements help with responsive design</li>
+            </ul>
+        </div>
+
+        <h2>Common Semantic Elements</h2>
+        <div class="semantic-element">
+            <h3>&lt;header&gt;</h3>
+            <p>Contains introductory content or navigation links for its parent section.</p>
+            <div class="code-example">
+                &lt;header&gt;
+                    &lt;h1&gt;Website Title&lt;/h1&gt;
+                    &lt;nav&gt;
+                        &lt;!-- Navigation links --&gt;
+                    &lt;/nav&gt;
+                &lt;/header&gt;
+            </div>
+        </div>
+
+        <div class="semantic-element">
+            <h3>&lt;nav&gt;</h3>
+            <p>Defines a section of navigation links.</p>
+            <div class="code-example">
+                &lt;nav&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;About&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/nav&gt;
+            </div>
+        </div>
+
+        <div class="semantic-element">
+            <h3>&lt;main&gt;</h3>
+            <p>Contains the main content of the document.</p>
+            <div class="code-example">
+                &lt;main&gt;
+                    &lt;article&gt;
+                        &lt;h2&gt;Article Title&lt;/h2&gt;
+                        &lt;p&gt;Article content...&lt;/p&gt;
+                    &lt;/article&gt;
+                &lt;/main&gt;
+            </div>
+        </div>
+
+        <div class="semantic-element">
+            <h3>&lt;article&gt;</h3>
+            <p>Represents a self-contained composition that can be independently distributable or reusable.</p>
+        </div>
+
+        <div class="semantic-element">
+            <h3>&lt;section&gt;</h3>
+            <p>Defines a thematic grouping of content, typically with a heading.</p>
+        </div>
+
+        <div class="semantic-element">
+            <h3>&lt;aside&gt;</h3>
+            <p>Contains content that is tangentially related to the content around it.</p>
+        </div>
+
+        <div class="semantic-element">
+            <h3>&lt;footer&gt;</h3>
+            <p>Contains footer information for its parent section.</p>
+        </div>
+
+        <h2>Non-Semantic vs Semantic HTML</h2>
+        <div class="semantic-comparison">
+            <div class="comparison-box">
+                <h3>Non-Semantic HTML</h3>
+                <div class="code-example">
+                    &lt;div class="header"&gt;
+                        &lt;div class="nav"&gt;
+                            &lt;div class="menu-item"&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                </div>
+            </div>
+            <div class="comparison-box">
+                <h3>Semantic HTML</h3>
+                <div class="code-example">
+                    &lt;header&gt;
+                        &lt;nav&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/nav&gt;
+                    &lt;/header&gt;
+                </div>
+            </div>
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Use semantic elements whenever possible instead of generic div elements</li>
+                <li>Ensure proper nesting of semantic elements</li>
+                <li>Use appropriate heading levels (h1-h6) to create a logical document outline</li>
+                <li>Include ARIA labels when necessary for better accessibility</li>
+                <li>Maintain a consistent structure throughout your website</li>
+            </ul>
+        </div>
+
+        <h2>Page Structure Example</h2>
+        <div class="code-example">
+            &lt;body&gt;
+                &lt;header&gt;
+                    &lt;nav&gt;
+                        &lt;!-- Navigation content --&gt;
+                    &lt;/nav&gt;
+                &lt;/header&gt;
+                
+                &lt;main&gt;
+                    &lt;article&gt;
+                        &lt;section&gt;
+                            &lt;!-- Article section --&gt;
+                        &lt;/section&gt;
+                    &lt;/article&gt;
+                    
+                    &lt;aside&gt;
+                        &lt;!-- Sidebar content --&gt;
+                    &lt;/aside&gt;
+                &lt;/main&gt;
+
+                &lt;footer&gt;
+                    &lt;!-- Footer content --&gt;
+                &lt;/footer&gt;
+            &lt;/body&gt;
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

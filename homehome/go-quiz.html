@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Golang Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <script>
+const questions = [
+    {
+        question: "Which keyword is used to declare a variable in Go?",
+        options: ["var", "let", "define", "declare"],
+        answer: 0
+    },
+    {
+        question: "What is the file extension for a Go source file?",
+        options: [".go", ".golang", ".g", ".gol"],
+        answer: 0
+    },
+    {
+        question: "Which function is the entry point of a Go program?",
+        options: ["main()", "start()", "init()", "run()"],
+        answer: 0
+    },
+    {
+        question: "How do you import a package in Go?",
+        options: ["import \"fmt\"", "#include <fmt>", "using fmt", "require fmt"],
+        answer: 0
+    },
+    {
+        question: "Which package is used for formatted I/O in Go?",
+        options: ["fmt", "io", "input", "scan"],
+        answer: 0
+    },
+    {
+        question: "How do you write a single-line comment in Go?",
+        options: ["// comment", "# comment", "-- comment", "/* comment */"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go keyword?",
+        options: ["func", "package", "class", "var"],
+        answer: 2
+    },
+    {
+        question: "How do you declare a constant in Go?",
+        options: ["const pi = 3.14", "constant pi = 3.14", "final pi = 3.14", "let pi = 3.14"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is a correct way to declare a function?",
+        options: ["func add(a int, b int) int", "function add(a int, b int) int", "def add(a int, b int) int", "add(a int, b int) int"],
+        answer: 0
+    },
+    {
+        question: "Which type is used for true/false values in Go?",
+        options: ["bool", "boolean", "Bool", "Boolean"],
+        answer: 0
+    },
+    {
+        question: "How do you create a slice from an array in Go?",
+        options: ["arr[1:3]", "arr.slice(1,3)", "slice(arr,1,3)", "arr[1..3]"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Go data type?",
+        options: ["int", "float", "char", "string"],
+        answer: 2
+    },
+    {
+        question: "How do you declare a map in Go?",
+        options: ["make(map[string]int)", "map[string]int{}", "new map[string]int", "dict[string]int"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define a structure in Go?",
+        options: ["struct", "class", "record", "object"],
+        answer: 0
+    },
+    {
+        question: "How do you handle errors in Go?",
+        options: ["By returning error values", "try-catch", "throws", "except"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used for concurrency in Go?",
+        options: ["goroutine", "thread", "process", "fiber"],
+        answer: 0
+    },
+    {
+        question: "How do you start a goroutine?",
+        options: ["go function()", "start function()", "run function()", "thread function()"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to exit a loop in Go?",
+        options: ["break", "exit", "stop", "end"],
+        answer: 0
+    },
+    {
+        question: "How do you declare an array of 5 integers in Go?",
+        options: ["var a [5]int", "int a[5]", "a := [5]int", "array a[5]int"],
+        answer: 0
+    },
+    {
+        question: "Which function prints output to the console in Go?",
+        options: ["fmt.Println()", "print()", "console.log()", "System.out.println()"],
+        answer: 0
+    },
+    {
+        question: "How do you check the length of a slice in Go?",
+        options: ["len(slice)", "slice.length()", "length(slice)", "slice.len()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Go loop?",
+        options: ["for", "while", "range", "for-range"],
+        answer: 1
+    },
+    {
+        question: "How do you define an interface in Go?",
+        options: ["type Reader interface { ... }", "interface Reader { ... }", "Reader interface { ... }", "define interface Reader { ... }"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to skip an iteration in a loop?",
+        options: ["continue", "skip", "next", "pass"],
+        answer: 0
+    },
+    {
+        question: "How do you handle multiple return values from a function?",
+        options: ["func f() (int, error)", "func f() int, error", "func f() -> (int, error)", "func f() returns (int, error)"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go built-in function?",
+        options: ["append()", "delete()", "push()", "copy()"],
+        answer: 2
+    },
+    {
+        question: "How do you import multiple packages?",
+        options: ["import (\n\"fmt\"\n\"os\"\n)", "import \"fmt\", \"os\"", "import [\"fmt\", \"os\"]", "import {\"fmt\", \"os\"}"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to allocate memory for a type?",
+        options: ["new()", "alloc()", "malloc()", "allocate()"],
+        answer: 0
+    },
+    {
+        question: "How do you declare a pointer to an int?",
+        options: ["var p *int", "int* p", "pointer p int", "p := pointer(int)"],
+        answer: 0
+    },
+    {
+        question: "Which operator is used to get the address of a variable?",
+        options: ["&", "*", "@", "#"],
+        answer: 0
+    },
+    {
+        question: "How do you dereference a pointer?",
+        options: ["*p", "&p", "p*", "p&"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go visibility rule?",
+        options: ["Lowercase = package-private", "Uppercase = exported", "public/private keywords", "Exported identifiers start with uppercase"],
+        answer: 2
+    },
+    {
+        question: "How do you define a method for a struct?",
+        options: ["func (s Struct) Method() {}", "def Method(s Struct) {}", "Struct.Method = func() {}", "function Method(Struct s) {}"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go numeric type?",
+        options: ["int", "float64", "double", "uint"],
+        answer: 2
+    },
+    {
+        question: "How do you convert a string to an int?",
+        options: ["strconv.Atoi()", "int.Parse()", "parseInt()", "toInt()"],
+        answer: 0
+    },
+    {
+        question: "Which package is used for string conversion?",
+        options: ["strconv", "strings", "convert", "fmt"],
+        answer: 0
+    },
+    {
+        question: "How do you check if a map contains a key?",
+        options: ["v, ok := m[key]", "m.has(key)", "key in m", "m.contains(key)"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go control structure?",
+        options: ["switch", "case", "select", "choose"],
+        answer: 3
+    },
+    {
+        question: "How do you recover from a panic?",
+        options: ["defer recover()", "catch()", "try-catch", "except"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used for documentation comments?",
+        options: ["//", "/* */", "///", "#"],
+        answer: 0
+    },
+    {
+        question: "How do you declare a blank identifier?",
+        options: ["_", "blank", "nil", "none"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go standard package?",
+        options: ["fmt", "os", "math", "system"],
+        answer: 3
+    },
+    {
+        question: "How do you create a new goroutine?",
+        options: ["go myFunc()", "thread myFunc()", "start myFunc()", "run myFunc()"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to import a package for its side effects only?",
+        options: ["_ (blank identifier)", "sideeffect", "only", "importonly"],
+        answer: 0
+    },
+    {
+        question: "How do you declare a constant group?",
+        options: ["const (\nA = 1\nB = 2\n)", "constant {A = 1, B = 2}", "const [A = 1, B = 2]", "const A = 1, B = 2"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go error handling idiom?",
+        options: ["if err != nil", "try-catch", "return error", "errors.New()"],
+        answer: 1
+    },
+    {
+        question: "How do you format a string in Go?",
+        options: ["fmt.Sprintf()", "format()", "string.format()", "printf()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go built-in type?",
+        options: ["complex64", "byte", "char", "rune"],
+        answer: 2
+    },
+    {
+        question: "How do you declare a multi-line string?",
+        options: ["Using backticks (`)", "Using triple quotes", "Using \\n", "Using double quotes"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go statement?",
+        options: ["defer", "goto", "repeat", "return"],
+        answer: 2
+    }
+];
+
+const explanations = [
+    "'var' is the keyword for variable declaration in Go.",
+    ".go is the standard file extension for Go source files.",
+    "main() is the entry point of every Go program.",
+    "Packages are imported using import \"package\".",
+    "The 'fmt' package handles formatted I/O.",
+    "// is used for single-line comments in Go.",
+    "'class' is not a Go keyword; Go uses 'struct' for types.",
+    "'const' is used to declare constants in Go.",
+    "Functions are declared with 'func' in Go.",
+    "'bool' is the boolean type in Go.",
+    "Slices are created using arr[start:end] syntax.",
+    "Go does not have a 'char' type; use 'rune' or 'byte'.",
+    "make(map[string]int) creates a map in Go.",
+    "'struct' defines a structure in Go.",
+    "Go handles errors by returning error values.",
+    "Goroutines provide concurrency in Go.",
+    "Use 'go' before a function call to start a goroutine.",
+    "'break' exits a loop in Go.",
+    "Arrays are declared as 'var a [5]int'.",
+    "fmt.Println() prints output to the console.",
+    "len(slice) returns the length of a slice.",
+    "Go only has 'for' loops; no 'while' keyword.",
+    "Interfaces are defined with 'type Name interface { ... }'.",
+    "'continue' skips to the next iteration in a loop.",
+    "Multiple return values are declared in the function signature.",
+    "'push()' is not a Go built-in function.",
+    "Multiple packages are imported using import ( ... ).",
+    "'new()' allocates memory for a type.",
+    "Pointers are declared as 'var p *int'.",
+    "'&' gets the address of a variable.",
+    "'*p' dereferences a pointer.",
+    "Go does not use public/private keywords; visibility is by case.",
+    "Methods are defined with 'func (receiver Type) Method()'.",
+    "'double' is not a Go numeric type.",
+    "strconv.Atoi() converts a string to an int.",
+    "'strconv' is the package for string conversions.",
+    "Check existence with 'v, ok := m[key]'.",
+    "'choose' is not a Go control structure.",
+    "Use 'defer recover()' to handle panics.",
+    "// is used for documentation comments.",
+    "'_' is the blank identifier in Go.",
+    "'system' is not a Go standard package.",
+    "Use 'go myFunc()' to start a goroutine.",
+    "The blank identifier '_' imports a package for side effects.",
+    "const ( ... ) declares a constant group.",
+    "Go does not have try-catch; use error values.",
+    "fmt.Sprintf() formats strings in Go.",
+    "'char' is not a Go built-in type; use 'rune' or 'byte'.",
+    "Backticks (`) are used for multi-line strings.",
+    "'repeat' is not a Go statement."
+];
+    </script>
+    <div class="quiz-container">
+        <div class="quiz-header">Golang Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+<script>
+let currentQuestion = 0;
+let selectedOptions = Array(questions.length).fill(null);
+let quizContent = document.getElementById('quiz-content');
+
+function renderQuestion(index) {
+    const q = questions[index];
+    let html = `
+        <div class="question-number">Question ${index + 1} of ${questions.length}</div>
+        <div class="question-text">${q.question}</div>
+        <ul class="options">
+    `;
+    q.options.forEach((opt, i) => {
+        html += `<li class="option${selectedOptions[index] === i ? ' selected' : ''}" data-index="${i}">${opt}</li>`;
+    });
+    html += `</ul>
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" ${index === 0 ? 'disabled' : ''}>Previous</button>
+            <button class="nav-btn" id="next-btn" ${index === questions.length - 1 ? 'style="display:none;"' : ''}>Next</button>
+            <button class="nav-btn submit-btn" id="submit-btn" ${index === questions.length - 1 ? '' : 'style="display:none;"'}>Submit</button>
+        </div>
+    `;
+    quizContent.innerHTML = html;
+
+    document.querySelectorAll('.option').forEach(opt => {
+        opt.onclick = function() {
+            selectedOptions[index] = parseInt(this.getAttribute('data-index'));
+            renderQuestion(index);
+        };
+    });
+
+    document.getElementById('prev-btn').onclick = function() {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion(currentQuestion);
+        }
+    };
+    if (index < questions.length - 1) {
+        document.getElementById('next-btn').onclick = function() {
+            if (selectedOptions[index] !== null) {
+                currentQuestion++;
+                renderQuestion(currentQuestion);
+            } else {
+                alert('Please select an option before proceeding.');
+            }
+        };
+    }
+    if (index === questions.length - 1) {
+        document.getElementById('submit-btn').onclick = function() {
+            if (selectedOptions[index] !== null) {
+                showResult();
+            } else {
+                alert('Please select an option before submitting.');
+            }
+        };
+    }
+}
+
+function showResult() {
+    let score = 0;
+    let resultHtml = `<div class="result">You scored ${selectedOptions.filter((sel, i) => sel === questions[i].answer).length} out of ${questions.length}!</div>`;
+    resultHtml += `<div style="margin-top:2rem;"><h3 style="text-align:center;">Review</h3>`;
+    questions.forEach((q, i) => {
+        const correct = selectedOptions[i] === q.answer;
+        resultHtml += `
+            <div style="margin-bottom:1.2rem;padding:1rem;border-radius:8px;background:${correct ? '#e6ffe6' : '#ffe6e6'};">
+                <div><strong>Q${i + 1}:</strong> ${q.question}</div>
+                <div>Your answer: <strong>${q.options[selectedOptions[i]] ?? 'No answer'}</strong></div>
+                <div>Correct answer: <strong>${q.options[q.answer]}</strong></div>
+                <div style="color:#555;font-size:0.95em;margin-top:0.3em;">${explanations[i]}</div>
+            </div>
+        `;
+    });
+    resultHtml += `</div>`;
+    quizContent.innerHTML = resultHtml;
+}
+
+renderQuestion(currentQuestion);
+</script>

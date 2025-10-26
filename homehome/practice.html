@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Code Editor</title>
+    <!-- Include Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: slideDown 0.5s ease;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .info-section p {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            animation: slideDown 0.5s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #4a90e2, #67b26f);
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .editor-container {
+            display: flex;
+            gap: 20px;
+            height: 70vh;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #editor {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        .output-container {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            color: #2c3e50;
+            font-family: monospace;
+            overflow-y: auto;
+            animation: slideUp 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .output-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        #output {
+            white-space: pre-wrap;
+            line-height: 1.5;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            min-height: 200px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .editor-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            #editor {
+                height: 50vh;
+            }
+
+            .output-container {
+                height: 30vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-section">
+            <h3>About the C++ Code Editor</h3>
+            <p>This is an online C++ code editor that allows you to write, compile, and execute C++ programs directly in your browser. It features syntax highlighting, auto-completion, and error detection - similar to professional IDEs like Visual Studio Code.</p>
+            
+            <h3>How It Works</h3>
+            <p>When you click 'Run', the following process occurs:</p>
+            <ol style="margin-left: 20px; line-height: 1.6;">
+                <li>Your code is sent to our server</li>
+                <li>The server compiles the code using g++ compiler</li>
+                <li>The compiled program is executed in a secure environment</li>
+                <li>The output is sent back and displayed in the output window</li>
+            </ol>
+        </div>
+
+        <div class="header">
+            <h2 style="color: #2c3e50;">C++ Code Editor</h2>
+            <div class="controls">
+                <button class="btn" onclick="runCode()" title="Compile and run code">Run</button>
+                <button class="btn" onclick="formatCode()" title="Format code">Format</button>
+                <button class="btn" onclick="saveCode()" title="Save code">Save</button>
+                <button class="btn" onclick="window.location.href='cpp-homepage.html'">Back</button>
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <div id="editor"></div>
+            <div class="output-container">
+                <div class="output-header">
+                    <h3>Output</h3>
+                    <span id="status"></span>
+                </div>
+                <div class="output-controls">
+                    <button class="btn" onclick="clearOutput()">Clear Output</button>
+                    <button class="btn" onclick="copyOutput()">Copy Output</button>
+                    <button class="btn" onclick="downloadOutput()">Download</button>
+                </div>
+                <div id="output"></div>
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Compiling and Running...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configure Monaco Editor
+        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            window.editor = monaco.editor.create(document.getElementById('editor'), {
+                value: `#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, World!" << endl;
+    return 0;
+}`,
+                language: 'cpp',
+                theme: 'vs-light',
+                automaticLayout: true,
+                minimap: { enabled: true },
+                fontSize: 14,
+                lineNumbers: 'on',
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                cursorStyle: 'line'
+            });
+        });
+
+        async function runCode() {
+            const outputDiv = document.getElementById('output');
+            const loadingDiv = document.querySelector('.loading');
+            const statusSpan = document.getElementById('status');
+
+            try {
+                loadingDiv.style.display = 'block';
+                outputDiv.textContent = '';
+                statusSpan.textContent = 'Running...';
+
+                const response = await fetch('http://localhost:3000/compile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: window.editor.getValue() })
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                    outputDiv.textContent = result.error;
+                    statusSpan.textContent = 'Error';
+                    statusSpan.style.color = '#e74c3c';
+                } else {
+                    outputDiv.textContent = result.output;
+                    statusSpan.textContent = 'Success';
+                    statusSpan.style.color = '#27ae60';
+                }
+            } catch (error) {
+                outputDiv.textContent = 'Error connecting to server';
+                statusSpan.textContent = 'Error';
+                statusSpan.style.color = '#e74c3c';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        function formatCode() {
+            // Format the code using Monaco Editor's built-in formatter
+            window.editor.getAction('editor.action.formatDocument').run();
+        }
+
+        function saveCode() {
+            const code = window.editor.getValue();
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'code.cpp';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function clearOutput() {
+            document.getElementById('output').textContent = '';
+            document.getElementById('status').textContent = '';
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(output)
+                .then(() => alert('Output copied to clipboard!'))
+                .catch(err => alert('Failed to copy output'));
+        }
+
+        function downloadOutput() {
+            const output = document.getElementById('output').textContent;
+            const blob = new Blob([output], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'output.txt';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

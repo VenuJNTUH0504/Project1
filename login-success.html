@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Successful</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00c6ff, #7b4397, #0083B0);
+            background-size: 300% 300%;
+            animation: gradientFlow 15s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .success-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .user-info h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .user-info p {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .user-info p strong {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #ff5555, #ff7777);
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff7777, #ff5555);
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            color: #00c6ff;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <i class="fas fa-user-check welcome-icon"></i>
+        <h1>Login Successful!</h1>
+        <p>Welcome back to CodeMaster! Your account information has been retrieved from our database.</p>
+        
+        <div class="user-info" id="user-info">
+            <h2>Your Account Information</h2>
+            <div id="user-details">
+                <p><i class="fas fa-spinner fa-spin"></i> Loading user information...</p>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <a href="index.html" class="btn"><i class="fas fa-home"></i> Go to Home</a>
+            <a href="#" class="btn logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get user data from localStorage or sessionStorage
+            const userData = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
+            const userDetailsDiv = document.getElementById('user-details');
+            
+            if (userData && userData.id) {
+                // Create HTML for user details
+                let detailsHTML = '';
+                
+                if (userData.username) {
+                    detailsHTML += `<p><strong>Username:</strong> ${userData.username}</p>`;
+                }
+                
+                if (userData.fullname) {
+                    detailsHTML += `<p><strong>Name:</strong> ${userData.fullname}</p>`;
+                }
+                
+                if (userData.email) {
+                    detailsHTML += `<p><strong>Email:</strong> ${userData.email}</p>`;
+                }
+                
+                if (userData.learning_path) {
+                    detailsHTML += `<p><strong>Learning Path:</strong> ${userData.learning_path}</p>`;
+                }
+                
+                if (userData.created_at) {
+                    const createdDate = new Date(userData.created_at);
+                    detailsHTML += `<p><strong>Member Since:</strong> ${createdDate.toLocaleDateString()}</p>`;
+                }
+                
+                userDetailsDiv.innerHTML = detailsHTML;
+            } else {
+                userDetailsDiv.innerHTML = '<p>Redirecting to login page...</p>';
+                
+                // Redirect to login page after 2 seconds without alert
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+            
+            // Add logout functionality
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Clear user data from storage
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('isLoggedIn');
+                    sessionStorage.removeItem('user');
+                    sessionStorage.removeItem('isLoggedIn');
+                    
+                    // Redirect to login page
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Operators and Expressions - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .operator-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .operator-table th, .operator-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .operator-table th {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .operator-table tr:hover {
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Operators and Expressions</h1>
+            <p>Understanding operators and expressions in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="arithmetic-operators">
+                <h2>Arithmetic Operators</h2>
+                <table class="operator-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>+</code></td>
+                            <td>Addition</td>
+                            <td><code>5 + 3</code> → <code>8</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>-</code></td>
+                            <td>Subtraction</td>
+                            <td><code>5 - 3</code> → <code>2</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>*</code></td>
+                            <td>Multiplication</td>
+                            <td><code>5 * 3</code> → <code>15</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>/</code></td>
+                            <td>Division</td>
+                            <td><code>5 / 3</code> → <code>1.666...</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>//</code></td>
+                            <td>Floor Division</td>
+                            <td><code>5 // 3</code> → <code>1</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>%</code></td>
+                            <td>Modulus</td>
+                            <td><code>5 % 3</code> → <code>2</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>**</code></td>
+                            <td>Exponentiation</td>
+                            <td><code>5 ** 3</code> → <code>125</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="comparison-operators">
+                <h2>Comparison Operators</h2>
+                <table class="operator-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>==</code></td>
+                            <td>Equal to</td>
+                            <td><code>5 == 3</code> → <code>False</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>!=</code></td>
+                            <td>Not equal to</td>
+                            <td><code>5 != 3</code> → <code>True</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>></code></td>
+                            <td>Greater than</td>
+                            <td><code>5 > 3</code> → <code>True</code></td>
+                        </tr>
+                        <tr>
+                            <td><code><</code></td>
+                            <td>Less than</td>
+                            <td><code>5 < 3</code> → <code>False</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>>=</code></td>
+                            <td>Greater than or equal to</td>
+                            <td><code>5 >= 3</code> → <code>True</code></td>
+                        </tr>
+                        <tr>
+                            <td><code><=</code></td>
+                            <td>Less than or equal to</td>
+                            <td><code>5 <= 3</code> → <code>False</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="logical-operators">
+                <h2>Logical Operators</h2>
+                <table class="operator-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>and</code></td>
+                            <td>Logical AND</td>
+                            <td><code>True and False</code> → <code>False</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>or</code></td>
+                            <td>Logical OR</td>
+                            <td><code>True or False</code> → <code>True</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>not</code></td>
+                            <td>Logical NOT</td>
+                            <td><code>not True</code> → <code>False</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="assignment-operators">
+                <h2>Assignment Operators</h2>
+                <pre><code class="language-python"># Basic assignment
+x = 5
+
+# Addition assignment
+x += 3  # Same as x = x + 3
+
+# Subtraction assignment
+x -= 3  # Same as x = x - 3
+
+# Multiplication assignment
+x *= 3  # Same as x = x * 3
+
+# Division assignment
+x /= 3  # Same as x = x / 3
+
+# Modulus assignment
+x %= 3  # Same as x = x % 3
+
+# Exponentiation assignment
+x **= 3  # Same as x = x ** 3
+
+# Floor division assignment
+x //= 3  # Same as x = x // 3</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="expressions">
+                <h2>Expressions</h2>
+                <p>An expression is a combination of values, variables, operators, and function calls that evaluates to a value:</p>
+                <pre><code class="language-python"># Simple expressions
+result = 5 + 3 * 2  # Evaluates to 11
+result = (5 + 3) * 2  # Evaluates to 16
+
+# Complex expressions
+x = 10
+y = 5
+result = (x + y) * (x - y)  # Evaluates to 75
+
+# Function calls in expressions
+import math
+result = math.sqrt(16) + 5  # Evaluates to 9.0</code></pre>
+                <div class="note">
+                    <p>Python follows the standard order of operations (PEMDAS/BODMAS) when evaluating expressions.</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="operator-precedence">
+                <h2>Operator Precedence</h2>
+                <p>Operators are evaluated in the following order (from highest to lowest precedence):</p>
+                <ol>
+                    <li>Parentheses <code>()</code></li>
+                    <li>Exponentiation <code>**</code></li>
+                    <li>Multiplication <code>*</code>, Division <code>/</code>, Floor Division <code>//</code>, Modulus <code>%</code></li>
+                    <li>Addition <code>+</code>, Subtraction <code>-</code></li>
+                    <li>Comparison operators <code>==</code>, <code>!=</code>, <code>></code>, <code><</code>, <code>>=</code>, <code><=</code></li>
+                    <li>Logical NOT <code>not</code></li>
+                    <li>Logical AND <code>and</code></li>
+                    <li>Logical OR <code>or</code></li>
+                </ol>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

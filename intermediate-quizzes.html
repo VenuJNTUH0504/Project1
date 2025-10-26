@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intermediate Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    /* ... (keep your existing CSS unchanged) ... */
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">Intermediate Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+<script>
+const questions = [
+    // 10 HTML Intermediate
+    {
+        question: "Which HTML5 element is used to embed audio files?",
+        options: ["<audio>", "<sound>", "<music>", "<media>"],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the <canvas> element?",
+        options: [
+            "To draw graphics via scripting",
+            "To display images",
+            "To play videos",
+            "To create tables"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which attribute is used to make an input field mandatory?",
+        options: ["required", "mandatory", "validate", "must"],
+        answer: 0
+    },
+    {
+        question: "What does the 'placeholder' attribute do in an input element?",
+        options: [
+            "Displays a hint to the user",
+            "Sets the default value",
+            "Validates the input",
+            "Makes the field readonly"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which tag is used for marking up navigation links?",
+        options: ["<nav>", "<navigation>", "<links>", "<menu>"],
+        answer: 0
+    },
+    {
+        question: "How do you specify that a link should open in a new tab?",
+        options: [
+            "target='_blank'",
+            "newtab='true'",
+            "open='new'",
+            "window='blank'"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which HTML element is used for defining a dialog box or window?",
+        options: ["<dialog>", "<popup>", "<window>", "<modal>"],
+        answer: 0
+    },
+    {
+        question: "What is the correct way to associate a label with an input?",
+        options: [
+            "<label for='id'>",
+            "<label id='id'>",
+            "<label input='id'>",
+            "<label ref='id'>"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which attribute is used to specify an image to be shown if the src fails?",
+        options: ["onerror", "fallback", "alt", "default"],
+        answer: 2
+    },
+    {
+        question: "Which HTML element is used to define important text?",
+        options: ["<strong>", "<b>", "<important>", "<em>"],
+        answer: 0
+    },
+
+    // 10 CSS Intermediate
+    {
+        question: "Which CSS property is used to create rounded corners?",
+        options: ["border-radius", "corner-radius", "round-corner", "border-corner"],
+        answer: 0
+    },
+    {
+        question: "How do you create a flex container?",
+        options: [
+            "display: flex;",
+            "flex: container;",
+            "container: flex;",
+            "display: box;"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which property is used to add shadow to elements?",
+        options: ["box-shadow", "shadow", "element-shadow", "text-shadow"],
+        answer: 0
+    },
+    {
+        question: "How do you select every even <li> element?",
+        options: [
+            "li:nth-child(even)",
+            "li:even",
+            "li:nth-even",
+            "li:nth-child(2n+1)"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which property is used to change the stacking order of elements?",
+        options: ["z-index", "stack", "order", "layer"],
+        answer: 0
+    },
+    {
+        question: "How do you make a grid container?",
+        options: [
+            "display: grid;",
+            "grid: container;",
+            "container: grid;",
+            "display: flexgrid;"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which CSS function is used to apply a transformation?",
+        options: ["transform()", "translate()", "rotate()", "scale()"],
+        answer: 0
+    },
+    {
+        question: "How do you apply a transition effect to all properties?",
+        options: [
+            "transition: all 0.5s;",
+            "transition: 0.5s all;",
+            "transition-effect: all 0.5s;",
+            "effect: transition 0.5s;"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which property is used for custom properties (variables) in CSS?",
+        options: [
+            "--my-var: value;",
+            "$my-var: value;",
+            "@my-var: value;",
+            "var-my-var: value;"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you use a CSS variable?",
+        options: [
+            "var(--my-var)",
+            "use(--my-var)",
+            "get(--my-var)",
+            "css(--my-var)"
+        ],
+        answer: 0
+    },
+
+    // 10 JavaScript Intermediate
+    {
+        question: "Which method converts a JSON string to a JavaScript object?",
+        options: ["JSON.parse()", "JSON.stringify()", "parseJSON()", "toObject()"],
+        answer: 0
+    },
+    {
+        question: "What is a closure in JavaScript?",
+        options: [
+            "A function with access to its outer scope",
+            "A function that closes the window",
+            "A function that returns another function",
+            "A function that is immediately invoked"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to declare a block-scoped variable?",
+        options: ["let", "var", "const", "static"],
+        answer: 0
+    },
+    {
+        question: "What does the 'this' keyword refer to in a method?",
+        options: [
+            "The object that owns the method",
+            "The global object",
+            "The parent object",
+            "The function itself"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which array method creates a new array with elements that pass a test?",
+        options: ["filter()", "map()", "forEach()", "reduce()"],
+        answer: 0
+    },
+    {
+        question: "How do you create a promise?",
+        options: [
+            "new Promise((resolve, reject) => { })",
+            "Promise.create()",
+            "promise()",
+            "Promise.new()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which operator is used for the spread syntax?",
+        options: ["...", "++", "**", "&&"],
+        answer: 0
+    },
+    {
+        question: "How do you define a default parameter in a function?",
+        options: [
+            "function f(x = 1) {}",
+            "function f(x: 1) {}",
+            "function f(x || 1) {}",
+            "function f(x default 1) {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to merge two arrays?",
+        options: [
+            "concat()",
+            "merge()",
+            "append()",
+            "join()"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the result of typeof null?",
+        options: [
+            "'object'",
+            "'null'",
+            "'undefined'",
+            "'number'"
+        ],
+        answer: 0
+    },
+
+    // 10 TypeScript Intermediate
+    {
+        question: "How do you define a tuple in TypeScript?",
+        options: [
+            "let t: [string, number] = ['a', 1];",
+            "let t = (string, number);",
+            "let t: tuple = ['a', 1];",
+            "let t = [string, number];"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to create an enum?",
+        options: ["enum", "enumeration", "enumtype", "enums"],
+        answer: 0
+    },
+    {
+        question: "How do you specify a function return type?",
+        options: [
+            "function f(): number {}",
+            "function f -> number {}",
+            "function f: number {}",
+            "function f returns number {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which type is used for a variable that can be a string or a number?",
+        options: [
+            "string | number",
+            "string & number",
+            "string || number",
+            "string, number"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you make all properties of a type optional?",
+        options: [
+            "Partial<Type>",
+            "Optional<Type>",
+            "Maybe<Type>",
+            "type? Type"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which utility type makes all properties readonly?",
+        options: [
+            "Readonly<Type>",
+            "Const<Type>",
+            "Immutable<Type>",
+            "Fixed<Type>"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you define a generic function?",
+        options: [
+            "function f<T>(arg: T): T { return arg; }",
+            "function f.generic(arg) {}",
+            "function<T> f(arg) {}",
+            "generic function f(arg) {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which type is used for values that never occur?",
+        options: [
+            "never",
+            "void",
+            "null",
+            "undefined"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you extend an interface?",
+        options: [
+            "interface B extends A {}",
+            "interface B implements A {}",
+            "interface B inherits A {}",
+            "interface B uses A {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which type is used for any value?",
+        options: [
+            "any",
+            "unknown",
+            "object",
+            "mixed"
+        ],
+        answer: 0
+    },
+
+    // 10 C++ Intermediate
+    {
+        question: "Which C++ feature allows multiple functions with the same name?",
+        options: [
+            "Function overloading",
+            "Inheritance",
+            "Polymorphism",
+            "Encapsulation"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the output of cout << 5 / 2; in C++?",
+        options: [
+            "2",
+            "2.5",
+            "2.0",
+            "Error"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to prevent inheritance?",
+        options: [
+            "final",
+            "static",
+            "const",
+            "sealed"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which operator is used to access a member of a structure?",
+        options: [
+            ".",
+            "->",
+            "::",
+            ":"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is a pure virtual function?",
+        options: [
+            "virtual void f() = 0;",
+            "virtual void f();",
+            "void f() = 0;",
+            "pure virtual void f();"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which container is part of the STL?",
+        options: [
+            "vector",
+            "arraylist",
+            "listarray",
+            "setlist"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the default access specifier for class members?",
+        options: [
+            "private",
+            "public",
+            "protected",
+            "package"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which header is needed for std::unique_ptr?",
+        options: [
+            "<memory>",
+            "<unique_ptr>",
+            "<pointer>",
+            "<smartptr>"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which C++11 feature allows range-based for loops?",
+        options: [
+            "for (auto x : container)",
+            "foreach (x in container)",
+            "for x in container",
+            "loop (x : container)"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used for exception handling?",
+        options: [
+            "try",
+            "catch",
+            "throw",
+            "All of the above"
+        ],
+        answer: 3
+    },
+
+    // 10 Java Intermediate
+    {
+        question: "Which interface must be implemented for sorting objects?",
+        options: [
+            "Comparable",
+            "Comparator",
+            "Sortable",
+            "Orderable"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which collection does not allow duplicate elements?",
+        options: [
+            "Set",
+            "List",
+            "Map",
+            "Queue"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to inherit a class?",
+        options: [
+            "extends",
+            "implements",
+            "inherits",
+            "super"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to start a thread?",
+        options: [
+            "start()",
+            "run()",
+            "begin()",
+            "init()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which exception is thrown when dividing by zero?",
+        options: [
+            "ArithmeticException",
+            "NullPointerException",
+            "NumberFormatException",
+            "IllegalArgumentException"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which class is used for reading text from a file?",
+        options: [
+            "BufferedReader",
+            "FileReader",
+            "Scanner",
+            "InputStream"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define a constant?",
+        options: [
+            "final",
+            "const",
+            "static",
+            "constant"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to compare two strings lexicographically?",
+        options: [
+            "compareTo()",
+            "equals()",
+            "==",
+            "compare()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which class is the superclass of all classes?",
+        options: [
+            "Object",
+            "Class",
+            "Base",
+            "Super"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to implement multiple interfaces?",
+        options: [
+            "implements",
+            "extends",
+            "inherits",
+            "interface"
+        ],
+        answer: 0
+    },
+
+    // 10 Python Intermediate
+    {
+        question: "Which keyword is used for anonymous functions?",
+        options: [
+            "lambda",
+            "def",
+            "func",
+            "anon"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to add an item to a set?",
+        options: [
+            "add()",
+            "append()",
+            "insert()",
+            "push()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which statement is used to handle exceptions?",
+        options: [
+            "try-except",
+            "try-catch",
+            "catch",
+            "handle"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method returns the number of items in a list?",
+        options: [
+            "len()",
+            "count()",
+            "size()",
+            "length()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to create a generator?",
+        options: [
+            "yield",
+            "return",
+            "generate",
+            "gen"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which module is used for regular expressions?",
+        options: [
+            "re",
+            "regex",
+            "regexp",
+            "pattern"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to remove an item from a dictionary?",
+        options: [
+            "pop()",
+            "remove()",
+            "delete()",
+            "discard()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which function is used to get the type of an object?",
+        options: [
+            "type()",
+            "typeof()",
+            "gettype()",
+            "class()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to join a list into a string?",
+        options: [
+            "join()",
+            "concat()",
+            "append()",
+            "combine()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which statement is used to import specific functions from a module?",
+        options: [
+            "from module import func",
+            "import func from module",
+            "require func from module",
+            "include func from module"
+        ],
+        answer: 0
+    },
+
+    // 10 Go Intermediate
+    {
+        question: "Which keyword is used to create a goroutine?",
+        options: [
+            "go",
+            "goroutine",
+            "thread",
+            "async"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which channel operation blocks until a value is available?",
+        options: [
+            "<-ch",
+            "ch<-",
+            "wait(ch)",
+            "block(ch)"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define an interface?",
+        options: [
+            "interface",
+            "type",
+            "struct",
+            "implements"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which function is used to format strings?",
+        options: [
+            "fmt.Sprintf",
+            "fmt.Format",
+            "fmt.String",
+            "fmt.Printf"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to recover from a panic?",
+        options: [
+            "recover",
+            "catch",
+            "handle",
+            "except"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which type is used for a map with string keys and int values?",
+        options: [
+            "map[string]int",
+            "map[int]string",
+            "dict[string]int",
+            "dictionary[string]int"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which function is used to append elements to a slice?",
+        options: [
+            "append()",
+            "push()",
+            "add()",
+            "insert()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define a constant?",
+        options: [
+            "const",
+            "final",
+            "static",
+            "constant"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which function is used to create a new slice?",
+        options: [
+            "make()",
+            "new()",
+            "create()",
+            "slice()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which function is used to close a channel?",
+        options: [
+            "close()",
+            "end()",
+            "stop()",
+            "finish()"
+        ],
+        answer: 0
+    },
+
+    // 20 React Intermediate
+    {
+        question: "Which hook is used to access the previous props or state?",
+        options: [
+            "useRef",
+            "useState",
+            "useEffect",
+            "useMemo"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to update state based on previous state?",
+        options: [
+            "setState(prev => ...)",
+            "setState({...})",
+            "updateState()",
+            "changeState()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used for memoization?",
+        options: [
+            "useMemo",
+            "useCallback",
+            "useEffect",
+            "useState"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used to memoize a callback function?",
+        options: [
+            "useCallback",
+            "useMemo",
+            "useEffect",
+            "useRef"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to lazy load a component?",
+        options: [
+            "React.lazy()",
+            "React.load()",
+            "React.defer()",
+            "React.async()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used to access context values?",
+        options: [
+            "useContext",
+            "useState",
+            "useEffect",
+            "useReducer"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which lifecycle method is called before unmounting?",
+        options: [
+            "componentWillUnmount",
+            "componentDidMount",
+            "componentDidUpdate",
+            "componentWillMount"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to prevent re-rendering?",
+        options: [
+            "shouldComponentUpdate",
+            "componentWillUpdate",
+            "componentDidUpdate",
+            "componentWillReceiveProps"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used for reducer logic?",
+        options: [
+            "useReducer",
+            "useState",
+            "useEffect",
+            "useMemo"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to forward refs?",
+        options: [
+            "React.forwardRef",
+            "React.useRef",
+            "React.createRef",
+            "React.ref"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to clone a React element?",
+        options: [
+            "React.cloneElement",
+            "React.copyElement",
+            "React.duplicateElement",
+            "React.newElement"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used to perform side effects after rendering?",
+        options: [
+            "useEffect",
+            "useState",
+            "useMemo",
+            "useCallback"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to render children in a component?",
+        options: [
+            "props.children",
+            "this.children",
+            "children()",
+            "renderChildren()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to update state in a class component?",
+        options: [
+            "this.setState",
+            "setState",
+            "updateState",
+            "changeState"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used to persist values across renders?",
+        options: [
+            "useRef",
+            "useState",
+            "useEffect",
+            "useMemo"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to catch errors in a component tree?",
+        options: [
+            "componentDidCatch",
+            "componentWillCatch",
+            "componentError",
+            "catchComponent"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to get a snapshot before update?",
+        options: [
+            "getSnapshotBeforeUpdate",
+            "componentWillUpdate",
+            "componentDidUpdate",
+            "getUpdateSnapshot"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used to manage complex state logic?",
+        options: [
+            "useReducer",
+            "useState",
+            "useEffect",
+            "useMemo"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to render a list of elements?",
+        options: [
+            "Array.map()",
+            "Array.forEach()",
+            "Array.filter()",
+            "Array.reduce()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to unmount a component?",
+        options: [
+            "ReactDOM.unmountComponentAtNode",
+            "ReactDOM.removeComponent",
+            "ReactDOM.deleteComponent",
+            "ReactDOM.unmount"
+        ],
+        answer: 0
+    },
+
+    // 20 Node.js Intermediate
+    {
+        question: "Which method is used to create a child process?",
+        options: [
+            "child_process.spawn",
+            "process.create",
+            "os.spawn",
+            "fs.spawn"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which module is used for cryptographic functions?",
+        options: [
+            "crypto",
+            "hash",
+            "security",
+            "encrypt"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to read environment variables?",
+        options: [
+            "process.env",
+            "os.env",
+            "env.get",
+            "get.env"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to handle uncaught exceptions?",
+        options: [
+            "process.on('uncaughtException')",
+            "process.catch('exception')",
+            "process.handle('uncaught')",
+            "process.error('exception')"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which module is used for working with file paths?",
+        options: [
+            "path",
+            "fs",
+            "url",
+            "os"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a buffer from a string?",
+        options: [
+            "Buffer.from()",
+            "Buffer.create()",
+            "Buffer.make()",
+            "Buffer.new()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to schedule a function to run after a delay?",
+        options: [
+            "setTimeout()",
+            "setInterval()",
+            "setImmediate()",
+            "process.nextTick()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to schedule a function to run repeatedly?",
+        options: [
+            "setInterval()",
+            "setTimeout()",
+            "setImmediate()",
+            "process.nextTick()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to resolve a path to an absolute path?",
+        options: [
+            "path.resolve()",
+            "fs.resolve()",
+            "os.resolve()",
+            "url.resolve()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to parse a URL?",
+        options: [
+            "url.parse()",
+            "path.parse()",
+            "fs.parse()",
+            "os.parse()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to write data to a stream?",
+        options: [
+            "stream.write()",
+            "stream.send()",
+            "stream.push()",
+            "stream.add()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to end a writable stream?",
+        options: [
+            "stream.end()",
+            "stream.close()",
+            "stream.finish()",
+            "stream.stop()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to listen for data on a readable stream?",
+        options: [
+            "stream.on('data')",
+            "stream.data()",
+            "stream.listen()",
+            "stream.read()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to compress data?",
+        options: [
+            "zlib.gzip()",
+            "fs.compress()",
+            "os.gzip()",
+            "crypto.compress()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to decompress data?",
+        options: [
+            "zlib.gunzip()",
+            "fs.decompress()",
+            "os.gunzip()",
+            "crypto.decompress()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to hash data?",
+        options: [
+            "crypto.createHash()",
+            "crypto.hash()",
+            "crypto.makeHash()",
+            "crypto.newHash()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to sign data?",
+        options: [
+            "crypto.createSign()",
+            "crypto.sign()",
+            "crypto.makeSign()",
+            "crypto.newSign()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to verify a signature?",
+        options: [
+            "crypto.createVerify()",
+            "crypto.verify()",
+            "crypto.makeVerify()",
+            "crypto.newVerify()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to generate random bytes?",
+        options: [
+            "crypto.randomBytes()",
+            "crypto.getRandom()",
+            "crypto.bytes()",
+            "crypto.random()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a server with HTTPS?",
+        options: [
+            "https.createServer()",
+            "http.createServer()",
+            "tls.createServer()",
+            "ssl.createServer()"
+        ],
+        answer: 0
+    },
+
+    // 20 Spring Intermediate
+    {
+        question: "Which annotation is used to create a RESTful web service?",
+        options: [
+            "@RestController",
+            "@Controller",
+            "@Service",
+            "@Component"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map a method to a DELETE request?",
+        options: [
+            "@DeleteMapping",
+            "@RemoveMapping",
+            "@DeleteRequest",
+            "@MappingDelete"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject values from properties files?",
+        options: [
+            "@Value",
+            "@Property",
+            "@ConfigValue",
+            "@InjectValue"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a scheduled task?",
+        options: [
+            "@Scheduled",
+            "@Task",
+            "@Timer",
+            "@Cron"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to enable JPA repositories?",
+        options: [
+            "@EnableJpaRepositories",
+            "@EnableRepositories",
+            "@JpaRepositories",
+            "@EnableJPA"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a configuration class?",
+        options: [
+            "@Configuration",
+            "@Config",
+            "@ConfigClass",
+            "@SpringConfig"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to enable transaction management?",
+        options: [
+            "@EnableTransactionManagement",
+            "@TransactionManagement",
+            "@EnableTransactions",
+            "@TransactionManager"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject a bean by name?",
+        options: [
+            "@Qualifier",
+            "@Autowired",
+            "@Resource",
+            "@Inject"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a bean method?",
+        options: [
+            "@Bean",
+            "@Component",
+            "@Service",
+            "@Repository"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to enable component scanning?",
+        options: [
+            "@ComponentScan",
+            "@Scan",
+            "@EnableScan",
+            "@ScanComponent"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for aspect-oriented programming?",
+        options: [
+            "@Aspect",
+            "@AOP",
+            "@Proxy",
+            "@Around"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map a method to a PUT request?",
+        options: [
+            "@PutMapping",
+            "@UpdateMapping",
+            "@PutRequest",
+            "@MappingPut"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject a bean by type?",
+        options: [
+            "@Autowired",
+            "@Inject",
+            "@Resource",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a repository?",
+        options: [
+            "@Repository",
+            "@Component",
+            "@Service",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a service?",
+        options: [
+            "@Service",
+            "@Component",
+            "@Repository",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a controller?",
+        options: [
+            "@Controller",
+            "@RestController",
+            "@Component",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map a method to a POST request?",
+        options: [
+            "@PostMapping",
+            "@CreateMapping",
+            "@PostRequest",
+            "@MappingPost"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to enable auto-configuration?",
+        options: [
+            "@EnableAutoConfiguration",
+            "@AutoConfig",
+            "@EnableConfig",
+            "@AutoConfiguration"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a singleton bean?",
+        options: [
+            "@Component",
+            "@Singleton",
+            "@Bean",
+            "@Service"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject a value from application.properties?",
+        options: [
+            "@Value",
+            "@Property",
+            "@ConfigValue",
+            "@InjectValue"
+        ],
+        answer: 0
+    },
+
+    // 20 Django Intermediate
+    {
+        question: "Which command is used to create a custom Django management command?",
+        options: [
+            "python manage.py startapp myapp && create management/commands",
+            "python manage.py createcommand",
+            "django-admin startcommand",
+            "python manage.py newcommand"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to define a custom model manager?",
+        options: [
+            "objects = models.Manager()",
+            "objects = CustomManager()",
+            "manager = models.Manager()",
+            "manager = CustomManager()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a database migration?",
+        options: [
+            "python manage.py makemigrations",
+            "python manage.py migrate",
+            "python manage.py createmigration",
+            "python manage.py newmigration"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to reverse a URL in Django templates?",
+        options: [
+            "{% url 'name' %}",
+            "{% reverse 'name' %}",
+            "{% path 'name' %}",
+            "{% link 'name' %}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a superuser?",
+        options: [
+            "python manage.py createsuperuser",
+            "python manage.py superuser",
+            "python manage.py newuser",
+            "python manage.py adminuser"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to register a model in the admin site?",
+        options: [
+            "admin.site.register(Model)",
+            "admin.register(Model)",
+            "site.register(Model)",
+            "admin.site.add(Model)"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to filter queryset results?",
+        options: [
+            "filter()",
+            "get()",
+            "all()",
+            "exclude()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to get a single object from a queryset?",
+        options: [
+            "get()",
+            "filter()",
+            "first()",
+            "one()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to exclude objects from a queryset?",
+        options: [
+            "exclude()",
+            "filter()",
+            "remove()",
+            "delete()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to get the number of objects in a queryset?",
+        options: [
+            "count()",
+            "len()",
+            "size()",
+            "length()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a form from a model?",
+        options: [
+            "ModelForm",
+            "Form",
+            "forms.ModelForm",
+            "forms.Form"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which method is used to create a custom template filter?",
+        options: [
+            "@register.filter",
+            "@filter",
+            "@template.filter",
+            "@register.template_filter"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to send an email in Django?",
+        options: [
+            "send_mail()",
+            "mail.send()",
+            "email.send()",
+            "send_email()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to add static files in templates?",
+        options: [
+            "{% static 'path' %}",
+            "{% addstatic 'path' %}",
+            "{% include_static 'path' %}",
+            "{% loadstatic 'path' %}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to paginate queryset results?",
+        options: [
+            "Paginator",
+            "paginate()",
+            "pagination()",
+            "Page()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a custom middleware?",
+        options: [
+            "Define a class with __call__ or process_request/response",
+            "Create a function",
+            "Add to settings.py",
+            "Use middleware()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a ManyToMany relationship?",
+        options: [
+            "ManyToManyField",
+            "ForeignKey",
+            "OneToOneField",
+            "ManyField"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a ForeignKey relationship?",
+        options: [
+            "ForeignKey",
+            "ManyToManyField",
+            "OneToOneField",
+            "ForeignField"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a OneToOne relationship?",
+        options: [
+            "OneToOneField",
+            "ForeignKey",
+            "ManyToManyField",
+            "OneField"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to get the current user in a view?",
+        options: [
+            "request.user",
+            "user.request",
+            "get_user()",
+            "current_user()"
+        ],
+        answer: 0
+    }
+];
+
+// For brevity, explanations array is omitted, but you can add explanations for each question as in your original file.
+
+let currentQuestion = 0;
+let userAnswers = Array(questions.length).fill(null);
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    const quizContent = document.getElementById('quiz-content');
+    quizContent.innerHTML = `
+        <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+        <div class="question-text">${q.question}</div>
+        <ul class="options">
+            ${q.options.map((opt, idx) => `
+                <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                    ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                </li>
+            `).join('')}
+        </ul>
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+            ${currentQuestion === questions.length - 1
+                ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+            }
+        </div>
+    `;
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.onclick = function() {
+            const idx = Number(this.getAttribute('data-idx'));
+            userAnswers[currentQuestion] = idx;
+            renderQuestion();
+        };
+    });
+
+    document.getElementById('prev-btn').onclick = () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion();
+        }
+    };
+
+    if (currentQuestion < questions.length - 1) {
+        document.getElementById('next-btn').onclick = () => {
+            if (userAnswers[currentQuestion] !== null) {
+                currentQuestion++;
+                renderQuestion();
+            }
+        };
+    } else {
+        document.getElementById('submit-btn').onclick = showResultWithFeedback;
+    }
+}
+
+function showResultWithFeedback() {
+    let score = 0;
+    let mistaken = [];
+    userAnswers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) {
+            score++;
+        } else {
+            mistaken.push(idx);
+        }
+    });
+
+    let feedback = "";
+    if (mistaken.length > 0) {
+        feedback = `<div style="margin-top:1.5rem;text-align:left;">
+            <strong>Review your mistakes:</strong>
+            <ul style="margin-top:0.5rem;">` +
+            mistaken.map(idx => `
+                <li>
+                    <b>Q${idx + 1}:</b> ${questions[idx].question}<br>
+                    <span style="color:#28a745;">Correct: ${questions[idx].options[questions[idx].answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                </li>
+            `).join('') +
+            `</ul>
+            <div style="margin-top:1rem;">
+                <strong>Show all questions and answers:</strong>
+                <ul style="margin-top:0.5rem;">
+                    ${questions.map((q, idx) => `
+                        <li style="margin-bottom:0.7em;">
+                            <b>Q${idx + 1}:</b> ${q.question}<br>
+                            <span style="color:#28a745;">Answer: ${q.options[q.answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>`;
+    }
+
+    document.getElementById('quiz-content').innerHTML = `
+        <div class="result">
+            <div style="font-size:2.1rem;font-weight:700;margin-bottom:0.7rem;">
+            Your Score: ${score} / ${questions.length}
+            </div>
+            <button class="nav-btn" style="margin-bottom:1.2rem;" onclick="location.reload()">Try Again</button>
+            ${feedback}
+        </div>
+    `;
+}
+renderQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic OOP in Java - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Basic Object-Oriented Programming in Java</h1>
+            <p>Understanding the fundamental concepts of Object-Oriented Programming in Java</p>
+        </header>
+
+        <div class="card">
+            <h2>Classes and Objects</h2>
+            <p>A class is a blueprint for creating objects, while an object is an instance of a class.</p>
+            
+            <pre><code>// Class definition
+public class Car {
+    // Fields (instance variables)
+    private String brand;
+    private String model;
+    private int year;
+    
+    // Constructor
+    public Car(String brand, String model, int year) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+    
+    // Methods
+    public void start() {
+        System.out.println("Starting the " + brand + " " + model);
+    }
+    
+    public void stop() {
+        System.out.println("Stopping the " + brand + " " + model);
+    }
+}
+
+// Creating objects
+Car myCar = new Car("Toyota", "Camry", 2020);
+Car yourCar = new Car("Honda", "Civic", 2021);</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Classes should follow the Single Responsibility Principle and have meaningful names.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Encapsulation</h2>
+            <p>Encapsulation is the bundling of data and methods that operate on that data within a single unit.</p>
+            
+            <pre><code>public class BankAccount {
+    private double balance;
+    
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+        }
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always use proper access modifiers to protect your class's internal state.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Inheritance</h2>
+            <p>Inheritance allows a class to inherit properties and methods from another class.</p>
+            
+            <pre><code>// Parent class
+public class Animal {
+    protected String name;
+    
+    public Animal(String name) {
+        this.name = name;
+    }
+    
+    public void eat() {
+        System.out.println(name + " is eating");
+    }
+    
+    public void sleep() {
+        System.out.println(name + " is sleeping");
+    }
+}
+
+// Child class
+public class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+    }
+    
+    public void bark() {
+        System.out.println(name + " is barking");
+    }
+    
+    @Override
+    public void eat() {
+        System.out.println(name + " is eating dog food");
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Use inheritance when there is an "is-a" relationship between classes.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Polymorphism</h2>
+            <p>Polymorphism allows objects to take many forms and enables one interface to be used for a general class of actions.</p>
+            
+            <pre><code>// Interface
+public interface Shape {
+    double calculateArea();
+    double calculatePerimeter();
+}
+
+// Implementing classes
+public class Circle implements Shape {
+    private double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+    
+    @Override
+    public double calculatePerimeter() {
+        return 2 * Math.PI * radius;
+    }
+}
+
+public class Rectangle implements Shape {
+    private double width;
+    private double height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    @Override
+    public double calculateArea() {
+        return width * height;
+    }
+    
+    @Override
+    public double calculatePerimeter() {
+        return 2 * (width + height);
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use interfaces to define contracts that classes must implement.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Abstraction</h2>
+            <p>Abstraction is the process of hiding implementation details and showing only functionality to the user.</p>
+            
+            <pre><code>// Abstract class
+public abstract class Vehicle {
+    protected String brand;
+    protected String model;
+    
+    public Vehicle(String brand, String model) {
+        this.brand = brand;
+        this.model = model;
+    }
+    
+    // Abstract method
+    public abstract void start();
+    
+    // Concrete method
+    public void displayInfo() {
+        System.out.println("Brand: " + brand);
+        System.out.println("Model: " + model);
+    }
+}
+
+// Concrete class
+public class Car extends Vehicle {
+    public Car(String brand, String model) {
+        super(brand, model);
+    }
+    
+    @Override
+    public void start() {
+        System.out.println("Starting the car engine");
+    }
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Abstract classes cannot be instantiated directly.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Constructors</h2>
+            <p>Constructors are special methods used to initialize objects.</p>
+            
+            <pre><code>public class Person {
+    private String name;
+    private int age;
+    
+    // Default constructor
+    public Person() {
+        this.name = "Unknown";
+        this.age = 0;
+    }
+    
+    // Parameterized constructor
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    // Copy constructor
+    public Person(Person other) {
+        this.name = other.name;
+        this.age = other.age;
+    }
+    
+    // Constructor chaining
+    public Person(String name) {
+        this(name, 0); // Calls the parameterized constructor
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> If no constructor is defined, Java provides a default no-argument constructor.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Method Overloading and Overriding</h2>
+            <p>Method overloading allows multiple methods with the same name but different parameters, while overriding allows a subclass to provide a specific implementation of a method.</p>
+            
+            <pre><code>public class Calculator {
+    // Method overloading
+    public int add(int a, int b) {
+        return a + b;
+    }
+    
+    public double add(double a, double b) {
+        return a + b;
+    }
+    
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+public class ScientificCalculator extends Calculator {
+    // Method overriding
+    @Override
+    public double add(double a, double b) {
+        System.out.println("Using scientific addition");
+        return super.add(a, b);
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use <code>@Override</code> annotation when overriding methods to catch errors at compile time.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

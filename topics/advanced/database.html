@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Database Integration - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Database Integration</h1>
+            <p>Working with databases in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Database Integration</h2>
+                <p>Python provides several libraries for working with different types of databases, making it easy to store, retrieve, and manipulate data.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="sqlite">
+                <h2>SQLite</h2>
+                <p>Working with SQLite databases:</p>
+                <pre><code class="language-python">import sqlite3
+
+# Connect to database
+conn = sqlite3.connect('example.db')
+cursor = conn.cursor()
+
+# Create table
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        email TEXT
+    )
+''')
+
+# Insert data
+cursor.execute('INSERT INTO users (name, email) VALUES (?, ?)',
+               ('John Doe', 'john@example.com'))
+conn.commit()
+
+# Query data
+cursor.execute('SELECT * FROM users')
+for row in cursor.fetchall():
+    print(row)
+
+# Close connection
+conn.close()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="mysql">
+                <h2>MySQL</h2>
+                <p>Working with MySQL databases using mysql-connector-python:</p>
+                <pre><code class="language-python">import mysql.connector
+
+# Connect to database
+conn = mysql.connector.connect(
+    host="localhost",
+    user="username",
+    password="password",
+    database="mydatabase"
+)
+cursor = conn.cursor()
+
+# Create table
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        email VARCHAR(255)
+    )
+''')
+
+# Insert data
+sql = "INSERT INTO users (name, email) VALUES (%s, %s)"
+val = ("John Doe", "john@example.com")
+cursor.execute(sql, val)
+conn.commit()
+
+# Query data
+cursor.execute("SELECT * FROM users")
+for row in cursor.fetchall():
+    print(row)
+
+# Close connection
+conn.close()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="postgresql">
+                <h2>PostgreSQL</h2>
+                <p>Working with PostgreSQL using psycopg2:</p>
+                <pre><code class="language-python">import psycopg2
+
+# Connect to database
+conn = psycopg2.connect(
+    host="localhost",
+    database="mydatabase",
+    user="username",
+    password="password"
+)
+cursor = conn.cursor()
+
+# Create table
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        email VARCHAR(255)
+    )
+''')
+
+# Insert data
+cursor.execute(
+    "INSERT INTO users (name, email) VALUES (%s, %s)",
+    ("John Doe", "john@example.com")
+)
+conn.commit()
+
+# Query data
+cursor.execute("SELECT * FROM users")
+for row in cursor.fetchall():
+    print(row)
+
+# Close connection
+conn.close()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="orm">
+                <h2>Object-Relational Mapping (ORM)</h2>
+                <p>Using SQLAlchemy for ORM:</p>
+                <pre><code class="language-python">from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+
+# Create engine
+engine = create_engine('sqlite:///example.db')
+Base.metadata.create_all(engine)
+
+# Create session
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Create user
+new_user = User(name="John Doe", email="john@example.com")
+session.add(new_user)
+session.commit()
+
+# Query users
+users = session.query(User).all()
+for user in users:
+    print(user.name, user.email)
+
+# Close session
+session.close()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Always use parameterized queries to prevent SQL injection</li>
+                    <li>Use connection pooling for better performance</li>
+                    <li>Implement proper error handling</li>
+                    <li>Close database connections properly</li>
+                    <li>Consider using ORM for complex applications</li>
+                    <li>Use database migrations for schema changes</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Control Structures</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .flowchart-box {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+
+        .flowchart-start-end {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 25px;
+        }
+
+        .flowchart-process {
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+        }
+
+        .flowchart-decision {
+            background-color: var(--card-bg);
+            border: 2px solid var(--secondary-color);
+            width: 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(45deg);
+            margin: 40px 0;
+        }
+
+        .flowchart-decision span {
+            transform: rotate(-45deg);
+        }
+
+        .flowchart-arrow {
+            height: 30px;
+            width: 2px;
+            background-color: var(--text-color);
+            position: relative;
+        }
+
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid var(--text-color);
+        }
+
+        .flowchart-label {
+            position: absolute;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .flowchart-label.yes {
+            right: -30px;
+            top: 50%;
+        }
+
+        .flowchart-label.no {
+            bottom: -30px;
+            left: 50%;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--text-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>C++ Control Structures</h1>
+            <p>Controlling the flow of program execution</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to Control Structures</h2>
+            <p>Control structures are programming constructs that allow you to control the flow of execution in your program. They enable you to make decisions, repeat actions, and organize code based on different conditions.</p>
+            
+            <p>C++ provides three main types of control structures:</p>
+            <ol>
+                <li><strong>Selection statements</strong> (if, if-else, switch)</li>
+                <li><strong>Iteration statements</strong> (loops: for, while, do-while)</li>
+                <li><strong>Jump statements</strong> (break, continue, goto, return)</li>
+            </ol>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Well-designed control structures make your code more readable, maintainable, and efficient. They are fundamental to algorithmic thinking and problem-solving in programming.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Selection Statements</h2>
+            <p>Selection statements allow your program to make decisions based on certain conditions.</p>
+            
+            <h3>if Statement</h3>
+            <p>The <code>if</code> statement executes a block of code if a specified condition is true.</p>
+            
+            <pre><code>if (condition) {
+    // Code to execute if condition is true
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>int age = 20;
+
+if (age >= 18) {
+    std::cout << "You are an adult." << std::endl;
+}</code></pre>
+            
+            <div class="flowchart">
+                <div class="flowchart-box flowchart-start-end">Start</div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-decision">
+                    <span>condition?</span>
+                </div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-process">Execute code block</div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-start-end">End</div>
+            </div>
+            
+            <h3>if-else Statement</h3>
+            <p>The <code>if-else</code> statement executes one block of code if a condition is true and another block if the condition is false.</p>
+            
+            <pre><code>if (condition) {
+    // Code to execute if condition is true
+} else {
+    // Code to execute if condition is false
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>int age = 15;
+
+if (age >= 18) {
+    std::cout << "You are an adult." << std::endl;
+} else {
+    std::cout << "You are a minor." << std::endl;
+}</code></pre>
+            
+            <h3>if-else if-else Statement</h3>
+            <p>This structure allows you to check multiple conditions in sequence.</p>
+            
+            <pre><code>if (condition1) {
+    // Code to execute if condition1 is true
+} else if (condition2) {
+    // Code to execute if condition1 is false and condition2 is true
+} else {
+    // Code to execute if all conditions are false
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>int score = 85;
+
+if (score >= 90) {
+    std::cout << "Grade: A" << std::endl;
+} else if (score >= 80) {
+    std::cout << "Grade: B" << std::endl;
+} else if (score >= 70) {
+    std::cout << "Grade: C" << std::endl;
+} else if (score >= 60) {
+    std::cout << "Grade: D" << std::endl;
+} else {
+    std::cout << "Grade: F" << std::endl;
+}</code></pre>
+            
+            <h3>Nested if Statements</h3>
+            <p>You can place if statements inside other if statements to create more complex decision-making structures.</p>
+            
+            <pre><code>if (condition1) {
+    // Code to execute if condition1 is true
+    
+    if (condition2) {
+        // Code to execute if both condition1 and condition2 are true
+    }
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>bool hasLicense = true;
+int age = 20;
+
+if (age >= 18) {
+    std::cout << "You are old enough to drive." << std::endl;
+    
+    if (hasLicense) {
+        std::cout << "You can drive legally." << std::endl;
+    } else {
+        std::cout << "You need to get a license first." << std::endl;
+    }
+} else {
+    std::cout << "You are too young to drive." << std::endl;
+}</code></pre>
+            
+            <h3>Conditional (Ternary) Operator</h3>
+            <p>The conditional operator <code>?:</code> provides a shorthand way to write simple if-else statements.</p>
+            
+            <pre><code>condition ? expression1 : expression2;</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>int age = 20;
+std::string status = (age >= 18) ? "adult" : "minor";
+std::cout << "You are a " << status << "." << std::endl;</code></pre>
+            
+            <h3>switch Statement</h3>
+            <p>The <code>switch</code> statement allows you to select one of many code blocks to execute based on the value of a variable or expression.</p>
+            
+            <pre><code>switch (expression) {
+    case value1:
+        // Code to execute if expression equals value1
+        break;
+    case value2:
+        // Code to execute if expression equals value2
+        break;
+    // More cases...
+    default:
+        // Code to execute if expression doesn't match any case
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>int day = 3;
+switch (day) {
+    case 1:
+        std::cout << "Monday" << std::endl;
+        break;
+    case 2:
+        std::cout << "Tuesday" << std::endl;
+        break;
+    case 3:
+        std::cout << "Wednesday" << std::endl;
+        break;
+    case 4:
+        std::cout << "Thursday" << std::endl;
+        break;
+    case 5:
+        std::cout << "Friday" << std::endl;
+        break;
+    case 6:
+        std::cout << "Saturday" << std::endl;
+        break;
+    case 7:
+        std::cout << "Sunday" << std::endl;
+        break;
+    default:
+        std::cout << "Invalid day" << std::endl;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> Don't forget to include <code>break</code> statements in your switch cases. Without them, execution will "fall through" to the next case, which is rarely what you want.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Iteration Statements (Loops)</h2>
+            <p>Loops allow you to execute a block of code repeatedly as long as a certain condition is true.</p>
+            
+            <h3>for Loop</h3>
+            <p>The <code>for</code> loop is typically used when you know in advance how many times you want to execute a block of code.</p>
+            
+            <pre><code>for (initialization; condition; update) {
+    // Code to repeat
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>// Print numbers from 1 to 5
+for (int i = 1; i <= 5; i++) {
+    std::cout << i << " ";
+}
+// Output: 1 2 3 4 5</code></pre>
+            
+            <div class="flowchart">
+                <div class="flowchart-box flowchart-start-end">Start</div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-process">Initialization</div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-decision">
+                    <span>condition?</span>
+                </div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-process">Execute code block</div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-process">Update</div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box flowchart-start-end">End</div>
+            </div>
+            
+            <h3>while Loop</h3>
+            <p>The <code>while</code> loop executes a block of code as long as a specified condition is true. It checks the condition before executing the loop body.</p>
+            
+            <pre><code>while (condition) {
+    // Code to repeat
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>// Print numbers from 1 to 5
+int i = 1;
+while (i <= 5) {
+    std::cout << i << " ";
+    i++;
+}
+// Output: 1 2 3 4 5</code></pre>
+            
+            <h3>do-while Loop</h3>
+            <p>The <code>do-while</code> loop is similar to the while loop, but it checks the condition after executing the loop body, ensuring that the code block is executed at least once.</p>
+            
+            <pre><code>do {
+    // Code to repeat
+} while (condition);</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>// Print numbers from 1 to 5
+int i = 1;
+do {
+    std::cout << i << " ";
+    i++;
+} while (i <= 5);
+// Output: 1 2 3 4 5</code></pre>
+            
+            <h3>Range-based for Loop (C++11)</h3>
+            <p>Introduced in C++11, the range-based for loop provides a simpler way to iterate over elements in a collection (like arrays, vectors, etc.).</p>
+            
+            <pre><code>for (type variable : collection) {
+    // Code to execute for each element
+}</code></pre>
+            
+            <p>Example:</p>
+            <pre><code>int numbers[] = {1, 2, 3, 4, 5};
+
+// Print each number in the array
+for (int num : numbers) {
+    std::cout << num << " ";
+}
+// Output: 1 2 3 4 5</code></pre>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Range-based for loops are more concise and less error-prone than traditional loops when iterating over collections.</p>
+            </div>
+            
+            <h3>Nested Loops</h3>
+            <p>You can place one loop inside another to create nested loops, which are useful for working with multi-dimensional data structures or generating complex patterns.</p>
+            
+            <pre><code>// Example: Print a 3x3 grid of numbers
+for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        std::cout << i << "," << j << " ";
+    }
+    std::cout << std::endl;
+}
+
+// Output:
+// 1,1 1,2 1,3
+// 2,1 2,2 2,3
+// 3,1 3,2 3,3</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Jump Statements</h2>
+            <p>Jump statements alter the normal flow of program execution by transferring control to another part of the program.</p>
+            
+            <h3>break Statement</h3>
+            <p>The <code>break</code> statement terminates the innermost loop or switch statement and transfers control to the statement immediately following it.</p>
+            
+            <pre><code>// Example: Find the first even number in an array
+int numbers[] = {7, 3, 9, 4, 5, 6};
+for (int num : numbers) {
+    if (num % 2 == 0) {
+        std::cout << "First even number: " << num << std::endl;
+        break;  // Exit the loop once an even number is found
+    }
+}
+// Output: First even number: 4</code></pre>
+            
+            <h3>continue Statement</h3>
+            <p>The <code>continue</code> statement skips the rest of the current iteration of a loop and proceeds with the next iteration.</p>
+            
+            <pre><code>// Example: Print only odd numbers from 1 to 10
+for (int i = 1; i <= 10; i++) {
+    if (i % 2 == 0) {
+        continue;  // Skip even numbers
+    }
+    std::cout << i << " ";
+}
+// Output: 1 3 5 7 9</code></pre>
+            
+            <h3>return Statement</h3>
+            <p>The <code>return</code> statement exits the current function and returns control (and optionally a value) to the calling function.</p>
+            
+            <pre><code>// Example: Function to check if a number is prime
+bool isPrime(int num) {
+    if (num <= 1) {
+        return false;  // Not prime
+    }
+    
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) {
+            return false;  // Not prime
+        }
+    }
+    
+    return true;  // Prime
+}
+
+// Usage
+std::cout << "Is 17 prime? " << (isPrime(17) ? "Yes" : "No") << std::endl;
+// Output: Is 17 prime? Yes</code></pre>
+            
+            <h3>goto Statement</h3>
+            <p>The <code>goto</code> statement transfers control to a labeled statement within the same function.</p>
+            
+            <pre><code>// Example: Using goto (generally not recommended)
+int i = 1;
+start:
+    if (i <= 5) {
+        std::cout << i << " ";
+        i++;
+        goto start;
+    }
+// Output: 1 2 3 4 5</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> The <code>goto</code> statement is generally discouraged in modern programming as it can make code harder to understand and maintain. It's better to use other control structures like loops and if statements.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Comparison of Loop Types</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>Loop Type</th>
+                    <th>When to Use</th>
+                    <th>Advantages</th>
+                    <th>Disadvantages</th>
+                </tr>
+                <tr>
+                    <td>for</td>
+                    <td>When you know the number of iterations in advance</td>
+                    <td>
+                        <ul>
+                            <li>Compact syntax</li>
+                            <li>Initialization, condition, and update in one line</li>
+                            <li>Good for iterating over sequences</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Less flexible for complex conditions</li>
+                            <li>Can be harder to read with complex expressions</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>while</td>
+                    <td>When you don't know the number of iterations in advance</td>
+                    <td>
+                        <ul>
+                            <li>Simple syntax</li>
+                            <li>Good for condition-based loops</li>
+                            <li>Flexible for various scenarios</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Initialization and update must be handled separately</li>
+                            <li>Risk of infinite loops if condition never becomes false</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>do-while</td>
+                    <td>When you need to execute the loop at least once</td>
+                    <td>
+                        <ul>
+                            <li>Guarantees at least one execution</li>
+                            <li>Good for input validation</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Less commonly used</li>
+                            <li>Can be confusing for beginners</li>
+                            <li>Same risks as while loops</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>range-based for</td>
+                    <td>When iterating over collections (arrays, vectors, etc.)</td>
+                    <td>
+                        <ul>
+                            <li>Very concise syntax</li>
+                            <li>Eliminates common errors like off-by-one</li>
+                            <li>More readable for collection traversal</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Limited to collections</li>
+                            <li>No direct access to index</li>
+                            <li>Only available in C++11 and later</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Best Practices for Control Structures</h2>
+            
+            <h3>General Guidelines</h3>
+            <ul>
+                <li><strong>Keep it simple:</strong> Use the simplest control structure that solves your problem.</li>
+                <li><strong>Avoid deep nesting:</strong> Deeply nested control structures are hard to read and maintain. Consider refactoring into separate functions.</li>
+                <li><strong>Use meaningful names:</strong> Choose descriptive names for loop variables and conditions.</li>
+                <li><strong>Be consistent:</strong> Use a consistent style for braces and indentation.</li>
+            </ul>
+            
+            <h3>Selection Statement Tips</h3>
+            <ul>
+                <li>Use <code>switch</code> instead of multiple <code>if-else</code> statements when comparing a single variable against multiple values.</li>
+                <li>Consider the ternary operator for simple conditional assignments.</li>
+                <li>Always use braces <code>{}</code> for if statements, even for single-line blocks, to prevent bugs when adding more lines later.</li>
+            </ul>
+            
+            <h3>Loop Tips</h3>
+            <ul>
+                <li>Choose the appropriate loop type for your specific needs.</li>
+                <li>Use <code>break</code> and <code>continue</code> judiciously to make your loops more efficient.</li>
+                <li>Be careful with loop conditions to avoid infinite loops.</li>
+                <li>Consider using range-based for loops when working with collections.</li>
+            </ul>
+            
+            <h3>Error Prevention</h3>
+            <ul>
+                <li>Double-check your loop boundaries to prevent off-by-one errors.</li>
+                <li>Ensure that loop variables are properly initialized.</li>
+                <li>Make sure that loop conditions will eventually become false.</li>
+                <li>Be cautious with floating-point comparisons in loop conditions due to precision issues.</li>
+            </ul>
+            
+            <div class="note">
+                <p><strong>Remember:</strong> The goal of control structures is to make your code's logic clear and maintainable. Choose the structure that best communicates your intent to other programmers (including your future self).</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Common Patterns and Examples</h2>
+            
+            <h3>Input Validation</h3>
+            <pre><code>int number;
+bool validInput = false;
+
+while (!validInput) {
+    std::cout << "Enter a positive number: ";
+    std::cin >> number;
+    
+    if (std::cin.fail() || number <= 0) {
+        std::cout << "Invalid input. Please try again." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    } else {
+        validInput = true;
+    }
+}
+
+std::cout << "You entered: " << number << std::endl;</code></pre>
+            
+            <h3>Finding Maximum/Minimum</h3>
+            <pre><code>int numbers[] = {7, 3, 9, 2, 5, 8};
+int size = sizeof(numbers) / sizeof(numbers[0]);
+
+int max = numbers[0];  // Assume first element is maximum
+for (int i = 1; i < size; i++) {
+    if (numbers[i] > max) {
+        max = numbers[i];
+    }
+}
+
+std::cout << "Maximum value: " << max << std::endl;  // Output: Maximum value: 9</code></pre>
+            
+            <h3>Counting and Summing</h3>
+            <pre><code>int numbers[] = {7, 3, 9, 2, 5, 8};
+int size = sizeof(numbers) / sizeof(numbers[0]);
+
+int sum = 0;
+int evenCount = 0;
+
+for (int num : numbers) {
+    sum += num;
+    
+    if (num % 2 == 0) {
+        evenCount++;
+    }
+}
+
+double average = static_cast<double>(sum) / size;
+
+std::cout << "Sum: " << sum << std::endl;
+std::cout << "Average: " << average << std::endl;
+std::cout << "Number of even values: " << evenCount << std::endl;</code></pre>
+            
+            <h3>Nested Loop Pattern</h3>
+            <pre><code>// Print a triangle pattern
+int rows = 5;
+
+for (int i = 1; i <= rows; i++) {
+    // Print spaces
+    for (int j = 1; j <= rows - i; j++) {
+        std::cout << " ";
+    }
+    
+    // Print stars
+    for (int k = 1; k <= 2 * i - 1; k++) {
+        std::cout << "*";
+    }
+    
+    std::cout << std::endl;
+}
+
+// Output:
+//     *
+//    ***
+//   *****
+//  *******
+// *********</code></pre>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

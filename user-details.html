@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="courses.html">Courses</a>
+                <a href="#">Practice</a>
+                <a href="quiz.html">Quiz</a>
+                <a href="community.html">Community</a>
+                <a href="blog.html">Blog</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Details Section -->
+    <section class="user-details">
+        <div class="container">
+            <h1>User Performance Details</h1>
+            <div id="user-info"></div>
+            <h2>Performance Metrics</h2>
+            <table id="performance-table">
+                <thead>
+                    <tr>
+                        <th>Quiz Title</th>
+                        <th>Score</th>
+                        <th>Date Taken</th>
+                    </tr>
+                </thead>
+                <tbody id="performance-body">
+                    <!-- User performance data will be populated here -->
+                </tbody>
+            </table>
+            <button id="back-button" class="btn">Back to Users</button>
+        </div>
+    </section>
+
+    <script src="js/user-details.js"></script>
+</body>
+</html>

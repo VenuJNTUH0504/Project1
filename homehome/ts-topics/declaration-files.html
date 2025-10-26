@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declaration Files - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Declaration Files in TypeScript</h1>
+        
+        <p>Declaration files (with the .d.ts extension) provide type information for JavaScript code that wasn't written in TypeScript. They allow you to use JavaScript libraries with TypeScript's type checking and IntelliSense features without having to rewrite the libraries in TypeScript.</p>
+        
+        <h2>What Are Declaration Files?</h2>
+        
+        <p>Declaration files contain only type information and no implementation. They describe the shape of existing JavaScript code to TypeScript:</p>
+        
+        <pre><code>// Example declaration file (jquery.d.ts)
+declare namespace $ {
+    function ajax(settings: AjaxSettings): void;
+    
+    interface AjaxSettings {
+        url: string;
+        method?: string;
+        data?: any;
+        success?: (response: any) => void;
+        error?: (error: any) => void;
+    }
+}
+
+// This allows TypeScript to understand jQuery code
+$.ajax({
+    url: "/api/data",
+    method: "GET",
+    success: (response) => {
+        console.log(response);
+    }
+});</code></pre>
+        
+        <h2>When to Use Declaration Files</h2>
+        
+        <ul>
+            <li>When using JavaScript libraries that don't have TypeScript types</li>
+            <li>When creating a package that will be consumed by TypeScript users</li>
+            <li>When defining global types for your application</li>
+            <li>When working with JavaScript code in a TypeScript project</li>
+        </ul>
+        
+        <h2>Types of Declaration Files</h2>
+        
+        <h3>1. Global Libraries</h3>
+        
+        <p>For libraries that add objects to the global scope:</p>
+        
+        <pre><code>// moment.d.ts (simplified)
+declare namespace moment {
+    function format(date: Date, format: string): string;
+    function now(): number;
+}
+
+declare function moment(date?: any): moment.MomentInstance;
+
+// Usage
+const now = moment();
+const formatted = moment.format(new Date(), "YYYY-MM-DD");</code></pre>
+        
+        <h3>2. Module Libraries</h3>
+        
+        <p>For libraries that use module exports:</p>
+        
+        <pre><code>// lodash.d.ts (simplified)
+declare module "lodash" {
+    function map<T, U>(array: T[], iteratee: (value: T) => U): U[];
+    function filter<T>(array: T[], predicate: (value: T) => boolean): T[];
+    // ...more functions
+    
+    export = _;
+}
+
+// Usage
+import * as _ from "lodash";
+const doubled = _.map([1, 2, 3], n => n * 2);</code></pre>
+        
+        <h3>3. UMD Libraries</h3>
+        
+        <p>For libraries that can be used both as modules and in the global scope:</p>
+        
+        <pre><code>// library.d.ts
+declare namespace Library {
+    function doSomething(): void;
+}
+
+declare module "library" {
+    export = Library;
+}
+
+// Usage as global
+Library.doSomething();
+
+// Usage as module
+import * as lib from "library";
+lib.doSomething();</code></pre>
+        
+        <h2>Creating Declaration Files</h2>
+        
+        <h3>Basic Structure</h3>
+        
+        <pre><code>// my-library.d.ts
+declare namespace MyLibrary {
+    // Types and interfaces
+    interface Options {
+        debug?: boolean;
+        timeout?: number;
+    }
+    
+    // Functions
+    function initialize(options?: Options): void;
+    function getData(id: string): Promise<any>;
+    
+    // Classes
+    class Client {
+        constructor(apiKey: string);
+        request(endpoint: string): Promise<any>;
+    }
+    
+    // Variables
+    const version: string;
+}</code></pre>
+        
+        <h3>Module Format</h3>
+        
+        <pre><code>// my-module.d.ts
+declare module "my-module" {
+    // Export types and interfaces
+    export interface Options {
+        debug?: boolean;
+        timeout?: number;
+    }
+    
+    // Export functions
+    export function initialize(options?: Options): void;
+    export function getData(id: string): Promise<any>;
+    
+    // Export classes
+    export class Client {
+        constructor(apiKey: string);
+        request(endpoint: string): Promise<any>;
+    }
+    
+    // Export variables
+    export const version: string;
+}</code></pre>
+        
+        <h2>Using Declaration Files</h2>
+        
+        <h3>Installing Types from DefinitelyTyped</h3>
+        
+        <p>Many popular libraries have type definitions available through the @types organization:</p>
+        
+        <pre><code>// Install types for jQuery
+npm install --save-dev @types/jquery
+
+// Install types for lodash
+npm install --save-dev @types/lodash
+
+// Install types for express
+npm install --save-dev @types/express</code></pre>
+        
+        <h3>Including Declaration Files</h3>
+        
+        <p>TypeScript automatically includes declaration files in several ways:</p>
+        
+        <ol>
+            <li>Files from @types packages are automatically included</li>
+            <li>Declaration files in the same directory as your .ts files</li>
+            <li>Declaration files referenced in tsconfig.json</li>
+        </ol>
+        
+        <pre><code>// tsconfig.json
+{
+  "compilerOptions": {
+    // ...
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ]
+  }
+}</code></pre>
+        
+        <h3>Triple-Slash Directives</h3>
+        
+        <p>You can explicitly reference declaration files using triple-slash directives:</p>
+        
+        <pre><code>/// &lt;reference path="./my-library.d.ts" /&gt;
+
+// Now you can use MyLibrary
+MyLibrary.initialize({ debug: true });</code></pre>
+        
+        <h2>Advanced Declaration File Techniques</h2>
+        
+        <h3>Ambient Declarations</h3>
+        
+        <p>Ambient declarations tell TypeScript that a variable exists, even if it's not defined in your TypeScript code:</p>
+        
+        <pre><code>// globals.d.ts
+declare const API_KEY: string;
+declare const DEBUG_MODE: boolean;
+
+// Usage
+console.log(API_KEY);  // TypeScript knows this exists
+if (DEBUG_MODE) {
+    console.log("Debug mode enabled");
+}</code></pre>
+        
+        <h3>Extending Global Types</h3>
+        
+        <p>You can extend existing global interfaces:</p>
+        
+        <pre><code>// global-extensions.d.ts
+declare global {
+    interface Array<T> {
+        toSorted(): T[];
+        first(): T | undefined;
+        last(): T | undefined;
+    }
+    
+    interface String {
+        capitalize(): string;
+    }
+}
+
+// Usage
+const arr = [3, 1, 2];
+const sorted = arr.toSorted();
+const first = arr.first();
+
+const str = "hello";
+const capitalized = str.capitalize();</code></pre>
+        
+        <h3>Module Augmentation</h3>
+        
+        <p>You can add new functionality to existing modules:</p>
+        
+        <pre><code>// express-extensions.d.ts
+import 'express';
+
+declare module 'express' {
+    interface Request {
+        user?: {
+            id: string;
+            name: string;
+            roles: string[];
+        };
+        isAuthenticated(): boolean;
+    }
+}
+
+// Usage with Express
+app.get('/profile', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.json({ user: req.user });
+    } else {
+        res.status(401).send('Not authenticated');
+    }
+});</code></pre>
+        
+        <h3>Declaration Merging</h3>
+        
+        <p>TypeScript merges multiple declarations with the same name:</p>
+        
+        <pre><code>// First declaration
+interface User {
+    id: number;
+    name: string;
+}
+
+// Second declaration (in another file)
+interface User {
+    email: string;
+    role: string;
+}
+
+// TypeScript merges them:
+// interface User {
+//     id: number;
+//     name: string;
+//     email: string;
+//     role: string;
+// }
+
+const user: User = {
+    id: 1,
+    name: "John",
+    email: "john@example.com",
+    role: "admin"
+};</code></pre>
+        
+        <h2>Common Patterns in Declaration Files</h2>
+        
+        <h3>Function Overloads</h3>
+        
+        <pre><code>// Declaring function overloads
+declare function parse(input: string): Document;
+declare function parse(input: string, options: { html: true }): HTMLDocument;
+declare function parse(input: string, options: { xml: true }): XMLDocument;
+
+// Usage
+const doc1 = parse("&lt;div&gt;Hello&lt;/div&gt;");
+const doc2 = parse("&lt;div&gt;Hello&lt;/div&gt;", { html: true });
+const doc3 = parse("&lt;root&gt;Hello&lt;/root&gt;", { xml: true });</code></pre>
+        
+        <h3>Optional Properties</h3>
+        
+        <pre><code>// Interface with optional properties
+interface RequestOptions {
+    url: string;
+    method?: "GET" | "POST" | "PUT" | "DELETE";
+    headers?: Record<string, string>;
+    data?: any;
+    timeout?: number;
+}
+
+// Usage
+const options: RequestOptions = {
+    url: "/api/data",
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json"
+    }
+};</code></pre>
+        
+        <h3>Index Signatures</h3>
+        
+        <pre><code>// Interface with index signature
+interface Dictionary<T> {
+    [key: string]: T;
+}
+
+// Usage
+const stringDict: Dictionary<string> = {
+    key1: "value1",
+    key2: "value2"
+};
+
+const numberDict: Dictionary<number> = {
+    count: 42,
+    max: 100
+};</code></pre>
+        
+        <h2>Generating Declaration Files</h2>
+        
+        <p>TypeScript can automatically generate declaration files from your TypeScript code:</p>
+        
+        <pre><code>// tsconfig.json
+{
+  "compilerOptions": {
+    "declaration": true,  // Generate .d.ts files
+    "outDir": "dist",
+    // ...other options
+  }
+}</code></pre>
+        
+        <p>This will generate .d.ts files alongside your compiled JavaScript files.</p>
+        
+        <h3>For Libraries</h3>
+        
+        <p>When creating a library, you should include the types in your package.json:</p>
+        
+        <pre><code>// package.json
+{
+  "name": "my-library",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",  // Point to your declaration file
+  // ...
+}</code></pre>
+        
+        <h2>Troubleshooting Declaration Files</h2>
+        
+        <div class="warning-box">
+            <h4>Common Issues</h4>
+            <ul>
+                <li><strong>Missing types:</strong> Install from @types or create your own declaration file</li>
+                <li><strong>Type conflicts:</strong> Check for duplicate declarations or version mismatches</li>
+                <li><strong>Incorrect types:</strong> Submit a PR to DefinitelyTyped or create your own override</li>
+                <li><strong>Module not found:</strong> Check import paths and module resolution settings</li>
+            </ul>
+        </div>
+        
+        <h3>Creating Declaration Files for Missing Types</h3>
+        
+        <p>If a library doesn't have types, you can create your own in a file named <code>typings/library-name/index.d.ts</code>:</p>
+        
+        <pre><code>// typings/missing-library/index.d.ts
+declare module 'missing-library' {
+    export function doSomething(input: string): string;
+    export const VERSION: string;
+    // Add more types as needed
+}</code></pre>
+        
+        <h2>Best Practices</h2>
+        
+        <ul>
+            <li>Use existing type definitions from @types when available</li>
+            <li>Document your declaration files with JSDoc comments</li>
+            <li>Keep declaration files in sync with the library implementation</li>
+            <li>Use strict types rather than any when possible</li>
+            <li>Test your declaration files with actual usage</li>
+            <li>Consider contributing your declaration files to DefinitelyTyped</li>
+        </ul>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html" target="_blank">TypeScript Handbook: Declaration Files</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/declaration-files/templates.html" target="_blank">TypeScript Handbook: Declaration File Templates</a></li>
+                <li><a href="https://github.com/DefinitelyTyped/DefinitelyTyped" target="_blank">DefinitelyTyped Repository</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html" target="_blank">TypeScript Handbook: Publishing Declaration Files</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

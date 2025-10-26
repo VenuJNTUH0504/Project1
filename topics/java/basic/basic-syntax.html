@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Syntax in Java - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Basic Syntax in Java</h1>
+            <p>Understanding the fundamental syntax and structure of Java programs</p>
+        </header>
+
+        <div class="card">
+            <h2>Data Types</h2>
+            <p>Java is a strongly typed language, which means every variable must have a declared type.</p>
+            
+            <h3>Primitive Data Types:</h3>
+            <ul>
+                <li><code>byte</code>: 8-bit integer (-128 to 127)</li>
+                <li><code>short</code>: 16-bit integer (-32,768 to 32,767)</li>
+                <li><code>int</code>: 32-bit integer (-2^31 to 2^31-1)</li>
+                <li><code>long</code>: 64-bit integer (-2^63 to 2^63-1)</li>
+                <li><code>float</code>: 32-bit floating point</li>
+                <li><code>double</code>: 64-bit floating point</li>
+                <li><code>boolean</code>: true or false</li>
+                <li><code>char</code>: 16-bit Unicode character</li>
+            </ul>
+
+            <div class="note">
+                <p><strong>Note:</strong> Java also has reference types (objects) which are instances of classes.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Variables and Constants</h2>
+            <p>Variables are containers for storing data values. Constants are variables whose values cannot be changed.</p>
+            
+            <pre><code>// Variable declaration and initialization
+int age = 25;
+double price = 19.99;
+String name = "John";
+
+// Constant declaration
+final double PI = 3.14159;
+final int MAX_VALUE = 100;
+
+// Multiple variable declaration
+int x = 5, y = 10, z = 15;</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always initialize variables before using them to avoid unexpected behavior.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Operators</h2>
+            <p>Java provides various operators for performing operations on variables and values.</p>
+            
+            <h3>Arithmetic Operators:</h3>
+            <ul>
+                <li><code>+</code>: Addition</li>
+                <li><code>-</code>: Subtraction</li>
+                <li><code>*</code>: Multiplication</li>
+                <li><code>/</code>: Division</li>
+                <li><code>%</code>: Modulus</li>
+                <li><code>++</code>: Increment</li>
+                <li><code>--</code>: Decrement</li>
+            </ul>
+
+            <h3>Comparison Operators:</h3>
+            <ul>
+                <li><code>==</code>: Equal to</li>
+                <li><code>!=</code>: Not equal to</li>
+                <li><code>></code>: Greater than</li>
+                <li><code><</code>: Less than</li>
+                <li><code>>=</code>: Greater than or equal to</li>
+                <li><code><=</code>: Less than or equal to</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Control Structures</h2>
+            <p>Control structures determine the flow of program execution.</p>
+            
+            <h3>If-Else Statement:</h3>
+            <pre><code>if (condition) {
+    // code to execute if condition is true
+} else if (anotherCondition) {
+    // code to execute if anotherCondition is true
+} else {
+    // code to execute if all conditions are false
+}</code></pre>
+
+            <h3>Switch Statement:</h3>
+            <pre><code>switch (expression) {
+    case value1:
+        // code to execute
+        break;
+    case value2:
+        // code to execute
+        break;
+    default:
+        // code to execute if no case matches
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Always include <code>break</code> statements in switch cases to prevent fall-through.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Loops</h2>
+            <p>Loops are used to execute a block of code repeatedly.</p>
+            
+            <h3>For Loop:</h3>
+            <pre><code>for (initialization; condition; update) {
+    // code to execute
+}</code></pre>
+
+            <h3>While Loop:</h3>
+            <pre><code>while (condition) {
+    // code to execute
+}</code></pre>
+
+            <h3>Do-While Loop:</h3>
+            <pre><code>do {
+    // code to execute
+} while (condition);</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Be careful with loop conditions to avoid infinite loops.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Arrays</h2>
+            <p>Arrays are used to store multiple values in a single variable.</p>
+            
+            <pre><code>// Array declaration and initialization
+int[] numbers = new int[5];
+int[] numbers = {1, 2, 3, 4, 5};
+
+// Accessing array elements
+numbers[0] = 10;
+int firstNumber = numbers[0];
+
+// Array length
+int length = numbers.length;
+
+// Multidimensional arrays
+int[][] matrix = new int[3][3];
+int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Array indices start at 0 and go up to length-1.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Methods</h2>
+            <p>Methods are blocks of code that perform specific tasks.</p>
+            
+            <pre><code>// Method declaration
+public static int add(int a, int b) {
+    return a + b;
+}
+
+// Method with variable arguments
+public static int sum(int... numbers) {
+    int total = 0;
+    for (int num : numbers) {
+        total += num;
+    }
+    return total;
+}
+
+// Method overloading
+public static double add(double a, double b) {
+    return a + b;
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Methods should have a single responsibility and be well-documented.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

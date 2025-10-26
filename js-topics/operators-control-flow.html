@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operators & Control Flow - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Operators & Control Flow</h1>
+        
+        <p>JavaScript provides various operators for performing operations on values and control flow statements to control the execution of code based on different conditions.</p>
+        
+        <h2>Operators</h2>
+        <p>Operators are symbols that perform operations on operands (values and variables).</p>
+        
+        <h3>Arithmetic Operators</h3>
+        <ul>
+            <li><code>+</code>: Addition</li>
+            <li><code>-</code>: Subtraction</li>
+            <li><code>*</code>: Multiplication</li>
+            <li><code>/</code>: Division</li>
+            <li><code>%</code>: Modulus (remainder)</li>
+            <li><code>**</code>: Exponentiation (ES2016)</li>
+            <li><code>++</code>: Increment</li>
+            <li><code>--</code>: Decrement</li>
+        </ul>
+        
+        <h3>Assignment Operators</h3>
+        <ul>
+            <li><code>=</code>: Assignment</li>
+            <li><code>+=</code>: Addition assignment</li>
+            <li><code>-=</code>: Subtraction assignment</li>
+            <li><code>*=</code>: Multiplication assignment</li>
+            <li><code>/=</code>: Division assignment</li>
+            <li><code>%=</code>: Modulus assignment</li>
+            <li><code>**=</code>: Exponentiation assignment</li>
+        </ul>
+        
+        <h3>Comparison Operators</h3>
+        <ul>
+            <li><code>==</code>: Equal to (value)</li>
+            <li><code>===</code>: Equal to (value and type)</li>
+            <li><code>!=</code>: Not equal to (value)</li>
+            <li><code>!==</code>: Not equal to (value and type)</li>
+            <li><code>></code>: Greater than</li>
+            <li><code><</code>: Less than</li>
+            <li><code>>=</code>: Greater than or equal to</li>
+            <li><code><=</code>: Less than or equal to</li>
+        </ul>
+        
+        <h3>Logical Operators</h3>
+        <ul>
+            <li><code>&&</code>: Logical AND</li>
+            <li><code>||</code>: Logical OR</li>
+            <li><code>!</code>: Logical NOT</li>
+        </ul>
+        
+        <h3>Ternary Operator</h3>
+        <p>The conditional (ternary) operator is the only JavaScript operator that takes three operands:</p>
+        <pre><code>condition ? expression1 : expression2</code></pre>
+        
+        <h2>Control Flow</h2>
+        <p>Control flow statements determine the order in which code is executed based on certain conditions.</p>
+        
+        <h3>Conditional Statements</h3>
+        
+        <h4>if...else Statement</h4>
+        <pre><code>if (condition) {
+    // code to be executed if condition is true
+} else if (anotherCondition) {
+    // code to be executed if anotherCondition is true
+} else {
+    // code to be executed if all conditions are false
+}</code></pre>
+        
+        <h4>switch Statement</h4>
+        <pre><code>switch (expression) {
+    case value1:
+        // code to be executed if expression === value1
+        break;
+    case value2:
+        // code to be executed if expression === value2
+        break;
+    default:
+        // code to be executed if expression doesn't match any cases
+}</code></pre>
+        
+        <h3>Loops</h3>
+        
+        <h4>for Loop</h4>
+        <pre><code>for (initialization; condition; increment/decrement) {
+    // code to be executed
+}</code></pre>
+        
+        <h4>while Loop</h4>
+        <pre><code>while (condition) {
+    // code to be executed
+}</code></pre>
+        
+        <h4>do...while Loop</h4>
+        <pre><code>do {
+    // code to be executed
+} while (condition);</code></pre>
+        
+        <h4>for...in Loop</h4>
+        <p>Iterates over the enumerable properties of an object:</p>
+        <pre><code>for (let key in object) {
+    // code to be executed
+}</code></pre>
+        
+        <h4>for...of Loop</h4>
+        <p>Iterates over iterable objects (arrays, strings, etc.):</p>
+        <pre><code>for (let value of iterable) {
+    // code to be executed
+}</code></pre>
+        
+        <h3>Jump Statements</h3>
+        <ul>
+            <li><code>break</code>: Terminates the current loop or switch statement</li>
+            <li><code>continue</code>: Skips the current iteration of a loop</li>
+            <li><code>return</code>: Exits from a function</li>
+        </ul>
+        
+        <div class="examples">
+            <h3>Examples</h3>
+            <pre><code>// Arithmetic operators
+let sum = 5 + 3;       // 8
+let difference = 10 - 4; // 6
+let product = 3 * 4;   // 12
+let quotient = 12 / 4; // 3
+let remainder = 10 % 3; // 1
+let power = 2 ** 3;    // 8
+
+// Increment and decrement
+let x = 5;
+let y = x++;  // y = 5, x = 6 (post-increment)
+let z = ++x;  // z = 7, x = 7 (pre-increment)
+
+// Comparison operators
+console.log(5 == "5");   // true (equal value)
+console.log(5 === "5");  // false (not equal type)
+console.log(5 != "5");   // false
+console.log(5 !== "5");  // true
+
+// Logical operators
+console.log(true && false); // false
+console.log(true || false); // true
+console.log(!true);         // false
+
+// Ternary operator
+let age = 20;
+let status = (age >= 18) ? "adult" : "minor";
+console.log(status); // "adult"
+
+// if...else statement
+if (age < 13) {
+    console.log("Child");
+} else if (age < 18) {
+    console.log("Teenager");
+} else {
+    console.log("Adult");
+}
+
+// switch statement
+let day = 3;
+switch (day) {
+    case 1:
+        console.log("Monday");
+        break;
+    case 2:
+        console.log("Tuesday");
+        break;
+    case 3:
+        console.log("Wednesday");
+        break;
+    default:
+        console.log("Other day");
+}
+
+// for loop
+for (let i = 0; i < 5; i++) {
+    console.log(i); // 0, 1, 2, 3, 4
+}
+
+// while loop
+let count = 0;
+while (count < 3) {
+    console.log(count); // 0, 1, 2
+    count++;
+}
+
+// do...while loop
+let num = 0;
+do {
+    console.log(num); // 0
+    num++;
+} while (num < 1);
+
+// for...in loop (for objects)
+const person = { name: "John", age: 30, job: "Developer" };
+for (let key in person) {
+    console.log(key + ": " + person[key]);
+}
+
+// for...of loop (for iterables)
+const colors = ["red", "green", "blue"];
+for (let color of colors) {
+    console.log(color);
+}
+
+// break and continue
+for (let i = 0; i < 10; i++) {
+    if (i === 3) {
+        continue; // Skip iteration when i is 3
+    }
+    if (i === 7) {
+        break; // Exit loop when i is 7
+    }
+    console.log(i); // 0, 1, 2, 4, 5, 6
+}</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators" target="_blank">MDN: Expressions and Operators</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" target="_blank">MDN: Control Flow</a></li>
+                <li><a href="https://javascript.info/operators" target="_blank">JavaScript.info: Operators</a></li>
+                <li><a href="https://javascript.info/logical-operators" target="_blank">JavaScript.info: Logical Operators</a></li>
+                <li><a href="https://javascript.info/comparison" target="_blank">JavaScript.info: Comparisons</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

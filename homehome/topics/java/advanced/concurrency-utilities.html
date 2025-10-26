@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concurrency Utilities - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Concurrency Utilities</h1>
+            <p>Advanced concurrency features in Java</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Concurrency Utilities</h2>
+                <p>Java provides a rich set of concurrency utilities in the java.util.concurrent package.</p>
+                <div class="note">
+                    <p>Key concurrency utilities:</p>
+                    <ul>
+                        <li>Executor Framework</li>
+                        <li>Atomic Variables</li>
+                        <li>Locks and Conditions</li>
+                        <li>Concurrent Collections</li>
+                        <li>Synchronizers</li>
+                        <li>Fork/Join Framework</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="executor-framework">
+                <h2>Executor Framework</h2>
+                <p>The Executor framework provides a higher-level replacement for working with threads directly.</p>
+                <div class="code-example">
+                    <h3>Example: Executor Framework</h3>
+                    <pre><code>import java.util.concurrent.*;
+
+public class ExecutorExample {
+    public static void main(String[] args) {
+        // Create different types of executors
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+        ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(2);
+        
+        // Submit tasks
+        fixedThreadPool.submit(() -> {
+            System.out.println("Task running in fixed thread pool");
+        });
+        
+        // Schedule tasks
+        scheduledExecutor.schedule(() -> {
+            System.out.println("Delayed task");
+        }, 1, TimeUnit.SECONDS);
+        
+        // Schedule periodic tasks
+        scheduledExecutor.scheduleAtFixedRate(() -> {
+            System.out.println("Periodic task");
+        }, 0, 1, TimeUnit.SECONDS);
+        
+        // Shutdown executors
+        fixedThreadPool.shutdown();
+        cachedThreadPool.shutdown();
+        scheduledExecutor.shutdown();
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="atomic-variables">
+                <h2>Atomic Variables</h2>
+                <p>Atomic variables provide thread-safe operations on single variables.</p>
+                <div class="code-example">
+                    <h3>Example: Atomic Variables</h3>
+                    <pre><code>import java.util.concurrent.atomic.*;
+
+public class AtomicExample {
+    public static void main(String[] args) {
+        // AtomicInteger
+        AtomicInteger counter = new AtomicInteger(0);
+        counter.incrementAndGet();
+        counter.addAndGet(5);
+        
+        // AtomicReference
+        AtomicReference<String> message = new AtomicReference<>("Hello");
+        message.compareAndSet("Hello", "World");
+        
+        // AtomicLong
+        AtomicLong timestamp = new AtomicLong(System.currentTimeMillis());
+        timestamp.updateAndGet(x -> x + 1000);
+        
+        // AtomicBoolean
+        AtomicBoolean flag = new AtomicBoolean(false);
+        flag.compareAndSet(false, true);
+        
+        // AtomicArray
+        AtomicIntegerArray array = new AtomicIntegerArray(10);
+        array.incrementAndGet(0);
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="locks">
+                <h2>Locks and Conditions</h2>
+                <p>Locks provide more flexible synchronization than synchronized blocks.</p>
+                <div class="code-example">
+                    <h3>Example: ReentrantLock and Condition</h3>
+                    <pre><code>import java.util.concurrent.locks.*;
+
+public class LockExample {
+    private final Lock lock = new ReentrantLock();
+    private final Condition notEmpty = lock.newCondition();
+    private final Condition notFull = lock.newCondition();
+    private final Queue<String> queue = new LinkedList<>();
+    private final int capacity = 10;
+
+    public void produce(String item) throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.size() == capacity) {
+                notFull.await();
+            }
+            queue.add(item);
+            notEmpty.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public String consume() throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.isEmpty()) {
+                notEmpty.await();
+            }
+            String item = queue.remove();
+            notFull.signal();
+            return item;
+        } finally {
+            lock.unlock();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="concurrent-collections">
+                <h2>Concurrent Collections</h2>
+                <p>Thread-safe collections for concurrent programming.</p>
+                <div class="code-example">
+                    <h3>Example: Concurrent Collections</h3>
+                    <pre><code>import java.util.concurrent.*;
+
+public class ConcurrentCollectionsExample {
+    public static void main(String[] args) {
+        // ConcurrentHashMap
+        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+        map.put("one", 1);
+        map.computeIfAbsent("two", k -> 2);
+        
+        // CopyOnWriteArrayList
+        CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+        list.add("item1");
+        list.addIfAbsent("item2");
+        
+        // BlockingQueue
+        BlockingQueue<String> queue = new LinkedBlockingQueue<>(10);
+        try {
+            queue.put("message1");
+            String message = queue.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        // ConcurrentSkipListSet
+        ConcurrentSkipListSet<Integer> set = new ConcurrentSkipListSet<>();
+        set.add(1);
+        set.add(2);
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="synchronizers">
+                <h2>Synchronizers</h2>
+                <p>Synchronizers coordinate the control flow of threads.</p>
+                <div class="code-example">
+                    <h3>Example: CountDownLatch and CyclicBarrier</h3>
+                    <pre><code>import java.util.concurrent.*;
+
+public class SynchronizersExample {
+    public static void main(String[] args) throws InterruptedException {
+        // CountDownLatch
+        CountDownLatch latch = new CountDownLatch(3);
+        
+        for (int i = 0; i < 3; i++) {
+            new Thread(() -> {
+                System.out.println("Thread working");
+                latch.countDown();
+            }).start();
+        }
+        
+        latch.await();
+        System.out.println("All threads completed");
+        
+        // CyclicBarrier
+        CyclicBarrier barrier = new CyclicBarrier(3, () -> 
+            System.out.println("All threads reached barrier"));
+        
+        for (int i = 0; i < 3; i++) {
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread waiting at barrier");
+                    barrier.await();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="fork-join">
+                <h2>Fork/Join Framework</h2>
+                <p>The Fork/Join framework is designed for parallel processing of tasks.</p>
+                <div class="code-example">
+                    <h3>Example: ForkJoinPool</h3>
+                    <pre><code>import java.util.concurrent.*;
+
+public class ForkJoinExample {
+    static class SumTask extends RecursiveTask<Long> {
+        private final long[] array;
+        private final int start;
+        private final int end;
+        
+        SumTask(long[] array, int start, int end) {
+            this.array = array;
+            this.start = start;
+            this.end = end;
+        }
+        
+        @Override
+        protected Long compute() {
+            if (end - start <= 1000) {
+                long sum = 0;
+                for (int i = start; i < end; i++) {
+                    sum += array[i];
+                }
+                return sum;
+            }
+            
+            int mid = (start + end) / 2;
+            SumTask left = new SumTask(array, start, mid);
+            SumTask right = new SumTask(array, mid, end);
+            
+            left.fork();
+            long rightResult = right.compute();
+            long leftResult = left.join();
+            
+            return leftResult + rightResult;
+        }
+    }
+    
+    public static void main(String[] args) {
+        long[] array = new long[10000];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = i;
+        }
+        
+        ForkJoinPool pool = new ForkJoinPool();
+        long sum = pool.invoke(new SumTask(array, 0, array.length));
+        System.out.println("Sum: " + sum);
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Concurrency Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for concurrent programming:</p>
+                    <ul>
+                        <li>Use higher-level concurrency utilities instead of low-level synchronization</li>
+                        <li>Prefer immutable objects when possible</li>
+                        <li>Use thread pools instead of creating new threads</li>
+                        <li>Document thread-safety guarantees</li>
+                        <li>Use concurrent collections instead of synchronized collections</li>
+                        <li>Handle InterruptedException properly</li>
+                        <li>Use appropriate synchronization granularity</li>
+                        <li>Consider using CompletableFuture for asynchronous programming</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="java-networking.html">Java Networking</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

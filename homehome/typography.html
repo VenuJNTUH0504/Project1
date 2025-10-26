@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Typography</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .display-example { border: 2px solid #4a90e2; padding: 10px; margin: 10px 0; }
+        .font-family-example { font-family: 'Courier New', Courier, monospace; background: #4a90e2; color: #fff; padding: 10px; border-radius: 6px; }
+        .font-size-example { font-size: 2rem; background: #f39c12; color: #fff; padding: 10px; border-radius: 6px; }
+        .font-weight-example { font-weight: bold; background: #4a90e2; color: #fff; padding: 10px; border-radius: 6px; }
+        .font-style-example { font-style: italic; background: #f39c12; color: #fff; padding: 10px; border-radius: 6px; }
+        .line-height-example { line-height: 2.5; background: #4a90e2; color: #fff; padding: 10px; border-radius: 6px; }
+        .text-align-example { text-align: center; background: #f39c12; color: #fff; padding: 10px; border-radius: 6px; }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Typography</h1>
+        <p>Typography in CSS allows you to control the appearance of text on your web pages. You can set font families, sizes, weights, styles, line heights, and more to create visually appealing and readable content.</p>
+
+        <h2>Common Typography Properties</h2>
+        
+        <h3>1. Font Family</h3>
+        <p>The <code>font-family</code> property specifies the typeface for text.</p>
+        <div class="example-box">
+            <div class="font-family-example">
+                This text uses <b>Courier New</b> font.
+            </div>
+            <code>font-family: 'Courier New', Courier, monospace;</code>
+        </div>
+
+        <h3>2. Font Size</h3>
+        <p>The <code>font-size</code> property sets the size of the text.</p>
+        <div class="example-box">
+            <div class="font-size-example">
+                This is large text.
+            </div>
+            <code>font-size: 2rem;</code>
+        </div>
+
+        <h3>3. Font Weight</h3>
+        <p>The <code>font-weight</code> property sets the thickness of the text.</p>
+        <div class="example-box">
+            <div class="font-weight-example">
+                This is bold text.
+            </div>
+            <code>font-weight: bold;</code>
+        </div>
+
+        <h3>4. Font Style</h3>
+        <p>The <code>font-style</code> property is used for italic or oblique text.</p>
+        <div class="example-box">
+            <div class="font-style-example">
+                This is italic text.
+            </div>
+            <code>font-style: italic;</code>
+        </div>
+
+        <h3>5. Line Height</h3>
+        <p>The <code>line-height</code> property controls the vertical spacing between lines of text.</p>
+        <div class="example-box">
+            <div class="line-height-example">
+                This text has increased line height.<br>
+                Notice the extra space between lines.
+            </div>
+            <code>line-height: 2.5;</code>
+        </div>
+
+        <h3>6. Text Align</h3>
+        <p>The <code>text-align</code> property sets the horizontal alignment of text.</p>
+        <div class="example-box">
+            <div class="text-align-example">
+                This text is centered.
+            </div>
+            <code>text-align: center;</code>
+        </div>
+
+        <h2>Typography Properties Comparison</h2>
+        <ul>
+            <li><b>font-family:</b> Sets the typeface</li>
+            <li><b>font-size:</b> Sets the size of the text</li>
+            <li><b>font-weight:</b> Sets the thickness (boldness)</li>
+            <li><b>font-style:</b> Sets italic or normal style</li>
+            <li><b>line-height:</b> Sets space between lines</li>
+            <li><b>text-align:</b> Sets horizontal alignment</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

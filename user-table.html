@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Users - CodeMaster</title>
+  <style>
+    table { border-collapse: collapse; width: 90%; margin: 2rem auto; }
+    th, td { border: 1px solid #ccc; padding: 0.7rem; text-align: left; }
+    th { background: #3498db; color: #fff; }
+    tr:hover { background: #f1f1f1; cursor: pointer; }
+    h1 { text-align: center; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>All Users</h1>
+  <table id="users-table">
+    <thead>
+      <tr>
+        <th>Name</th><th>Email</th><th>Learning Path</th><th>Joined</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    fetch('/api/users').then(res=>res.json()).then(users=>{
+      const tbody = document.querySelector('#users-table tbody');
+      users.forEach(u=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><a href="user-details.html?id=${u.id}">${u.fullname}</a></td>
+          <td>${u.email}</td><td>${u.learning_path}</td><td>${u.created_at}</td>`;
+        tbody.appendChild(tr);
+      });
+    });
+  </script>
+</body>
+</html>

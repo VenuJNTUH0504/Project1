@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes & Objects - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Classes & Objects in TypeScript</h1>
+        
+        <p>TypeScript offers full support for classes introduced in ES2015 (ES6), with additional features like access modifiers, abstract classes, and interface implementations. This makes TypeScript classes a powerful tool for object-oriented programming.</p>
+        
+        <h2>Basic Class Syntax</h2>
+        
+        <p>A basic class in TypeScript includes properties, a constructor, and methods:</p>
+        
+        <pre><code>class Person {
+    // Properties
+    name: string;
+    age: number;
+    
+    // Constructor
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    // Method
+    greet(): string {
+        return `Hello, my name is ${this.name} and I am ${this.age} years old.`;
+    }
+}
+
+// Creating an instance of the class
+let person = new Person("John", 30);
+console.log(person.greet());  // "Hello, my name is John and I am 30 years old."</code></pre>
+        
+        <h2>Access Modifiers</h2>
+        
+        <p>TypeScript provides access modifiers to control the visibility of class members:</p>
+        
+        <table>
+            <tr>
+                <th>Modifier</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><code>public</code></td>
+                <td>Accessible from anywhere (default if not specified)</td>
+            </tr>
+            <tr>
+                <td><code>private</code></td>
+                <td>Only accessible within the class</td>
+            </tr>
+            <tr>
+                <td><code>protected</code></td>
+                <td>Accessible within the class and subclasses</td>
+            </tr>
+        </table>
+        
+        <pre><code>class Person {
+    public name: string;          // Accessible from anywhere
+    private age: number;          // Only accessible within the class
+    protected email: string;      // Accessible within the class and subclasses
+    
+    constructor(name: string, age: number, email: string) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
+    
+    public getAge(): number {
+        return this.age;  // Can access private members inside the class
+    }
+}
+
+let person = new Person("John", 30, "john@example.com");
+console.log(person.name);       // OK: 'name' is public
+// console.log(person.age);     // Error: 'age' is private
+// console.log(person.email);   // Error: 'email' is protected
+console.log(person.getAge());   // OK: public method can access private property</code></pre>
+        
+        <div class="tip-box">
+            <h4>Parameter Properties</h4>
+            <p>TypeScript provides a concise way to define and initialize class members in the constructor using parameter properties:</p>
+            <pre><code>class Person {
+    // No need for separate property declarations
+    constructor(
+        public name: string,
+        private age: number,
+        protected email: string
+    ) {
+        // No need for assignments, TypeScript does it automatically
+    }
+}</code></pre>
+        </div>
+        
+        <h2>Readonly Properties</h2>
+        
+        <p>You can make properties readonly, which means they can only be set during initialization or in the constructor:</p>
+        
+        <pre><code>class Circle {
+    readonly radius: number;
+    
+    constructor(radius: number) {
+        this.radius = radius;
+    }
+    
+    calculateArea(): number {
+        return Math.PI * this.radius * this.radius;
+    }
+}
+
+let circle = new Circle(10);
+// circle.radius = 20;  // Error: Cannot assign to 'radius' because it is a read-only property</code></pre>
+        
+        <h2>Inheritance</h2>
+        
+        <p>Classes can inherit from other classes using the <code>extends</code> keyword:</p>
+        
+        <pre><code>// Base class
+class Animal {
+    name: string;
+    
+    constructor(name: string) {
+        this.name = name;
+    }
+    
+    move(distanceInMeters: number = 0): void {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
+}
+
+// Derived class
+class Dog extends Animal {
+    constructor(name: string) {
+        super(name);  // Call the parent constructor
+    }
+    
+    bark(): void {
+        console.log('Woof! Woof!');
+    }
+    
+    // Override the parent method
+    move(distanceInMeters = 5): void {
+        console.log('Running...');
+        super.move(distanceInMeters);  // Call the parent method
+    }
+}
+
+let dog = new Dog("Rex");
+dog.bark();   // "Woof! Woof!"
+dog.move(10); // "Running..." followed by "Rex moved 10m."</code></pre>
+        
+        <div class="warning-box">
+            <h4>Important Note</h4>
+            <p>When overriding methods in a derived class, you must call <code>super()</code> in the constructor before accessing <code>this</code> if the base class has a constructor.</p>
+        </div>
+        
+        <h2>Abstract Classes</h2>
+        
+        <p>Abstract classes cannot be instantiated directly and may contain implementation details for their descendants:</p>
+        
+        <pre><code>// Abstract class
+abstract class Animal {
+    abstract makeSound(): void;  // Abstract method must be implemented by derived classes
+    
+    move(): void {
+        console.log('Moving...');
+    }
+}
+
+// Concrete class
+class Dog extends Animal {
+    makeSound(): void {
+        console.log('Woof! Woof!');
+    }
+}
+
+// let animal = new Animal();  // Error: Cannot create an instance of an abstract class
+let dog = new Dog();
+dog.makeSound();  // "Woof! Woof!"
+dog.move();       // "Moving..."</code></pre>
+        
+        <h2>Implementing Interfaces</h2>
+        
+        <p>Classes can implement one or more interfaces using the <code>implements</code> keyword:</p>
+        
+        <pre><code>// Interface definition
+interface Movable {
+    speed: number;
+    move(): void;
+}
+
+interface Drawable {
+    draw(): void;
+}
+
+// Class implementing multiple interfaces
+class Car implements Movable, Drawable {
+    speed: number;
+    
+    constructor(speed: number) {
+        this.speed = speed;
+    }
+    
+    move(): void {
+        console.log(`Moving at ${this.speed} mph`);
+    }
+    
+    draw(): void {
+        console.log('Drawing a car');
+    }
+}
+
+let car = new Car(60);
+car.move();  // "Moving at 60 mph"
+car.draw();  // "Drawing a car"</code></pre>
+        
+        <h2>Static Properties and Methods</h2>
+        
+        <p>Static members belong to the class itself rather than to instances of the class:</p>
+        
+        <pre><code>class MathUtils {
+    static readonly PI: number = 3.14159;
+    
+    static add(x: number, y: number): number {
+        return x + y;
+    }
+    
+    static calculateCircleArea(radius: number): number {
+        return MathUtils.PI * radius * radius;
+    }
+}
+
+// Access static members without creating an instance
+console.log(MathUtils.PI);  // 3.14159
+console.log(MathUtils.add(5, 3));  // 8
+console.log(MathUtils.calculateCircleArea(5));  // 78.53975</code></pre>
+        
+        <h2>Getters and Setters</h2>
+        
+        <p>TypeScript supports getters and setters as a way of intercepting access to a class member:</p>
+        
+        <pre><code>class Person {
+    private _age: number;
+    
+    constructor(private _name: string, age: number) {
+        this._age = age;
+    }
+    
+    // Getter for name
+    get name(): string {
+        return this._name;
+    }
+    
+    // Setter for name
+    set name(value: string) {
+        if (value.length > 0) {
+            this._name = value;
+        } else {
+            throw new Error("Name cannot be empty");
+        }
+    }
+    
+    // Getter for age
+    get age(): number {
+        return this._age;
+    }
+    
+    // Setter for age
+    set age(value: number) {
+        if (value >= 0 && value <= 120) {
+            this._age = value;
+        } else {
+            throw new Error("Age must be between 0 and 120");
+        }
+    }
+}
+
+let person = new Person("John", 30);
+console.log(person.name);  // "John" (calls the getter)
+person.name = "Jane";      // Calls the setter
+console.log(person.name);  // "Jane"
+// person.name = "";       // Error: Name cannot be empty</code></pre>
+        
+        <h2>Generic Classes</h2>
+        
+        <p>Classes can be generic, allowing them to work with a variety of types:</p>
+        
+        <pre><code>// Generic class
+class Box&lt;T&gt; {
+    private value: T;
+    
+    constructor(value: T) {
+        this.value = value;
+    }
+    
+    getValue(): T {
+        return this.value;
+    }
+    
+    setValue(value: T): void {
+        this.value = value;
+    }
+}
+
+// Create instances with different types
+let numberBox = new Box&lt;number&gt;(10);
+let stringBox = new Box&lt;string&gt;("Hello");
+
+console.log(numberBox.getValue());  // 10
+console.log(stringBox.getValue());  // "Hello"
+
+numberBox.setValue(20);
+console.log(numberBox.getValue());  // 20</code></pre>
+        
+        <h2>Class Expressions</h2>
+        
+        <p>Similar to function expressions, TypeScript supports class expressions:</p>
+        
+        <pre><code>// Named class expression
+let Person = class Person {
+    constructor(public name: string) {}
+    
+    greet() {
+        return `Hello, ${this.name}`;
+    }
+};
+
+// Anonymous class expression
+let Animal = class {
+    constructor(public name: string) {}
+    
+    makeSound() {
+        return "Some sound";
+    }
+};
+
+let person = new Person("John");
+console.log(person.greet());  // "Hello, John"</code></pre>
+        
+        <h2>this Parameter</h2>
+        
+        <p>TypeScript allows you to explicitly declare the type of <code>this</code> in a method:</p>
+        
+        <pre><code>class Counter {
+    private count: number = 0;
+    
+    increment(this: Counter) {
+        this.count++;
+    }
+    
+    getCount(this: Counter): number {
+        return this.count;
+    }
+}
+
+let counter = new Counter();
+counter.increment();
+console.log(counter.getCount());  // 1
+
+// Prevents accidental usage with incorrect 'this'
+let increment = counter.increment;
+// increment();  // Error: The 'this' context of type 'void' is not assignable to method's 'this' of type 'Counter'</code></pre>
+        
+        <h2>Class vs Interface</h2>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Class</h4>
+                <ul>
+                    <li>Provides implementation</li>
+                    <li>Can be instantiated</li>
+                    <li>Can have constructors</li>
+                    <li>Can have access modifiers</li>
+                    <li>Can have static members</li>
+                    <li>Can extend other classes</li>
+                    <li>Can implement interfaces</li>
+                </ul>
+            </div>
+            <div class="comparison-column">
+                <h4>Interface</h4>
+                <ul>
+                    <li>Defines a contract only</li>
+                    <li>Cannot be instantiated</li>
+                    <li>Cannot have constructors</li>
+                    <li>Cannot have access modifiers</li>
+                    <li>Cannot have static members</li>
+                    <li>Can extend other interfaces</li>
+                    <li>Cannot implement other interfaces</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h2>Mixins</h2>
+        
+        <p>Mixins are a way to build classes from reusable components by combining simpler partial classes:</p>
+        
+        <pre><code>// Mixin classes
+class Timestamped {
+    timestamp = Date.now();
+}
+
+class Activatable {
+    isActive = false;
+    
+    activate() {
+        this.isActive = true;
+    }
+    
+    deactivate() {
+        this.isActive = false;
+    }
+}
+
+// Create a class that combines both mixins
+class User implements Timestamped, Activatable {
+    name: string;
+    
+    // We need to add these properties and methods to satisfy the interfaces
+    timestamp: number;
+    isActive: boolean;
+    activate: () => void;
+    deactivate: () => void;
+    
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+// Apply the mixins
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            Object.defineProperty(
+                derivedCtor.prototype,
+                name,
+                Object.getOwnPropertyDescriptor(baseCtor.prototype, name) || Object.create(null)
+            );
+        });
+    });
+}
+
+applyMixins(User, [Timestamped, Activatable]);
+
+// Use the mixed-in class
+let user = new User("John");
+console.log(user.timestamp);  // Current timestamp
+console.log(user.isActive);   // false
+user.activate();
+console.log(user.isActive);   // true</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/classes.html" target="_blank">TypeScript Handbook: Classes</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/objects.html" target="_blank">TypeScript Handbook: Object Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/mixins.html" target="_blank">TypeScript Handbook: Mixins</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/generics.html" target="_blank">TypeScript Handbook: Generics</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Development - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1c2c, #2c5282, #1e3c72);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00c6ff;
+        }
+
+        .backend-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .tech-card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .tech-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #00c6ff;
+        }
+
+        .tech-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #00c6ff;
+        }
+
+        .info-section p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card h4 {
+            color: #00c6ff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .backend-container {
+                margin: 80px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="frontend.html">Frontend</a>
+                <a href="frameworks.html">frameworks</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="backend-container">
+        <div class="hero-section">
+            <h1>Backend Development</h1>
+            <p>Backend development is the powerhouse of web applications, handling server-side logic, database operations, and application architecture. It's where data processing, security, and business logic come together to create robust and scalable systems.</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card" onclick="window.location.href='cpp-homepage.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++">
+                <h3>C++</h3>
+                <p>High-performance applications</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='java-homepage.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">
+                <h3>Java</h3>
+                <p>Enterprise-level applications</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='python-homepage.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                <h3>Python</h3>
+                <p>Versatile and readable programming</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='golang-homepage.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" alt="Golang">
+                <h3>Golang</h3>
+                <p>Efficient and scalable systems</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>How Backend Development Works</h2>
+            <p>Backend development focuses on server-side logic, database management, and system architecture. It processes requests from the frontend, manages data storage, handles authentication, and ensures the security and efficiency of web applications.</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Server Management</h4>
+                    <p>Backend developers configure and maintain servers, handle requests, process data, and ensure optimal performance and reliability of web applications.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Database Operations</h4>
+                    <p>Design and manage databases, handle data storage and retrieval, ensure data integrity, and optimize database performance for scalability.</p>
+                </div>
+                <div class="info-card">
+                    <h4>API Development</h4>
+                    <p>Create and maintain APIs that allow communication between frontend applications and backend services, ensuring secure and efficient data transfer.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Security Implementation</h4>
+                    <p>Implement authentication, authorization, data encryption, and other security measures to protect user data and prevent unauthorized access.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Backend Development Components</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Server Architecture</h4>
+                    <p>Design scalable server architectures that can handle high traffic loads and ensure reliable application performance.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Database Management</h4>
+                    <p>Choose and implement appropriate database solutions, manage data relationships, and optimize query performance.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Business Logic</h4>
+                    <p>Implement complex business rules and workflows that define how the application processes and manages data.</p>
+                </div>
+                <div class="info-card">
+                    <h4>System Integration</h4>
+                    <p>Connect various systems and services, ensuring smooth communication and data flow between different components.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add hover effect to tech cards
+        document.querySelectorAll('.tech-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html> 

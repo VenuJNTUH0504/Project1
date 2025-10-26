@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Multithreading - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Multithreading</h1>
+            <p>Concurrent execution of multiple threads in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Multithreading</h2>
+                <p>Multithreading allows you to run multiple threads (smaller units of a program) concurrently, which can improve performance for I/O-bound tasks.</p>
+                <div class="note">
+                    <p>Note: Python's Global Interpreter Lock (GIL) means that threads don't run truly in parallel for CPU-bound tasks. For CPU-bound tasks, consider using multiprocessing instead.</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="threading-module">
+                <h2>The threading Module</h2>
+                <p>Python's built-in threading module provides a high-level interface for working with threads:</p>
+                <pre><code class="language-python">import threading
+import time
+
+def worker(name):
+    print(f"Worker {name} started")
+    time.sleep(2)  # Simulate some work
+    print(f"Worker {name} finished")
+
+# Create threads
+threads = []
+for i in range(5):
+    t = threading.Thread(target=worker, args=(i,))
+    threads.append(t)
+    t.start()
+
+# Wait for all threads to complete
+for t in threads:
+    t.join()
+
+print("All workers completed")</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="thread-synchronization">
+                <h2>Thread Synchronization</h2>
+                <p>When multiple threads access shared resources, synchronization is crucial to prevent race conditions:</p>
+                <pre><code class="language-python">import threading
+
+# Using Locks
+counter = 0
+counter_lock = threading.Lock()
+
+def increment():
+    global counter
+    with counter_lock:
+        counter += 1
+
+# Using Semaphores
+semaphore = threading.Semaphore(3)  # Allow 3 threads at a time
+
+def worker():
+    with semaphore:
+        # Critical section
+        print("Thread working...")
+        time.sleep(1)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="thread-pools">
+                <h2>Thread Pools</h2>
+                <p>Thread pools manage a pool of worker threads for executing tasks:</p>
+                <pre><code class="language-python">from concurrent.futures import ThreadPoolExecutor
+import time
+
+def task(name):
+    print(f"Task {name} started")
+    time.sleep(1)
+    return f"Task {name} completed"
+
+# Create a thread pool with 3 workers
+with ThreadPoolExecutor(max_workers=3) as executor:
+    # Submit tasks
+    futures = [executor.submit(task, i) for i in range(5)]
+    
+    # Get results
+    for future in futures:
+        print(future.result())</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use thread pools for managing multiple threads</li>
+                    <li>Always use synchronization primitives when accessing shared resources</li>
+                    <li>Be aware of the GIL limitations for CPU-bound tasks</li>
+                    <li>Use thread-safe data structures when possible</li>
+                    <li>Implement proper error handling in threads</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utility Types - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Utility Types in TypeScript</h1>
+        
+        <p>TypeScript includes several built-in utility types that help with common type transformations. These utilities save you from writing complex type manipulations yourself and provide standardized ways to transform types across your codebase.</p>
+        
+        <h2>Partial&lt;T&gt;</h2>
+        
+        <p>Makes all properties in a type optional:</p>
+        
+        <pre><code>interface User {
+    id: number;
+    name: string;
+    email: string;
+    age: number;
+}
+
+// Without Partial
+function updateUser(user: User, fieldsToUpdate: { name?: string; email?: string; age?: number }) {
+    return { ...user, ...fieldsToUpdate };
+}
+
+// With Partial - all properties are optional
+function updateUserBetter(user: User, fieldsToUpdate: Partial&lt;User&gt;) {
+    return { ...user, ...fieldsToUpdate };
+}
+
+const user: User = {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    age: 30
+};
+
+// Update just the email
+const updatedUser = updateUserBetter(user, {
+    email: "john.doe@example.com"
+});</code></pre>
+        
+        <h2>Required&lt;T&gt;</h2>
+        
+        <p>Makes all properties in a type required (removes optionality):</p>
+        
+        <pre><code>interface ContactInfo {
+    email?: string;
+    phone?: string;
+    address?: string;
+}
+
+// All fields are now required
+type RequiredContactInfo = Required&lt;ContactInfo&gt;;
+
+// Error: Property 'address' is missing
+// const contact: RequiredContactInfo = {
+//     email: "info@example.com",
+//     phone: "555-1234"
+// };
+
+// Valid
+const completeContact: RequiredContactInfo = {
+    email: "info@example.com",
+    phone: "555-1234",
+    address: "123 Main St"
+};</code></pre>
+        
+        <h2>Readonly&lt;T&gt;</h2>
+        
+        <p>Makes all properties in a type readonly (cannot be reassigned after initialization):</p>
+        
+        <pre><code>interface Config {
+    host: string;
+    port: number;
+    timeout: number;
+}
+
+// All properties are readonly
+type ReadonlyConfig = Readonly&lt;Config&gt;;
+
+const config: ReadonlyConfig = {
+    host: "localhost",
+    port: 3000,
+    timeout: 5000
+};
+
+// Error: Cannot assign to 'port' because it is a read-only property
+// config.port = 4000;</code></pre>
+        
+        <h2>Record&lt;K, T&gt;</h2>
+        
+        <p>Constructs a type with a set of properties of type K with values of type T:</p>
+        
+        <pre><code>// Object with string keys and number values
+type NumberDictionary = Record&lt;string, number&gt;;
+
+const ages: NumberDictionary = {
+    John: 30,
+    Alice: 25,
+    Bob: 40
+};
+
+// With literal types for keys
+type UserRole = "admin" | "editor" | "viewer";
+
+// Object with specific keys and boolean values
+type UserPermissions = Record&lt;UserRole, boolean&gt;;
+
+const permissions: UserPermissions = {
+    admin: true,
+    editor: true,
+    viewer: false
+};
+
+// Complex values
+type UserInfo = { name: string; active: boolean };
+
+// Object with ID keys and UserInfo values
+type UsersById = Record&lt;number, UserInfo&gt;;
+
+const users: UsersById = {
+    1: { name: "John", active: true },
+    2: { name: "Alice", active: false },
+    3: { name: "Bob", active: true }
+};</code></pre>
+        
+        <h2>Pick&lt;T, K&gt;</h2>
+        
+        <p>Constructs a type by picking a set of properties K from type T:</p>
+        
+        <pre><code>interface Article {
+    id: number;
+    title: string;
+    content: string;
+    author: string;
+    tags: string[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+// Pick only specific properties
+type ArticlePreview = Pick&lt;Article, "id" | "title" | "author"&gt;;
+
+const previews: ArticlePreview[] = [
+    { id: 1, title: "TypeScript Basics", author: "John Doe" },
+    { id: 2, title: "Advanced TypeScript", author: "Jane Smith" }
+];
+
+// Combining with other utilities
+type ReadonlyArticlePreview = Readonly&lt;Pick&lt;Article, "id" | "title" | "author"&gt;&gt;;</code></pre>
+        
+        <h2>Omit&lt;T, K&gt;</h2>
+        
+        <p>Constructs a type by omitting a set of properties K from type T:</p>
+        
+        <pre><code>interface User {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+}
+
+// Omit sensitive information
+type PublicUser = Omit&lt;User, "password"&gt;;
+
+const publicUsers: PublicUser[] = [
+    { id: 1, name: "John", email: "john@example.com", role: "admin" },
+    { id: 2, name: "Alice", email: "alice@example.com", role: "user" }
+];
+
+// For creating a new user (no ID needed)
+type NewUser = Omit&lt;User, "id"&gt;;
+
+function createUser(user: NewUser): User {
+    return {
+        ...user,
+        id: generateId() // Some function to generate a unique ID
+    };
+}</code></pre>
+        
+        <h2>Exclude&lt;T, U&gt;</h2>
+        
+        <p>Constructs a type by excluding from T all union members that are assignable to U:</p>
+        
+        <pre><code>// Union type
+type AllTypes = string | number | boolean | object | undefined | null;
+
+// Exclude specific types
+type PrimitiveTypes = Exclude&lt;AllTypes, object | undefined | null&gt;;  // string | number | boolean
+
+// With literal types
+type Status = "pending" | "processing" | "success" | "failed";
+
+// Exclude error states
+type PositiveStatus = Exclude&lt;Status, "failed"&gt;;  // "pending" | "processing" | "success"
+
+// Practical example
+type ButtonVariant = "primary" | "secondary" | "success" | "danger" | "warning" | "info";
+type AlertVariant = "success" | "danger" | "warning" | "info";
+
+// Button variants that are not alert variants
+type ButtonOnlyVariants = Exclude&lt;ButtonVariant, AlertVariant&gt;;  // "primary" | "secondary"</code></pre>
+        
+        <h2>Extract&lt;T, U&gt;</h2>
+        
+        <p>Constructs a type by extracting from T all union members that are assignable to U:</p>
+        
+        <pre><code>// Union type
+type AllTypes = string | number | boolean | object | undefined | null;
+
+// Extract only specific types
+type NullableTypes = Extract&lt;AllTypes, undefined | null&gt;;  // undefined | null
+
+// With literal types
+type Status = "pending" | "processing" | "success" | "failed";
+
+// Extract only error states
+type ErrorStatus = Extract&lt;Status, "failed"&gt;;  // "failed"
+
+// Practical example
+type ButtonVariant = "primary" | "secondary" | "success" | "danger" | "warning" | "info";
+type AlertVariant = "success" | "danger" | "warning" | "info";
+
+// Variants that work for both buttons and alerts
+type SharedVariants = Extract&lt;ButtonVariant, AlertVariant&gt;;  // "success" | "danger" | "warning" | "info"</code></pre>
+        
+        <h2>NonNullable&lt;T&gt;</h2>
+        
+        <p>Constructs a type by excluding null and undefined from T:</p>
+        
+        <pre><code>type NullableString = string | null | undefined;
+
+// Remove null and undefined
+type DefinitelyString = NonNullable&lt;NullableString&gt;;  // string
+
+// Practical example
+function processValue&lt;T&gt;(value: T): NonNullable&lt;T&gt; {
+    if (value === null || value === undefined) {
+        throw new Error("Value cannot be null or undefined");
+    }
+    return value as NonNullable&lt;T&gt;;
+}
+
+// Type is string
+const result = processValue("hello");
+
+// Throws error
+// const error = processValue(null);</code></pre>
+        
+        <h2>ReturnType&lt;T&gt;</h2>
+        
+        <p>Extracts the return type of a function type:</p>
+        
+        <pre><code>// Function that returns a string
+function greet(name: string): string {
+    return `Hello, ${name}!`;
+}
+
+// Type is string
+type GreetReturn = ReturnType&lt;typeof greet&gt;;
+
+// Function that returns an object
+function createUser(name: string, age: number) {
+    return {
+        id: Math.random().toString(36).substr(2, 9),
+        name,
+        age,
+        createdAt: new Date()
+    };
+}
+
+// Type is { id: string; name: string; age: number; createdAt: Date }
+type User = ReturnType&lt;typeof createUser&gt;;
+
+// With arrow functions
+const getItems = () => [1, 2, 3];
+type Items = ReturnType&lt;typeof getItems&gt;;  // number[]
+
+// With generic functions
+function identity&lt;T&gt;(value: T): T {
+    return value;
+}
+
+// Type is unknown (because T is not known at this point)
+type IdentityReturn = ReturnType&lt;typeof identity&gt;;</code></pre>
+        
+        <h2>Parameters&lt;T&gt;</h2>
+        
+        <p>Extracts the parameter types of a function type as a tuple:</p>
+        
+        <pre><code>// Function with parameters
+function createUser(name: string, age: number, isAdmin: boolean) {
+    return { name, age, isAdmin };
+}
+
+// Type is [name: string, age: number, isAdmin: boolean]
+type UserParams = Parameters&lt;typeof createUser&gt;;
+
+// Accessing specific parameter types
+type NameType = UserParams[0];  // string
+type AgeType = UserParams[1];   // number
+
+// With arrow functions
+const updateUser = (id: number, fields: { name?: string; age?: number }) => {
+    // Update logic
+};
+
+// Type is [id: number, fields: { name?: string; age?: number }]
+type UpdateParams = Parameters&lt;typeof updateUser&gt;;
+
+// Practical example: creating a function wrapper
+function logFunctionCall&lt;T extends (...args: any[]) => any&gt;(
+    func: T,
+    ...args: Parameters&lt;T&gt;
+): ReturnType&lt;T&gt; {
+    console.log(`Calling function with arguments: ${JSON.stringify(args)}`);
+    const result = func(...args);
+    console.log(`Function returned: ${JSON.stringify(result)}`);
+    return result;
+}
+
+// Usage
+const result = logFunctionCall(createUser, "Alice", 30, false);</code></pre>
+        
+        <h2>ConstructorParameters&lt;T&gt;</h2>
+        
+        <p>Extracts the parameter types of a constructor function type as a tuple:</p>
+        
+        <pre><code>// Class with constructor
+class User {
+    name: string;
+    age: number;
+    
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+// Type is [name: string, age: number]
+type UserConstructorParams = ConstructorParameters&lt;typeof User&gt;;
+
+// Factory function example
+function createInstance&lt;T extends new (...args: any[]) => any&gt;(
+    Ctor: T,
+    ...args: ConstructorParameters&lt;T&gt;
+): InstanceType&lt;T&gt; {
+    return new Ctor(...args);
+}
+
+// Usage
+const user = createInstance(User, "Alice", 30);</code></pre>
+        
+        <h2>InstanceType&lt;T&gt;</h2>
+        
+        <p>Extracts the instance type of a constructor function type:</p>
+        
+        <pre><code>// Class definition
+class User {
+    name: string;
+    age: number;
+    
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    greet() {
+        return `Hello, I'm ${this.name}`;
+    }
+}
+
+// Type is User (the instance type)
+type UserInstance = InstanceType&lt;typeof User&gt;;
+
+// Factory function
+function createUser(name: string, age: number): UserInstance {
+    return new User(name, age);
+}
+
+// Registry pattern example
+class Registry&lt;T extends new (...args: any[]) => any&gt; {
+    private instances: Map&lt;string, InstanceType&lt;T&gt;&gt; = new Map();
+    
+    register(id: string, instance: InstanceType&lt;T&gt;) {
+        this.instances.set(id, instance);
+    }
+    
+    get(id: string): InstanceType&lt;T&gt; | undefined {
+        return this.instances.get(id);
+    }
+}
+
+// Usage
+const userRegistry = new Registry&lt;typeof User&gt;();
+userRegistry.register("user1", new User("Alice", 30));</code></pre>
+        
+        <h2>ThisParameterType&lt;T&gt;</h2>
+        
+        <p>Extracts the type of the 'this' parameter of a function type:</p>
+        
+        <pre><code>// Function with 'this' parameter
+function greet(this: { name: string }, greeting: string) {
+    return `${greeting}, ${this.name}!`;
+}
+
+// Type is { name: string }
+type GreetThisType = ThisParameterType&lt;typeof greet&gt;;
+
+// Usage
+const person: GreetThisType = { name: "Alice" };
+const message = greet.call(person, "Hello");  // "Hello, Alice!"</code></pre>
+        
+        <h2>OmitThisParameter&lt;T&gt;</h2>
+        
+        <p>Removes the 'this' parameter from a function type:</p>
+        
+        <pre><code>// Function with 'this' parameter
+function greet(this: { name: string }, greeting: string) {
+    return `${greeting}, ${this.name}!`;
+}
+
+// Type is (greeting: string) => string
+type GreetFunction = OmitThisParameter&lt;typeof greet&gt;;
+
+// Creating a bound function
+const boundGreet: GreetFunction = greet.bind({ name: "Alice" });
+const message = boundGreet("Hello");  // "Hello, Alice!"</code></pre>
+        
+        <h2>Combining Utility Types</h2>
+        
+        <p>Utility types can be combined to create more complex type transformations:</p>
+        
+        <pre><code>interface User {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    role: "admin" | "user";
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+// Create a type for user creation (no id, createdAt, or updatedAt)
+type CreateUserDto = Omit&lt;User, "id" | "createdAt" | "updatedAt"&gt;;
+
+// Create a type for user update (all fields optional except id)
+type UpdateUserDto = Partial&lt;Omit&lt;User, "id"&gt;&gt; & { id: number };
+
+// Create a type for public user data (no password)
+type PublicUser = Readonly&lt;Omit&lt;User, "password"&gt;&gt;;
+
+// Create a type for user credentials
+type UserCredentials = Pick&lt;User, "email" | "password"&gt;;</code></pre>
+        
+        <h2>Creating Custom Utility Types</h2>
+        
+        <p>You can create your own utility types to handle common type transformations in your codebase:</p>
+        
+        <pre><code>// Make specific properties nullable
+type Nullable&lt;T, K extends keyof T&gt; = Omit&lt;T, K&gt; & {
+    [P in K]: T[P] | null;
+};
+
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+}
+
+// Make phone nullable
+type UserWithNullablePhone = Nullable&lt;User, "phone"&gt;;
+
+// Make multiple properties nullable
+type UserWithNullableContacts = Nullable&lt;User, "email" | "phone"&gt;;
+
+// Deep partial (handles nested objects)
+type DeepPartial&lt;T&gt; = {
+    [P in keyof T]?: T[P] extends object ? DeepPartial&lt;T[P]&gt; : T[P];
+};
+
+interface Settings {
+    theme: {
+        colors: {
+            primary: string;
+            secondary: string;
+            background: string;
+        };
+        fonts: {
+            main: string;
+            headings: string;
+        };
+    };
+    notifications: {
+        email: boolean;
+        push: boolean;
+    };
+}
+
+// All properties at all levels are optional
+type PartialSettings = DeepPartial&lt;Settings&gt;;
+
+// Valid
+const partialSettings: PartialSettings = {
+    theme: {
+        colors: {
+            primary: "#3178c6"
+        }
+    }
+};</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/utility-types.html" target="_blank">TypeScript Handbook: Utility Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/mapped-types.html" target="_blank">TypeScript Handbook: Mapped Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/conditional-types.html" target="_blank">TypeScript Handbook: Conditional Types</a></li>
+                <li><a href="https://github.com/type-challenges/type-challenges" target="_blank">Type Challenges (Practice Repository)</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

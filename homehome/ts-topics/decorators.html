@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decorators - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Decorators in TypeScript</h1>
+        
+        <p>Decorators are a special kind of declaration that can be attached to a class declaration, method, accessor, property, or parameter. They use the form <code>@expression</code>, where <code>expression</code> must evaluate to a function that will be called at runtime with information about the decorated declaration.</p>
+        
+        <div class="warning-box">
+            <h4>Experimental Feature</h4>
+            <p>Decorators are an experimental feature in TypeScript. To enable them, you need to enable the <code>experimentalDecorators</code> compiler option in your tsconfig.json:</p>
+            <pre><code>{
+  "compilerOptions": {
+    "target": "ES5",
+    "experimentalDecorators": true
+  }
+}</code></pre>
+        </div>
+        
+        <h2>Class Decorators</h2>
+        
+        <p>Class decorators are applied to the constructor of the class and can be used to observe, modify, or replace a class definition:</p>
+        
+        <pre><code>// Class decorator function
+function sealed(constructor: Function) {
+    Object.seal(constructor);
+    Object.seal(constructor.prototype);
+}
+
+// Using the decorator
+@sealed
+class BugReport {
+    type = "report";
+    title: string;
+    
+    constructor(title: string) {
+        this.title = title;
+    }
+}
+
+// Decorator factory (returns a decorator function)
+function classDecorator<T extends { new (...args: any[]): {} }>(
+    constructor: T
+) {
+    return class extends constructor {
+        newProperty = "new property";
+        hello = "override";
+    };
+}
+
+@classDecorator
+class Greeter {
+    property = "property";
+    hello: string;
+    
+    constructor(m: string) {
+        this.hello = m;
+    }
+}
+
+console.log(new Greeter("world"));
+// Output: { property: 'property', hello: 'override', newProperty: 'new property' }</code></pre>
+        
+        <h2>Method Decorators</h2>
+        
+        <p>Method decorators are applied to a method of a class and can be used to observe, modify, or replace a method definition:</p>
+        
+        <pre><code>// Method decorator function
+function log(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    // Save the original method
+    const originalMethod = descriptor.value;
+    
+    // Replace the method with a new one that logs before and after
+    descriptor.value = function(...args: any[]) {
+        console.log(`Calling ${propertyKey} with args: ${JSON.stringify(args)}`);
+        const result = originalMethod.apply(this, args);
+        console.log(`Method ${propertyKey} returned: ${JSON.stringify(result)}`);
+        return result;
+    };
+    
+    return descriptor;
+}
+
+class Calculator {
+    @log
+    add(a: number, b: number) {
+        return a + b;
+    }
+}
+
+const calc = new Calculator();
+calc.add(1, 2);
+// Output:
+// Calling add with args: [1,2]
+// Method add returned: 3</code></pre>
+        
+        <h2>Property Decorators</h2>
+        
+        <p>Property decorators are applied to a property of a class and can be used to observe or modify a property definition:</p>
+        
+        <pre><code>// Property decorator function
+function format(formatString: string) {
+    return function(target: any, propertyKey: string) {
+        // Property value storage
+        let value: string;
+        
+        // Create a getter and setter for the property
+        const getter = function() {
+            return value;
+        };
+        
+        const setter = function(newValue: string) {
+            value = formatString.replace("%s", newValue);
+        };
+        
+        // Replace the property with getter and setter
+        Object.defineProperty(target, propertyKey, {
+            get: getter,
+            set: setter,
+            enumerable: true,
+            configurable: true
+        });
+    };
+}
+
+class Greeter {
+    @format("Hello, %s!")
+    greeting: string;
+}
+
+const greeter = new Greeter();
+greeter.greeting = "World";
+console.log(greeter.greeting); // Output: Hello, World!</code></pre>
+        
+        <h2>Parameter Decorators</h2>
+        
+        <p>Parameter decorators are applied to a parameter of a method or constructor and can be used to observe a parameter declaration:</p>
+        
+        <pre><code>// Parameter decorator function
+function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {
+    // Get the existing design type metadata or create a new array
+    const existingRequiredParameters: number[] = Reflect.getOwnMetadata(
+        "required", target, propertyKey) || [];
+    
+    // Add the current parameter index to the required parameters list
+    existingRequiredParameters.push(parameterIndex);
+    
+    // Update the metadata
+    Reflect.defineMetadata(
+        "required", existingRequiredParameters, target, propertyKey
+    );
+}
+
+// Method decorator that validates required parameters
+function validate(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+    const method = descriptor.value;
+    
+    descriptor.value = function(...args: any[]) {
+        // Get the list of required parameters
+        const requiredParameters: number[] = Reflect.getOwnMetadata(
+            "required", target, propertyName) || [];
+        
+        // Check if all required parameters are provided and not null/undefined
+        for (const index of requiredParameters) {
+            if (index >= args.length || args[index] === undefined || args[index] === null) {
+                throw new Error(`Missing required parameter at index ${index}`);
+            }
+        }
+        
+        return method.apply(this, args);
+    };
+    
+    return descriptor;
+}
+
+class UserService {
+    @validate
+    createUser(@required name: string, @required email: string, age?: number) {
+        return { name, email, age };
+    }
+}
+
+const userService = new UserService();
+userService.createUser("John", "john@example.com");  // OK
+// userService.createUser(null, "john@example.com");  // Error: Missing required parameter
+// userService.createUser("John", null);              // Error: Missing required parameter</code></pre>
+        
+        <div class="tip-box">
+            <h4>Reflect Metadata</h4>
+            <p>The example above uses the <code>reflect-metadata</code> library, which needs to be installed and imported:</p>
+            <pre><code>npm install reflect-metadata
+// Add to your main file:
+import "reflect-metadata";</code></pre>
+            <p>You also need to enable <code>emitDecoratorMetadata</code> in your tsconfig.json:</p>
+            <pre><code>{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}</code></pre>
+        </div>
+        
+        <h2>Accessor Decorators</h2>
+        
+        <p>Accessor decorators are applied to the property descriptor for an accessor and can be used to observe, modify, or replace an accessor's definitions:</p>
+        
+        <pre><code>// Accessor decorator function
+function configurable(value: boolean) {
+    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        descriptor.configurable = value;
+        return descriptor;
+    };
+}
+
+class Point {
+    private _x: number;
+    private _y: number;
+    
+    constructor(x: number, y: number) {
+        this._x = x;
+        this._y = y;
+    }
+    
+    @configurable(false)
+    get x() {
+        return this._x;
+    }
+    
+    @configurable(false)
+    get y() {
+        return this._y;
+    }
+}</code></pre>
+        
+        <h2>Decorator Evaluation Order</h2>
+        
+        <p>The order in which decorators are evaluated is important to understand:</p>
+        
+        <ol>
+            <li>Parameter Decorators, followed by Method, Accessor, or Property Decorators are applied for each instance member.</li>
+            <li>Parameter Decorators, followed by Method, Accessor, or Property Decorators are applied for each static member.</li>
+            <li>Parameter Decorators are applied for the constructor.</li>
+            <li>Class Decorators are applied for the class.</li>
+        </ol>
+        
+        <h2>Real-World Use Cases</h2>
+        
+        <h3>1. Dependency Injection</h3>
+        
+        <pre><code>// Simple dependency injection system
+const Injectable = (): ClassDecorator => {
+    return (target: any) => {
+        // Register the class in the DI container
+        DI.register(target);
+    };
+};
+
+@Injectable()
+class UserService {
+    getUsers() {
+        return ["User1", "User2"];
+    }
+}
+
+@Injectable()
+class UserController {
+    constructor(private userService: UserService) {}
+    
+    listUsers() {
+        return this.userService.getUsers();
+    }
+}</code></pre>
+        
+        <h3>2. Route Decorators (like in NestJS)</h3>
+        
+        <pre><code>// Route decorator factory
+function Route(path: string): MethodDecorator {
+    return (target, propertyKey, descriptor) => {
+        // Register the route
+        Router.register(path, target[propertyKey]);
+        return descriptor;
+    };
+}
+
+// HTTP method decorators
+const Get = (path: string) => Route(`GET ${path}`);
+const Post = (path: string) => Route(`POST ${path}`);
+
+class UserController {
+    @Get("/users")
+    getUsers() {
+        return ["User1", "User2"];
+    }
+    
+    @Post("/users")
+    createUser(@Body() userData: any) {
+        // Create user logic
+        return { id: 1, ...userData };
+    }
+}</code></pre>
+        
+        <h3>3. Validation (like in class-validator)</h3>
+        
+        <pre><code>// Validation decorators
+function IsString(target: any, propertyKey: string) {
+    // Add validation metadata
+    let validationRules = Reflect.getMetadata("validation", target) || {};
+    validationRules[propertyKey] = validationRules[propertyKey] || [];
+    validationRules[propertyKey].push({
+        type: "string",
+        validate: (value: any) => typeof value === "string"
+    });
+    Reflect.defineMetadata("validation", validationRules, target);
+}
+
+function IsEmail(target: any, propertyKey: string) {
+    // Add validation metadata
+    let validationRules = Reflect.getMetadata("validation", target) || {};
+    validationRules[propertyKey] = validationRules[propertyKey] || [];
+    validationRules[propertyKey].push({
+        type: "email",
+        validate: (value: any) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+    });
+    Reflect.defineMetadata("validation", validationRules, target);
+}
+
+// Usage
+class CreateUserDto {
+    @IsString
+    name: string;
+    
+    @IsString
+    @IsEmail
+    email: string;
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Decorator Metadata</h4>
+            <p>Many of these examples rely on storing and retrieving metadata. In a real application, you would typically use the <code>reflect-metadata</code> library to handle this.</p>
+        </div>
+        
+        <h2>Decorators vs. Other Patterns</h2>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Decorators</h4>
+                <ul>
+                    <li>Declarative syntax with <code>@decorator</code></li>
+                    <li>Applied at class definition time</li>
+                    <li>Can modify class behavior</li>
+                    <li>Metadata is stored with the class</li>
+                    <li>Commonly used in frameworks</li>
+                </ul>
+            </div>
+            <div class="comparison-column">
+                <h4>Higher-Order Functions</h4>
+                <ul>
+                    <li>Functional approach</li>
+                    <li>Applied at runtime</li>
+                    <li>Wrap existing functionality</li>
+                    <li>No built-in metadata storage</li>
+                    <li>More flexible but less declarative</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/decorators.html" target="_blank">TypeScript Handbook: Decorators</a></li>
+                <li><a href="https://github.com/rbuckton/reflect-metadata" target="_blank">Reflect Metadata Library</a></li>
+                <li><a href="https://github.com/typestack/class-validator" target="_blank">class-validator: Decorator-based validation</a></li>
+                <li><a href="https://docs.nestjs.com/custom-decorators" target="_blank">NestJS: Custom Decorators</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

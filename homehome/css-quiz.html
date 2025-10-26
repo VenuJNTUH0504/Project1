@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+
+    .submit-btn {
+        background: #28a745;
+    }
+
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">CSS Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "What does CSS stand for?",
+            options: [
+                "Creative Style Sheets",
+                "Cascading Style Sheets",
+                "Computer Style Sheets",
+                "Colorful Style Sheets"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which HTML tag is used to define an internal style sheet?",
+            options: [
+                "<css>",
+                "<script>",
+                "<style>",
+                "<link>"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which property is used to change the background color?",
+            options: [
+                "color",
+                "bgcolor",
+                "background-color",
+                "background"
+            ],
+            answer: 2
+        },
+        {
+            question: "How do you select an element with id 'demo'?",
+            options: [
+                ".demo",
+                "#demo",
+                "demo",
+                "*demo"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you select elements with class name 'test'?",
+            options: [
+                ".test",
+                "#test",
+                "test",
+                "*test"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the text color of an element?",
+            options: [
+                "fgcolor",
+                "color",
+                "text-color",
+                "font-color"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which CSS property controls the text size?",
+            options: [
+                "font-style",
+                "text-size",
+                "font-size",
+                "text-style"
+            ],
+            answer: 2
+        },
+        {
+            question: "How do you make all <p> elements bold?",
+            options: [
+                "p {font-weight: bold;}",
+                "p {text-style: bold;}",
+                "p {font: bold;}",
+                "p {style: bold;}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the left margin of an element?",
+            options: [
+                "padding-left",
+                "margin-left",
+                "indent",
+                "margin"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you add a comment in CSS?",
+            options: [
+                "// this is a comment",
+                "' this is a comment",
+                "/* this is a comment */",
+                "<!-- this is a comment -->"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which property is used to change the font of an element?",
+            options: [
+                "font-family",
+                "font-style",
+                "font-weight",
+                "font-variant"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you make a list that lists its items with squares?",
+            options: [
+                "list-type: square;",
+                "list-style-type: square;",
+                "list: square;",
+                "list-shape: square;"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you select all <a> elements inside a <div>?",
+            options: [
+                "div a",
+                "div.a",
+                "div > a",
+                "div + a"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you group selectors?",
+            options: [
+                "Separate each selector with a comma",
+                "Separate each selector with a space",
+                "Separate each selector with a plus sign",
+                "Separate each selector with a dot"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the spacing between letters?",
+            options: [
+                "letter-spacing",
+                "word-spacing",
+                "line-height",
+                "text-spacing"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the spacing between lines of text?",
+            options: [
+                "letter-spacing",
+                "line-height",
+                "word-spacing",
+                "text-spacing"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you make the first letter of every word in a text uppercase?",
+            options: [
+                "text-transform: capitalize;",
+                "text-style: uppercase;",
+                "transform: capitalize;",
+                "font-transform: capitalize;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the style of the cursor?",
+            options: [
+                "pointer",
+                "cursor",
+                "mouse-cursor",
+                "cursor-style"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you display hyperlinks without an underline?",
+            options: [
+                "a {text-decoration: none;}",
+                "a {decoration: no-underline;}",
+                "a {underline: none;}",
+                "a {text-underline: none;}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to set the width of an element?",
+            options: [
+                "element-width",
+                "width",
+                "size",
+                "max-width"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you make a <div> element display inline?",
+            options: [
+                "display: inline;",
+                "display: block;",
+                "display: inline-block;",
+                "float: left;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to float an element to the right?",
+            options: [
+                "float: right;",
+                "align: right;",
+                "position: right;",
+                "display: right;"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a 5px dotted red border?",
+            options: [
+                "border: 5px dotted red;",
+                "border-style: dotted 5px red;",
+                "border-color: red dotted 5px;",
+                "border: dotted red 5px;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the left padding of an element?",
+            options: [
+                "padding-left",
+                "margin-left",
+                "padding",
+                "padding-right"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you make a rounded border?",
+            options: [
+                "border-radius: 10px;",
+                "border-corner: 10px;",
+                "border-style: round;",
+                "corner-radius: 10px;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to set the shadow of a box?",
+            options: [
+                "box-shadow",
+                "shadow",
+                "box-effect",
+                "shadow-box"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you make a transparent background color?",
+            options: [
+                "background-color: transparent;",
+                "background: opacity(0);",
+                "background-color: none;",
+                "background: transparent;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the font size of an element?",
+            options: [
+                "font-size",
+                "text-size",
+                "font-style",
+                "size"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you select only <p> elements that are direct children of <div>?",
+            options: [
+                "div > p",
+                "div p",
+                "div.p",
+                "div + p"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to hide an element?",
+            options: [
+                "display: none;",
+                "visibility: hidden;",
+                "opacity: 0;",
+                "All of the above"
+            ],
+            answer: 3
+        },
+        {
+            question: "How do you add a background image?",
+            options: [
+                "background-image: url('image.jpg');",
+                "background: image('image.jpg');",
+                "background-img: url('image.jpg');",
+                "img-background: url('image.jpg');"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to repeat a background image vertically?",
+            options: [
+                "background-repeat: repeat-y;",
+                "background-repeat: repeat-x;",
+                "background-repeat: vertical;",
+                "background-repeat: y-repeat;"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you make the text italic?",
+            options: [
+                "font-style: italic;",
+                "font-italic: true;",
+                "text-style: italic;",
+                "font: italic;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to align text to the center?",
+            options: [
+                "text-align: center;",
+                "align: center;",
+                "text-center: true;",
+                "center-align: text;"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you select all elements with the class 'intro'?",
+            options: [
+                ".intro",
+                "#intro",
+                "intro",
+                "*intro"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to change the space between words?",
+            options: [
+                "word-spacing",
+                "letter-spacing",
+                "line-height",
+                "text-spacing"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you select all <input> elements of type 'text'?",
+            options: [
+                "input[type='text']",
+                "input.text",
+                "input#text",
+                "input:text"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to set the maximum width of an element?",
+            options: [
+                "max-width",
+                "width-max",
+                "maximum-width",
+                "element-max-width"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you make a list with no bullets?",
+            options: [
+                "list-style-type: none;",
+                "list-type: none;",
+                "list: none;",
+                "list-style: no-bullets;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to add space between the border and the content?",
+            options: [
+                "padding",
+                "margin",
+                "border-spacing",
+                "spacing"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you select the first child of a <ul>?",
+            options: [
+                "ul li:first-child",
+                "ul li:first",
+                "ul:first-child li",
+                "ul > li:first"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to set the opacity of an element?",
+            options: [
+                "opacity",
+                "transparent",
+                "visibility",
+                "alpha"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you select every even <tr> element?",
+            options: [
+                "tr:nth-child(even)",
+                "tr:nth-even",
+                "tr:even",
+                "tr:nth-child(2n)"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to add shadow to text?",
+            options: [
+                "text-shadow",
+                "font-shadow",
+                "shadow-text",
+                "text-effect"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you select an element with a specific attribute?",
+            options: [
+                "element[attribute]",
+                "element.attribute",
+                "element:attribute",
+                "element#attribute"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to set the z-order of an element?",
+            options: [
+                "z-index",
+                "order",
+                "stack",
+                "z-order"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you make a flex container?",
+            options: [
+                "display: flex;",
+                "flex: container;",
+                "container: flex;",
+                "flexbox: true;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to align items in a flex container?",
+            options: [
+                "align-items",
+                "flex-align",
+                "item-align",
+                "align-content"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you create a grid container?",
+            options: [
+                "display: grid;",
+                "grid: true;",
+                "container: grid;",
+                "display: inline-grid;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to specify the number of columns in a grid?",
+            options: [
+                "grid-template-columns",
+                "grid-columns",
+                "columns",
+                "column-count"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which property is used to set the position of an element?",
+            options: [
+                "position",
+                "location",
+                "set-position",
+                "element-position"
+            ],
+            answer: 0
+        }
+    ];
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+            <div class="question-text">${q.question}</div>
+            <ul class="options">
+                ${q.options.map((opt, idx) => `
+                    <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                        ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                ${currentQuestion === questions.length - 1
+                    ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                    : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+                }
+            </div>
+        `;
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.onclick = function() {
+                const idx = Number(this.getAttribute('data-idx'));
+                userAnswers[currentQuestion] = idx;
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('next-btn').onclick = () => {
+                if (userAnswers[currentQuestion] !== null) {
+                    currentQuestion++;
+                    renderQuestion();
+                }
+            };
+        } else {
+            document.getElementById('submit-btn').onclick = showResult;
+        }
+    }
+
+    function showResult() {
+        let score = 0;
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].answer) score++;
+        });
+        document.getElementById('quiz-content').innerHTML = `
+            <div class="result">
+                You scored ${score} out of ${questions.length}!<br>
+                <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            </div>
+        `;
+    }
+
+    renderQuestion();
+    </script>
+</body>
+</html>

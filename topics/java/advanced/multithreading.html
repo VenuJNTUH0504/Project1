@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multithreading - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Multithreading in Java</h1>
+            <p>Understanding concurrent programming and thread management in Java</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Multithreading</h2>
+                <p>Multithreading allows multiple threads to execute concurrently within a single program.</p>
+                <div class="note">
+                    <p>Key concepts in multithreading:</p>
+                    <ul>
+                        <li>Thread creation and management</li>
+                        <li>Thread synchronization</li>
+                        <li>Thread lifecycle</li>
+                        <li>Thread pools</li>
+                        <li>Concurrent collections</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="thread-creation">
+                <h2>Thread Creation</h2>
+                <p>There are two main ways to create threads in Java.</p>
+                <div class="code-example">
+                    <h3>Example: Thread Creation</h3>
+                    <pre><code>// Method 1: Extending Thread class
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread running: " + Thread.currentThread().getName());
+    }
+}
+
+// Method 2: Implementing Runnable interface
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Runnable running: " + Thread.currentThread().getName());
+    }
+}
+
+public class ThreadCreationExample {
+    public static void main(String[] args) {
+        // Using Thread class
+        MyThread thread1 = new MyThread();
+        thread1.start();
+
+        // Using Runnable interface
+        Thread thread2 = new Thread(new MyRunnable());
+        thread2.start();
+
+        // Using lambda expression
+        Thread thread3 = new Thread(() -> {
+            System.out.println("Lambda thread running: " + Thread.currentThread().getName());
+        });
+        thread3.start();
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="thread-synchronization">
+                <h2>Thread Synchronization</h2>
+                <p>Synchronization is used to control access to shared resources.</p>
+                <div class="code-example">
+                    <h3>Example: Synchronized Methods and Blocks</h3>
+                    <pre><code>class Counter {
+    private int count = 0;
+
+    // Synchronized method
+    public synchronized void increment() {
+        count++;
+    }
+
+    // Synchronized block
+    public void decrement() {
+        synchronized(this) {
+            count--;
+        }
+    }
+
+    public int getCount() {
+        return count;
+    }
+}
+
+public class SynchronizationExample {
+    public static void main(String[] args) throws InterruptedException {
+        Counter counter = new Counter();
+        
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.decrement();
+            }
+        });
+
+        t1.start();
+        t2.start();
+        
+        t1.join();
+        t2.join();
+        
+        System.out.println("Final count: " + counter.getCount());
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="thread-pools">
+                <h2>Thread Pools</h2>
+                <p>Thread pools manage a pool of worker threads efficiently.</p>
+                <div class="code-example">
+                    <h3>Example: ExecutorService</h3>
+                    <pre><code>import java.util.concurrent.*;
+
+public class ThreadPoolExample {
+    public static void main(String[] args) {
+        // Create a thread pool with 4 threads
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        // Submit tasks to the thread pool
+        for (int i = 0; i < 10; i++) {
+            final int taskId = i;
+            executor.submit(() -> {
+                System.out.println("Task " + taskId + " executed by " + 
+                    Thread.currentThread().getName());
+                try {
+                    Thread.sleep(1000); // Simulate work
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        // Shutdown the executor
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="concurrent-collections">
+                <h2>Concurrent Collections</h2>
+                <p>Java provides thread-safe collections for concurrent programming.</p>
+                <div class="code-example">
+                    <h3>Example: Concurrent Collections</h3>
+                    <pre><code>import java.util.concurrent.*;
+
+public class ConcurrentCollectionsExample {
+    public static void main(String[] args) {
+        // ConcurrentHashMap
+        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+        map.put("one", 1);
+        map.put("two", 2);
+        
+        // CopyOnWriteArrayList
+        CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+        list.add("item1");
+        list.add("item2");
+        
+        // BlockingQueue
+        BlockingQueue<String> queue = new ArrayBlockingQueue<>(10);
+        try {
+            queue.put("message1");
+            queue.put("message2");
+            String message = queue.take();
+            System.out.println("Received: " + message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="thread-communication">
+                <h2>Thread Communication</h2>
+                <p>Threads can communicate using wait(), notify(), and notifyAll().</p>
+                <div class="code-example">
+                    <h3>Example: Producer-Consumer Pattern</h3>
+                    <pre><code>class SharedResource {
+    private int data;
+    private boolean available = false;
+
+    public synchronized void produce(int value) {
+        while (available) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        data = value;
+        available = true;
+        notifyAll();
+    }
+
+    public synchronized int consume() {
+        while (!available) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        available = false;
+        notifyAll();
+        return data;
+    }
+}
+
+public class ProducerConsumerExample {
+    public static void main(String[] args) {
+        SharedResource resource = new SharedResource();
+
+        Thread producer = new Thread(() -> {
+            for (int i = 0; i < 5; i++) {
+                resource.produce(i);
+                System.out.println("Produced: " + i);
+            }
+        });
+
+        Thread consumer = new Thread(() -> {
+            for (int i = 0; i < 5; i++) {
+                int value = resource.consume();
+                System.out.println("Consumed: " + value);
+            }
+        });
+
+        producer.start();
+        consumer.start();
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Multithreading Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for multithreading:</p>
+                    <ul>
+                        <li>Use thread pools instead of creating new threads</li>
+                        <li>Prefer concurrent collections over synchronized collections</li>
+                        <li>Minimize synchronization scope</li>
+                        <li>Use volatile for shared variables when appropriate</li>
+                        <li>Handle InterruptedException properly</li>
+                        <li>Use higher-level concurrency utilities when possible</li>
+                        <li>Document thread-safety guarantees</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="advanced-topics.html">Advanced Topics</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

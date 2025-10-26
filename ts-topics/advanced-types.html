@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Types - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Advanced Types in TypeScript</h1>
+        
+        <p>TypeScript's type system goes beyond basic types like string, number, and boolean. Advanced types provide powerful tools for modeling complex data structures and relationships, making your code more expressive and type-safe.</p>
+        
+        <h2>Intersection Types</h2>
+        
+        <p>Intersection types combine multiple types into one, allowing an object to have all properties from each type:</p>
+        
+        <pre><code>interface BusinessPartner {
+    name: string;
+    credit: number;
+}
+
+interface Identity {
+    id: number;
+    email: string;
+}
+
+interface Contact {
+    phone: string;
+    address: string;
+}
+
+// Intersection type
+type Employee = Identity & Contact;
+type Customer = BusinessPartner & Contact;
+
+// Usage
+const employee: Employee = {
+    id: 100,
+    email: "john@example.com",
+    phone: "555-1234",
+    address: "123 Main St"
+};
+
+const customer: Customer = {
+    name: "Acme Inc",
+    credit: 10000,
+    phone: "555-6789",
+    address: "456 Business Ave"
+};</code></pre>
+        
+        <div class="tip-box">
+            <h4>Combining with Union Types</h4>
+            <p>You can combine intersection and union types for complex type relationships:</p>
+            <pre><code>type BusinessContact = BusinessPartner & Contact;
+type PersonalContact = Identity & Contact;
+
+// A contact can be either business or personal
+type AllContacts = BusinessContact | PersonalContact;</code></pre>
+        </div>
+        
+        <h2>Type Aliases</h2>
+        
+        <p>Type aliases create a new name for a type. They can be used to simplify complex type definitions:</p>
+        
+        <pre><code>// Simple type alias
+type ID = string | number;
+
+// Complex type alias
+type UserData = {
+    id: ID;
+    name: string;
+    preferences: {
+        theme: "light" | "dark";
+        notifications: boolean;
+    };
+    roles: string[];
+};
+
+// Usage
+const user: UserData = {
+    id: "user123",
+    name: "Alice",
+    preferences: {
+        theme: "dark",
+        notifications: true
+    },
+    roles: ["admin", "editor"]
+};</code></pre>
+        
+        <h2>Literal Types</h2>
+        
+        <p>Literal types allow you to specify exact values that a variable can have:</p>
+        
+        <pre><code>// String literal types
+type Direction = "north" | "south" | "east" | "west";
+let direction: Direction = "north";  // Valid
+// direction = "northeast";  // Error: Type '"northeast"' is not assignable to type 'Direction'
+
+// Numeric literal types
+type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
+let roll: DiceRoll = 6;  // Valid
+// roll = 7;  // Error: Type '7' is not assignable to type 'DiceRoll'
+
+// Boolean literal types (less common but possible)
+type True = true;
+let t: True = true;  // Valid
+// t = false;  // Error: Type 'false' is not assignable to type 'true'</code></pre>
+        
+        <h2>Discriminated Unions</h2>
+        
+        <p>Discriminated unions (also called tagged unions) are a pattern where a common property is used to differentiate between union members:</p>
+        
+        <pre><code>// Shapes with a discriminant property 'kind'
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+
+interface Square {
+    kind: "square";
+    sideLength: number;
+}
+
+interface Rectangle {
+    kind: "rectangle";
+    width: number;
+    height: number;
+}
+
+// Union type
+type Shape = Circle | Square | Rectangle;
+
+// Function that uses the discriminant to handle each shape
+function calculateArea(shape: Shape): number {
+    switch (shape.kind) {
+        case "circle":
+            return Math.PI * shape.radius ** 2;
+        case "square":
+            return shape.sideLength ** 2;
+        case "rectangle":
+            return shape.width * shape.height;
+    }
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Exhaustiveness Checking</h4>
+            <p>You can use TypeScript's never type to ensure all cases are handled:</p>
+            <pre><code>function calculateArea(shape: Shape): number {
+    switch (shape.kind) {
+        case "circle":
+            return Math.PI * shape.radius ** 2;
+        case "square":
+            return shape.sideLength ** 2;
+        case "rectangle":
+            return shape.width * shape.height;
+        default:
+            // This will cause a compile-time error if a new shape is added
+            // and not handled above
+            const exhaustiveCheck: never = shape;
+            return exhaustiveCheck;
+    }
+}</code></pre>
+        </div>
+        
+        <h2>Index Types</h2>
+        
+        <p>Index types allow you to create types based on the property names of another type:</p>
+        
+        <pre><code>interface Person {
+    name: string;
+    age: number;
+    address: string;
+    email: string;
+}
+
+// keyof operator - creates a union of property names
+type PersonKeys = keyof Person;  // "name" | "age" | "address" | "email"
+
+// Indexed access operator - gets the type of a property
+type AgeType = Person["age"];  // number
+
+// Generic function that safely accesses properties
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+    return obj[key];
+}
+
+const person: Person = {
+    name: "Alice",
+    age: 30,
+    address: "123 Main St",
+    email: "alice@example.com"
+};
+
+// Type-safe property access
+const name = getProperty(person, "name");  // string
+const age = getProperty(person, "age");    // number
+// const invalid = getProperty(person, "invalid");  // Error: Argument of type '"invalid"' is not assignable to parameter of type 'keyof Person'</code></pre>
+        
+        <h2>Mapped Types</h2>
+        
+        <p>Mapped types allow you to create new types by transforming properties of existing types:</p>
+        
+        <pre><code>interface Person {
+    name: string;
+    age: number;
+    email: string;
+}
+
+// Make all properties optional
+type PartialPerson = {
+    [K in keyof Person]?: Person[K];
+};
+
+// Make all properties readonly
+type ReadonlyPerson = {
+    readonly [K in keyof Person]: Person[K];
+};
+
+// Change property types
+type PersonWithFlags = {
+    [K in keyof Person]: Person[K] | boolean;
+};
+
+// Usage
+const partialPerson: PartialPerson = { name: "Bob" };  // Valid, other properties are optional
+const readonlyPerson: ReadonlyPerson = { name: "Charlie", age: 25, email: "charlie@example.com" };
+// readonlyPerson.age = 26;  // Error: Cannot assign to 'age' because it is a read-only property</code></pre>
+        
+        <h2>Conditional Types</h2>
+        
+        <p>Conditional types select a type based on a condition, similar to a ternary operator for types:</p>
+        
+        <pre><code>// Basic conditional type
+type IsString<T> = T extends string ? true : false;
+
+type A = IsString<string>;  // true
+type B = IsString<number>;  // false
+
+// More complex example
+type ArrayElementType<T> = T extends (infer E)[] ? E : never;
+
+type C = ArrayElementType<string[]>;  // string
+type D = ArrayElementType<number[]>;  // number
+type E = ArrayElementType<boolean>;   // never (not an array)
+
+// Distributive conditional types
+type ToArray<T> = T extends any ? T[] : never;
+
+type F = ToArray<string | number>;  // string[] | number[]
+
+// Non-distributive version using square brackets
+type ToArrayNonDist<T> = [T] extends [any] ? T[] : never;
+
+type G = ToArrayNonDist<string | number>;  // (string | number)[]</code></pre>
+        
+        <h2>Template Literal Types</h2>
+        
+        <p>Template literal types allow you to create new string types by concatenating other types:</p>
+        
+        <pre><code>// Basic template literal type
+type Greeting = `Hello, ${string}!`;
+let greeting: Greeting = "Hello, World!";  // Valid
+let invalid: Greeting = "Hi there";  // Error: Type '"Hi there"' is not assignable to type '`Hello, ${string}!`'
+
+// Combining with union types
+type Direction = "top" | "right" | "bottom" | "left";
+type Margin = `margin-${Direction}`;  // "margin-top" | "margin-right" | "margin-bottom" | "margin-left"
+
+// Multiple substitutions
+type Alignment = "start" | "end" | "center";
+type JustifyContent = `justify-content-${Alignment}`;  // "justify-content-start" | "justify-content-end" | "justify-content-center"
+type AlignItems = `align-items-${Alignment}`;  // "align-items-start" | "align-items-end" | "align-items-center"
+
+type FlexAlignment = JustifyContent | AlignItems;  // Union of all possible alignments
+
+// With numbers
+type Padding = 0 | 1 | 2 | 3 | 4 | 5;
+type PaddingClass = `p-${Padding}` | `pt-${Padding}` | `pb-${Padding}` | `pl-${Padding}` | `pr-${Padding}`;
+
+// Usage
+let paddingClass: PaddingClass = "p-3";  // Valid
+// let invalidPadding: PaddingClass = "p-6";  // Error: Type '"p-6"' is not assignable to type 'PaddingClass'</code></pre>
+        
+        <h2>The 'infer' Keyword</h2>
+        
+        <p>The <code>infer</code> keyword allows you to extract types from other types within conditional types:</p>
+        
+        <pre><code>// Extract the return type of a function
+type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any;
+
+function greet(name: string): string {
+    return `Hello, ${name}!`;
+}
+
+type GreetReturn = ReturnType<typeof greet>;  // string
+
+// Extract parameter types
+type FirstParameter<T> = T extends (first: infer P, ...args: any[]) => any ? P : never;
+
+function createUser(name: string, age: number, isAdmin: boolean) {
+    return { name, age, isAdmin };
+}
+
+type FirstParam = FirstParameter<typeof createUser>;  // string
+
+// Extract array element type
+type ElementType<T> = T extends (infer E)[] ? E : never;
+
+type NumberArrayElement = ElementType<number[]>;  // number
+type StringArrayElement = ElementType<string[]>;  // string
+
+// Extract promise value type
+type PromiseValue<T> = T extends Promise<infer V> ? V : never;
+
+type ResolvedValue = PromiseValue<Promise<string>>;  // string</code></pre>
+        
+        <h2>Recursive Types</h2>
+        
+        <p>TypeScript supports recursive types, which are types that refer to themselves:</p>
+        
+        <pre><code>// Recursive type for JSON values
+type JSONValue = 
+    | string
+    | number
+    | boolean
+    | null
+    | JSONArray
+    | JSONObject;
+
+interface JSONArray extends Array<JSONValue> {}
+
+interface JSONObject {
+    [key: string]: JSONValue;
+}
+
+// Usage
+const data: JSONValue = {
+    name: "Product",
+    price: 29.99,
+    inStock: true,
+    tags: ["electronics", "gadgets"],
+    dimensions: {
+        width: 10,
+        height: 5,
+        unit: "cm"
+    },
+    related: null
+};
+
+// Recursive type for nested file system
+type FileSystemItem = File | Directory;
+
+interface File {
+    type: "file";
+    name: string;
+    size: number;
+}
+
+interface Directory {
+    type: "directory";
+    name: string;
+    children: FileSystemItem[];
+}
+
+// Usage
+const fileSystem: FileSystemItem = {
+    type: "directory",
+    name: "root",
+    children: [
+        {
+            type: "file",
+            name: "readme.txt",
+            size: 1024
+        },
+        {
+            type: "directory",
+            name: "src",
+            children: [
+                {
+                    type: "file",
+                    name: "index.ts",
+                    size: 2048
+                }
+            ]
+        }
+    ]
+};</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/types-from-types.html" target="_blank">TypeScript Handbook: Types from Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/conditional-types.html" target="_blank">TypeScript Handbook: Conditional Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html" target="_blank">TypeScript Handbook: Template Literal Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/mapped-types.html" target="_blank">TypeScript Handbook: Mapped Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html" target="_blank">TypeScript Handbook: Indexed Access Types</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing & Debugging - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Testing & Debugging</h1>
+        
+        <p>Testing and debugging are essential skills for JavaScript developers. Proper testing ensures your code works as expected, while effective debugging helps identify and fix issues when they arise.</p>
+        
+        <h2>JavaScript Testing</h2>
+        
+        <h3>Types of Tests</h3>
+        <ul>
+            <li><strong>Unit Tests</strong>: Test individual functions or components in isolation</li>
+            <li><strong>Integration Tests</strong>: Test how multiple units work together</li>
+            <li><strong>End-to-End Tests</strong>: Test the entire application flow from start to finish</li>
+            <li><strong>Functional Tests</strong>: Test specific functionality from a user's perspective</li>
+            <li><strong>Performance Tests</strong>: Measure application performance under various conditions</li>
+        </ul>
+        
+        <h3>Testing Frameworks</h3>
+        
+        <h4>Jest</h4>
+        <p>A comprehensive JavaScript testing framework developed by Facebook. It's widely used for React applications but works well with any JavaScript code.</p>
+        
+        <pre><code>// math.js
+export function add(a, b) {
+  return a + b;
+}
+
+export function subtract(a, b) {
+  return a - b;
+}
+
+// math.test.js
+import { add, subtract } from './math';
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(add(1, 2)).toBe(3);
+});
+
+test('subtracts 5 - 2 to equal 3', () => {
+  expect(subtract(5, 2)).toBe(3);
+});
+
+// Running tests with snapshot
+test('generates user object', () => {
+  const user = {
+    name: 'John Doe',
+    age: 30,
+    createdAt: new Date()
+  };
+  expect(user).toMatchSnapshot({
+    createdAt: expect.any(Date) // Ignore exact date value
+  });
+});</code></pre>
+        
+        <h4>Mocha</h4>
+        <p>A flexible testing framework that can be paired with assertion libraries like Chai.</p>
+        
+        <pre><code>// Using Mocha with Chai
+const { expect } = require('chai');
+const { add, subtract } = require('./math');
+
+describe('Math functions', () => {
+  describe('add()', () => {
+    it('should add two numbers correctly', () => {
+      expect(add(2, 3)).to.equal(5);
+    });
+    
+    it('should handle negative numbers', () => {
+      expect(add(-1, -2)).to.equal(-3);
+    });
+  });
+  
+  describe('subtract()', () => {
+    it('should subtract two numbers correctly', () => {
+      expect(subtract(5, 2)).to.equal(3);
+    });
+  });
+});</code></pre>
+        
+        <h4>Jasmine</h4>
+        <p>A behavior-driven development framework for testing JavaScript code.</p>
+        
+        <pre><code>// Jasmine example
+describe('Calculator', () => {
+  let calculator;
+  
+  beforeEach(() => {
+    calculator = new Calculator();
+  });
+  
+  it('should add numbers correctly', () => {
+    expect(calculator.add(1, 2)).toEqual(3);
+  });
+  
+  it('should subtract numbers correctly', () => {
+    expect(calculator.subtract(5, 2)).toEqual(3);
+  });
+});</code></pre>
+        
+        <h3>Test-Driven Development (TDD)</h3>
+        <p>TDD is a development process where you write tests before implementing the code. The cycle is:</p>
+        <ol>
+            <li>Write a failing test</li>
+            <li>Write the minimum code to make the test pass</li>
+            <li>Refactor the code while ensuring tests still pass</li>
+            <li>Repeat</li>
+        </ol>
+        
+        <div class="tip-box">
+            <h4>Testing Best Practices</h4>
+            <ul>
+                <li>Keep tests simple and focused</li>
+                <li>Use descriptive test names</li>
+                <li>Test both expected and edge cases</li>
+                <li>Avoid testing implementation details</li>
+                <li>Maintain test independence</li>
+                <li>Aim for fast test execution</li>
+            </ul>
+        </div>
+        
+        <h2>JavaScript Debugging</h2>
+        
+        <h3>Console Methods</h3>
+        <p>The console object provides several methods for debugging:</p>
+        
+        <pre><code>// Basic logging
+console.log('Hello, world!');
+
+// Different log levels
+console.info('Informational message');
+console.warn('Warning message');
+console.error('Error message');
+
+// Tabular data
+console.table([
+  { name: 'John', age: 30 },
+  { name: 'Jane', age: 25 }
+]);
+
+// Grouping logs
+console.group('User Details');
+console.log('Name: John Doe');
+console.log('Role: Admin');
+console.groupEnd();
+
+// Timing operations
+console.time('Array initialization');
+const arr = new Array(1000000).fill(0).map((_, i) => i);
+console.timeEnd('Array initialization');
+
+// Conditional logging
+console.assert(1 === 2, 'This will show an error');
+
+// Stack trace
+console.trace('Trace message');</code></pre>
+        
+        <h3>Debugger Statement</h3>
+        <p>The <code>debugger</code> statement creates a breakpoint where code execution will pause if developer tools are open:</p>
+        
+        <pre><code>function calculateTotal(items) {
+  let total = 0;
+  for (let i = 0; i < items.length; i++) {
+    debugger; // Execution will pause here when dev tools are open
+    total += items[i].price * items[i].quantity;
+  }
+  return total;
+}</code></pre>
+        
+        <h3>Browser DevTools</h3>
+        <p>Modern browsers provide powerful developer tools for debugging JavaScript:</p>
+        
+        <h4>Key Features</h4>
+        <ul>
+            <li><strong>Breakpoints</strong>: Pause execution at specific lines</li>
+            <li><strong>Watch Expressions</strong>: Monitor values of variables and expressions</li>
+            <li><strong>Call Stack</strong>: View the execution path that led to the current point</li>
+            <li><strong>Scope Variables</strong>: Inspect local and global variables</li>
+            <li><strong>Step Controls</strong>: Step through code execution line by line</li>
+            <li><strong>Conditional Breakpoints</strong>: Pause only when a condition is met</li>
+            <li><strong>XHR/Fetch Breakpoints</strong>: Pause when network requests occur</li>
+            <li><strong>Event Listener Breakpoints</strong>: Pause on specific events</li>
+        </ul>
+        
+        <h3>Error Handling</h3>
+        <p>Proper error handling is crucial for debugging and maintaining robust applications:</p>
+        
+        <pre><code>// Basic try-catch
+try {
+  // Code that might throw an error
+  const result = riskyOperation();
+  return result;
+} catch (error) {
+  console.error('An error occurred:', error.message);
+  // Handle the error appropriately
+  return fallbackValue;
+} finally {
+  // Code that will run regardless of whether an error occurred
+  cleanup();
+}
+
+// Custom error types
+class ValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
+function validateUser(user) {
+  if (!user.name) {
+    throw new ValidationError('User name is required');
+  }
+  if (!user.email) {
+    throw new ValidationError('User email is required');
+  }
+}
+
+// Async error handling
+async function fetchUserData(userId) {
+  try {
+    const response = await fetch(`/api/users/${userId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch user data:', error);
+    throw error; // Re-throw or handle appropriately
+  }
+}</code></pre>
+        
+        <div class="examples">
+            <h3>Debugging Techniques</h3>
+            
+            <h4>1. Rubber Duck Debugging</h4>
+            <p>Explain your code line by line to an inanimate object (like a rubber duck). Often, the process of articulating the problem helps you identify the issue.</p>
+            
+            <h4>2. Binary Search Debugging</h4>
+            <p>For hard-to-find bugs, comment out half of your code to see if the bug persists. Then, narrow down by halves until you isolate the problematic code.</p>
+            
+            <h4>3. Logging State Changes</h4>
+            <pre><code>function processUserData(userData) {
+  console.log('Initial userData:', userData);
+  
+  const processedData = {
+    ...userData,
+    fullName: `${userData.firstName} ${userData.lastName}`,
+    isActive: userData.status === 'active'
+  };
+  
+  console.log('Processed userData:', processedData);
+  return processedData;
+}</code></pre>
+            
+            <h4>4. Using Source Maps</h4>
+            <p>When working with transpiled or minified code, source maps allow you to debug the original source code instead of the transformed output.</p>
+            
+            <h4>5. Performance Profiling</h4>
+            <pre><code>// Identify performance bottlenecks
+function findBottleneck() {
+  performance.mark('start');
+  
+  // Potentially slow operation
+  const result = expensiveOperation();
+  
+  performance.mark('end');
+  performance.measure('Operation time', 'start', 'end');
+  
+  const measurements = performance.getEntriesByType('measure');
+  console.log(`Operation took ${measurements[0].duration}ms`);
+  
+  return result;
+}</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://jestjs.io/docs/getting-started" target="_blank">Jest Documentation</a></li>
+                <li><a href="https://mochajs.org/" target="_blank">Mocha Testing Framework</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/console" target="_blank">MDN: Console API</a></li>
+                <li><a href="https://developers.google.com/web/tools/chrome-devtools/javascript" target="_blank">Chrome DevTools JavaScript Debugging</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank">MDN: try...catch Statement</a></li>
+                <li><a href="https://kentcdodds.com/blog/write-tests" target="_blank">Kent C. Dodds: How to Write Tests</a></li>
+                <li><a href="https://testingjavascript.com/" target="_blank">Testing JavaScript (Course by Kent C. Dodds)</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

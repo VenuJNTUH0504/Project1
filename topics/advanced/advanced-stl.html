@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced STL in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Advanced STL in C++</h1>
+            <p>Mastering the Standard Template Library's advanced features</p>
+        </header>
+
+        <div class="card">
+            <h2>STL Algorithms</h2>
+            <p>The STL provides a rich set of algorithms that can be used with containers. Here are some advanced examples:</p>
+            
+            <pre><code>#include <algorithm>
+#include <vector>
+#include <numeric>
+
+std::vector<int> numbers = {1, 2, 3, 4, 5};
+
+// Transform
+std::transform(numbers.begin(), numbers.end(), numbers.begin(),
+    [](int x) { return x * x; });
+
+// Accumulate with custom operation
+int product = std::accumulate(numbers.begin(), numbers.end(), 1,
+    [](int a, int b) { return a * b; });
+
+// Remove-Erase idiom
+numbers.erase(
+    std::remove_if(numbers.begin(), numbers.end(),
+        [](int x) { return x % 2 == 0; }),
+    numbers.end()
+);</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> STL algorithms are designed to work with iterators, making them extremely flexible and reusable.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Custom Allocators</h2>
+            <p>Custom allocators allow you to control how memory is allocated for STL containers.</p>
+            
+            <pre><code>template <typename T>
+class CustomAllocator {
+public:
+    using value_type = T;
+    
+    CustomAllocator() = default;
+    
+    template <typename U>
+    CustomAllocator(const CustomAllocator<U>&) {}
+    
+    T* allocate(std::size_t n) {
+        return static_cast<T*>(::operator new(n * sizeof(T)));
+    }
+    
+    void deallocate(T* p, std::size_t) {
+        ::operator delete(p);
+    }
+};
+
+// Usage
+std::vector<int, CustomAllocator<int>> customVector;</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Custom allocators must follow strict requirements to work correctly with STL containers.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Move Semantics and STL</h2>
+            <p>Modern C++ move semantics can significantly improve performance with STL containers.</p>
+            
+            <pre><code>class Resource {
+    std::vector<int> data;
+public:
+    Resource(std::vector<int>&& d) : data(std::move(d)) {}
+    
+    // Move constructor
+    Resource(Resource&& other) noexcept
+        : data(std::move(other.data)) {}
+    
+    // Move assignment
+    Resource& operator=(Resource&& other) noexcept {
+        if (this != &other) {
+            data = std::move(other.data);
+        }
+        return *this;
+    }
+};
+
+// Usage
+std::vector<Resource> resources;
+resources.push_back(Resource(std::vector<int>{1, 2, 3}));  // Efficient move</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>STL Container Adapters</h2>
+            <p>Container adapters provide specialized interfaces for common data structures.</p>
+            
+            <pre><code>#include <queue>
+#include <stack>
+#include <deque>
+
+// Priority queue with custom comparator
+std::priority_queue<int, std::vector<int>,
+    std::greater<int>> minHeap;
+
+// Stack with custom container
+std::stack<int, std::deque<int>> customStack;
+
+// Queue with custom container
+std::queue<int, std::list<int>> customQueue;</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Choose the appropriate container adapter based on your access patterns and requirements.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>STL Views (C++20)</h2>
+            <p>Views provide lightweight, non-owning ranges that can transform or filter data.</p>
+            
+            <pre><code>#include <ranges>
+#include <vector>
+
+std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+// Create a view of even numbers
+auto evenNumbers = numbers | std::views::filter([](int x) {
+    return x % 2 == 0;
+});
+
+// Create a view of squares
+auto squares = numbers | std::views::transform([](int x) {
+    return x * x;
+});
+
+// Combine views
+auto evenSquares = numbers
+    | std::views::filter([](int x) { return x % 2 == 0; })
+    | std::views::transform([](int x) { return x * x; });</code></pre>
+
+            <div class="note">
+                <p><strong>Modern C++:</strong> Views are lazy-evaluated and don't create copies of the data.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Parallel Algorithms (C++17)</h2>
+            <p>C++17 introduced parallel versions of STL algorithms for improved performance.</p>
+            
+            <pre><code>#include <execution>
+#include <vector>
+#include <algorithm>
+
+std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+// Parallel sort
+std::sort(std::execution::par, numbers.begin(), numbers.end());
+
+// Parallel transform
+std::transform(std::execution::par,
+    numbers.begin(), numbers.end(), numbers.begin(),
+    [](int x) { return x * x; });
+
+// Parallel reduce
+int sum = std::reduce(std::execution::par,
+    numbers.begin(), numbers.end());</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Parallel algorithms require thread-safe operations and may not always improve performance for small data sets.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

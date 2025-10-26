@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Animations & Keyframes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .animation-example { display: flex; gap: 20px; align-items: center; }
+        .anim-box { width: 60px; height: 60px; border-radius: 12px; background: #4a90e2; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
+        .fade { animation: fadeIn 2s infinite alternate; }
+        .slide { animation: slideRight 2s infinite alternate; }
+        .spin { animation: spin 1.5s linear infinite; }
+        .bounce { animation: bounce 1s infinite alternate; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideRight {
+            from { transform: translateX(0); }
+            to { transform: translateX(60px); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-30px); }
+        }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Animations & Keyframes</h1>
+        <p>CSS animations allow you to animate transitions from one CSS style configuration to another. Keyframes define the styles at various points during the animation sequence.</p>
+
+        <h2>Common Animation Examples</h2>
+        
+        <h3>1. Fade In</h3>
+        <p>This animation smoothly changes the element's opacity from 0 to 1.</p>
+        <div class="example-box">
+            <div class="animation-example">
+                <div class="anim-box fade">A</div>
+            </div>
+            <code>
+@keyframes fadeIn {<br>
+&nbsp;&nbsp;from { opacity: 0; }<br>
+&nbsp;&nbsp;to { opacity: 1; }<br>
+}<br>
+.anim-box.fade { animation: fadeIn 2s infinite alternate; }
+            </code>
+        </div>
+
+        <h3>2. Slide Right</h3>
+        <p>This animation moves the element horizontally to the right.</p>
+        <div class="example-box">
+            <div class="animation-example">
+                <div class="anim-box slide">B</div>
+            </div>
+            <code>
+@keyframes slideRight {<br>
+&nbsp;&nbsp;from { transform: translateX(0); }<br>
+&nbsp;&nbsp;to { transform: translateX(60px); }<br>
+}<br>
+.anim-box.slide { animation: slideRight 2s infinite alternate; }
+            </code>
+        </div>
+
+        <h3>3. Spin</h3>
+        <p>This animation rotates the element 360 degrees.</p>
+        <div class="example-box">
+            <div class="animation-example">
+                <div class="anim-box spin"><i class="fas fa-sync"></i></div>
+            </div>
+            <code>
+@keyframes spin {<br>
+&nbsp;&nbsp;from { transform: rotate(0deg); }<br>
+&nbsp;&nbsp;to { transform: rotate(360deg); }<br>
+}<br>
+.anim-box.spin { animation: spin 1.5s linear infinite; }
+            </code>
+        </div>
+
+        <h3>4. Bounce</h3>
+        <p>This animation makes the element move up and down, creating a bouncing effect.</p>
+        <div class="example-box">
+            <div class="animation-example">
+                <div class="anim-box bounce">C</div>
+            </div>
+            <code>
+@keyframes bounce {<br>
+&nbsp;&nbsp;from { transform: translateY(0); }<br>
+&nbsp;&nbsp;to { transform: translateY(-30px); }<br>
+}<br>
+.anim-box.bounce { animation: bounce 1s infinite alternate; }
+            </code>
+        </div>
+
+        <h2>Animation Properties Comparison</h2>
+        <ul>
+            <li><b>animation-name:</b> Name of the keyframes to use</li>
+            <li><b>animation-duration:</b> How long the animation takes</li>
+            <li><b>animation-timing-function:</b> Speed curve of the animation</li>
+            <li><b>animation-delay:</b> Delay before the animation starts</li>
+            <li><b>animation-iteration-count:</b> Number of times the animation repeats</li>
+            <li><b>animation-direction:</b> Direction of the animation cycle</li>
+            <li><b>@keyframes:</b> Defines the animation steps</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

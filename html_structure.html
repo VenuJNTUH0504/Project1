@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Document Structure Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #e74c3c;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .code-example {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Understanding HTML Document Structure</h1>
+
+        <h2>What is HTML Structure?</h2>
+        <p>HTML (HyperText Markup Language) structure refers to the fundamental organization of an HTML document. It provides the skeleton upon which all web content is built. A well-structured HTML document ensures proper rendering of content, better SEO, and improved accessibility for all users.</p>
+
+        <h2>Basic Document Declaration</h2>
+        <p>Every HTML document must start with a DOCTYPE declaration. This tells the browser which version of HTML the page is using. In HTML5, it's simply written as <!DOCTYPE html>. This declaration ensures that the browser renders the page in standards mode, following the latest HTML specifications.</p>
+        <div class="code-example">
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="en"&gt;
+        </div>
+
+        <h2>The HTML Head Section</h2>
+        <p>The head section contains metadata about the document that isn't displayed directly on the page. This includes the page title, character encoding, viewport settings, CSS links, and other important meta information. The head section helps browsers and search engines better understand your webpage's content and how to display it.</p>
+        <div class="code-example">
+            &lt;head&gt;
+                &lt;meta charset="UTF-8"&gt;
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                &lt;title&gt;Your Page Title&lt;/title&gt;
+            &lt;/head&gt;
+        </div>
+
+        <h2>The HTML Body Section</h2>
+        <p>The body section contains all the visible content of your webpage. This includes text, images, links, forms, and any other elements that users can see and interact with. Proper organization of content within the body section using semantic HTML elements is crucial for accessibility and SEO.</p>
+        <div class="code-example">
+            &lt;body&gt;
+                &lt;header&gt;
+                &lt;main&gt;
+                &lt;footer&gt;
+            &lt;/body&gt;
+        </div>
+
+        <h2>Semantic Elements</h2>
+        <p>HTML5 introduced semantic elements that give meaning to the structure of web content. Elements like &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;section&gt;, &lt;aside&gt;, and &lt;footer&gt; help define the purpose of different parts of your webpage. Using semantic elements properly improves accessibility and helps search engines better understand your content.</p>
+
+        <h2>Nesting Elements</h2>
+        <p>HTML elements can be nested inside other elements, creating a hierarchical structure. Proper nesting is essential for creating well-formed HTML documents. Elements must be closed in the reverse order they were opened to maintain proper structure and avoid rendering issues.</p>
+
+        <h2>Comments in HTML</h2>
+        <p>HTML comments are useful for documenting your code and temporarily disabling certain parts of your webpage. Comments are not displayed in the browser but can be seen in the source code. They help other developers (and yourself) understand the structure and purpose of different sections of your HTML.</p>
+        <div class="code-example">
+            &lt;!-- This is an HTML comment --&gt;
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

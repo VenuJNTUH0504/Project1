@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Object-Oriented Programming - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Object-Oriented Programming</h1>
+            <p>Understanding classes, objects, and inheritance in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="classes-and-objects">
+                <h2>Classes and Objects</h2>
+                <p>Basic class definition and object creation:</p>
+                <pre><code class="language-python"># Class definition
+class Dog:
+    # Class attribute
+    species = "Canis familiaris"
+
+    # Constructor (__init__ method)
+    def __init__(self, name, age):
+        # Instance attributes
+        self.name = name
+        self.age = age
+
+    # Instance method
+    def description(self):
+        return f"{self.name} is {self.age} years old"
+
+    # Another instance method
+    def speak(self, sound):
+        return f"{self.name} says {sound}"
+
+# Creating objects
+my_dog = Dog("Buddy", 3)
+print(my_dog.description())  # Output: Buddy is 3 years old
+print(my_dog.speak("Woof!"))  # Output: Buddy says Woof!</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="inheritance">
+                <h2>Inheritance</h2>
+                <p>Creating subclasses and method overriding:</p>
+                <pre><code class="language-python"># Parent class
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        raise NotImplementedError("Subclass must implement abstract method")
+
+# Child class
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says Woof!"
+
+# Another child class
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says Meow!"
+
+# Using the classes
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+
+print(dog.speak())  # Output: Buddy says Woof!
+print(cat.speak())  # Output: Whiskers says Meow!</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="encapsulation">
+                <h2>Encapsulation</h2>
+                <p>Using private attributes and methods:</p>
+                <pre><code class="language-python">class BankAccount:
+    def __init__(self, account_number, balance):
+        # Private attributes (convention)
+        self._account_number = account_number
+        self._balance = balance
+
+    # Getter method
+    def get_balance(self):
+        return self._balance
+
+    # Setter method
+    def set_balance(self, amount):
+        if amount >= 0:
+            self._balance = amount
+        else:
+            print("Balance cannot be negative")
+
+    # Private method
+    def _validate_transaction(self, amount):
+        return amount > 0
+
+    # Public method
+    def deposit(self, amount):
+        if self._validate_transaction(amount):
+            self._balance += amount
+
+# Using the class
+account = BankAccount("12345", 1000)
+account.deposit(500)
+print(account.get_balance())  # Output: 1500</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="polymorphism">
+                <h2>Polymorphism</h2>
+                <p>Using polymorphism in Python:</p>
+                <pre><code class="language-python">class Shape:
+    def area(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14 * self.radius ** 2
+
+# Using polymorphism
+shapes = [Rectangle(4, 5), Circle(3)]
+for shape in shapes:
+    print(f"Area: {shape.area()}")  # Output: Area: 20, Area: 28.26</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="magic-methods">
+                <h2>Magic Methods</h2>
+                <p>Special methods for operator overloading:</p>
+                <pre><code class="language-python">class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    # String representation
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+
+    # Addition
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    # Multiplication
+    def __mul__(self, scalar):
+        return Vector(self.x * scalar, self.y * scalar)
+
+# Using magic methods
+v1 = Vector(2, 4)
+v2 = Vector(3, 5)
+v3 = v1 + v2
+v4 = v1 * 2
+
+print(v3)  # Output: Vector(5, 9)
+print(v4)  # Output: Vector(4, 8)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="class-methods">
+                <h2>Class Methods and Static Methods</h2>
+                <p>Using class methods and static methods:</p>
+                <pre><code class="language-python">class Pizza:
+    def __init__(self, ingredients):
+        self.ingredients = ingredients
+
+    # Class method
+    @classmethod
+    def margherita(cls):
+        return cls(["mozzarella", "tomatoes"])
+
+    @classmethod
+    def prosciutto(cls):
+        return cls(["mozzarella", "tomatoes", "ham"])
+
+    # Static method
+    @staticmethod
+    def validate_ingredients(ingredients):
+        return len(ingredients) > 0
+
+# Using class methods
+margherita = Pizza.margherita()
+prosciutto = Pizza.prosciutto()
+
+print(margherita.ingredients)  # Output: ['mozzarella', 'tomatoes']
+print(prosciutto.ingredients)  # Output: ['mozzarella', 'tomatoes', 'ham']</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use meaningful class and method names</li>
+                    <li>Follow the single responsibility principle</li>
+                    <li>Use inheritance for "is-a" relationships</li>
+                    <li>Prefer composition over inheritance</li>
+                    <li>Use private attributes with getters and setters</li>
+                    <li>Document classes and methods with docstrings</li>
+                    <li>Use type hints for better code clarity</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Web Development - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+            --gradient-start: #00ADD8;
+            --gradient-end: #5D4037;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+            --gradient-start: #00ADD8;
+            --gradient-end: #8D6E63;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent var(--primary-color) transparent transparent;
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .note::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .warning::before {
+            content: '⚠️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Web Development</h1>
+            <p>Building web applications with Go</p>
+        </header>
+
+        <div class="card">
+            <section id="http-server">
+                <h2>HTTP Server</h2>
+                <p>Creating a basic HTTP server:</p>
+                <pre><code class="language-go">// Basic HTTP server
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+}
+
+func main() {
+    http.HandleFunc("/", handler)
+    http.ListenAndServe(":8080", nil)
+}
+
+// Using middleware
+func loggingMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        fmt.Printf("Request: %s %s\n", r.Method, r.URL.Path)
+        next.ServeHTTP(w, r)
+    })
+}
+
+func main() {
+    mux := http.NewServeMux()
+    mux.HandleFunc("/", handler)
+    http.ListenAndServe(":8080", loggingMiddleware(mux))
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="routing">
+                <h2>Routing</h2>
+                <p>Using popular routing packages:</p>
+                <pre><code class="language-go">// Using gorilla/mux
+import "github.com/gorilla/mux"
+
+func main() {
+    r := mux.NewRouter()
+    
+    // Basic routes
+    r.HandleFunc("/", HomeHandler)
+    r.HandleFunc("/products", ProductsHandler)
+    r.HandleFunc("/articles", ArticlesHandler)
+    
+    // Path parameters
+    r.HandleFunc("/products/{id}", ProductHandler)
+    
+    // Query parameters
+    r.HandleFunc("/search", SearchHandler).Queries("q", "{query}")
+    
+    // Subrouters
+    s := r.PathPrefix("/api").Subrouter()
+    s.HandleFunc("/users", UsersHandler)
+    
+    http.ListenAndServe(":8080", r)
+}
+
+// Using chi
+import "github.com/go-chi/chi"
+
+func main() {
+    r := chi.NewRouter()
+    
+    // Middleware
+    r.Use(middleware.Logger)
+    r.Use(middleware.Recoverer)
+    
+    // Routes
+    r.Get("/", HomeHandler)
+    r.Route("/api", func(r chi.Router) {
+        r.Get("/users", UsersHandler)
+        r.Post("/users", CreateUserHandler)
+    })
+    
+    http.ListenAndServe(":8080", r)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="templates">
+                <h2>Templates</h2>
+                <p>Using Go templates:</p>
+                <pre><code class="language-go">// Basic template
+type Page struct {
+    Title string
+    Body  string
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    p := Page{
+        Title: "My Page",
+        Body:  "Welcome to my page!",
+    }
+    
+    t, _ := template.ParseFiles("template.html")
+    t.Execute(w, p)
+}
+
+// Template with functions
+func handler(w http.ResponseWriter, r *http.Request) {
+    funcMap := template.FuncMap{
+        "formatDate": func(t time.Time) string {
+            return t.Format("2006-01-02")
+        },
+    }
+    
+    t := template.New("template.html").Funcs(funcMap)
+    t, _ = t.ParseFiles("template.html")
+    t.Execute(w, data)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="database">
+                <h2>Database Integration</h2>
+                <p>Working with databases:</p>
+                <pre><code class="language-go">// Using database/sql
+import (
+    "database/sql"
+    _ "github.com/lib/pq"
+)
+
+func main() {
+    db, err := sql.Open("postgres", "user=postgres dbname=mydb sslmode=disable")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer db.Close()
+    
+    // Query
+    rows, err := db.Query("SELECT id, name FROM users")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    
+    for rows.Next() {
+        var id int
+        var name string
+        if err := rows.Scan(&id, &name); err != nil {
+            log.Fatal(err)
+        }
+        fmt.Printf("%d: %s\n", id, name)
+    }
+}
+
+// Using GORM
+import "gorm.io/gorm"
+
+type User struct {
+    gorm.Model
+    Name  string
+    Email string
+}
+
+func main() {
+    db, err := gorm.Open(postgres.Open("user=postgres dbname=mydb sslmode=disable"), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    // Auto migrate
+    db.AutoMigrate(&User{})
+    
+    // Create
+    user := User{Name: "John", Email: "john@example.com"}
+    db.Create(&user)
+    
+    // Query
+    var users []User
+    db.Find(&users)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="authentication">
+                <h2>Authentication</h2>
+                <p>Implementing authentication:</p>
+                <pre><code class="language-go">// Using JWT
+import "github.com/golang-jwt/jwt"
+
+func generateToken(user User) (string, error) {
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+        "user_id": user.ID,
+        "exp":     time.Now().Add(time.Hour * 24).Unix(),
+    })
+    
+    return token.SignedString([]byte("secret"))
+}
+
+// Using middleware
+func authMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        tokenString := r.Header.Get("Authorization")
+        if tokenString == "" {
+            http.Error(w, "Unauthorized", http.StatusUnauthorized)
+            return
+        }
+        
+        token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+            return []byte("secret"), nil
+        })
+        
+        if err != nil || !token.Valid {
+            http.Error(w, "Unauthorized", http.StatusUnauthorized)
+            return
+        }
+        
+        next.ServeHTTP(w, r)
+    })
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use proper error handling</li>
+                    <li>Implement middleware for common functionality</li>
+                    <li>Use context for request-scoped values</li>
+                    <li>Implement proper security measures</li>
+                    <li>Use connection pooling for databases</li>
+                    <li>Implement proper logging</li>
+                    <li>Use environment variables for configuration</li>
+                    <li>Implement proper testing</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

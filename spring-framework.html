@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Framework - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1b1f23, #6db33f, #34302d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #6db33f;
+        }
+
+        .spring-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .hero-section img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #6db33f, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #6db33f;
+        }
+
+        .info-section p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(109, 179, 63, 0.2);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(109, 179, 63, 0.4);
+        }
+
+        .info-card h4 {
+            color: #6db33f;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .code-example {
+            background: rgba(27, 31, 35, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            border-left: 4px solid #6db33f;
+        }
+
+        .code-example pre {
+            font-family: 'Courier New', monospace;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .code-example .comment {
+            color: #6a9955;
+        }
+
+        .code-example .keyword {
+            color: #569cd6;
+        }
+
+        .code-example .annotation {
+            color: #dcdcaa;
+        }
+
+        .code-example .string {
+            color: #ce9178;
+        }
+
+        .code-example .class {
+            color: #4ec9b0;
+        }
+
+        .code-example .method {
+            color: #dcdcaa;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #6db33f, #34302d);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .frameworks-btn {
+            position: fixed;
+            top: 30px;
+            left: 150px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #6db33f, #34302d);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .frameworks-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .spring-ecosystem {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .spring-module {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            width: 180px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(109, 179, 63, 0.2);
+        }
+
+        .spring-module:hover {
+            transform: translateY(-5px);
+            border-color: rgba(109, 179, 63, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .spring-module i {
+            font-size: 2.5rem;
+            color: #6db33f;
+            margin-bottom: 1rem;
+        }
+
+        .spring-module h5 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .spring-module p {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .spring-container {
+                margin: 80px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-section img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .home-btn, .frameworks-btn {
+                top: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+
+            .frameworks-btn {
+                left: 120px;
+            }
+
+            .code-example {
+                padding: 1rem;
+            }
+
+            .code-example pre {
+                font-size: 0.8rem;
+            }
+
+            .spring-module {
+                width: 150px;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="courses.html">Courses</a>
+                <a href="frameworks.html">Frameworks</a>
+                <a href="frontend.html">Frontend</a>
+                <a href="backend.html">Bckend</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Frameworks Button -->
+    <a href="frameworks.html" class="frameworks-btn">
+        <i class="fas fa-layer-group"></i>
+        <span>Frameworks</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="spring-container">
+        <div class="hero-section">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring Logo">
+            <h1>Spring Framework</h1>
+            <p>Spring is a comprehensive framework for building enterprise Java applications. It provides infrastructure support for developing Java applications, handling tasks like dependency injection, transaction management, web applications, data access, messaging, and more.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>Key Features of Spring</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Dependency Injection</h4>
+                    <p>Spring's core feature is dependency injection (DI), which allows objects to define their dependencies without creating them. The Spring container injects those dependencies when it creates the bean.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Aspect-Oriented Programming</h4>
+                    <p>Spring supports Aspect-Oriented Programming (AOP), which enables separation of cross-cutting concerns like logging, security, and transaction management from business logic.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Spring Boot</h4>
+                    <p>Spring Boot simplifies the setup and development of Spring applications by providing auto-configuration, standalone applications, and production-ready features.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Enterprise Integration</h4>
+                    <p>Spring provides extensive support for enterprise integration, including data access, transaction management, messaging, and integration with various enterprise technologies.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Spring Ecosystem</h2>
+            <p>The Spring Framework consists of several modules that can be used independently or together to build enterprise applications:</p>
+            
+            <div class="spring-ecosystem">
+                <div class="spring-module">
+                    <i class="fas fa-cogs"></i>
+                    <h5>Spring Core</h5>
+                    <p>Dependency Injection and IoC Container</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-globe"></i>
+                    <h5>Spring MVC</h5>
+                    <p>Web Applications and RESTful Services</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-database"></i>
+                    <h5>Spring Data</h5>
+                    <p>Data Access and Persistence</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-shield-alt"></i>
+                    <h5>Spring Security</h5>
+                    <p>Authentication and Authorization</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h5>Spring Integration</h5>
+                    <p>Enterprise Integration Patterns</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-cloud"></i>
+                    <h5>Spring Cloud</h5>
+                    <p>Microservices and Distributed Systems</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-rocket"></i>
+                    <h5>Spring Boot</h5>
+                    <p>Simplified Application Setup</p>
+                </div>
+                <div class="spring-module">
+                    <i class="fas fa-tasks"></i>
+                    <h5>Spring Batch</h5>
+                    <p>Batch Processing</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Spring Code Example</h2>
+            <p>Here's a simple example of a Spring Boot REST controller:</p>
+            
+            <div class="code-example">
+                <pre><span class="keyword">package</span> com.example.demo;
+
+<span class="keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.*;
+
+<span class="annotation">@SpringBootApplication</span>
+<span class="keyword">public class</span> <span class="class">DemoApplication</span> {
+
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        SpringApplication.<span class="method">run</span>(DemoApplication.class, args);
+    }
+}</pre>
+            </div>
+            
+            <div class="code-example">
+                <pre><span class="keyword">package</span> com.example.demo.controller;
+
+<span class="keyword">import</span> com.example.demo.model.Product;
+<span class="keyword">import</span> com.example.demo.service.ProductService;
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.*;
+
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/products"</span>)
+<span class="keyword">public class</span> <span class="class">ProductController</span> {
+
+    <span class="keyword">private final</span> ProductService productService;
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">public</span> <span class="method">ProductController</span>(ProductService productService) {
+        <span class="keyword">this</span>.productService = productService;
+    }
+
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> List&lt;Product&gt; <span class="method">getAllProducts</span>() {
+        <span class="keyword">return</span> productService.findAll();
+    }
+
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> Product <span class="method">getProductById</span>(<span class="annotation">@PathVariable</span> Long id) {
+        <span class="keyword">return</span> productService.findById(id)
+                .orElseThrow(() -> <span class="keyword">new</span> RuntimeException(<span class="string">"Product not found"</span>));
+    }
+
+    <span class="annotation">@PostMapping</span>
+    <span class="keyword">public</span> Product <span class="method">createProduct</span>(<span class="annotation">@RequestBody</span> Product product) {
+        <span class="keyword">return</span> productService.save(product);
+    }
+
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> Product <span class="method">updateProduct</span>(<span class="annotation">@PathVariable</span> Long id, <span class="annotation">@RequestBody</span> Product product) {
+        product.setId(id);
+        <span class="keyword">return</span> productService.save(product);
+    }
+
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public void</span> <span class="method">deleteProduct</span>(<span class="annotation">@PathVariable</span> Long id) {
+        productService.deleteById(id);
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Spring Boot vs. Spring Framework</h2>
+            <p>Spring Boot is built on top of the Spring Framework and provides a simpler way to create stand-alone, production-grade Spring-based applications:</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Spring Framework</h4>
+                    <p>The core framework that provides fundamental support for dependency injection, transaction management, web applications, data access, messaging, and more.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Spring Boot</h4>
+                    <p>An extension of the Spring Framework that simplifies the process of creating Spring applications with auto-configuration, embedded servers, and production-ready features.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Getting Started with Spring Boot</h2>
+            <p>To create a new Spring Boot application, you can use Spring Initializer:</p>
+            
+            <div class="code-example">
+                <pre><span class="comment"># Visit Spring Initializer website</span>
+https://start.spring.io/
+
+<span class="comment"># Or use Spring CLI</span>
+spring init --dependencies=web,data-jpa,h2 my-project
+
+<span class="comment"># Or use Maven</span>
+mvn spring-boot:run
+
+<span class="comment"># Or use Gradle</span>
+./gradlew bootRun</pre>
+            </div>
+            
+            <p>After creating your Spring Boot project, you can import it into your IDE and start developing your application. Spring Boot applications typically have a main class with the @SpringBootApplication annotation that serves as the entry point.</p>
+        </div>
+    </div>
+</body>
+</html>

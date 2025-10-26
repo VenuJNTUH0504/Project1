@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaFX - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>JavaFX</h1>
+            <p>Creating modern desktop applications with JavaFX</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to JavaFX</h2>
+                <p>JavaFX is a modern UI toolkit for creating desktop applications in Java. It provides a rich set of UI controls, graphics, and media capabilities.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="basic-application">
+                <h2>Basic JavaFX Application</h2>
+                <pre><code class="language-java">import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+public class HelloWorld extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+        Button btn = new Button();
+        btn.setText("Say 'Hello World'");
+        btn.setOnAction(event -> System.out.println("Hello World!"));
+
+        StackPane root = new StackPane();
+        root.getChildren().add(btn);
+
+        Scene scene = new Scene(root, 300, 250);
+
+        primaryStage.setTitle("Hello World!");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="layouts">
+                <h2>Layouts</h2>
+                <h3>BorderPane</h3>
+                <pre><code class="language-java">BorderPane borderPane = new BorderPane();
+borderPane.setTop(new Button("Top"));
+borderPane.setRight(new Button("Right"));
+borderPane.setBottom(new Button("Bottom"));
+borderPane.setLeft(new Button("Left"));
+borderPane.setCenter(new Button("Center"));</code></pre>
+
+                <h3>GridPane</h3>
+                <pre><code class="language-java">GridPane grid = new GridPane();
+grid.setPadding(new Insets(10));
+grid.setHgap(10);
+grid.setVgap(10);
+
+grid.add(new Button("1,1"), 0, 0);
+grid.add(new Button("2,1"), 1, 0);
+grid.add(new Button("1,2"), 0, 1);
+grid.add(new Button("2,2"), 1, 1);</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="controls">
+                <h2>UI Controls</h2>
+                <h3>Text Input</h3>
+                <pre><code class="language-java">TextField textField = new TextField();
+textField.setPromptText("Enter text here");
+
+PasswordField passwordField = new PasswordField();
+passwordField.setPromptText("Enter password");
+
+TextArea textArea = new TextArea();
+textArea.setPromptText("Enter multiple lines here");</code></pre>
+
+                <h3>Selection Controls</h3>
+                <pre><code class="language-java">CheckBox checkBox = new CheckBox("Enable feature");
+RadioButton radioButton = new RadioButton("Option 1");
+ToggleGroup group = new ToggleGroup();
+radioButton.setToggleGroup(group);
+
+ComboBox<String> comboBox = new ComboBox<>();
+comboBox.getItems().addAll("Option 1", "Option 2", "Option 3");</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="styling">
+                <h2>Styling with CSS</h2>
+                <pre><code class="language-java">// In Java code
+scene.getStylesheets().add("style.css");
+
+// In style.css
+.button {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+}
+
+.text-field {
+    -fx-background-color: #f5f7fa;
+    -fx-border-color: #4a90e2;
+    -fx-border-radius: 3px;
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use FXML for complex UIs</li>
+                    <li>Separate UI logic from business logic</li>
+                    <li>Use CSS for styling</li>
+                    <li>Implement proper error handling</li>
+                    <li>Use appropriate layouts</li>
+                    <li>Follow MVC pattern</li>
+                    <li>Optimize performance</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

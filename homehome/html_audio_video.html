@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Audio & Video Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a2a6c;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #b21f1f;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #b21f1f;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #b21f1f;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #1a2a6c;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #fdbb2d;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #1a2a6c;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #b21f1f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .media-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        audio, video {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1a2a6c;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Audio & Video Guide</h1>
+
+        <h2>HTML Audio Element</h2>
+        <p>The HTML <code>&lt;audio&gt;</code> element is used to embed sound content in documents. It may contain one or more audio sources, represented using the src attribute or the <code>&lt;source&gt;</code> element.</p>
+
+        <div class="code-box">
+            &lt;audio controls&gt;
+                &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+                &lt;source src="audio.ogg" type="audio/ogg"&gt;
+                Your browser does not support the audio element.
+            &lt;/audio&gt;
+        </div>
+
+        <h2>Audio Attributes</h2>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>controls</td>
+                <td>Shows the audio player controls</td>
+            </tr>
+            <tr>
+                <td>autoplay</td>
+                <td>Starts playing audio automatically</td>
+            </tr>
+            <tr>
+                <td>loop</td>
+                <td>Repeats the audio when finished</td>
+            </tr>
+            <tr>
+                <td>muted</td>
+                <td>Sets the audio output to muted</td>
+            </tr>
+            <tr>
+                <td>preload</td>
+                <td>Specifies if audio should be loaded when page loads</td>
+            </tr>
+        </table>
+
+        <h2>HTML Video Element</h2>
+        <p>The HTML <code>&lt;video&gt;</code> element is used to embed video content. Like audio, it can contain multiple sources and provides various controls for playback.</p>
+
+        <div class="code-box">
+            &lt;video width="100%" controls&gt;
+                &lt;source src="video.mp4" type="video/mp4"&gt;
+                &lt;source src="video.webm" type="video/webm"&gt;
+                Your browser does not support the video element.
+            &lt;/video&gt;
+        </div>
+
+        <h2>Video Attributes</h2>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>width</td>
+                <td>Sets the width of the video player</td>
+            </tr>
+            <tr>
+                <td>height</td>
+                <td>Sets the height of the video player</td>
+            </tr>
+            <tr>
+                <td>poster</td>
+                <td>Specifies an image to show before the video plays</td>
+            </tr>
+            <tr>
+                <td>controls</td>
+                <td>Shows the video player controls</td>
+            </tr>
+            <tr>
+                <td>autoplay</td>
+                <td>Starts playing video automatically</td>
+            </tr>
+        </table>
+
+        <h2>Supported Media Formats</h2>
+        <div class="note">
+            <h3>Audio Formats:</h3>
+            <ul>
+                <li>MP3 (.mp3)</li>
+                <li>WAV (.wav)</li>
+                <li>OGG (.ogg)</li>
+            </ul>
+            <h3>Video Formats:</h3>
+            <ul>
+                <li>MP4 (.mp4)</li>
+                <li>WebM (.webm)</li>
+                <li>OGG (.ogv)</li>
+            </ul>
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Always provide multiple source formats for better browser compatibility</li>
+                <li>Include fallback content for browsers that don't support the media</li>
+                <li>Consider bandwidth and loading times when embedding media</li>
+                <li>Use appropriate video dimensions for your website layout</li>
+                <li>Implement responsive design for media elements</li>
+                <li>Consider accessibility features like captions and transcripts</li>
+            </ul>
+        </div>
+
+        <h2>Responsive Media</h2>
+        <p>Make media elements responsive using CSS:</p>
+        <div class="code-box">
+            video, audio {
+                max-width: 100%;
+                height: auto;
+            }
+        </div>
+
+        <h2>Embedding External Media</h2>
+        <p>You can also embed videos from external sources like YouTube using iframes:</p>
+        <div class="code-box">
+            &lt;iframe width="560" height="315" 
+                src="https://www.youtube.com/embed/VIDEO_ID" 
+                frameborder="0" 
+                allowfullscreen&gt;
+            &lt;/iframe&gt;
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

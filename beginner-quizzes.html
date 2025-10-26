@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beginners Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">Beginners Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+</body>    
+<script>
+const questions = [
+    // 10 HTML Questions
+    {
+        question: "What does HTML stand for?",
+        options: [
+            "Hyper Text Markup Language",
+            "Home Tool Markup Language",
+            "Hyperlinks and Text Markup Language",
+            "Hyper Tool Markup Language"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which HTML tag is used to create a hyperlink?",
+        options: ["<a>", "<link>", "<href>", "<hyperlink>"],
+        answer: 0
+    },
+    {
+        question: "Which tag is used for the largest heading?",
+        options: ["<h1>", "<heading>", "<h6>", "<head>"],
+        answer: 0
+    },
+    {
+        question: "How do you insert an image in HTML?",
+        options: [
+            "<img src='image.jpg'>",
+            "<image src='image.jpg'>",
+            "<img href='image.jpg'>",
+            "<picture src='image.jpg'>"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which tag is used to create an unordered list?",
+        options: ["<ul>", "<ol>", "<li>", "<list>"],
+        answer: 0
+    },
+    {
+        question: "What is the correct HTML for adding a background color?",
+        options: [
+            "<body style='background-color:yellow;'>",
+            "<background>yellow</background>",
+            "<body bg='yellow'>",
+            "<body color='yellow'>"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which tag is used to define a table row?",
+        options: ["<tr>", "<td>", "<th>", "<row>"],
+        answer: 0
+    },
+    {
+        question: "How do you make a numbered list?",
+        options: ["<ol>", "<ul>", "<dl>", "<list>"],
+        answer: 0
+    },
+    {
+        question: "Which HTML element is used to specify a footer for a document?",
+        options: ["<footer>", "<bottom>", "<section>", "<foot>"],
+        answer: 0
+    },
+    {
+        question: "What is the correct HTML for making a checkbox?",
+        options: [
+            "<input type='checkbox'>",
+            "<checkbox>",
+            "<input type='check'>",
+            "<input checkbox>"
+        ],
+        answer: 0
+    },
+
+    // 10 CSS Questions
+    {
+        question: "What does CSS stand for?",
+        options: [
+            "Cascading Style Sheets",
+            "Colorful Style Sheets",
+            "Computer Style Sheets",
+            "Creative Style Sheets"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which property is used to change the background color?",
+        options: ["background-color", "color", "bgcolor", "background"],
+        answer: 0
+    },
+    {
+        question: "How do you select an element with id 'demo'?",
+        options: ["#demo", ".demo", "demo", "*demo"],
+        answer: 0
+    },
+    {
+        question: "Which CSS property controls the text size?",
+        options: ["font-size", "text-size", "font-style", "text-style"],
+        answer: 0
+    },
+    {
+        question: "How do you make all <p> elements bold?",
+        options: [
+            "p { font-weight: bold; }",
+            "p { text-style: bold; }",
+            "p { font: bold; }",
+            "p { style: bold; }"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which is the correct CSS syntax?",
+        options: [
+            "body {color: black;}",
+            "{body:color=black;}",
+            "{body;color:black;}",
+            "body:color=black;"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you add a comment in CSS?",
+        options: [
+            "/* this is a comment */",
+            "// this is a comment",
+            "<!-- this is a comment -->",
+            "# this is a comment"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which property is used to change the left margin of an element?",
+        options: ["margin-left", "padding-left", "indent", "margin"],
+        answer: 0
+    },
+    {
+        question: "How do you select all <a> elements inside <div>?",
+        options: ["div a", "div.a", "div > a", "a div"],
+        answer: 0
+    },
+    {
+        question: "Which property is used to change the font of an element?",
+        options: ["font-family", "font-style", "font-weight", "font-size"],
+        answer: 0
+    },
+
+    // 10 JavaScript Questions
+    {
+        question: "Which company developed JavaScript?",
+        options: ["Netscape", "Microsoft", "Sun Microsystems", "Oracle"],
+        answer: 0
+    },
+    {
+        question: "How do you write 'Hello World' in an alert box?",
+        options: [
+            "alert('Hello World');",
+            "msg('Hello World');",
+            "alertBox('Hello World');",
+            "msgBox('Hello World');"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which symbol is used for comments in JavaScript?",
+        options: ["//", "#", "<!-- -->", "/* */"],
+        answer: 0
+    },
+    {
+        question: "How do you declare a variable in JavaScript?",
+        options: ["var x;", "int x;", "let x;", "Both var x; and let x;"],
+        answer: 3
+    },
+    {
+        question: "Which method adds a new element to the end of an array?",
+        options: ["push()", "pop()", "shift()", "unshift()"],
+        answer: 0
+    },
+    {
+        question: "How do you write a function in JavaScript?",
+        options: [
+            "function myFunction() {}",
+            "def myFunction() {}",
+            "function:myFunction() {}",
+            "func myFunction() {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you call a function named 'myFunction'?",
+        options: [
+            "myFunction()",
+            "call myFunction()",
+            "call function myFunction()",
+            "Call.myFunction()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which operator is used to assign a value to a variable?",
+        options: ["=", "==", "===", ":"],
+        answer: 0
+    },
+    {
+        question: "How do you write an if statement in JavaScript?",
+        options: [
+            "if (i == 5) {}",
+            "if i = 5 {}",
+            "if i == 5 then {}",
+            "if i = 5 then {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which event occurs when the user clicks on an HTML element?",
+        options: ["onclick", "onchange", "onmouseclick", "onmouseover"],
+        answer: 0
+    },
+
+    // 10 TypeScript Questions
+    {
+        question: "What is TypeScript?",
+        options: [
+            "A superset of JavaScript",
+            "A CSS framework",
+            "A database",
+            "A markup language"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file extension is used for TypeScript files?",
+        options: [".ts", ".js", ".tsx", ".tjs"],
+        answer: 0
+    },
+    {
+        question: "How do you define a variable with a type in TypeScript?",
+        options: [
+            "let x: number = 5;",
+            "let x = number 5;",
+            "number x = 5;",
+            "let x := 5;"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command compiles TypeScript to JavaScript?",
+        options: ["tsc", "tsrun", "tscompile", "tsbuild"],
+        answer: 0
+    },
+    {
+        question: "How do you define an interface in TypeScript?",
+        options: [
+            "interface MyInterface {}",
+            "class MyInterface {}",
+            "type MyInterface = {}",
+            "struct MyInterface {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used for type assertion?",
+        options: ["as", "is", "cast", "assert"],
+        answer: 0
+    },
+    {
+        question: "How do you specify an optional property in an interface?",
+        options: [
+            "propertyName?: type",
+            "propertyName: type?",
+            "optional propertyName: type",
+            "propertyName: optional type"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid TypeScript type?",
+        options: ["any", "number", "string", "character"],
+        answer: 3
+    },
+    {
+        question: "How do you import a module in TypeScript?",
+        options: [
+            "import { x } from './module';",
+            "require('./module')",
+            "include './module'",
+            "using module"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to declare a constant in TypeScript?",
+        options: ["const", "let", "var", "constant"],
+        answer: 0
+    },
+
+    // 10 C++ Questions
+    {
+        question: "Which of the following is the correct file extension for C++?",
+        options: [".cpp", ".c", ".cc", ".cp"],
+        answer: 0
+    },
+    {
+        question: "Which operator is used to access members of a class using a pointer?",
+        options: ["->", ".", "::", ":"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define a class in C++?",
+        options: ["class", "struct", "object", "define"],
+        answer: 0
+    },
+    {
+        question: "Which function is the entry point of a C++ program?",
+        options: ["main()", "start()", "begin()", "init()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used for single-line comments in C++?",
+        options: ["//", "#", "/* */", "--"],
+        answer: 0
+    },
+    {
+        question: "How do you declare a constant in C++?",
+        options: [
+            "const int x = 5;",
+            "int const x = 5;",
+            "Both A and B",
+            "constant int x = 5;"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of the following is NOT a C++ access specifier?",
+        options: ["protected", "private", "public", "package"],
+        answer: 3
+    },
+    {
+        question: "Which operator is used for dynamic memory allocation?",
+        options: ["new", "malloc", "alloc", "create"],
+        answer: 0
+    },
+    {
+        question: "Which header file is required for input/output in C++?",
+        options: ["iostream", "stdio.h", "conio.h", "stdlib.h"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to inherit a class?",
+        options: ["public", "extends", "inherits", "implements"],
+        answer: 0
+    },
+
+    // 10 Java Questions
+    {
+        question: "Which of the following is not a Java keyword?",
+        options: ["interface", "unsigned", "extends", "static"],
+        answer: 1
+    },
+    {
+        question: "Which method is the entry point of a Java program?",
+        options: [
+            "public static void main(String[] args)",
+            "main()",
+            "start()",
+            "init()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to create an object in Java?",
+        options: ["new", "create", "malloc", "alloc"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to inherit a class in Java?",
+        options: ["extends", "implements", "inherits", "super"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a primitive data type in Java?",
+        options: ["String", "int", "float", "boolean"],
+        answer: 0
+    },
+    {
+        question: "Which symbol is used for single-line comments in Java?",
+        options: ["//", "#", "/* */", "--"],
+        answer: 0
+    },
+    {
+        question: "Which package contains the Scanner class?",
+        options: [
+            "java.util",
+            "java.io",
+            "java.lang",
+            "java.awt"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to compare two strings in Java?",
+        options: [
+            "equals()",
+            "compare()",
+            "==",
+            "compareTo()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to prevent inheritance?",
+        options: ["final", "static", "const", "sealed"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to handle exceptions?",
+        options: ["try-catch", "catch-try", "handle", "except"],
+        answer: 0
+    },
+
+    // 10 Python Questions
+    {
+        question: "Which keyword is used to define a function in Python?",
+        options: ["def", "function", "func", "define"],
+        answer: 0
+    },
+    {
+        question: "Which operator is used for exponentiation in Python?",
+        options: ["**", "^", "exp", "pow"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Python data type?",
+        options: ["list", "tuple", "array", "set"],
+        answer: 2
+    },
+    {
+        question: "Which method is used to output text in Python?",
+        options: ["print()", "echo()", "printf()", "write()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to create a comment in Python?",
+        options: ["# comment", "// comment", "/* comment */", "-- comment"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to create a class in Python?",
+        options: ["class", "Class", "define", "struct"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to import a module in Python?",
+        options: ["import", "using", "include", "require"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is the correct way to define a list?",
+        options: [
+            "list = [1, 2, 3]",
+            "list = (1, 2, 3)",
+            "list = {1, 2, 3}",
+            "list = <1, 2, 3>"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python loop?",
+        options: ["for", "while", "repeat", "do-while"],
+        answer: 2
+    },
+    {
+        question: "Which keyword is used to handle exceptions in Python?",
+        options: ["try-except", "try-catch", "catch", "handle"],
+        answer: 0
+    },
+
+    // 10 Go (Golang) Questions
+    {
+        question: "What is the file extension for Go source files?",
+        options: [".go", ".golang", ".g", ".gol"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to declare a variable in Go?",
+        options: ["var", "let", "define", "declare"],
+        answer: 0
+    },
+    {
+        question: "Which function is the entry point of a Go program?",
+        options: ["main()", "start()", "init()", "run()"],
+        answer: 0
+    },
+    {
+        question: "Which package is used for formatted I/O in Go?",
+        options: ["fmt", "io", "input", "os"],
+        answer: 0
+    },
+    {
+        question: "How do you write a single-line comment in Go?",
+        options: ["//", "#", "/* */", "--"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define a function in Go?",
+        options: ["func", "function", "def", "fn"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to import a package in Go?",
+        options: ["import", "use", "include", "require"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Go data type?",
+        options: ["string", "int", "char", "float64"],
+        answer: 2
+    },
+    {
+        question: "Which keyword is used to create a constant in Go?",
+        options: ["const", "let", "constant", "final"],
+        answer: 0
+    },
+    {
+        question: "How do you declare an array of 5 integers in Go?",
+        options: [
+            "var a [5]int",
+            "int a[5]",
+            "a := [5]int",
+            "array a[5] int"
+        ],
+        answer: 0
+    },
+
+    // 20 React Questions
+    {
+        question: "What is React?",
+        options: [
+            "A JavaScript library for building user interfaces",
+            "A CSS framework",
+            "A database",
+            "A server-side language"
+        ],
+        answer: 0
+    },
+    {
+        question: "Who developed React?",
+        options: ["Facebook", "Google", "Microsoft", "Twitter"],
+        answer: 0
+    },
+    {
+        question: "What is a component in React?",
+        options: [
+            "A reusable piece of UI",
+            "A CSS class",
+            "A database table",
+            "A server"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you create a functional component in React?",
+        options: [
+            "function MyComponent() { return <div></div>; }",
+            "class MyComponent extends React.Component {}",
+            "def MyComponent() {}",
+            "component MyComponent() {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is JSX?",
+        options: [
+            "A syntax extension for JavaScript",
+            "A CSS preprocessor",
+            "A database query language",
+            "A server-side language"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you pass data to a component in React?",
+        options: [
+            "Using props",
+            "Using state",
+            "Using context",
+            "Using variables"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which hook is used to manage state in a functional component?",
+        options: ["useState", "useEffect", "useContext", "useReducer"],
+        answer: 0
+    },
+    {
+        question: "Which hook is used for side effects?",
+        options: ["useEffect", "useState", "useRef", "useMemo"],
+        answer: 0
+    },
+    {
+        question: "How do you render a list in React?",
+        options: [
+            "Using map()",
+            "Using forEach()",
+            "Using for loop",
+            "Using while loop"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the key prop used for in lists?",
+        options: [
+            "To uniquely identify elements",
+            "To style elements",
+            "To add event listeners",
+            "To set state"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you handle events in React?",
+        options: [
+            "Using camelCase event handlers",
+            "Using lowercase event handlers",
+            "Using addEventListener",
+            "Using onEvent"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the default value of a React component's state?",
+        options: [
+            "Undefined",
+            "Null",
+            "0",
+            "Empty string"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you update state in React?",
+        options: [
+            "Using setState or setX",
+            "Direct assignment",
+            "Using updateState",
+            "Using changeState"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is prop drilling?",
+        options: [
+            "Passing props through many components",
+            "Using context",
+            "Using hooks",
+            "Using Redux"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which lifecycle method is called after a component is rendered?",
+        options: [
+            "componentDidMount",
+            "componentWillMount",
+            "componentWillUpdate",
+            "componentDidUpdate"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you create a ref in React?",
+        options: [
+            "Using useRef()",
+            "Using createRef()",
+            "Using ref attribute",
+            "All of the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "What does the useContext hook do?",
+        options: [
+            "Accesses context values",
+            "Manages state",
+            "Handles side effects",
+            "Creates refs"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to render a React element into the DOM?",
+        options: [
+            "ReactDOM.render()",
+            "React.render()",
+            "render()",
+            "ReactDOM.create()"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is Redux?",
+        options: [
+            "A state management library",
+            "A CSS framework",
+            "A database",
+            "A server"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a pure component?",
+        options: [
+            "A component that does not re-render if props/state do not change",
+            "A component with no props",
+            "A component with no state",
+            "A stateless component"
+        ],
+        answer: 0
+    },
+
+    // 20 Node.js Questions
+    {
+        question: "What is Node.js?",
+        options: [
+            "A JavaScript runtime built on Chrome's V8 engine",
+            "A JavaScript library",
+            "A database",
+            "A CSS framework"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which module is used to create a server in Node.js?",
+        options: ["http", "fs", "url", "os"],
+        answer: 0
+    },
+    {
+        question: "Which command is used to initialize a Node.js project?",
+        options: [
+            "npm init",
+            "node init",
+            "npm start",
+            "node start"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file is the entry point for a Node.js application by default?",
+        options: ["index.js", "main.js", "app.js", "server.js"],
+        answer: 0
+    },
+    {
+        question: "How do you import a module in Node.js?",
+        options: [
+            "require('module')",
+            "import 'module'",
+            "include('module')",
+            "use('module')"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which module is used to work with the file system?",
+        options: ["fs", "file", "filesystem", "os"],
+        answer: 0
+    },
+    {
+        question: "Which method is used to read a file asynchronously?",
+        options: [
+            "fs.readFile",
+            "fs.read",
+            "fs.open",
+            "fs.getFile"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which global object is used to get the current file name?",
+        options: ["__filename", "__dirname", "filename", "file"],
+        answer: 0
+    },
+    {
+        question: "How do you export a function from a module?",
+        options: [
+            "module.exports = myFunction",
+            "export myFunction",
+            "exports: myFunction",
+            "module.export(myFunction)"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a core module in Node.js?",
+        options: ["express", "http", "fs", "path"],
+        answer: 0
+    },
+    {
+        question: "Which command is used to install a package globally?",
+        options: [
+            "npm install -g package",
+            "npm install package",
+            "npm add package",
+            "npm global install package"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to parse JSON in Node.js?",
+        options: [
+            "JSON.parse()",
+            "parseJSON()",
+            "JSON.toObject()",
+            "parse()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which object is used to handle events in Node.js?",
+        options: [
+            "EventEmitter",
+            "EventHandler",
+            "EventObject",
+            "Event"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to write to the console?",
+        options: [
+            "console.log()",
+            "log()",
+            "print()",
+            "write()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which module is used to create a web server?",
+        options: [
+            "http",
+            "web",
+            "server",
+            "net"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to end a response?",
+        options: [
+            "res.end()",
+            "res.finish()",
+            "res.close()",
+            "res.stop()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to listen on a port?",
+        options: [
+            "server.listen()",
+            "server.run()",
+            "server.start()",
+            "server.open()"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to install dependencies?",
+        options: [
+            "npm install",
+            "npm run",
+            "npm build",
+            "npm start"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Node.js framework?",
+        options: [
+            "Django",
+            "Express",
+            "Koa",
+            "Hapi"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to create a buffer?",
+        options: [
+            "Buffer.from()",
+            "Buffer.create()",
+            "Buffer.make()",
+            "Buffer.new()"
+        ],
+        answer: 0
+    },
+
+    // 20 Spring Questions
+    {
+        question: "What is Spring Framework?",
+        options: [
+            "A Java framework for building enterprise applications",
+            "A JavaScript library",
+            "A CSS framework",
+            "A database"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to mark a class as a Spring Boot application?",
+        options: [
+            "@SpringBootApplication",
+            "@SpringApplication",
+            "@BootApplication",
+            "@SpringApp"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for dependency injection?",
+        options: [
+            "@Autowired",
+            "@Inject",
+            "@Resource",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to create a REST controller?",
+        options: [
+            "@RestController",
+            "@Controller",
+            "@Service",
+            "@Component"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map HTTP GET requests?",
+        options: [
+            "@GetMapping",
+            "@RequestMapping",
+            "@PostMapping",
+            "@Mapping"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file is used for Spring Boot configuration?",
+        options: [
+            "application.properties",
+            "config.xml",
+            "spring.xml",
+            "application.xml"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a bean?",
+        options: [
+            "@Bean",
+            "@Component",
+            "@Service",
+            "@Repository"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for transaction management?",
+        options: [
+            "@Transactional",
+            "@Transaction",
+            "@Transact",
+            "@ManageTransaction"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject values from properties file?",
+        options: [
+            "@Value",
+            "@Property",
+            "@ConfigValue",
+            "@InjectValue"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to create a singleton bean?",
+        options: [
+            "@Component",
+            "@Singleton",
+            "@Bean",
+            "@Service"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for JPA repositories?",
+        options: [
+            "@Repository",
+            "@Component",
+            "@Service",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for scheduled tasks?",
+        options: [
+            "@Scheduled",
+            "@Task",
+            "@Timer",
+            "@Cron"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for aspect-oriented programming?",
+        options: [
+            "@Aspect",
+            "@AOP",
+            "@Proxy",
+            "@Around"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to enable Spring Boot auto-configuration?",
+        options: [
+            "@EnableAutoConfiguration",
+            "@AutoConfig",
+            "@EnableConfig",
+            "@AutoConfiguration"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for RESTful web services?",
+        options: [
+            "@RestController",
+            "@WebService",
+            "@RestService",
+            "@Controller"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map HTTP POST requests?",
+        options: [
+            "@PostMapping",
+            "@RequestMapping",
+            "@GetMapping",
+            "@Mapping"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject a bean by type?",
+        options: [
+            "@Autowired",
+            "@Inject",
+            "@Resource",
+            "@Bean"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a configuration class?",
+        options: [
+            "@Configuration",
+            "@Config",
+            "@ConfigClass",
+            "@SpringConfig"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to enable component scanning?",
+        options: [
+            "@ComponentScan",
+            "@Scan",
+            "@EnableScan",
+            "@ScanComponent"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map HTTP PUT requests?",
+        options: [
+            "@PutMapping",
+            "@RequestMapping",
+            "@PostMapping",
+            "@Mapping"
+        ],
+        answer: 0
+    },
+
+    // 20 Django Questions
+    {
+        question: "What is Django?",
+        options: [
+            "A Python web framework",
+            "A JavaScript library",
+            "A database",
+            "A CSS framework"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to create a new Django project?",
+        options: [
+            "django-admin startproject",
+            "django new project",
+            "django create project",
+            "django-admin newproject"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file contains Django settings?",
+        options: [
+            "settings.py",
+            "config.py",
+            "django.py",
+            "main.py"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to create a new Django app?",
+        options: [
+            "python manage.py startapp",
+            "django-admin startapp",
+            "django start app",
+            "python startapp"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file defines URL patterns in Django?",
+        options: [
+            "urls.py",
+            "routes.py",
+            "paths.py",
+            "urlpatterns.py"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which template language does Django use by default?",
+        options: [
+            "Django Template Language",
+            "Jinja2",
+            "Mako",
+            "HTML"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to apply migrations?",
+        options: [
+            "python manage.py migrate",
+            "python manage.py makemigrations",
+            "django migrate",
+            "django makemigrations"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which ORM does Django use?",
+        options: [
+            "Django ORM",
+            "SQLAlchemy",
+            "Peewee",
+            "MongoEngine"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command runs the Django development server?",
+        options: [
+            "python manage.py runserver",
+            "django runserver",
+            "django-admin runserver",
+            "python runserver"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file is used to define Django models?",
+        options: [
+            "models.py",
+            "database.py",
+            "tables.py",
+            "schema.py"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which class is used to create a form in Django?",
+        options: [
+            "forms.Form",
+            "django.Form",
+            "Form",
+            "DjangoForm"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command creates a superuser in Django?",
+        options: [
+            "python manage.py createsuperuser",
+            "django createsuperuser",
+            "django-admin createsuperuser",
+            "python createsuperuser"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which middleware is used for session management?",
+        options: [
+            "SessionMiddleware",
+            "AuthMiddleware",
+            "CookieMiddleware",
+            "UserMiddleware"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which decorator is used to require login for a view?",
+        options: [
+            "@login_required",
+            "@require_login",
+            "@authenticated",
+            "@require_authenticated"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to make migrations?",
+        options: [
+            "python manage.py makemigrations",
+            "python manage.py migrate",
+            "django makemigrations",
+            "django migrate"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file is used to register models in the admin site?",
+        options: [
+            "admin.py",
+            "models.py",
+            "register.py",
+            "site.py"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which class is used for user authentication?",
+        options: [
+            "User",
+            "AuthUser",
+            "DjangoUser",
+            "Account"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to collect static files?",
+        options: [
+            "python manage.py collectstatic",
+            "django collectstatic",
+            "django-admin collectstatic",
+            "python collectstatic"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which template tag is used for URL reversing?",
+        options: [
+            "{% url %}",
+            "{% reverse %}",
+            "{% path %}",
+            "{% link %}"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to check for errors in Django?",
+        options: [
+            "python manage.py check",
+            "django check",
+            "django-admin check",
+            "python check"
+        ],
+        answer: 0
+    }
+];
+
+const explanations = [
+    // HTML
+    "HTML stands for Hyper Text Markup Language.",
+    "<a> is the anchor tag for hyperlinks.",
+    "<h1> is the largest heading tag.",
+    "<img src='...'> is used to insert images.",
+    "<ul> creates an unordered list.",
+    "Use style='background-color:...' for background color.",
+    "<tr> defines a table row.",
+    "<ol> creates a numbered (ordered) list.",
+    "<footer> specifies a footer for a document.",
+    "<input type='checkbox'> creates a checkbox.",
+    // CSS
+    "CSS stands for Cascading Style Sheets.",
+    "background-color sets the background color.",
+    "#demo selects an element with id 'demo'.",
+    "font-size controls the text size.",
+    "font-weight: bold makes text bold.",
+    "body {color: black;} is correct CSS syntax.",
+    "/* ... */ is the syntax for CSS comments.",
+    "margin-left changes the left margin.",
+    "div a selects all <a> inside <div>.",
+    "font-family changes the font.",
+    // JavaScript
+    "Netscape developed JavaScript.",
+    "alert('Hello World'); shows an alert box.",
+    "// is used for single-line comments.",
+    "Both var x; and let x; declare variables.",
+    "push() adds an element to the end of an array.",
+    "function myFunction() {} defines a function.",
+    "myFunction() calls the function.",
+    "= assigns a value to a variable.",
+    "if (i == 5) {} is the correct syntax.",
+    "onclick is the event for clicks.",
+    // TypeScript
+    "TypeScript is a superset of JavaScript.",
+    ".ts is the extension for TypeScript files.",
+    "let x: number = 5; defines a typed variable.",
+    "tsc compiles TypeScript to JavaScript.",
+    "interface MyInterface {} defines an interface.",
+    "as is used for type assertion.",
+    "propertyName?: type makes a property optional.",
+    "'character' is not a valid TypeScript type.",
+    "import { x } from './module'; imports a module.",
+    "const declares a constant.",
+    // C++
+    ".cpp is the standard C++ file extension.",
+    "-> accesses members via pointer.",
+    "class is used to define a class.",
+    "main() is the entry point.",
+    "// is for single-line comments.",
+    "Both const int x = 5; and int const x = 5; are valid.",
+    "'package' is not a C++ access specifier.",
+    "new allocates dynamic memory.",
+    "iostream is required for I/O.",
+    "public is used for inheritance.",
+    // Java
+    "'unsigned' is not a Java keyword.",
+    "public static void main(String[] args) is the entry point.",
+    "new creates an object.",
+    "extends is used for inheritance.",
+    "String is not a primitive type.",
+    "// is for single-line comments.",
+    "Scanner is in java.util.",
+    "equals() compares two strings.",
+    "final prevents inheritance.",
+    "try-catch handles exceptions.",
+    // Python
+    "'def' defines a function.",
+    "'**' is the exponentiation operator.",
+    "'array' is not a Python data type.",
+    "print() outputs text.",
+    "# is used for comments.",
+    "'class' defines a class.",
+    "'import' imports a module.",
+    "Square brackets [] define a list.",
+    "'repeat' is not a valid Python loop.",
+    "'try-except' handles exceptions.",
+    // Go
+    ".go is the Go file extension.",
+    "var declares a variable.",
+    "main() is the entry point.",
+    "fmt is used for formatted I/O.",
+    "// is for single-line comments.",
+    "func defines a function.",
+    "import imports a package.",
+    "'char' is not a Go data type.",
+    "const creates a constant.",
+    "var a [5]int declares an array.",
+    // React
+    "React is a JavaScript library for building UIs.",
+    "Facebook developed React.",
+    "A component is a reusable piece of UI.",
+    "function MyComponent() { ... } creates a functional component.",
+    "JSX is a syntax extension for JavaScript.",
+    "Props are used to pass data to components.",
+    "useState manages state in functional components.",
+    "useEffect is for side effects.",
+    "Use map() to render lists.",
+    "The key prop uniquely identifies elements.",
+    "CamelCase event handlers are used in React.",
+    "State is undefined by default.",
+    "Use setState or setX to update state.",
+    "Prop drilling is passing props through many components.",
+    "componentDidMount runs after rendering.",
+    "useRef(), createRef(), and ref attribute create refs.",
+    "useContext accesses context values.",
+    "ReactDOM.render() renders elements to the DOM.",
+    "Redux is a state management library.",
+    "A pure component only re-renders if props/state change.",
+    // Node.js
+    "Node.js is a JavaScript runtime on V8.",
+    "http module creates a server.",
+    "npm init initializes a project.",
+    "index.js is the default entry point.",
+    "require('module') imports a module.",
+    "fs is for file system operations.",
+    "fs.readFile reads files asynchronously.",
+    "__filename gives the current file name.",
+    "module.exports = myFunction exports a function.",
+    "express is not a core module.",
+    "npm install -g installs a package globally.",
+    "JSON.parse() parses JSON.",
+    "EventEmitter handles events.",
+    "console.log() writes to the console.",
+    "http module creates a web server.",
+    "res.end() ends a response.",
+    "server.listen() listens on a port.",
+    "npm install installs dependencies.",
+    "Django is not a Node.js framework.",
+    "Buffer.from() creates a buffer.",
+    // Spring
+    "Spring is a Java framework for enterprise apps.",
+    "@SpringBootApplication marks a Spring Boot app.",
+    "@Autowired is for dependency injection.",
+    "@RestController creates a REST controller.",
+    "@GetMapping maps HTTP GET requests.",
+    "application.properties is for configuration.",
+    "@Bean defines a bean.",
+    "@Transactional manages transactions.",
+    "@Value injects values from properties.",
+    "@Component creates a singleton bean.",
+    "@Repository is for JPA repositories.",
+    "@Scheduled is for scheduled tasks.",
+    "@Aspect is for aspect-oriented programming.",
+    "@EnableAutoConfiguration enables auto-configuration.",
+    "@RestController is for RESTful services.",
+    "@PostMapping maps HTTP POST requests.",
+    "@Autowired injects a bean by type.",
+    "@Configuration defines a config class.",
+    "@ComponentScan enables component scanning.",
+    "@PutMapping maps HTTP PUT requests.",
+    // Django
+    "Django is a Python web framework.",
+    "django-admin startproject creates a project.",
+    "settings.py contains Django settings.",
+    "python manage.py startapp creates an app.",
+    "urls.py defines URL patterns.",
+    "Django uses its own template language by default.",
+    "python manage.py migrate applies migrations.",
+    "Django ORM is the default ORM.",
+    "python manage.py runserver runs the server.",
+    "models.py defines models.",
+    "forms.Form creates a form.",
+    "python manage.py createsuperuser creates a superuser.",
+    "SessionMiddleware manages sessions.",
+    "@login_required requires login for a view.",
+    "python manage.py makemigrations makes migrations.",
+    "admin.py registers models for admin.",
+    "User is used for authentication.",
+    "python manage.py collectstatic collects static files.",
+    "{% url %} is used for URL reversing.",
+    "python manage.py check checks for errors."
+];
+
+let currentQuestion = 0;
+let userAnswers = Array(questions.length).fill(null);
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    const quizContent = document.getElementById('quiz-content');
+    quizContent.innerHTML = `
+        <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+        <div class="question-text">${q.question}</div>
+        <ul class="options">
+            ${q.options.map((opt, idx) => `
+                <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                    ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                </li>
+            `).join('')}
+        </ul>
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+            ${currentQuestion === questions.length - 1
+                ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+            }
+        </div>
+    `;
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.onclick = function() {
+            const idx = Number(this.getAttribute('data-idx'));
+            userAnswers[currentQuestion] = idx;
+            renderQuestion();
+        };
+    });
+
+    document.getElementById('prev-btn').onclick = () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion();
+        }
+    };
+
+    if (currentQuestion < questions.length - 1) {
+        document.getElementById('next-btn').onclick = () => {
+            if (userAnswers[currentQuestion] !== null) {
+                currentQuestion++;
+                renderQuestion();
+            }
+        };
+    } else {
+        document.getElementById('submit-btn').onclick = showResultWithFeedback;
+    }
+}
+
+function showResultWithFeedback() {
+    let score = 0;
+    let mistaken = [];
+    userAnswers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) {
+            score++;
+        } else {
+            mistaken.push(idx);
+        }
+    });
+
+    let feedback = "";
+    if (mistaken.length > 0) {
+        feedback = `<div style="margin-top:1.5rem;text-align:left;">
+            <strong>Review your mistakes:</strong>
+            <ul style="margin-top:0.5rem;">` +
+            mistaken.map(idx => `
+                <li>
+                    <b>Q${idx + 1}:</b> ${questions[idx].question}<br>
+                    <span style="color:#28a745;">Correct: ${questions[idx].options[questions[idx].answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                    <br>
+                    <span style="color:#888;font-size:0.97em;">${explanations[idx]}</span>
+                </li>
+            `).join('') +
+            `</ul>
+            </div>
+            <div style="margin-top:1rem;">
+                <strong>Show all questions and answers:</strong>
+                <ul style="margin-top:0.5rem;">
+                    ${questions.map((q, idx) => `
+                        <li style="margin-bottom:0.7em;">
+                            <b>Q${idx + 1}:</b> ${q.question}<br>
+                            <span style="color:#28a745;">Answer: ${q.options[q.answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>`;
+    }
+
+    document.getElementById('quiz-content').innerHTML = `
+        <div class="result">
+            <div style="font-size:2.1rem;font-weight:700;margin-bottom:0.7rem;">
+            Your Score: ${score} / ${questions.length}
+            </div>
+            <button class="nav-btn" style="margin-bottom:1.2rem;" onclick="location.reload()">Try Again</button>
+            ${feedback}
+        </div>
+    `;
+}
+renderQuestion();
+</script>
+</body>
+</html>

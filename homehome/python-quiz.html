@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">Python Quiz</div>
+        <div
+        <div id="quiz-content"></div>
+    </div>
+<script>
+const questions = [
+    {
+        question: "Which of the following is the correct extension for a Python file?",
+        options: [".py", ".python", ".pt", ".pyt"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to define a function in Python?",
+        options: ["function", "def", "func", "define"],
+        answer: 1
+    },
+    {
+        question: "Which method is used to output text in Python?",
+        options: ["print()", "echo()", "printf()", "write()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Python data type?",
+        options: ["list", "tuple", "array", "set"],
+        answer: 2
+    },
+    {
+        question: "Which operator is used for exponentiation in Python?",
+        options: ["^", "**", "exp", "pow"],
+        answer: 1
+    },
+    {
+        question: "Which of the following is used to create a comment in Python?",
+        options: ["// comment", "# comment", "/* comment */", "-- comment"],
+        answer: 1
+    },
+    {
+        question: "Which keyword is used to create a class in Python?",
+        options: ["class", "Class", "define", "struct"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid variable name in Python?",
+        options: ["_myVar", "myVar1", "1myVar", "my_var"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to import a module in Python?",
+        options: ["import", "using", "include", "require"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is the correct way to define a list?",
+        options: ["list = [1, 2, 3]", "list = (1, 2, 3)", "list = {1, 2, 3}", "list = <1, 2, 3>"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python loop?",
+        options: ["for", "while", "repeat", "do-while"],
+        answer: 3
+    },
+    {
+        question: "Which keyword is used to handle exceptions in Python?",
+        options: ["try-except", "try-catch", "catch", "handle"],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used to prevent inheritance in Python?",
+        options: ["final", "static", "sealed", "No such keyword"],
+        answer: 3
+    },
+    {
+        question: "Which of the following is NOT a valid Python string method?",
+        options: ["upper()", "capitalize()", "reverse()", "replace()"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is the correct way to declare a dictionary?",
+        options: ["dict = {'a':1, 'b':2}", "dict = ['a',1,'b',2]", "dict = ('a',1,'b',2)", "dict = <'a':1, 'b':2>"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a Python keyword?",
+        options: ["yield", "lambda", "goto", "with"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to define an anonymous function?",
+        options: ["lambda", "def", "func", "anon"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python data structure?",
+        options: ["list", "tuple", "set", "arraylist"],
+        answer: 3
+    },
+    {
+        question: "Which of the following is the correct way to comment a single line in Python?",
+        options: ["# comment", "// comment", "/* comment */", "-- comment"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid way to concatenate strings?",
+        options: ["'a' + 'b'", "'a'.join('b')", "'a' 'b'", "'a' * 2"],
+        answer: 1
+    },
+    {
+        question: "Which of the following is used to terminate a loop in Python?",
+        options: ["break", "continue", "exit", "stop"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is the correct way to declare a constant in Python?",
+        options: ["There is no true constant", "const x = 10", "final x = 10", "constant x = 10"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python operator?",
+        options: ["is", "not", "&&", "in"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to create a thread in Python?",
+        options: ["threading.Thread", "Thread", "Runnable", "Process"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python exception?",
+        options: ["ValueError", "TypeError", "NullPointerException", "IndexError"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is the correct way to read input from the user?",
+        options: ["input()", "cin >> x", "read()", "Scanner()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python collection?",
+        options: ["list", "set", "dict", "arraylist"],
+        answer: 3
+    },
+    {
+        question: "Which of the following is used to define a module in Python?",
+        options: ["A .py file", "module keyword", "define", "package"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python loop control statement?",
+        options: ["break", "continue", "goto", "pass"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to inherit a class in Python?",
+        options: ["class B(A):", "class B extends A", "class B implements A", "class B inherits A"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python access specifier?",
+        options: ["public", "private (with _ or __)", "protected (with _)", "No explicit specifier"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is used to convert a string to an integer?",
+        options: ["int()", "parseInt()", "toInt()", "convert()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python built-in type?",
+        options: ["int", "float", "char", "str"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is the correct way to declare a 2D list?",
+        options: ["a = [[0]*3 for _ in range(4)]", "a = [0]*3*4", "a = (0,0,0,0)", "a = {0,0,0,0}"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python string literal?",
+        options: ["'Hello'", "\"Hello\"", "'''Hello'''", "Hello"],
+        answer: 3
+    },
+    {
+        question: "Which of the following is used to handle multiple exceptions?",
+        options: ["except (TypeError, ValueError):", "catch-all", "multi-catch", "try-multi"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python file I/O function?",
+        options: ["open()", "read()", "write()", "scan()"],
+        answer: 3
+    },
+    {
+        question: "Which of the following is the correct way to define an abstract method?",
+        options: ["@abstractmethod", "abstract void run()", "def run() abstract", "void run()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python built-in function?",
+        options: ["len()", "sum()", "append()", "max()"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to stop a thread in Python?",
+        options: ["No direct method", "stop()", "terminate()", "kill()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python exception handling keyword?",
+        options: ["try", "catch", "finally", "except"],
+        answer: 1
+    },
+    {
+        question: "Which of the following is the correct way to create a subclass?",
+        options: ["class B(A):", "class B extends A", "class B implements A", "class B : A"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python math function?",
+        options: ["abs()", "sqrt()", "power()", "max()"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to define a constant in Python?",
+        options: ["UPPERCASE variable name", "const keyword", "final keyword", "constant keyword"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python decorator?",
+        options: ["@staticmethod", "@classmethod", "@property", "@optional"],
+        answer: 3
+    },
+    {
+        question: "Which of the following is the correct way to raise an exception?",
+        options: ["raise Exception()", "throw Exception()", "raise new Exception()", "throw new Exception()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python collection type?",
+        options: ["list", "set", "map", "dict"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is used to get the length of a list?",
+        options: ["len(list)", "list.length()", "list.size()", "list.getLength()"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid Python modifier?",
+        options: ["public", "private (with _ or __)", "protected (with _)", "No explicit modifier"],
+        answer: 0
+    },
+    {
+        question: "Which of the following is the correct way to override a method?",
+        options: ["Just define it in subclass", "@override", "override", "Override"],
+        answer: 0
+    }
+];
+
+const explanations = [
+    ".py is the standard extension for Python files.",
+    "'def' is the keyword to define a function in Python.",
+    "print() is used to output text in Python.",
+    "Python does not have a built-in 'array' data type.",
+    "'**' is the exponentiation operator in Python.",
+    "# is used for single-line comments in Python.",
+    "'class' is the keyword to define a class.",
+    "Variable names cannot start with a digit.",
+    "'import' is used to import modules in Python.",
+    "Square brackets [] are used to define lists.",
+    "'do-while' is not a Python loop.",
+    "'try-except' handles exceptions in Python.",
+    "Python does not have a keyword to prevent inheritance.",
+    "'reverse()' is not a string method; use slicing or reversed().",
+    "Dictionaries are defined with curly braces and key:value pairs.",
+    "'goto' is not a Python keyword.",
+    "'lambda' defines an anonymous function.",
+    "'arraylist' is not a Python data structure.",
+    "# is the single-line comment syntax.",
+    "'join' is used differently; 'a' + 'b' or 'a' 'b' are valid.",
+    "'break' terminates a loop in Python.",
+    "Python does not have true constants; use uppercase by convention.",
+    "'&&' is not a valid Python operator; use 'and'.",
+    "threading.Thread is used to create threads in Python.",
+    "NullPointerException is not a Python exception.",
+    "input() reads user input in Python.",
+    "'arraylist' is not a Python collection.",
+    "A module is simply a .py file.",
+    "'goto' is not a Python loop control statement.",
+    "class B(A): is the syntax for inheritance.",
+    "Python does not have explicit access specifiers like 'public'.",
+    "int() converts a string to an integer.",
+    "'char' is not a Python built-in type.",
+    "List comprehensions are used for 2D lists.",
+    "String literals must be quoted; Hello is not valid.",
+    "except (TypeError, ValueError): handles multiple exceptions.",
+    "'scan()' is not a Python file I/O function.",
+    "@abstractmethod is used for abstract methods.",
+    "'append()' is a list method, not a built-in function.",
+    "There is no direct method to stop threads in Python.",
+    "'catch' is not a Python exception keyword.",
+    "class B(A): creates a subclass.",
+    "'power()' is not a built-in math function; use pow() or **.",
+    "Constants are defined by uppercase variable names by convention.",
+    "@optional is not a standard Python decorator.",
+    "raise Exception() raises an exception in Python.",
+    "'map' is not a built-in Python collection type.",
+    "len(list) returns the length of a list.",
+    "Python does not use explicit modifiers like 'public'.",
+    "Overriding is done by redefining the method in the subclass."
+];
+
+let currentQuestion = 0;
+let userAnswers = Array(questions.length).fill(null);
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    const quizContent = document.getElementById('quiz-content');
+    quizContent.innerHTML = `
+        <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+        <div class="question-text">${q.question}</div>
+        <ul class="options">
+            ${q.options.map((opt, idx) => `
+                <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                    ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                </li>
+            `).join('')}
+        </ul>
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+            ${currentQuestion === questions.length - 1
+                ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+            }
+        </div>
+    `;
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.onclick = function() {
+            const idx = Number(this.getAttribute('data-idx'));
+            userAnswers[currentQuestion] = idx;
+            renderQuestion();
+        };
+    });
+
+    document.getElementById('prev-btn').onclick = () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion();
+        }
+    };
+
+    if (currentQuestion < questions.length - 1) {
+        document.getElementById('next-btn').onclick = () => {
+            if (userAnswers[currentQuestion] !== null) {
+                currentQuestion++;
+                renderQuestion();
+            }
+        };
+    } else {
+        document.getElementById('submit-btn').onclick = showResultWithFeedback;
+    }
+}
+
+function showResultWithFeedback() {
+    let score = 0;
+    let mistaken = [];
+    userAnswers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) {
+            score++;
+        } else {
+            mistaken.push(idx);
+        }
+    });
+
+    let feedback = "";
+    if (mistaken.length > 0) {
+        feedback = `<div style="margin-top:1.5rem;text-align:left;">
+            <strong>Review your mistakes:</strong>
+            <ul style="margin-top:0.5rem;">` +
+            mistaken.map(idx => `
+                <li>
+                    <b>Q${idx + 1}:</b> ${questions[idx].question}<br>
+                    <span style="color:#28a745;">Correct: ${questions[idx].options[questions[idx].answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                    <br>
+                    <span style="color:#888;font-size:0.97em;">${explanations[idx]}</span>
+                </li>
+            `).join('') +
+            `</ul>
+        </div>`;
+    }
+
+    document.getElementById('quiz-content').innerHTML = `
+        <div class="result">
+            You scored ${score} out of ${questions.length}!<br>
+            <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            ${feedback}
+        </div>
+    `;
+}
+
+renderQuestion();
+</script>

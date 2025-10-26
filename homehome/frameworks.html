@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Frameworks - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2d1950, #4b2c83, #663399);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #b19cd9;
+        }
+
+        .frameworks-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #b19cd9, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(177, 156, 217, 0.2), rgba(138, 43, 226, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tech-card:hover::before {
+            opacity: 1;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .tech-card img {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .tech-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .tech-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #b19cd9;
+        }
+
+        .tech-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #b19cd9;
+        }
+
+        .info-section p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(177, 156, 217, 0.2);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(177, 156, 217, 0.4);
+        }
+
+        .info-card h4 {
+            color: #b19cd9;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #b19cd9, #8a2be2);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .frameworks-container {
+                margin: 80px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="frontend.html">Frontend</a>
+                <a href="backend.html">Backend</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="frameworks-container">
+        <div class="hero-section">
+            <h1>Web Development Frameworks</h1>
+            <p>Web frameworks are the building blocks of modern web development, providing structured and efficient ways to build powerful web applications. They offer pre-written components, libraries, and tools that streamline development and enhance productivity.</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card" onclick="window.location.href='react.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+                <h3>React</h3>
+                <p>Frontend JavaScript library for building user interfaces with reusable components</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='nodejs.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js">
+                <h3>Node.js</h3>
+                <p>JavaScript runtime for building scalable server-side applications</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='spring.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring">
+                <h3>Spring</h3>
+                <p>Comprehensive framework for building enterprise Java applications</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='django.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django">
+                <h3>Django</h3>
+                <p>High-level Python framework for rapid development and clean design</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>How Web Frameworks Work</h2>
+            <p>Web frameworks provide a structured approach to web development by offering pre-built components, standardized practices, and development tools. They help developers focus on building features rather than reinventing common functionalities.</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>React (Frontend)</h4>
+                    <p>React uses a virtual DOM and component-based architecture to create dynamic user interfaces. It enables efficient updates and reusable UI components through a declarative programming style.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Node.js (Backend)</h4>
+                    <p>Node.js enables JavaScript on the server-side, using an event-driven, non-blocking I/O model. It's perfect for building scalable network applications and real-time features.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Spring (Backend)</h4>
+                    <p>Spring provides comprehensive infrastructure support for developing Java applications. It handles dependency injection, data access, security, and more through its modular approach.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Django (Backend)</h4>
+                    <p>Django follows the "batteries-included" philosophy, providing a full-featured framework with built-in admin interface, ORM, authentication, and security features.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Framework Benefits</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Rapid Development</h4>
+                    <p>Pre-built components and tools allow developers to build applications faster by focusing on business logic rather than basic functionality.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Security</h4>
+                    <p>Built-in security features and best practices help protect applications against common web vulnerabilities and attacks.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Scalability</h4>
+                    <p>Frameworks provide architecture patterns and tools for building applications that can grow with your user base.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Community Support</h4>
+                    <p>Large communities provide extensive documentation, tutorials, plugins, and solutions to common problems.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add hover effect to tech cards
+        document.querySelectorAll('.tech-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

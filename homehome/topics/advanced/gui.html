@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python GUI Programming - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span> Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python GUI Programming</h1>
+            <p>Creating graphical user interfaces with Python</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to GUI Programming</h2>
+                <p>Python offers several libraries for creating graphical user interfaces, each with its own strengths and use cases.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="tkinter">
+                <h2>Tkinter</h2>
+                <p>Creating GUIs with Tkinter (Python's standard GUI library):</p>
+                <pre><code class="language-python">import tkinter as tk
+from tkinter import ttk
+
+class App:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Tkinter Example")
+        
+        # Create widgets
+        self.label = ttk.Label(root, text="Enter your name:")
+        self.entry = ttk.Entry(root)
+        self.button = ttk.Button(root, text="Greet", command=self.greet)
+        
+        # Layout widgets
+        self.label.pack(pady=10)
+        self.entry.pack(pady=5)
+        self.button.pack(pady=10)
+        
+    def greet(self):
+        name = self.entry.get()
+        tk.messagebox.showinfo("Greeting", f"Hello, {name}!")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = App(root)
+    root.mainloop()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="pyqt">
+                <h2>PyQt</h2>
+                <p>Creating GUIs with PyQt:</p>
+                <pre><code class="language-python">from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtCore import Qt
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("PyQt Example")
+        
+        # Create central widget and layout
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+        layout = QVBoxLayout(central_widget)
+        
+        # Create widgets
+        self.label = QLabel("Enter your name:")
+        self.entry = QLineEdit()
+        self.button = QPushButton("Greet")
+        self.button.clicked.connect(self.greet)
+        
+        # Add widgets to layout
+        layout.addWidget(self.label)
+        layout.addWidget(self.entry)
+        layout.addWidget(self.button)
+        
+    def greet(self):
+        name = self.entry.text()
+        QMessageBox.information(self, "Greeting", f"Hello, {name}!")
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    app.exec_()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="kivy">
+                <h2>Kivy</h2>
+                <p>Creating cross-platform GUIs with Kivy:</p>
+                <pre><code class="language-python">from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+
+class MyApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        
+        # Create widgets
+        self.label = Label(text="Enter your name:")
+        self.entry = TextInput(multiline=False)
+        self.button = Button(text="Greet")
+        self.button.bind(on_press=self.greet)
+        
+        # Add widgets to layout
+        layout.add_widget(self.label)
+        layout.add_widget(self.entry)
+        layout.add_widget(self.button)
+        
+        return layout
+    
+    def greet(self, instance):
+        name = self.entry.text
+        popup = Popup(title='Greeting',
+                     content=Label(text=f'Hello, {name}!'),
+                     size_hint=(None, None), size=(400, 200))
+        popup.open()
+
+if __name__ == '__main__':
+    MyApp().run()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="customtkinter">
+                <h2>CustomTkinter</h2>
+                <p>Creating modern-looking GUIs with CustomTkinter:</p>
+                <pre><code class="language-python">import customtkinter as ctk
+
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        
+        self.title("CustomTkinter Example")
+        self.geometry("400x300")
+        
+        # Configure grid
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        
+        # Create frame
+        self.frame = ctk.CTkFrame(self)
+        self.frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+        
+        # Create widgets
+        self.label = ctk.CTkLabel(self.frame, text="Enter your name:")
+        self.entry = ctk.CTkEntry(self.frame)
+        self.button = ctk.CTkButton(self.frame, text="Greet", command=self.greet)
+        
+        # Layout widgets
+        self.label.pack(pady=10)
+        self.entry.pack(pady=5)
+        self.button.pack(pady=10)
+        
+    def greet(self):
+        name = self.entry.get()
+        ctk.CTkMessageBox(title="Greeting", message=f"Hello, {name}!")
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Choose the right GUI framework for your needs</li>
+                    <li>Follow the Model-View-Controller (MVC) pattern</li>
+                    <li>Use layout managers for responsive designs</li>
+                    <li>Implement proper error handling</li>
+                    <li>Consider accessibility in your designs</li>
+                    <li>Test your GUI on different platforms</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

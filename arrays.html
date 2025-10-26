@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Arrays</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js"></script>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f9fa;
+            --code-border: #e9ecef;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2a2a2a;
+            --code-border: #3a3a3a;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--code-border);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+
+        .example-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--code-bg);
+            border-radius: 10px;
+        }
+
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .note {
+            background-color: rgba(255, 243, 205, 0.3);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background-color: rgba(248, 215, 218, 0.3);
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background-color: rgba(209, 231, 221, 0.3);
+            border-left: 4px solid #198754;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--code-border);
+        }
+
+        th {
+            background-color: var(--code-bg);
+        }
+
+        .editor-container {
+            margin: 20px 0;
+        }
+
+        .CodeMirror {
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+    <div class="container">
+        <a href="javascript.html" class="back-button">← Back to JavaScript Home</a>
+        
+        <div class="header">
+            <h1>JavaScript Arrays</h1>
+        </div>
+
+        <section>
+            <h2>What are Arrays?</h2>
+            <p>Arrays are ordered collections of values. In JavaScript, arrays can store values of any type, including numbers, strings, objects, and even other arrays.</p>
+            
+            <div class="note">
+                <strong>Note:</strong> JavaScript arrays are zero-indexed, which means the first element is at index 0, the second at index 1, and so on.
+            </div>
+        </section>
+
+        <section>
+            <h2>Creating Arrays</h2>
+            <p>There are several ways to create arrays in JavaScript:</p>
+            
+            <h3>1. Array Literal Notation</h3>
+            <div class="code-block">
+                <pre>// Empty array
+const emptyArray = [];
+
+// Array with elements
+const fruits = ["apple", "banana", "orange"];
+
+// Array with mixed types
+const mixed = [1, "hello", true, { name: "John" }, [1, 2, 3]];</pre>
+            </div>
+            
+            <h3>2. Array Constructor</h3>
+            <div class="code-block">
+                <pre>// Empty array
+const emptyArray = new Array();
+
+// Array with elements
+const numbers = new Array(1, 2, 3, 4, 5);
+
+// Be careful: this creates an array with 3 empty slots
+const threeEmptySlots = new Array(3);</pre>
+            </div>
+            
+            <h3>3. Array.from() Method</h3>
+            <div class="code-block">
+                <pre>// Create array from string
+const chars = Array.from("hello");
+console.log(chars); // ["h", "e", "l", "l", "o"]
+
+// Create array from Set
+const uniqueNumbers = Array.from(new Set([1, 2, 2, 3, 3, 3]));
+console.log(uniqueNumbers); // [1, 2, 3]
+
+// Create array with mapping function
+const squares = Array.from([1, 2, 3, 4], x => x * x);
+console.log(squares); // [1, 4, 9, 16]</pre>
+            </div>
+            
+            <h3>4. Array.of() Method</h3>
+            <div class="code-block">
+                <pre>// Create array with elements
+const numbers = Array.of(1, 2, 3, 4, 5);
+console.log(numbers); // [1, 2, 3, 4, 5]
+
+// Unlike Array constructor, this creates an array with one element
+const singleNumber = Array.of(3);
+console.log(singleNumber); // [3]</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Accessing Array Elements</h2>
+            <p>You can access array elements using their index:</p>
+            
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange", "grape"];
+
+// Access first element (index 0)
+console.log(fruits[0]); // "apple"
+
+// Access third element (index 2)
+console.log(fruits[2]); // "orange"
+
+// Access last element
+console.log(fruits[fruits.length - 1]); // "grape"
+
+// Using at() method (ES2022)
+console.log(fruits.at(0)); // "apple"
+console.log(fruits.at(-1)); // "grape" (negative indices count from the end)</pre>
+            </div>
+            
+            <div class="warning">
+                <strong>Important:</strong> If you try to access an element at an index that doesn't exist, JavaScript returns <code>undefined</code>.
+            </div>
+            
+            <div class="code-block">
+                <pre>console.log(fruits[10]); // undefined</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Modifying Arrays</h2>
+            <p>Arrays in JavaScript are mutable, which means you can change their content after creation.</p>
+            
+            <h3>Changing Elements</h3>
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange"];
+
+// Change the second element
+fruits[1] = "pear";
+console.log(fruits); // ["apple", "pear", "orange"]</pre>
+            </div>
+            
+            <h3>Adding Elements</h3>
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange"];
+
+// Add element to the end
+fruits.push("grape");
+console.log(fruits); // ["apple", "banana", "orange", "grape"]
+
+// Add element to the beginning
+fruits.unshift("mango");
+console.log(fruits); // ["mango", "apple", "banana", "orange", "grape"]
+
+// Add element at a specific position
+fruits.splice(2, 0, "kiwi");
+console.log(fruits); // ["mango", "apple", "kiwi", "banana", "orange", "grape"]</pre>
+            </div>
+            
+            <h3>Removing Elements</h3>
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange", "grape", "mango"];
+
+// Remove last element
+const lastFruit = fruits.pop();
+console.log(lastFruit); // "mango"
+console.log(fruits); // ["apple", "banana", "orange", "grape"]
+
+// Remove first element
+const firstFruit = fruits.shift();
+console.log(firstFruit); // "apple"
+console.log(fruits); // ["banana", "orange", "grape"]
+
+// Remove elements at a specific position
+const removedFruits = fruits.splice(1, 1);
+console.log(removedFruits); // ["orange"]
+console.log(fruits); // ["banana", "grape"]</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Array Properties and Methods</h2>
+            
+            <h3>Properties</h3>
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange"];
+
+// length property
+console.log(fruits.length); // 3</pre>
+            </div>
+            
+            <h3>Common Array Methods</h3>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><code>push()</code></td>
+                    <td>Adds elements to the end of an array</td>
+                    <td><code>fruits.push("grape")</code></td>
+                </tr>
+                <tr>
+                    <td><code>pop()</code></td>
+                    <td>Removes the last element</td>
+                    <td><code>fruits.pop()</code></td>
+                </tr>
+                <tr>
+                    <td><code>unshift()</code></td>
+                    <td>Adds elements to the beginning</td>
+                    <td><code>fruits.unshift("mango")</code></td>
+                </tr>
+                <tr>
+                    <td><code>shift()</code></td>
+                    <td>Removes the first element</td>
+                    <td><code>fruits.shift()</code></td>
+                </tr>
+                <tr>
+                    <td><code>concat()</code></td>
+                    <td>Combines arrays</td>
+                    <td><code>fruits.concat(vegetables)</code></td>
+                </tr>
+                <tr>
+                    <td><code>slice()</code></td>
+                    <td>Returns a portion of an array</td>
+                    <td><code>fruits.slice(1, 3)</code></td>
+                </tr>
+                <tr>
+                    <td><code>splice()</code></td>
+                    <td>Changes array by removing or replacing elements</td>
+                    <td><code>fruits.splice(1, 1, "pear")</code></td>
+                </tr>
+                <tr>
+                    <td><code>indexOf()</code></td>
+                    <td>Returns the first index of an element</td>
+                    <td><code>fruits.indexOf("banana")</code></td>
+                </tr>
+                <tr>
+                    <td><code>lastIndexOf()</code></td>
+                    <td>Returns the last index of an element</td>
+                    <td><code>fruits.lastIndexOf("apple")</code></td>
+                </tr>
+                <tr>
+                    <td><code>includes()</code></td>
+                    <td>Checks if an array contains an element</td>
+                    <td><code>fruits.includes("orange")</code></td>
+                </tr>
+                <tr>
+                    <td><code>join()</code></td>
+                    <td>Joins all elements into a string</td>
+                    <td><code>fruits.join(", ")</code></td>
+                </tr>
+                <tr>
+                    <td><code>reverse()</code></td>
+                    <td>Reverses the order of elements</td>
+                    <td><code>fruits.reverse()</code></td>
+                </tr>
+                <tr>
+                    <td><code>sort()</code></td>
+                    <td>Sorts the elements</td>
+                    <td><code>fruits.sort()</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Array Iteration Methods</h2>
+            <p>JavaScript provides several methods for iterating over arrays:</p>
+            
+            <h3>forEach()</h3>
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange"];
+
+fruits.forEach((fruit, index) => {
+    console.log(`${index}: ${fruit}`);
+});
+// Outputs:
+// 0: apple
+// 1: banana
+// 2: orange</pre>
+            </div>
+            
+            <h3>map()</h3>
+            <div class="code-block">
+                <pre>const numbers = [1, 2, 3, 4, 5];
+
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]</pre>
+            </div>
+            
+            <h3>filter()</h3>
+            <div class="code-block">
+                <pre>const numbers = [1, 2, 3, 4, 5, 6];
+
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log(evenNumbers); // [2, 4, 6]</pre>
+            </div>
+            
+            <h3>reduce()</h3>
+            <div class="code-block">
+                <pre>const numbers = [1, 2, 3, 4, 5];
+
+const sum = numbers.reduce((total, num) => total + num, 0);
+console.log(sum); // 15</pre>
+            </div>
+            
+            <h3>find()</h3>
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange", "grape"];
+
+const found = fruits.find(fruit => fruit.length > 5);
+console.log(found); // "banana"</pre>
+            </div>
+            
+            <h3>some()</h3>
+            <div class="code-block">
+                <pre>const numbers = [1, 2, 3, 4, 5];
+
+const hasEven = numbers.some(num => num % 2 === 0);
+console.log(hasEven); // true</pre>
+            </div>
+            
+            <h3>every()</h3>
+            <div class="code-block">
+                <pre>const numbers = [1, 2, 3, 4, 5];
+
+const allPositive = numbers.every(num => num > 0);
+console.log(allPositive); // true</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Multidimensional Arrays</h2>
+            <p>JavaScript supports multidimensional arrays, which are arrays of arrays.</p>
+            
+            <div class="code-block">
+                <pre>// 2D array (matrix)
+const matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+// Accessing elements
+console.log(matrix[1][2]); // 6 (row 1, column 2)
+
+// Iterating over a 2D array
+for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+        console.log(`matrix[${i}][${j}] = ${matrix[i][j]}`);
+    }
+}</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Array Destructuring</h2>
+            <p>Array destructuring allows you to extract values from arrays and assign them to variables.</p>
+            
+            <div class="code-block">
+                <pre>const colors = ["red", "green", "blue"];
+
+// Basic destructuring
+const [first, second, third] = colors;
+console.log(first); // "red"
+console.log(second); // "green"
+console.log(third); // "blue"
+
+// Skip elements
+const [primary, , tertiary] = colors;
+console.log(primary); // "red"
+console.log(tertiary); // "blue"
+
+// Rest pattern
+const [head, ...rest] = colors;
+console.log(head); // "red"
+console.log(rest); // ["green", "blue"]
+
+// Default values
+const [a, b, c, d = "yellow"] = colors;
+console.log(d); // "yellow"
+
+// Swapping variables
+let x = 1;
+let y = 2;
+[x, y] = [y, x];
+console.log(x); // 2
+console.log(y); // 1</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Spread Operator with Arrays</h2>
+            <p>The spread operator (<code>...</code>) allows you to expand an array into individual elements.</p>
+            
+            <div class="code-block">
+                <pre>const fruits = ["apple", "banana", "orange"];
+const vegetables = ["carrot", "broccoli"];
+
+// Combine arrays
+const food = [...fruits, ...vegetables];
+console.log(food); // ["apple", "banana", "orange", "carrot", "broccoli"]
+
+// Copy an array
+const fruitsCopy = [...fruits];
+console.log(fruitsCopy); // ["apple", "banana", "orange"]
+
+// Add elements to a new array
+const moreFruits = ["grape", ...fruits, "mango"];
+console.log(moreFruits); // ["grape", "apple", "banana", "orange", "mango"]
+
+// Spread in function calls
+const numbers = [1, 2, 3];
+console.log(Math.max(...numbers)); // 3</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Interactive Examples</h2>
+            
+            <h3>Example 1: Basic Array Operations</h3>
+            <div class="editor-container">
+                <textarea id="editor1">
+// Creating arrays
+const fruits = ["apple", "banana", "orange"];
+console.log("Original array:", fruits);
+
+// Accessing elements
+console.log("First element:", fruits[0]);
+console.log("Last element:", fruits[fruits.length - 1]);
+console.log("Last element using at():", fruits.at(-1));
+
+// Modifying elements
+fruits[1] = "pear";
+console.log("After changing second element:", fruits);
+
+// Adding elements
+fruits.push("grape");
+console.log("After push:", fruits);
+
+fruits.unshift("mango");
+console.log("After unshift:", fruits);
+
+// Removing elements
+const lastFruit = fruits.pop();
+console.log("Popped element:", lastFruit);
+console.log("After pop:", fruits);
+
+const firstFruit = fruits.shift();
+console.log("Shifted element:", firstFruit);
+console.log("After shift:", fruits);
+
+// Finding elements
+console.log("Index of 'orange':", fruits.indexOf("orange"));
+console.log("Does array include 'pear'?", fruits.includes("pear"));
+
+// Joining elements
+console.log("Joined with commas:", fruits.join(", "));
+
+// Length property
+console.log("Array length:", fruits.length);
+</textarea>
+            </div>
+            
+            <h3>Example 2: Array Iteration Methods</h3>
+            <div class="editor-container">
+                <textarea id="editor2">
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+console.log("Original array:", numbers);
+
+// forEach
+console.log("forEach example:");
+numbers.forEach((num, index) => {
+    console.log(`numbers[${index}] = ${num}`);
+});
+
+// map
+const doubled = numbers.map(num => num * 2);
+console.log("Doubled numbers (map):", doubled);
+
+// filter
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log("Even numbers (filter):", evenNumbers);
+
+// reduce
+const sum = numbers.reduce((total, num) => total + num, 0);
+console.log("Sum of all numbers (reduce):", sum);
+
+// find
+const firstGreaterThanFive = numbers.find(num => num > 5);
+console.log("First number greater than 5 (find):", firstGreaterThanFive);
+
+// some
+const hasEven = numbers.some(num => num % 2 === 0);
+console.log("Has at least one even number (some):", hasEven);
+
+// every
+const allPositive = numbers.every(num => num > 0);
+console.log("All numbers are positive (every):", allPositive);
+
+// sort
+const unsortedNumbers = [5, 2, 8, 1, 9];
+console.log("Unsorted array:", unsortedNumbers);
+
+// Default sort (converts to strings)
+const sortedDefault = [...unsortedNumbers].sort();
+console.log("Default sort:", sortedDefault);
+
+// Numeric sort
+const sortedNumeric = [...unsortedNumbers].sort((a, b) => a - b);
+console.log("Numeric sort (ascending):", sortedNumeric);
+
+const sortedDescending = [...unsortedNumbers].sort((a, b) => b - a);
+console.log("Numeric sort (descending):", sortedDescending);
+</textarea>
+            </div>
+            
+            <h3>Example 3: Advanced Array Techniques</h3>
+            <div class="editor-container">
+                <textarea id="editor3">
+// Array destructuring
+const colors = ["red", "green", "blue", "yellow", "purple"];
+console.log("Original array:", colors);
+
+const [primary, secondary, ...rest] = colors;
+console.log("Destructuring results:");
+console.log("primary:", primary);
+console.log("secondary:", secondary);
+console.log("rest:", rest);
+
+// Spread operator
+const fruits = ["apple", "banana", "orange"];
+const berries = ["strawberry", "blueberry", "raspberry"];
+
+const allFruits = [...fruits, ...berries];
+console.log("Combined arrays with spread:", allFruits);
+
+// Multidimensional arrays
+const matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+console.log("2D array (matrix):", matrix);
+console.log("Element at row 1, column 2:", matrix[1][2]);
+
+// Flattening arrays
+const nestedArray = [1, [2, 3], [4, [5, 6]]];
+console.log("Nested array:", nestedArray);
+
+// flat() method
+const flattenedOneLevel = nestedArray.flat();
+console.log("Flattened one level:", flattenedOneLevel);
+
+const flattenedAllLevels = nestedArray.flat(Infinity);
+console.log("Flattened all levels:", flattenedAllLevels);
+
+// Creating arrays with Array.from and Array.of
+const stringChars = Array.from("Hello");
+console.log("Array from string:", stringChars);
+
+const mappedArray = Array.from([1, 2, 3, 4], x => x * x);
+console.log("Array.from with mapping function:", mappedArray);
+
+const arrayOf = Array.of(1, "two", true, null);
+console.log("Array.of example:", arrayOf);
+</textarea>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+
+        // Initialize CodeMirror editors
+        let editor1 = CodeMirror.fromTextArea(document.getElementById("editor1"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: false
+        });
+
+        let editor2 = CodeMirror.fromTextArea(document.getElementById("editor2"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: false
+        });
+
+        let editor3 = CodeMirror.fromTextArea(document.getElementById("editor3"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: false
+        });
+    </script>
+</body>
+</html>

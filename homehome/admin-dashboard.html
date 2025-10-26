@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Code Pathway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+        }
+
+        .search-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            background-color: var(--light-color);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-card-title {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            opacity: 0.7;
+        }
+
+        .stat-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .icon-users { background-color: var(--primary-color); }
+        .icon-code { background-color: var(--success-color); }
+        .icon-courses { background-color: var(--warning-color); }
+        .icon-completion { background-color: var(--accent-color); }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-card-desc {
+            font-size: 0.8rem;
+            color: var(--dark-color);
+            opacity: 0.7;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
+        }
+
+        .status-pending {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+
+        .view-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .view-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination-btn:hover, .pagination-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .output-block {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .detail-label {
+            width: 150px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 10px 0;
+            }
+
+            .sidebar-header h2, .sidebar-header p, .menu-item span {
+                display: none;
+            }
+
+            .menu-item {
+                justify-content: center;
+                padding: 15px 0;
+            }
+
+            .menu-item i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Code Pathway</h2>
+                <p>Admin Dashboard</p>
+            </div>
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-code"></i>
+                    <span>Code Executions</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Courses</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="homepage.html" class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Back to Site</span>
+                </a>
+                <a href="login.html" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">User Performance Dashboard</h1>
+                <div>
+                    <span id="current-date"></span>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">TOTAL USERS</div>
+                        <div class="stat-card-icon icon-users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value" id="total-users">0</div>
+                    <div class="stat-card-desc">Registered users</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">CODE EXECUTIONS</div>
+                        <div class="stat-card-icon icon-code">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value" id="total-executions">0</div>
+                    <div class="stat-card-desc">Total code runs</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">ACTIVE COURSES</div>
+                        <div class="stat-card-icon icon-courses">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value" id="active-courses">0</div>
+                    <div class="stat-card-desc">Courses in progress</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">COMPLETION RATE</div>
+                        <div class="stat-card-icon icon-completion">
+                            <i class="fas fa-award"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value" id="completion-rate">0%</div>
+                    <div class="stat-card-desc">Average course completion</div>
+                </div>
+            </div>
+
+            <!-- User Search -->
+            <div class="card">
+                <div class="card-header">
+                    User Performance Search
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <input type="text" id="user-search" class="search-input" placeholder="Search by username, email or user ID...">
+                        <button class="search-btn" onclick="searchUsers()">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    <div class="filter-container">
+                        <select class="filter-select" id="activity-filter">
+                            <option value="all">All Activities</option>
+                            <option value="code_execution">Code Execution</option>
+                            <option value="login">Login</option>
+                            <option value="course_completion">Course Completion</option>
+                            <option value="quiz_completion">Quiz Completion</option>
+                        </select>
+                        <select class="filter-select" id="language-filter">
+                            <option value="all">All Languages</option>
+                            <option value="cpp">C++</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="golang">Go</option>
+                            <option value="javascript">JavaScript</option>
+                        </select>
+                        <select class="filter-select" id="status-filter">
+                            <option value="all">All Status</option>
+                            <option value="success">Success</option>
+                            <option value="error">Error</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Performance Table -->
+            <div class="card">
+                <div class="card-header">
+                    User Performance Records
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Activity</th>
+                                    <th>Language</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="performance-table-body">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Details Modal -->
+    <div class="modal" id="activity-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Activity Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for demonstration
+        const sampleUsers = [
+            { id: 1, username: 'john_doe', email: 'john@example.com', fullName: 'John Doe' },
+            { id: 2, username: 'jane_smith', email: 'jane@example.com', fullName: 'Jane Smith' },
+            { id: 3, username: 'bob_johnson', email: 'bob@example.com', fullName: 'Bob Johnson' },
+            { id: 4, username: 'alice_williams', email: 'alice@example.com', fullName: 'Alice Williams' },
+            { id: 5, username: 'charlie_brown', email: 'charlie@example.com', fullName: 'Charlie Brown' }
+        ];
+
+        const samplePerformance = [
+            { 
+                id: 1, 
+                userId: 1, 
+                username: 'john_doe',
+                activityType: 'code_execution', 
+                language: 'cpp', 
+                codeSnippet: '#include <iostream>\n\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}',
+                executionResult: 'Hello, World!',
+                success: true,
+                timestamp: '2023-05-15T14:30:00'
+            },
+            { 
+                id: 2, 
+                userId: 2, 
+                username: 'jane_smith',
+                activityType: 'code_execution', 
+                language: 'python', 
+                codeSnippet: 'print("Hello, World!")',
+                executionResult: 'Hello, World!',
+                success: true,
+                timestamp: '2023-05-15T15:45:00'
+            },
+            { 
+                id: 3, 
+                userId: 3, 
+                username: 'bob_johnson',
+                activityType: 'code_execution', 
+                language: 'java', 
+                codeSnippet: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
+                executionResult: 'Compilation Error: cannot find symbol',
+                success: false,
+                timestamp: '2023-05-16T09:20:00'
+            },
+            { 
+                id: 4, 
+                userId: 1, 
+                username: 'john_doe',
+                activityType: 'login', 
+                language: null, 
+                codeSnippet: null,
+                executionResult: null,
+                success: true,
+                timestamp: '2023-05-16T10:15:00'
+            },
+            { 
+                id: 5, 
+                userId: 4, 
+                username: 'alice_williams',
+                activityType: 'course_completion', 
+                language: null, 
+                codeSnippet: null,
+                executionResult: 'Completed: Introduction to C++',
+                success: true,
+                timestamp: '2023-05-16T11:30:00'
+            },
+            { 
+                id: 6, 
+                userId: 5, 
+                username: 'charlie_brown',
+                activityType: 'quiz_completion', 
+                language: null, 
+                codeSnippet: null,
+                executionResult: 'Score: 85%',
+                success: true,
+                timestamp: '2023-05-16T13:45:00'
+            },
+            { 
+                id: 7, 
+                userId: 2, 
+                username: 'jane_smith',
+                activityType: 'code_execution', 
+                language: 'javascript', 
+                codeSnippet: 'console.log("Hello, World!");',
+                executionResult: 'Hello, World!',
+                success: true,
+                timestamp: '2023-05-17T09:10:00'
+            },
+            { 
+                id: 8, 
+                userId: 3, 
+                username: 'bob_johnson',
+                activityType: 'code_execution', 
+                language: 'cpp', 
+                codeSnippet: '#include <iostream>\n\nint main() {\n    std::cout << "Hello, C++!" << std::endl;\n    return 0;\n}',
+                executionResult: 'Hello, C++!',
+                success: true,
+                timestamp: '2023-05-17T10:25:00'
+            },
+            { 
+                id: 9, 
+                userId: 4, 
+                username: 'alice_williams',
+                activityType: 'login', 
+                language: null, 
+                codeSnippet: null,
+                executionResult: null,
+                success: true,
+                timestamp: '2023-05-17T11:40:00'
+            },
+            { 
+                id: 10, 
+                userId: 5, 
+                username: 'charlie_brown',
+                activityType: 'code_execution', 
+                language: 'python', 
+                codeSnippet: 'print("Hello, Python!")',
+                executionResult: 'Hello, Python!',
+                success: true,
+                timestamp: '2023-05-17T13:55:00'
+            }
+        ];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const now = new Date();
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            // Set stats
+            document.getElementById('total-users').textContent = sampleUsers.length;
+            document.getElementById('total-executions').textContent = samplePerformance.filter(p => p.activityType === 'code_execution').length;
+            document.getElementById('active-courses').textContent = '5';
+            document.getElementById('completion-rate').textContent = '68%';
+
+            // Load performance data
+            loadPerformanceData();
+        });
+
+        // Load performance data
+        function loadPerformanceData(searchTerm = '', filters = {}) {
+            const tableBody = document.getElementById('performance-table-body');
+            tableBody.innerHTML = '';
+
+            // Filter data based on search term and filters
+            let filteredData = [...samplePerformance];
+
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredData = filteredData.filter(item => {
+                    const user = sampleUsers.find(u => u.id === item.userId);
+                    return (
+                        item.username.toLowerCase().includes(term) ||
+                        (user && user.email.toLowerCase().includes(term)) ||
+                        item.userId.toString().includes(term)
+                    );
+                });
+            }
+
+            if (filters.activity && filters.activity !== 'all') {
+                filteredData = filteredData.filter(item => item.activityType === filters.activity);
+            }
+
+            if (filters.language && filters.language !== 'all') {
+                filteredData = filteredData.filter(item => item.language === filters.language);
+            }
+
+            if (filters.status && filters.status !== 'all') {
+                const isSuccess = filters.status === 'success';
+                filteredData = filteredData.filter(item => item.success === isSuccess);
+            }
+
+            // Sort by timestamp (newest first)
+            filteredData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            // Populate table
+            filteredData.forEach(item => {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const date = new Date(item.timestamp);
+                const formattedDate = date.toLocaleDateString('en-US') + ' ' + 
+                                     date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                
+                // Status class
+                const statusClass = item.success ? 'status-success' : 'status-error';
+                const statusText = item.success ? 'Success' : 'Error';
+                
+                row.innerHTML = `
+                    <td>${item.username}</td>
+                    <td>${formatActivityType(item.activityType)}</td>
+                    <td>${item.language || '-'}</td>
+                    <td><span class="status ${statusClass}">${statusText}</span></td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewActivityDetails(${item.id})">
+                            View Details
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+
+            // If no results
+            if (filteredData.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6" style="text-align: center; padding: 20px;">
+                        No performance records found matching your criteria.
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+            // Update pagination (simplified for demo)
+            updatePagination(1, Math.ceil(filteredData.length / 10));
+        }
+
+        // Format activity type for display
+        function formatActivityType(type) {
+            switch(type) {
+                case 'code_execution': return 'Code Execution';
+                case 'login': return 'Login';
+                case 'course_completion': return 'Course Completion';
+                case 'quiz_completion': return 'Quiz Completion';
+                default: return type;
+            }
+        }
+
+        // Update pagination
+        function updatePagination(currentPage, totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn';
+            prevBtn.innerHTML = '&laquo;';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => goToPage(currentPage - 1);
+            pagination.appendChild(prevBtn);
+
+            // Page buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => goToPage(i);
+                pagination.appendChild(pageBtn);
+            }
+
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn';
+            nextBtn.innerHTML = '&raquo;';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => goToPage(currentPage + 1);
+            pagination.appendChild(nextBtn);
+        }
+
+        // Go to page
+        function goToPage(page) {
+            // In a real application, this would fetch data for the specific page
+            console.log(`Going to page ${page}`);
+            // For demo, we'll just update the active button
+            const buttons = document.querySelectorAll('.pagination-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent == page) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Search users
+        function searchUsers() {
+            const searchTerm = document.getElementById('user-search').value;
+            const activityFilter = document.getElementById('activity-filter').value;
+            const languageFilter = document.getElementById('language-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+
+            const filters = {
+                activity: activityFilter,
+                language: languageFilter,
+                status: statusFilter
+            };
+
+            loadPerformanceData(searchTerm, filters);
+        }
+
+        // View activity details
+        function viewActivityDetails(activityId) {
+            const activity = samplePerformance.find(item => item.id === activityId);
+            if (!activity) return;
+
+            const modalBody = document.getElementById('modal-body');
+            
+            // Format date
+            const date = new Date(activity.timestamp);
+            const formattedDate = date.toLocaleDateString('en-US') + ' ' + 
+                                 date.toLocaleTimeString('en-US');
+            
+            // Build modal content based on activity type
+            let modalContent = `
+                <div class="detail-row">
+                    <div class="detail-label">User:</div>
+                    <div class="detail-value">${activity.username}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Activity Type:</div>
+                    <div class="detail-value">${formatActivityType(activity.activityType)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date & Time:</div>
+                    <div class="detail-value">${formattedDate}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Status:</div>
+                    <div class="detail-value">
+                        <span class="status ${activity.success ? 'status-success' : 'status-error'}">
+                            ${activity.success ? 'Success' : 'Error'}
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            // Add activity-specific details
+            if (activity.activityType === 'code_execution') {
+                modalContent += `
+                    <div class="detail-row">
+                        <div class="detail-label">Language:</div>
+                        <div class="detail-value">${activity.language}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Code:</div>
+                        <div class="detail-value">
+                            <div class="code-block">${activity.codeSnippet}</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Output:</div>
+                        <div class="detail-value">
+                            <div class="output-block">${activity.executionResult}</div>
+                        </div>
+                    </div>
+                `;
+            } else if (activity.activityType === 'course_completion' || activity.activityType === 'quiz_completion') {
+                modalContent += `
+                    <div class="detail-row">
+                        <div class="detail-label">Result:</div>
+                        <div class="detail-value">${activity.executionResult}</div>
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = modalContent;
+            
+            // Show modal
+            document.getElementById('activity-modal').style.display = 'flex';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('activity-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('activity-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // In a real application, these functions would make API calls to the server
+        async function fetchUserPerformance(userId) {
+            // This would be an API call in a real application
+            console.log(`Fetching performance data for user ${userId}`);
+            return samplePerformance.filter(item => item.userId === userId);
+        }
+
+        async function fetchAllUsers() {
+            // This would be an API call in a real application
+            console.log('Fetching all users');
+            return sampleUsers;
+        }
+    </script>
+</body>
+</html>

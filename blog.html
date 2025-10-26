@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50, #3498db, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .blog-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            color: white;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .featured-post {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .featured-image {
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .featured-post:hover .featured-image img {
+            transform: scale(1.05);
+        }
+
+        .featured-content {
+            padding: 2rem;
+        }
+
+        .featured-content h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-meta {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .featured-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .featured-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-content h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blog-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .blog-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: #e0f7fa;
+            color: #00838f;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #ce1dd1, #3737e1);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #2e31d9, #e735bd);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .blog-container {
+                margin: 100px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .featured-image {
+                height: 250px;
+            }
+
+            .featured-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="blog-container">
+        <div class="hero-section">
+            <h1>CodeMaster Blog</h1>
+            <p>Insights, tutorials, and updates from the world of programming education</p>
+        </div>
+
+        <!-- Featured Post -->
+        <div class="featured-post">
+            <div class="featured-image">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Featured Post">
+            </div>
+            <div class="featured-content">
+                <h2>The Future of Programming Education</h2>
+                <div class="featured-meta">
+                    <span><i class="fas fa-user"></i> John Smith</span>
+                    <span><i class="fas fa-calendar"></i> March 15, 2024</span>
+                    <span><i class="fas fa-comments"></i> 24 Comments</span>
+                </div>
+                <p>Explore how artificial intelligence and machine learning are transforming the way we learn to code. Discover the latest trends in programming education and how they're making learning more accessible and effective than ever before.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+        </div>
+
+        <!-- Blog Grid -->
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Web Development">
+                </div>
+                <div class="blog-content">
+                    <h3>10 Essential Web Development Tools for 2024</h3>
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 10, 2024</span>
+                        <span><i class="fas fa-comments"></i> 15</span>
+                    </div>
+                    <p>Discover the must-have tools and frameworks that every web developer should know about in 2024. From code editors to testing tools, we've got you covered.</p>
+                    <div class="blog-tags">
+                        <span class="tag">Web Development</span>
+                        <span class="tag">Tools</span>
+                    </div>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Python">
+                </div>
+                <div class="blog-content">
+                    <h3>Python Best Practices for Beginners</h3>
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 8, 2024</span>
+                        <span><i class="fas fa-comments"></i> 12</span>
+                    </div>
+                    <p>Learn the essential Python coding practices that will help you write clean, efficient, and maintainable code from the very beginning of your programming journey.</p>
+                    <div class="blog-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Best Practices</span>
+                    </div>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58eafc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Mobile Apps">
+                </div>
+                <div class="blog-content">
+                    <h3>Building Your First Mobile App</h3>
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 5, 2024</span>
+                        <span><i class="fas fa-comments"></i> 18</span>
+                    </div>
+                    <p>A step-by-step guide to creating your first mobile application. Learn about the essential concepts and tools you need to get started with mobile development.</p>
+                    <div class="blog-tags">
+                        <span class="tag">Mobile Development</span>
+                        <span class="tag">Apps</span>
+                    </div>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Data Science">
+                </div>
+                <div class="blog-content">
+                    <h3>Data Science Career Path</h3>
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 3, 2024</span>
+                        <span><i class="fas fa-comments"></i> 20</span>
+                    </div>
+                    <p>Explore the exciting world of data science and learn about the skills and knowledge you need to build a successful career in this rapidly growing field.</p>
+                    <div class="blog-tags">
+                        <span class="tag">Data Science</span>
+                        <span class="tag">Career</span>
+                    </div>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

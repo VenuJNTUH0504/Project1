@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Framework - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Collection Framework in Java</h1>
+            <p>Understanding Java's powerful collection framework and its implementations</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Collections</h2>
+                <p>The Java Collection Framework provides a unified architecture for storing and manipulating groups of objects.</p>
+                <div class="note">
+                    <p>Key interfaces in the Collection Framework:</p>
+                    <ul>
+                        <li>Collection (root interface)</li>
+                        <li>List (ordered collection)</li>
+                        <li>Set (unique elements)</li>
+                        <li>Queue (FIFO structure)</li>
+                        <li>Map (key-value pairs)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="list">
+                <h2>List Interface</h2>
+                <p>List is an ordered collection that allows duplicate elements.</p>
+                <div class="code-example">
+                    <h3>Example: ArrayList</h3>
+                    <pre><code>List<String> fruits = new ArrayList<>();
+fruits.add("Apple");
+fruits.add("Banana");
+fruits.add("Orange");
+
+// Access elements
+String firstFruit = fruits.get(0);
+fruits.set(1, "Mango");
+
+// Iterate
+for (String fruit : fruits) {
+    System.out.println(fruit);
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Common List implementations:</p>
+                    <ul>
+                        <li>ArrayList (resizable array)</li>
+                        <li>LinkedList (doubly-linked list)</li>
+                        <li>Vector (thread-safe array)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="set">
+                <h2>Set Interface</h2>
+                <p>Set is a collection that contains no duplicate elements.</p>
+                <div class="code-example">
+                    <h3>Example: HashSet</h3>
+                    <pre><code>Set<Integer> numbers = new HashSet<>();
+numbers.add(1);
+numbers.add(2);
+numbers.add(3);
+numbers.add(1); // Duplicate, won't be added
+
+// Check existence
+boolean containsTwo = numbers.contains(2);
+
+// Remove element
+numbers.remove(3);</code></pre>
+                </div>
+                <div class="note">
+                    <p>Common Set implementations:</p>
+                    <ul>
+                        <li>HashSet (unordered, uses hash table)</li>
+                        <li>TreeSet (sorted, uses red-black tree)</li>
+                        <li>LinkedHashSet (maintains insertion order)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="map">
+                <h2>Map Interface</h2>
+                <p>Map stores elements as key-value pairs, where each key is unique.</p>
+                <div class="code-example">
+                    <h3>Example: HashMap</h3>
+                    <pre><code>Map<String, Integer> ageMap = new HashMap<>();
+ageMap.put("John", 25);
+ageMap.put("Alice", 30);
+ageMap.put("Bob", 28);
+
+// Access value
+int johnsAge = ageMap.get("John");
+
+// Check key existence
+boolean hasAlice = ageMap.containsKey("Alice");
+
+// Remove entry
+ageMap.remove("Bob");</code></pre>
+                </div>
+                <div class="note">
+                    <p>Common Map implementations:</p>
+                    <ul>
+                        <li>HashMap (unordered, uses hash table)</li>
+                        <li>TreeMap (sorted, uses red-black tree)</li>
+                        <li>LinkedHashMap (maintains insertion order)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="queue">
+                <h2>Queue Interface</h2>
+                <p>Queue represents a collection designed for holding elements prior to processing.</p>
+                <div class="code-example">
+                    <h3>Example: PriorityQueue</h3>
+                    <pre><code>Queue<Integer> priorityQueue = new PriorityQueue<>();
+priorityQueue.offer(5);
+priorityQueue.offer(1);
+priorityQueue.offer(3);
+
+// Process elements
+while (!priorityQueue.isEmpty()) {
+    int element = priorityQueue.poll();
+    System.out.println(element);
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Common Queue implementations:</p>
+                    <ul>
+                        <li>PriorityQueue (priority-based queue)</li>
+                        <li>ArrayDeque (double-ended queue)</li>
+                        <li>LinkedList (can be used as queue)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="comparators">
+                <h2>Comparators and Sorting</h2>
+                <p>Java provides ways to sort collections using Comparable and Comparator interfaces.</p>
+                <div class="code-example">
+                    <h3>Example: Custom Sorting</h3>
+                    <pre><code>// Using Comparable
+class Person implements Comparable<Person> {
+    private String name;
+    private int age;
+    
+    @Override
+    public int compareTo(Person other) {
+        return this.age - other.age;
+    }
+}
+
+// Using Comparator
+Comparator<Person> nameComparator = (p1, p2) -> 
+    p1.getName().compareTo(p2.getName());
+
+// Sort list
+List<Person> people = new ArrayList<>();
+Collections.sort(people); // Natural ordering
+Collections.sort(people, nameComparator); // Custom ordering</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Collection Framework Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for using collections:</p>
+                    <ul>
+                        <li>Choose the right collection type for your needs</li>
+                        <li>Use generics to ensure type safety</li>
+                        <li>Consider thread safety requirements</li>
+                        <li>Use immutable collections when possible</li>
+                        <li>Initialize collections with appropriate capacity</li>
+                        <li>Use enhanced for loop for iteration</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="generics.html">Generics</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

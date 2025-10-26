@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML APIs Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #8E2DE2, #4A00E0);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4A00E0;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #8E2DE2;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #8E2DE2;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #8E2DE2;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .api-demo {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .note {
+            background-color: #e8e4f3;
+            border-left: 4px solid #8E2DE2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #8E2DE2;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #4A00E0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .api-table th,
+        .api-table td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .api-table th {
+            background-color: #8E2DE2;
+            color: white;
+        }
+
+        .api-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #8E2DE2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #4A00E0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML APIs Guide</h1>
+
+        <h2>Introduction to HTML APIs</h2>
+        <p>HTML APIs (Application Programming Interfaces) provide JavaScript methods and properties for manipulating HTML elements and documents. These APIs enable developers to create dynamic, interactive web applications.</p>
+
+        <h2>Geolocation API</h2>
+        <p>The Geolocation API allows web applications to access the user's geographical location:</p>
+        <div class="code-box">
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                    },
+                    error => {
+                        console.error("Error:", error);
+                    }
+                );
+            }
+        </div>
+
+        <h2>Local Storage API</h2>
+        <p>The Local Storage API provides methods for storing data on the client's browser:</p>
+        <div class="code-box">
+            // Store data
+            localStorage.setItem('username', 'John');
+
+            // Retrieve data
+            const username = localStorage.getItem('username');
+
+            // Remove data
+            localStorage.removeItem('username');
+        </div>
+
+        <h2>Drag and Drop API</h2>
+        <p>The HTML Drag and Drop API enables elements to be dragged and dropped:</p>
+        <div class="code-box">
+            element.addEventListener('dragstart', event => {
+                event.dataTransfer.setData('text/plain', event.target.id);
+            });
+
+            dropZone.addEventListener('drop', event => {
+                const id = event.dataTransfer.getData('text/plain');
+                const draggableElement = document.getElementById(id);
+                dropZone.appendChild(draggableElement);
+            });
+        </div>
+
+        <h2>Canvas API</h2>
+        <p>The Canvas API provides a means for drawing graphics using JavaScript:</p>
+        <div class="code-box">
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'red';
+            ctx.fillRect(10, 10, 100, 100);
+        </div>
+
+        <h2>Web Storage API</h2>
+        <p>Web Storage API includes both localStorage and sessionStorage:</p>
+        <div class="api-table">
+            <tr>
+                <th>Feature</th>
+                <th>localStorage</th>
+                <th>sessionStorage</th>
+            </tr>
+            <tr>
+                <td>Lifetime</td>
+                <td>Permanent</td>
+                <td>Session only</td>
+            </tr>
+            <tr>
+                <td>Storage Limit</td>
+                <td>~5-10MB</td>
+                <td>~5-10MB</td>
+            </tr>
+            <tr>
+                <td>Accessibility</td>
+                <td>Any window</td>
+                <td>Same tab only</td>
+            </tr>
+        </div>
+
+        <h2>History API</h2>
+        <p>The History API allows manipulation of the browser history:</p>
+        <div class="code-box">
+            // Navigate
+            history.pushState({page: 1}, "Title 1", "?page=1");
+
+            // Go back
+            history.back();
+
+            // Go forward
+            history.forward();
+        </div>
+
+        <h2>Web Workers API</h2>
+        <p>Web Workers allow running scripts in background threads:</p>
+        <div class="code-box">
+            const worker = new Worker('worker.js');
+            worker.postMessage('Start working');
+            worker.onmessage = function(e) {
+                console.log('Worker result:', e.data);
+            };
+        </div>
+
+        <h2>Fetch API</h2>
+        <p>The Fetch API provides an interface for fetching resources:</p>
+        <div class="code-box">
+            fetch('https://api.example.com/data')
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Always check for API support before using</li>
+                <li>Handle errors appropriately</li>
+                <li>Consider security implications</li>
+                <li>Use feature detection</li>
+                <li>Implement fallback options</li>
+                <li>Follow API-specific best practices</li>
+            </ul>
+        </div>
+
+        <h2>Security Considerations</h2>
+        <div class="note">
+            <ul>
+                <li>Use HTTPS for sensitive operations</li>
+                <li>Validate user input</li>
+                <li>Handle sensitive data carefully</li>
+                <li>Implement proper error handling</li>
+                <li>Consider cross-origin restrictions</li>
+            </ul>
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html> 

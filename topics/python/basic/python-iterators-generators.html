@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Iterators and Generators - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Iterators and Generators</h1>
+            <p>Understanding iteration protocols and generator functions</p>
+        </header>
+
+        <div class="card">
+            <section id="iterators">
+                <h2>Iterators</h2>
+                <p>Creating custom iterators:</p>
+                <pre><code class="language-python"># Custom iterator class
+class CountDown:
+    def __init__(self, start):
+        self.current = start
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        self.current -= 1
+        return self.current + 1
+
+# Using the iterator
+countdown = CountDown(5)
+for number in countdown:
+    print(number)  # 5, 4, 3, 2, 1
+
+# Built-in iterators
+numbers = [1, 2, 3, 4, 5]
+iterator = iter(numbers)
+print(next(iterator))  # 1
+print(next(iterator))  # 2</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="generators">
+                <h2>Generator Functions</h2>
+                <p>Creating and using generator functions:</p>
+                <pre><code class="language-python"># Simple generator function
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+
+# Using the generator
+for number in countdown(5):
+    print(number)  # 5, 4, 3, 2, 1
+
+# Generator expression
+squares = (x * x for x in range(5))
+for square in squares:
+    print(square)  # 0, 1, 4, 9, 16
+
+# Infinite generator
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+# Using infinite generator
+fib = fibonacci()
+for _ in range(10):
+    print(next(fib))  # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="generator-methods">
+                <h2>Generator Methods</h2>
+                <p>Using generator methods:</p>
+                <pre><code class="language-python"># Generator with send()
+def counter():
+    count = 0
+    while True:
+        value = yield count
+        if value is not None:
+            count = value
+        else:
+            count += 1
+
+# Using send()
+c = counter()
+print(next(c))      # 0
+print(c.send(10))   # 10
+print(next(c))      # 11
+
+# Generator with throw()
+def generator():
+    try:
+        while True:
+            yield 1
+    except ValueError:
+        yield 2
+
+# Using throw()
+g = generator()
+print(next(g))              # 1
+print(g.throw(ValueError))  # 2
+
+# Generator with close()
+def infinite():
+    try:
+        while True:
+            yield 1
+    finally:
+        print("Generator closed")
+
+# Using close()
+i = infinite()
+print(next(i))  # 1
+i.close()       # Generator closed</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="itertools">
+                <h2>itertools Module</h2>
+                <p>Using itertools for advanced iteration:</p>
+                <pre><code class="language-python">import itertools
+
+# Infinite iterators
+counter = itertools.count(start=1, step=2)
+print(next(counter))  # 1
+print(next(counter))  # 3
+
+cycle = itertools.cycle(['A', 'B', 'C'])
+print(next(cycle))  # A
+print(next(cycle))  # B
+
+# Combinatoric iterators
+combinations = itertools.combinations('ABC', 2)
+print(list(combinations))  # [('A', 'B'), ('A', 'C'), ('B', 'C')]
+
+permutations = itertools.permutations('ABC', 2)
+print(list(permutations))  # [('A', 'B'), ('A', 'C'), ('B', 'A'), ...]
+
+# Iterators terminating on shortest input
+zipped = itertools.zip_longest('ABC', '123', fillvalue='-')
+print(list(zipped))  # [('A', '1'), ('B', '2'), ('C', '3')]
+
+# Grouping
+data = [1, 1, 2, 2, 2, 3, 4, 4]
+grouped = itertools.groupby(data)
+for key, group in grouped:
+    print(f"{key}: {list(group)}")</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="memory-efficiency">
+                <h2>Memory Efficiency</h2>
+                <p>Using generators for memory efficiency:</p>
+                <pre><code class="language-python"># Memory intensive list
+def get_numbers_list(n):
+    result = []
+    for i in range(n):
+        result.append(i * i)
+    return result
+
+# Memory efficient generator
+def get_numbers_generator(n):
+    for i in range(n):
+        yield i * i
+
+# Compare memory usage
+import sys
+
+numbers_list = get_numbers_list(1000000)
+print(sys.getsizeof(numbers_list))  # Large memory usage
+
+numbers_gen = get_numbers_generator(1000000)
+print(sys.getsizeof(numbers_gen))   # Small memory usage
+
+# Processing large files
+def read_large_file(filename):
+    with open(filename) as f:
+        for line in f:
+            yield line.strip()
+
+# Process file line by line
+for line in read_large_file('large_file.txt'):
+    process_line(line)  # Memory efficient</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="coroutines">
+                <h2>Coroutines</h2>
+                <p>Using generators as coroutines:</p>
+                <pre><code class="language-python"># Simple coroutine
+def coroutine():
+    print("Starting coroutine")
+    while True:
+        value = yield
+        print(f"Received: {value}")
+
+# Using coroutine
+c = coroutine()
+next(c)  # Prime the coroutine
+c.send(1)  # Received: 1
+c.send(2)  # Received: 2
+
+# Coroutine with return value
+def accumulator():
+    total = 0
+    while True:
+        value = yield
+        if value is None:
+            break
+        total += value
+    return total
+
+# Using accumulator
+a = accumulator()
+next(a)
+a.send(1)
+a.send(2)
+try:
+    a.send(None)
+except StopIteration as e:
+    print(f"Total: {e.value}")  # Total: 3</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use generators for memory efficiency</li>
+                    <li>Prefer generator expressions over list comprehensions for large data</li>
+                    <li>Use itertools for complex iteration patterns</li>
+                    <li>Handle StopIteration appropriately</li>
+                    <li>Use coroutines for cooperative multitasking</li>
+                    <li>Document generator behavior</li>
+                    <li>Consider memory implications of iteration</li>
+                    <li>Use appropriate iteration patterns</li>
+                    <li>Clean up resources in finally blocks</li>
+                    <li>Test edge cases in generators</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

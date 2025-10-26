@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Framework - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #282c34, #61dafb, #20232a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #61dafb;
+        }
+
+        .react-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .hero-section img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 1.5rem;
+            animation: reactSpin 20s linear infinite;
+        }
+
+        @keyframes reactSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #61dafb, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #61dafb;
+        }
+
+        .info-section p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(97, 218, 251, 0.2);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(97, 218, 251, 0.4);
+        }
+
+        .info-card h4 {
+            color: #61dafb;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .code-example {
+            background: rgba(40, 44, 52, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            border-left: 4px solid #61dafb;
+        }
+
+        .code-example pre {
+            font-family: 'Courier New', monospace;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .code-example .comment {
+            color: #6a9955;
+        }
+
+        .code-example .keyword {
+            color: #c586c0;
+        }
+
+        .code-example .function {
+            color: #dcdcaa;
+        }
+
+        .code-example .string {
+            color: #ce9178;
+        }
+
+        .code-example .component {
+            color: #4ec9b0;
+        }
+
+        .code-example .jsx {
+            color: #9cdcfe;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #61dafb, #20232a);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .frameworks-btn {
+            position: fixed;
+            top: 30px;
+            left: 150px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #61dafb, #20232a);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .frameworks-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .react-container {
+                margin: 80px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-section img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .home-btn, .frameworks-btn {
+                top: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+
+            .frameworks-btn {
+                left: 120px;
+            }
+
+            .code-example {
+                padding: 1rem;
+            }
+
+            .code-example pre {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="courses.html">Courses</a>
+                <a href="frameworks.html">Frameworks</a>
+                <a href="frontend.html">Frontend</a>
+                <a href="backend.html">Backend</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Frameworks Button -->
+    <a href="frameworks.html" class="frameworks-btn">
+        <i class="fas fa-layer-group"></i>
+        <span>Frameworks</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="react-container">
+        <div class="hero-section">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Logo">
+            <h1>React Framework</h1>
+            <p>React is a JavaScript library for building user interfaces. It allows developers to create large web applications that can change data without reloading the page. The main concept of React is to build reusable components that efficiently update and render when your data changes.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>Key Features of React</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Component-Based Architecture</h4>
+                    <p>React applications are built using components - isolated pieces of code that manage their own state and can be composed to build complex UIs. This modular approach makes code more reusable, maintainable, and testable.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Virtual DOM</h4>
+                    <p>React creates a lightweight representation of the real DOM in memory (Virtual DOM) and uses a diffing algorithm to efficiently update only the parts of the real DOM that have changed, resulting in better performance.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Declarative Syntax</h4>
+                    <p>React uses a declarative paradigm that makes it easier to reason about your application. You tell React what state you want the UI to be in, and it ensures the DOM matches that state.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Unidirectional Data Flow</h4>
+                    <p>Data in React flows in one direction, from parent components to child components. This makes applications more predictable and easier to debug.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>React Component Example</h2>
+            <p>Here's a simple example of a React functional component that manages state using the useState hook:</p>
+            
+            <div class="code-example">
+                <pre><span class="keyword">import</span> React, { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="comment">// A simple counter component</span>
+<span class="keyword">function</span> <span class="component">Counter</span>() {
+  <span class="comment">// State declaration with useState hook</span>
+  <span class="keyword">const</span> [count, setCount] = useState(0);
+
+  <span class="comment">// Function to increment counter</span>
+  <span class="keyword">const</span> <span class="function">increment</span> = () => {
+    setCount(count + 1);
+  };
+
+  <span class="comment">// Function to decrement counter</span>
+  <span class="keyword">const</span> <span class="function">decrement</span> = () => {
+    setCount(count - 1);
+  };
+
+  <span class="comment">// Component render method</span>
+  <span class="keyword">return</span> (
+    <span class="jsx">&lt;div className="counter"&gt;</span>
+      <span class="jsx">&lt;h2&gt;</span>Counter: {count}<span class="jsx">&lt;/h2&gt;</span>
+      <span class="jsx">&lt;button onClick={decrement}&gt;</span>-<span class="jsx">&lt;/button&gt;</span>
+      <span class="jsx">&lt;button onClick={increment}&gt;</span>+<span class="jsx">&lt;/button&gt;</span>
+    <span class="jsx">&lt;/div&gt;</span>
+  );
+}
+
+<span class="keyword">export default</span> Counter;</pre>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>React Ecosystem</h2>
+            <p>React has a rich ecosystem of libraries and tools that enhance its capabilities:</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>React Router</h4>
+                    <p>A collection of navigational components that compose declaratively with your application, allowing you to implement dynamic routing in a web app.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Redux</h4>
+                    <p>A predictable state container for JavaScript apps, often used with React to manage application state in a more structured and maintainable way.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Next.js</h4>
+                    <p>A React framework that enables server-side rendering, static site generation, and other performance optimizations with minimal configuration.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Material-UI</h4>
+                    <p>A popular UI framework that implements Google's Material Design in React components, providing a consistent and customizable design system.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Getting Started with React</h2>
+            <p>To create a new React application, you can use Create React App, a comfortable environment for learning React and the best way to start building a new single-page application in React.</p>
+            
+            <div class="code-example">
+                <pre><span class="comment"># Create a new React application</span>
+npx create-react-app my-app
+
+<span class="comment"># Navigate to the project directory</span>
+cd my-app
+
+<span class="comment"># Start the development server</span>
+npm start</pre>
+            </div>
+            
+            <p>This will set up a new React project with a development server, and your browser will automatically open to http://localhost:3000 where you can see your app running.</p>
+        </div>
+    </div>
+</body>
+</html>

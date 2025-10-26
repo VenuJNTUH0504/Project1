@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Systems - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: var(--code-bg);
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: var(--code-bg);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Module Systems</h1>
+        
+        <p>JavaScript module systems allow you to organize code into separate files and manage dependencies between them. Modules help in creating maintainable, reusable, and encapsulated code by preventing global namespace pollution and enabling better code organization.</p>
+        
+        <h2>Evolution of JavaScript Modules</h2>
+        <p>JavaScript didn't have a native module system until ES6 (ES2015). Before that, developers used various patterns and libraries to implement modular code:</p>
+        
+        <ol>
+            <li><strong>Global Variables</strong> - The simplest but most problematic approach</li>
+            <li><strong>Namespace Pattern</strong> - Using objects to create namespaces</li>
+            <li><strong>IIFE (Immediately Invoked Function Expression)</strong> - Creating private scopes</li>
+            <li><strong>CommonJS</strong> - Used primarily in Node.js</li>
+            <li><strong>AMD (Asynchronous Module Definition)</strong> - Used primarily in browsers with RequireJS</li>
+            <li><strong>UMD (Universal Module Definition)</strong> - Works in both Node.js and browsers</li>
+            <li><strong>ES Modules</strong> - The official JavaScript module system (ES6+)</li>
+        </ol>
+        
+        <h2>ES Modules (ESM)</h2>
+        <p>ES Modules are the official standard for JavaScript modules, introduced in ES6. They use the <code>import</code> and <code>export</code> syntax.</p>
+        
+        <h3>Exporting</h3>
+        <pre><code>// Named exports
+export const PI = 3.14159;
+export function square(x) {
+  return x * x;
+}
+
+// Export list
+const e = 2.71828;
+function cube(x) {
+  return x * x * x;
+}
+export { e, cube };
+
+// Renamed exports
+export { cube as calculateCube };
+
+// Default export (only one per module)
+export default function add(a, b) {
+  return a + b;
+}</code></pre>
+        
+        <h3>Importing</h3>
+        <pre><code>// Import named exports
+import { PI, square } from './math.js';
+
+// Rename imports
+import { PI as piValue, square as squareFunction } from './math.js';
+
+// Import default export
+import add from './math.js';
+
+// Import both default and named exports
+import add, { PI, square } from './math.js';
+
+// Import all exports as a namespace object
+import * as math from './math.js';
+console.log(math.PI); // 3.14159
+console.log(math.default(1, 2)); // 3 (default export)</code></pre>
+        
+        <h3>Dynamic Imports</h3>
+        <p>ES2020 introduced dynamic imports, allowing modules to be loaded on demand:</p>
+        <pre><code>button.addEventListener('click', async () => {
+  try {
+    // Load the module dynamically when needed
+    const { processData } = await import('./data-processor.js');
+    const result = processData(data);
+    console.log(result);
+  } catch (error) {
+    console.error('Error loading module:', error);
+  }
+});</code></pre>
+        
+        <h2>CommonJS</h2>
+        <p>CommonJS is the module system used in Node.js. It uses <code>require()</code> and <code>module.exports</code>.</p>
+        
+        <h3>Exporting</h3>
+        <pre><code>// Export individual items
+exports.PI = 3.14159;
+exports.square = function(x) {
+  return x * x;
+};
+
+// Or replace the entire exports object
+module.exports = {
+  PI: 3.14159,
+  square: function(x) {
+    return x * x;
+  },
+  add: function(a, b) {
+    return a + b;
+  }
+};</code></pre>
+        
+        <h3>Importing</h3>
+        <pre><code>// Import the entire module
+const math = require('./math');
+console.log(math.PI); // 3.14159
+console.log(math.square(4)); // 16
+
+// Using destructuring
+const { PI, square } = require('./math');
+console.log(PI); // 3.14159
+console.log(square(4)); // 16</code></pre>
+        
+        <h2>AMD (Asynchronous Module Definition)</h2>
+        <p>AMD was designed for browsers, allowing modules to be loaded asynchronously. It's commonly implemented using RequireJS.</p>
+        
+        <pre><code>// Defining a module
+define(['dependency1', 'dependency2'], function(dep1, dep2) {
+  return {
+    method1: function() {
+      return dep1.doSomething();
+    },
+    method2: function() {
+      return dep2.doSomethingElse();
+    }
+  };
+});
+
+// Using a module
+require(['module1', 'module2'], function(module1, module2) {
+  module1.method1();
+  module2.doSomething();
+});</code></pre>
+        
+        <h2>UMD (Universal Module Definition)</h2>
+        <p>UMD is a pattern that attempts to offer compatibility with multiple module systems (AMD, CommonJS, and global variables).</p>
+        
+        <pre><code>(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['dependency'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // CommonJS
+    module.exports = factory(require('dependency'));
+  } else {
+    // Browser globals
+    root.myModule = factory(root.dependency);
+  }
+}(typeof self !== 'undefined' ? self : this, function(dependency) {
+  // Module code goes here
+  return {
+    // Public API
+    doSomething: function() {
+      return dependency.method();
+    }
+  };
+}));</code></pre>
+        
+        <h2>Module Bundlers</h2>
+        <p>Module bundlers are tools that process modules with their dependencies and generate static assets that can be served to browsers.</p>
+        
+        <h3>Popular Module Bundlers</h3>
+        <ul>
+            <li><strong>Webpack</strong> - The most widely used bundler with extensive plugin ecosystem</li>
+            <li><strong>Rollup</strong> - Specializes in ES module bundling with tree-shaking</li>
+            <li><strong>Parcel</strong> - Zero-configuration bundler</li>
+            <li><strong>esbuild</strong> - Extremely fast JavaScript bundler</li>
+            <li><strong>Vite</strong> - Next-generation frontend tooling with fast HMR</li>
+        </ul>
+        
+        <h2>Comparison of Module Systems</h2>
+        
+        <table class="comparison-table">
+            <tr>
+                <th>Feature</th>
+                <th>ES Modules</th>
+                <th>CommonJS</th>
+                <th>AMD</th>
+            </tr>
+            <tr>
+                <td>Environment</td>
+                <td>Browsers (natively), Node.js (with .mjs extension or "type": "module")</td>
+                <td>Node.js (natively), Browsers (with bundlers)</td>
+                <td>Browsers (with RequireJS)</td>
+            </tr>
+            <tr>
+                <td>Loading</td>
+                <td>Static (parsed before execution) and Dynamic (with import())</td>
+                <td>Synchronous</td>
+                <td>Asynchronous</td>
+            </tr>
+            <tr>
+                <td>Syntax</td>
+                <td>import/export</td>
+                <td>require/exports</td>
+                <td>define/require</td>
+            </tr>
+            <tr>
+                <td>Tree Shaking</td>
+                <td>Supported</td>
+                <td>Not supported natively</td>
+                <td>Not supported natively</td>
+            </tr>
+        </table>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Project Structure Example</h4>
+            <pre><code>project/
+├── src/
+│   ├── main.js
+│   ├── modules/
+│   │   ├── calculator.js
+│   │   ├── formatter.js
+│   │   └── utils.js
+│   └── components/
+│       ├── header.js
+│       └── footer.js
+├── package.json
+└── index.html</code></pre>
+            
+            <h4>ES Modules Example</h4>
+            <pre><code>// utils.js
+export function formatDate(date) {
+  return new Date(date).toLocaleDateString();
+}
+
+export function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// calculator.js
+import { capitalize } from './utils.js';
+
+export class Calculator {
+  constructor(name) {
+    this.name = capitalize(name);
+  }
+  
+  add(a, b) {
+    return a + b;
+  }
+  
+  subtract(a, b) {
+    return a - b;
+  }
+}
+
+export const PI = 3.14159;
+
+// main.js
+import { Calculator, PI } from './modules/calculator.js';
+import { formatDate } from './modules/utils.js';
+
+const calc = new Calculator('scientific');
+console.log(`${calc.name} calculator says PI is ${PI}`);
+console.log(`Today is ${formatDate(new Date())}`);
+console.log(`2 + 3 = ${calc.add(2, 3)}`);</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank">MDN: JavaScript Modules</a></li>
+                <li><a href="https://nodejs.org/api/esm.html" target="_blank">Node.js: ECMAScript Modules</a></li>
+                <li><a href="https://webpack.js.org/concepts/" target="_blank">Webpack Documentation</a></li>
+                <li><a href="https://rollupjs.org/guide/en/" target="_blank">Rollup.js Guide</a></li>
+                <li><a href="https://v8.dev/features/modules" target="_blank">V8: JavaScript Modules</a></li>
+                <li><a href="https://exploringjs.com/es6/ch_modules.html" target="_blank">Exploring ES6: Modules</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

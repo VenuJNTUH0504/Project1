@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #FC466B, #3F5EFB);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #FC466B;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #3F5EFB;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #FC466B;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3F5EFB;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #ffe6ee;
+            border-left: 4px solid #FC466B;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #FC466B;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #3F5EFB;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Gallery Styles */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Lightbox Demo */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            margin: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Gallery Guide</h1>
+
+        <h2>Basic Gallery Structure</h2>
+        <div class="code-box">
+            &lt;div class="gallery"&gt;
+                &lt;div class="gallery-item"&gt;
+                    &lt;img src="image1.jpg" alt="Image 1"&gt;
+                    &lt;div class="gallery-caption"&gt;Image 1 Caption&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!-- More gallery items --&gt;
+            &lt;/div&gt;
+        </div>
+
+        <h2>Example Gallery</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200" alt="Example 1">
+                <div class="gallery-caption">Nature View</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200" alt="Example 2">
+                <div class="gallery-caption">City Landscape</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300x200" alt="Example 3">
+                <div class="gallery-caption">Mountain Peak</div>
+            </div>
+        </div>
+
+        <h2>CSS Grid Layout</h2>
+        <div class="code-box">
+            .gallery {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 20px;
+            }
+        </div>
+
+        <h2>Image Hover Effects</h2>
+        <div class="code-box">
+            .gallery-item {
+                transition: transform 0.3s ease;
+            }
+
+            .gallery-item:hover {
+                transform: scale(1.05);
+            }
+        </div>
+
+        <h2>Lightbox Implementation</h2>
+        <div class="code-box">
+            &lt;div class="lightbox" id="lightbox"&gt;
+                &lt;img src="" alt="Lightbox Image"&gt;
+            &lt;/div&gt;
+
+            &lt;script&gt;
+                // Lightbox functionality
+                const lightbox = document.getElementById('lightbox');
+                const images = document.querySelectorAll('.gallery-item img');
+                
+                images.forEach(image => {
+                    image.addEventListener('click', () => {
+                        lightbox.style.display = 'flex';
+                        lightbox.querySelector('img').src = image.src;
+                    });
+                });
+            &lt;/script&gt;
+        </div>
+
+        <h2>Responsive Design</h2>
+        <div class="code-box">
+            @media (max-width: 768px) {
+                .gallery {
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 10px;
+                }
+            }
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Optimize images for web use</li>
+                <li>Use appropriate image formats</li>
+                <li>Implement lazy loading</li>
+                <li>Add alt text for accessibility</li>
+                <li>Consider mobile responsiveness</li>
+                <li>Use proper image compression</li>
+                <li>Implement loading indicators</li>
+                <li>Add keyboard navigation</li>
+            </ul>
+        </div>
+
+        <h2>Performance Tips</h2>
+        <div class="note">
+            <ul>
+                <li>Use responsive images</li>
+                <li>Implement image compression</li>
+                <li>Use CDN for image delivery</li>
+                <li>Cache images appropriately</li>
+                <li>Use modern image formats</li>
+                <li>Implement progressive loading</li>
+            </ul>
+        </div>
+
+        <h2>Accessibility Features</h2>
+        <div class="note">
+            <ul>
+                <li>Add descriptive alt text</li>
+                <li>Ensure keyboard navigation</li>
+                <li>Provide visible focus indicators</li>
+                <li>Add ARIA labels where needed</li>
+                <li>Ensure sufficient color contrast</li>
+                <li>Support screen readers</li>
+            </ul>
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html> 

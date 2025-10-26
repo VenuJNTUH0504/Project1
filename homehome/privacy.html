@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50, #3498db, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .privacy-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+        }
+
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .privacy-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .privacy-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .privacy-section:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .privacy-section h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .privacy-section h2 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .privacy-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-section ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-section li {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .privacy-container {
+                margin: 100px 1rem 50px;
+            }
+
+            .privacy-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Privacy Policy Content -->
+    <div class="privacy-container">
+        <div class="privacy-header">
+            <h1>Privacy Policy</h1>
+            <p>Last updated: March 2024</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-info-circle"></i> Information We Collect</h2>
+            <p>We collect information to provide better services to our users:</p>
+            <ul>
+                <li>Personal information (name, email, etc.) during registration</li>
+                <li>Learning progress and course completion data</li>
+                <li>Technical information about your device and browser</li>
+                <li>Usage patterns and interaction with our platform</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-shield-alt"></i> How We Use Your Information</h2>
+            <p>Your information helps us:</p>
+            <ul>
+                <li>Provide and improve our learning platform</li>
+                <li>Personalize your learning experience</li>
+                <li>Track your progress and achievements</li>
+                <li>Send important updates and notifications</li>
+                <li>Ensure platform security and prevent fraud</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-lock"></i> Data Protection</h2>
+            <p>We implement security measures to protect your information:</p>
+            <ul>
+                <li>Encryption of sensitive data</li>
+                <li>Regular security audits</li>
+                <li>Secure data storage</li>
+                <li>Limited access to personal information</li>
+            </ul>
+            <p class="highlight">Your data is never sold to third parties.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-cookie"></i> Cookies and Tracking</h2>
+            <p>We use cookies and similar technologies to:</p>
+            <ul>
+                <li>Remember your preferences</li>
+                <li>Analyze platform usage</li>
+                <li>Improve our services</li>
+                <li>Provide personalized content</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-share-alt"></i> Third-Party Services</h2>
+            <p>We may use third-party services that collect information:</p>
+            <ul>
+                <li>Analytics tools to understand usage patterns</li>
+                <li>Payment processors for course purchases</li>
+                <li>Cloud services for data storage</li>
+                <li>Communication tools for support</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-user-cog"></i> Your Rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li>Access your personal information</li>
+                <li>Correct inaccurate data</li>
+                <li>Request deletion of your data</li>
+                <li>Opt-out of marketing communications</li>
+                <li>Export your learning data</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-child"></i> Children's Privacy</h2>
+            <p>Our platform is not intended for children under 13. We do not knowingly collect personal information from children under 13.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-sync"></i> Changes to Privacy Policy</h2>
+            <p>We may update this privacy policy periodically. We will notify you of any significant changes through email or platform notifications.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+            <p>If you have questions about our privacy policy, please contact us at:</p>
+            <p class="highlight">privacy@codemaster.com</p>
+        </div>
+
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </div>
+</body>
+</html> 

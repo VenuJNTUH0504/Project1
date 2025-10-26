@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Annotations - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Type Annotations in TypeScript</h1>
+        
+        <p>Type annotations are one of the core features of TypeScript. They allow you to specify the type of variables, function parameters, return values, and more. Type annotations help catch errors during development and provide better tooling support.</p>
+        
+        <h2>Basic Type Annotations</h2>
+        
+        <p>Type annotations in TypeScript use a colon (:) followed by the type:</p>
+        
+        <pre><code>// Variable type annotations
+let name: string = "John";
+let age: number = 30;
+let isActive: boolean = true;
+let nullValue: null = null;
+let undefinedValue: undefined = undefined;</code></pre>
+        
+        <h2>Array Type Annotations</h2>
+        
+        <p>There are two ways to annotate arrays in TypeScript:</p>
+        
+        <pre><code>// Array type annotations
+let numbers: number[] = [1, 2, 3, 4, 5];  // Using array syntax
+let strings: Array&lt;string&gt; = ["a", "b", "c"];  // Using generic syntax</code></pre>
+        
+        <h2>Object Type Annotations</h2>
+        
+        <p>You can specify the shape of objects using object type annotations:</p>
+        
+        <pre><code>// Object type annotation
+let person: { name: string; age: number } = {
+    name: "John",
+    age: 30
+};
+
+// Nested object type annotation
+let employee: {
+    name: string;
+    age: number;
+    address: {
+        street: string;
+        city: string;
+        zipCode: string;
+    }
+} = {
+    name: "Jane",
+    age: 28,
+    address: {
+        street: "123 Main St",
+        city: "Anytown",
+        zipCode: "12345"
+    }
+};</code></pre>
+        
+        <div class="tip-box">
+            <h4>Type Aliases</h4>
+            <p>For complex object types, it's often better to use type aliases or interfaces:</p>
+            <pre><code>// Using type alias
+type Person = {
+    name: string;
+    age: number;
+};
+
+let person: Person = {
+    name: "John",
+    age: 30
+};
+
+// Using interface
+interface Employee {
+    name: string;
+    age: number;
+    department: string;
+}
+
+let employee: Employee = {
+    name: "Jane",
+    age: 28,
+    department: "Engineering"
+};</code></pre>
+        </div>
+        
+        <h2>Function Type Annotations</h2>
+        
+        <p>TypeScript allows you to annotate function parameters and return types:</p>
+        
+        <pre><code>// Function parameter and return type annotations
+function add(x: number, y: number): number {
+    return x + y;
+}
+
+// Arrow function with type annotations
+const multiply = (x: number, y: number): number => x * y;
+
+// Function type annotation for a variable
+let divide: (x: number, y: number) => number;
+
+// Implementing the function
+divide = function(x, y) {
+    return x / y;
+};</code></pre>
+        
+        <h2>Optional Parameters</h2>
+        
+        <p>You can mark parameters as optional using the question mark (?):</p>
+        
+        <pre><code>// Optional parameter
+function greet(name: string, greeting?: string): string {
+    if (greeting) {
+        return `${greeting}, ${name}!`;
+    }
+    return `Hello, ${name}!`;
+}
+
+// Both calls are valid
+greet("John");  // "Hello, John!"
+greet("John", "Hi");  // "Hi, John!"</code></pre>
+        
+        <h2>Union Types</h2>
+        
+        <p>Union types allow a value to be one of several types:</p>
+        
+        <pre><code>// Union type annotation
+let id: string | number;
+id = 101;      // Valid
+id = "A101";   // Also valid
+// id = true;  // Error: Type 'boolean' is not assignable to type 'string | number'
+
+// Function with union type parameter
+function printId(id: string | number) {
+    console.log(`ID: ${id}`);
+}
+
+printId(101);    // Valid
+printId("A101"); // Valid</code></pre>
+        
+        <h2>Type Aliases</h2>
+        
+        <p>Type aliases create a new name for a type, making complex types more readable and reusable:</p>
+        
+        <pre><code>// Type alias for a union type
+type ID = string | number;
+
+let userId: ID = 101;
+let productId: ID = "P101";
+
+// Type alias for an object type
+type Point = {
+    x: number;
+    y: number;
+};
+
+let point: Point = { x: 10, y: 20 };
+
+// Type alias with generics
+type Container&lt;T&gt; = { value: T };
+
+let numberContainer: Container&lt;number&gt; = { value: 42 };
+let stringContainer: Container&lt;string&gt; = { value: "Hello" };</code></pre>
+        
+        <h2>Intersection Types</h2>
+        
+        <p>Intersection types combine multiple types into one:</p>
+        
+        <pre><code>// Define two types
+type Person = {
+    name: string;
+    age: number;
+};
+
+type Employee = {
+    employeeId: string;
+    department: string;
+};
+
+// Intersection type
+type EmployeePerson = Person & Employee;
+
+// Object must have all properties from both types
+let worker: EmployeePerson = {
+    name: "John",
+    age: 30,
+    employeeId: "E123",
+    department: "Engineering"
+};</code></pre>
+        
+        <h2>Tuple Types</h2>
+        
+        <p>Tuples are arrays with a fixed number of elements where each element may have a different type:</p>
+        
+        <pre><code>// Tuple type annotation
+let person: [string, number] = ["John", 30];
+
+// Destructuring a tuple
+let [name, age] = person;
+
+// Optional elements in tuples (TypeScript 4.0+)
+let contact: [string, string, string?] = ["John", "john@example.com"];
+contact.push("123-456-7890");  // Valid
+
+// Tuple with rest elements (TypeScript 4.0+)
+let team: [string, string, ...string[]] = ["John", "Jane"];
+team.push("Bob", "Alice");  // Valid</code></pre>
+        
+        <h2>Enum Types</h2>
+        
+        <p>Enums allow you to define a set of named constants:</p>
+        
+        <pre><code>// Numeric enum
+enum Direction {
+    North,      // 0
+    East,       // 1
+    South,      // 2
+    West        // 3
+}
+
+let dir: Direction = Direction.North;
+
+// String enum
+enum HttpStatus {
+    OK = "OK",
+    NotFound = "NOT_FOUND",
+    InternalServerError = "INTERNAL_SERVER_ERROR"
+}
+
+let status: HttpStatus = HttpStatus.OK;
+
+// Heterogeneous enum (mixed string and numeric)
+enum BooleanLikeHeterogeneousEnum {
+    No = 0,
+    Yes = "YES",
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Enum Considerations</h4>
+            <p>Be aware that numeric enums have reverse mappings (value to name), which can increase the size of your JavaScript output. Consider using const enums or union types of string literals for better tree-shaking:</p>
+            <pre><code>// Const enum (removed during compilation)
+const enum Direction {
+    North,
+    East,
+    South,
+    West
+}
+
+// String literal union type
+type Direction = "north" | "east" | "south" | "west";</code></pre>
+        </div>
+        
+        <h2>Literal Types</h2>
+        
+        <p>Literal types allow you to specify exact values that a variable can have:</p>
+        
+        <pre><code>// String literal type
+type Direction = "north" | "east" | "south" | "west";
+let direction: Direction = "north";  // Valid
+// direction = "northeast";  // Error: Type '"northeast"' is not assignable to type 'Direction'
+
+// Numeric literal type
+type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
+let roll: DiceRoll = 3;  // Valid
+// let roll: DiceRoll = 7;  // Error: Type '7' is not assignable to type 'DiceRoll'
+
+// Boolean literal type
+type Bool = true | false;
+let isEnabled: Bool = true;  // Valid</code></pre>
+        
+        <h2>Type Assertions</h2>
+        
+        <p>Type assertions are a way to tell the TypeScript compiler that you know better than it about the type of a value:</p>
+        
+        <pre><code>// Type assertion using angle bracket syntax
+let someValue: any = "this is a string";
+let strLength: number = (&lt;string&gt;someValue).length;
+
+// Type assertion using 'as' syntax (preferred, especially in JSX)
+let someValue2: any = "this is a string";
+let strLength2: number = (someValue2 as string).length;</code></pre>
+        
+        <div class="warning-box">
+            <h4>Important Note</h4>
+            <p>Type assertions do not perform any special checking or restructuring of data. They have no runtime impact and are used purely by the compiler.</p>
+        </div>
+        
+        <h2>Non-null Assertion Operator</h2>
+        
+        <p>The non-null assertion operator (!) tells TypeScript that a value cannot be null or undefined:</p>
+        
+        <pre><code>// Non-null assertion operator
+function getLength(s: string | null) {
+    // TypeScript would normally error here because s might be null
+    return s!.length;  // The ! tells TypeScript that s is not null
+}</code></pre>
+        
+        <h2>Definite Assignment Assertion</h2>
+        
+        <p>The definite assignment assertion (!) tells TypeScript that a variable is definitely assigned even if TypeScript cannot detect it:</p>
+        
+        <pre><code>// Definite assignment assertion
+let name!: string;  // Without !, TypeScript would error on the next line
+initialize();
+console.log(name.length);  // OK
+
+function initialize() {
+    name = "John";
+}</code></pre>
+        
+        <h2>Type Inference</h2>
+        
+        <p>TypeScript can often infer the type of a variable based on its initial value, making explicit type annotations optional in many cases:</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>With Type Annotation</h4>
+                <pre><code>let name: string = "John";
+let age: number = 30;
+let isActive: boolean = true;
+let numbers: number[] = [1, 2, 3];</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>With Type Inference</h4>
+                <pre><code>let name = "John";          // inferred as string
+let age = 30;               // inferred as number
+let isActive = true;        // inferred as boolean
+let numbers = [1, 2, 3];    // inferred as number[]</code></pre>
+            </div>
+        </div>
+        
+        <div class="tip-box">
+            <h4>When to Use Type Annotations</h4>
+            <p>Even though TypeScript can infer types in many cases, explicit type annotations are useful in the following scenarios:</p>
+            <ul>
+                <li>When declaring a variable without initialization</li>
+                <li>When you want a variable to have a specific type that's different from the inferred type</li>
+                <li>When a function's return type is complex or not easily inferred</li>
+                <li>For better documentation and code readability</li>
+                <li>To catch errors when the implementation changes</li>
+            </ul>
+        </div>
+        
+        <h2>Type Guards</h2>
+        
+        <p>Type guards are expressions that perform a runtime check to guarantee the type of a value in a scope:</p>
+        
+        <pre><code>// Type guard using typeof
+function padLeft(value: string, padding: string | number) {
+    if (typeof padding === "number") {
+        // In this branch, padding is of type number
+        return " ".repeat(padding) + value;
+    }
+    // In this branch, padding is of type string
+    return padding + value;
+}
+
+// Type guard using instanceof
+class Bird {
+    fly() {
+        console.log("Flying...");
+    }
+}
+
+class Fish {
+    swim() {
+        console.log("Swimming...");
+    }
+}
+
+function move(animal: Bird | Fish) {
+    if (animal instanceof Bird) {
+        // In this branch, animal is of type Bird
+        animal.fly();
+    } else {
+        // In this branch, animal is of type Fish
+        animal.swim();
+    }
+}</code></pre>
+        
+        <h2>User-Defined Type Guards</h2>
+        
+        <p>You can create your own type guard functions using type predicates:</p>
+        
+        <pre><code>// User-defined type guard
+interface Bird {
+    fly(): void;
+    layEggs(): void;
+}
+
+interface Fish {
+    swim(): void;
+    layEggs(): void;
+}
+
+// Type guard function with type predicate
+function isFish(pet: Bird | Fish): pet is Fish {
+    return (pet as Fish).swim !== undefined;
+}
+
+function move(pet: Bird | Fish) {
+    if (isFish(pet)) {
+        // In this branch, pet is of type Fish
+        pet.swim();
+    } else {
+        // In this branch, pet is of type Bird
+        pet.fly();
+    }
+}</code></pre>
+        
+        <h2>Index Signatures</h2>
+        
+        <p>Index signatures allow you to create objects with flexible property names:</p>
+        
+        <pre><code>// Index signature
+interface Dictionary {
+    [key: string]: string;
+}
+
+let colors: Dictionary = {
+    red: "#ff0000",
+    green: "#00ff00",
+    blue: "#0000ff"
+};
+
+// Access using dynamic property names
+let colorName = "red";
+console.log(colors[colorName]);  // "#ff0000"</code></pre>
+        
+        <h2>Mapped Types</h2>
+        
+        <p>Mapped types allow you to create new types based on existing ones by transforming properties:</p>
+        
+        <pre><code>// Mapped type
+type Readonly&lt;T&gt; = {
+    readonly [P in keyof T]: T[P];
+};
+
+interface Person {
+    name: string;
+    age: number;
+}
+
+// Create a readonly version of Person
+type ReadonlyPerson = Readonly&lt;Person&gt;;
+
+let person: ReadonlyPerson = {
+    name: "John",
+    age: 30
+};
+
+// person.name = "Jane";  // Error: Cannot assign to 'name' because it is a read-only property</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html" target="_blank">TypeScript Handbook: Everyday Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/types-from-types.html" target="_blank">TypeScript Handbook: Creating Types from Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">TypeScript Handbook: Narrowing</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html" target="_blank">TypeScript Handbook: Functions</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

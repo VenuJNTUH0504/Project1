@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Configuration - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>TypeScript Project Configuration</h1>
+        
+        <p>Configuring a TypeScript project properly is essential for a smooth development experience. TypeScript offers various configuration options that allow you to customize the compiler's behavior, specify project structure, and enforce coding standards.</p>
+        
+        <h2>tsconfig.json</h2>
+        
+        <p>The <code>tsconfig.json</code> file is the heart of TypeScript project configuration. It specifies the root files and compiler options required to compile the project:</p>
+        
+        <pre><code>// Basic tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}</code></pre>
+        
+        <h2>Creating a tsconfig.json</h2>
+        
+        <p>You can generate a basic tsconfig.json file using the TypeScript compiler:</p>
+        
+        <pre><code>// Initialize a TypeScript project
+npx tsc --init</code></pre>
+        
+        <p>This will create a tsconfig.json file with default settings and helpful comments.</p>
+        
+        <h2>Key Configuration Sections</h2>
+        
+        <h3>compilerOptions</h3>
+        
+        <p>The most important section of tsconfig.json, containing settings that control how TypeScript compiles your code:</p>
+        
+        <h4>Basic Compiler Options</h4>
+        
+        <pre><code>"compilerOptions": {
+  // JavaScript target version
+  "target": "es2020",        // Specify ECMAScript target version
+  
+  // Module system
+  "module": "commonjs",      // Specify module code generation
+  
+  // Output configuration
+  "outDir": "./dist",        // Redirect output to this directory
+  "rootDir": "./src",        // Specify the root directory of input files
+  
+  // Type checking
+  "strict": true,            // Enable all strict type-checking options
+  
+  // Module resolution
+  "moduleResolution": "node", // Specify module resolution strategy
+  "esModuleInterop": true,    // Enable interoperability between CommonJS and ES Modules
+  
+  // Source maps
+  "sourceMap": true,         // Generate source maps for debugging
+}</code></pre>
+        
+        <h4>Type Checking Options</h4>
+        
+        <pre><code>"compilerOptions": {
+  // Individual strict checks (all enabled when strict: true)
+  "noImplicitAny": true,           // Raise error on expressions with implied 'any' type
+  "strictNullChecks": true,        // Enable strict null checks
+  "strictFunctionTypes": true,     // Enable strict checking of function types
+  "strictBindCallApply": true,     // Enable strict 'bind', 'call', and 'apply' methods
+  "strictPropertyInitialization": true, // Ensure class properties are initialized
+  "noImplicitThis": true,          // Raise error on 'this' expressions with implied 'any' type
+  "alwaysStrict": true,            // Parse in strict mode and emit "use strict"
+  
+  // Additional checks
+  "noUnusedLocals": true,          // Report errors on unused locals
+  "noUnusedParameters": true,      // Report errors on unused parameters
+  "noImplicitReturns": true,       // Report error when not all code paths return a value
+  "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch
+  "noUncheckedIndexedAccess": true // Add 'undefined' to indexed access results
+}</code></pre>
+        
+        <h4>Module and Path Resolution</h4>
+        
+        <pre><code>"compilerOptions": {
+  // Module resolution
+  "baseUrl": "./",                 // Base directory to resolve non-relative module names
+  "paths": {                       // Path mapping for module imports
+    "@app/*": ["src/app/*"],
+    "@shared/*": ["src/shared/*"],
+    "@models/*": ["src/models/*"]
+  },
+  "rootDirs": [                    // List of root folders whose combined content represent the structure of the project at runtime
+    "./src",
+    "./tests"
+  ],
+  
+  // Type definitions
+  "typeRoots": [                   // List of folders to include type definitions from
+    "./node_modules/@types",
+    "./typings"
+  ],
+  "types": [                       // Type declaration files to be included in compilation
+    "node",
+    "jest",
+    "express"
+  ]
+}</code></pre>
+        
+        <h4>Output and Declaration Options</h4>
+        
+        <pre><code>"compilerOptions": {
+  // JavaScript output
+  "outDir": "./dist",              // Output directory
+  "outFile": "./dist/bundle.js",   // Concatenate and emit output to single file (only with AMD/System modules)
+  "removeComments": true,          // Remove comments in output
+  "noEmit": false,                 // Do not emit outputs
+  "noEmitOnError": true,           // Do not emit outputs if any errors were reported
+  
+  // Declaration files
+  "declaration": true,             // Generate .d.ts files
+  "declarationDir": "./types",     // Output directory for generated declaration files
+  "declarationMap": true,          // Generate sourcemaps for d.ts files
+  
+  // Source maps
+  "sourceMap": true,               // Generate source maps
+  "inlineSourceMap": false,        // Emit a single file with source maps instead of separate files
+  "inlineSources": false           // Emit the source alongside the sourcemaps
+}</code></pre>
+        
+        <h3>include and exclude</h3>
+        
+        <p>These options specify which files should be included or excluded from the compilation:</p>
+        
+        <pre><code>// File selection
+{
+  "include": [
+    "src/**/*"                     // Include all files in src directory
+  ],
+  "exclude": [
+    "node_modules",                // Exclude node_modules
+    "**/*.spec.ts",                // Exclude test files
+    "src/temp/**/*"                // Exclude temporary files
+  ]
+}</code></pre>
+        
+        <h3>files</h3>
+        
+        <p>Explicitly list files to be included in the compilation (alternative to include):</p>
+        
+        <pre><code>// Explicit file list
+{
+  "files": [
+    "src/main.ts",
+    "src/app.ts",
+    "src/types.d.ts"
+  ]
+}</code></pre>
+        
+        <h3>extends</h3>
+        
+        <p>Inherit configurations from another file:</p>
+        
+        <pre><code>// Extending configurations
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    // Override specific options
+    "outDir": "./dist/dev"
+  }
+}</code></pre>
+        
+        <h3>references</h3>
+        
+        <p>For project references in a monorepo setup:</p>
+        
+        <pre><code>// Project references
+{
+  "compilerOptions": {
+    "composite": true,             // Enable project references
+    "declaration": true,
+    "outDir": "./dist"
+  },
+  "references": [
+    { "path": "../common" },       // Reference to another project
+    { "path": "../api" }
+  ]
+}</code></pre>
+        
+        <h2>Common Configuration Presets</h2>
+        
+        <h3>Node.js Application</h3>
+        
+        <pre><code>// tsconfig.json for Node.js
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "lib": ["es2020"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}</code></pre>
+        
+        <h3>React Application</h3>
+        
+        <pre><code>// tsconfig.json for React
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}</code></pre>
+        
+        <h3>Library Package</h3>
+        
+        <pre><code>// tsconfig.json for a library
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "lib": ["es2018", "dom"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
+}</code></pre>
+        
+        <h2>Project Organization</h2>
+        
+        <h3>Monorepo Setup</h3>
+        
+        <p>For larger projects, you might use a monorepo structure with multiple tsconfig files:</p>
+        
+        <pre><code>// Root tsconfig.json
+{
+  "files": [],
+  "references": [
+    { "path": "packages/common" },
+    { "path": "packages/server" },
+    { "path": "packages/client" }
+  ]
+}
+
+// packages/common/tsconfig.json
+{
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    // ...other options
+  },
+  "include": ["src/**/*"]
+}
+
+// packages/server/tsconfig.json
+{
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    // ...other options
+  },
+  "references": [
+    { "path": "../common" }
+  ],
+  "include": ["src/**/*"]
+}</code></pre>
+        
+        <h3>Path Aliases</h3>
+        
+        <p>Configure path aliases to avoid deep relative imports:</p>
+        
+        <pre><code>// tsconfig.json with path aliases
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@shared/*": ["src/shared/*"],
+      "@utils/*": ["src/utils/*"],
+      "@models/*": ["src/models/*"]
+    }
+    // ...other options
+  }
+}
+
+// Usage in code
+import { User } from '@models/user';
+import { formatDate } from '@utils/date';
+import { Button } from '@shared/components/button';</code></pre>
+        
+        <div class="tip-box">
+            <h4>Path Aliases with Bundlers</h4>
+            <p>When using path aliases, you may need additional configuration in your bundler:</p>
+            <ul>
+                <li>For webpack, use the <code>resolve.alias</code> option</li>
+                <li>For Jest, configure <code>moduleNameMapper</code></li>
+                <li>For ESLint, use <code>eslint-import-resolver-typescript</code></li>
+            </ul>
+        </div>
+        
+        <h2>Type Checking Configuration</h2>
+        
+        <h3>Strict Mode</h3>
+        
+        <p>Enabling strict mode activates TypeScript's strictest type checking options:</p>
+        
+        <pre><code>// Strict mode configuration
+{
+  "compilerOptions": {
+    "strict": true,
+    // This enables all of these:
+    // "noImplicitAny": true,
+    // "strictNullChecks": true,
+    // "strictFunctionTypes": true,
+    // "strictBindCallApply": true,
+    // "strictPropertyInitialization": true,
+    // "noImplicitThis": true,
+    // "alwaysStrict": true,
+    
+    // You can override individual options:
+    "strictNullChecks": false  // Disable just this check
+  }
+}</code></pre>
+        
+        <h3>Additional Checks</h3>
+        
+        <p>Beyond strict mode, TypeScript offers additional checks to catch common issues:</p>
+        
+        <pre><code>// Additional type checking options
+{
+  "compilerOptions": {
+    "noUnusedLocals": true,           // Error on unused local variables
+    "noUnusedParameters": true,        // Error on unused function parameters
+    "noImplicitReturns": true,         // Error when not all code paths return a value
+    "noFallthroughCasesInSwitch": true, // Error on fallthrough cases in switch
+    "noUncheckedIndexedAccess": true,  // Add undefined to indexed access
+    "noPropertyAccessFromIndexSignature": true, // Error when accessing properties via string index
+    "exactOptionalPropertyTypes": true // Enforce exact optional property types
+  }
+}</code></pre>
+        
+        <h2>Module Resolution</h2>
+        
+        <h3>Module Systems</h3>
+        
+        <pre><code>// Module system configuration
+{
+  "compilerOptions": {
+    "module": "commonjs",     // CommonJS (Node.js)
+    // Other options: "esnext", "amd", "system", "umd", "es2015", "es2020"
+    
+    "moduleResolution": "node",
+    // Other option: "classic" (legacy)
+    
+    "esModuleInterop": true,  // Allow default imports from CommonJS modules
+    "allowSyntheticDefaultImports": true  // Allow default imports without actual exports
+  }
+}</code></pre>
+        
+        <h3>Type Definition Resolution</h3>
+        
+        <pre><code>// Type definition resolution
+{
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ],
+    "types": [
+      "node",
+      "jest",
+      "express"
+    ]
+  }
+}</code></pre>
+        
+        <h2>Compiler Plugins and Custom Transformers</h2>
+        
+        <p>TypeScript supports plugins that can transform code during compilation:</p>
+        
+        <pre><code>// Using ts-node with a transformer plugin
+// tsconfig.json
+{
+  "compilerOptions": {
+    // ...standard options
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "transpiler": "ts-node/transpilers/swc"
+  }
+}
+
+// Using ttypescript with transformers
+// tsconfig.json
+{
+  "compilerOptions": {
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-imports" }
+    ]
+  }
+}</code></pre>
+        
+        <h2>Integration with Other Tools</h2>
+        
+        <h3>ESLint</h3>
+        
+        <pre><code>// .eslintrc.js
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
+  },
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+  rules: {
+    // Custom rules
+  }
+};</code></pre>
+        
+        <h3>Jest</h3>
+        
+        <pre><code>// jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@app/(.*)$': '&lt;rootDir&gt;/src/app/$1',
+    '^@shared/(.*)$': '&lt;rootDir&gt;/src/shared/$1',
+  },
+};</code></pre>
+        
+        <h3>Webpack</h3>
+        
+        <pre><code>// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.ts',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@shared': path.resolve(__dirname, 'src/shared'),
+    },
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};</code></pre>
+        
+        <h2>Performance Optimization</h2>
+        
+        <h3>Incremental Compilation</h3>
+        
+        <pre><code>// Incremental compilation
+{
+  "compilerOptions": {
+    "incremental": true,           // Enable incremental compilation
+    "tsBuildInfoFile": "./buildcache/tsconfig.tsbuildinfo"  // Where to store the incremental build info
+  }
+}</code></pre>
+        
+        <h3>Type Checking Optimization</h3>
+        
+        <pre><code>// Type checking optimization
+{
+  "compilerOptions": {
+    "skipLibCheck": true,          // Skip type checking of declaration files
+    "skipDefaultLibCheck": true    // Skip type checking of default library declaration files
+  }
+}</code></pre>
+        
+        <h3>Build Mode vs. Watch Mode</h3>
+        
+        <pre><code>// Build commands
+// One-time build
+tsc -p tsconfig.json
+
+// Watch mode (continuous compilation)
+tsc -p tsconfig.json --watch
+
+// Build with project references
+tsc -b                             // Build all referenced projects
+tsc -b --verbose                   // Build with detailed logging
+tsc -b --clean                     // Clean output of all projects</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/tsconfig" target="_blank">TypeScript TSConfig Reference</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html" target="_blank">TypeScript Compiler Options</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/project-references.html" target="_blank">TypeScript Project References</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/module-resolution.html" target="_blank">TypeScript Module Resolution</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

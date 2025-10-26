@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File I/O - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>File I/O in Java</h1>
+            <p>Understanding file operations and I/O streams in Java</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to File I/O</h2>
+                <p>Java provides a rich set of classes for handling file operations and I/O streams.</p>
+                <div class="note">
+                    <p>Key I/O concepts:</p>
+                    <ul>
+                        <li>Streams (byte and character streams)</li>
+                        <li>Readers and Writers</li>
+                        <li>Buffered I/O</li>
+                        <li>File operations</li>
+                        <li>NIO (New I/O) package</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="file-operations">
+                <h2>Basic File Operations</h2>
+                <p>Java provides the File class for basic file operations.</p>
+                <div class="code-example">
+                    <h3>Example: File Operations</h3>
+                    <pre><code>import java.io.File;
+
+public class FileOperations {
+    public static void main(String[] args) {
+        // Create File object
+        File file = new File("example.txt");
+        
+        // Check if file exists
+        if (file.exists()) {
+            System.out.println("File exists");
+            
+            // Get file information
+            System.out.println("File name: " + file.getName());
+            System.out.println("Absolute path: " + file.getAbsolutePath());
+            System.out.println("File size: " + file.length() + " bytes");
+            
+            // Delete file
+            if (file.delete()) {
+                System.out.println("File deleted");
+            }
+        } else {
+            // Create new file
+            try {
+                if (file.createNewFile()) {
+                    System.out.println("File created");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="byte-streams">
+                <h2>Byte Streams</h2>
+                <p>Byte streams handle raw binary data.</p>
+                <div class="code-example">
+                    <h3>Example: FileInputStream and FileOutputStream</h3>
+                    <pre><code>import java.io.*;
+
+public class ByteStreamExample {
+    public static void main(String[] args) {
+        // Writing to a file
+        try (FileOutputStream fos = new FileOutputStream("data.bin")) {
+            byte[] data = {65, 66, 67, 68, 69}; // ABCDE
+            fos.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Reading from a file
+        try (FileInputStream fis = new FileInputStream("data.bin")) {
+            int byteData;
+            while ((byteData = fis.read()) != -1) {
+                System.out.print((char) byteData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="character-streams">
+                <h2>Character Streams</h2>
+                <p>Character streams handle text data.</p>
+                <div class="code-example">
+                    <h3>Example: FileReader and FileWriter</h3>
+                    <pre><code>import java.io.*;
+
+public class CharacterStreamExample {
+    public static void main(String[] args) {
+        // Writing to a file
+        try (FileWriter writer = new FileWriter("text.txt")) {
+            writer.write("Hello, World!\n");
+            writer.write("This is a test file.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Reading from a file
+        try (FileReader reader = new FileReader("text.txt")) {
+            int charData;
+            while ((charData = reader.read()) != -1) {
+                System.out.print((char) charData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="buffered-streams">
+                <h2>Buffered Streams</h2>
+                <p>Buffered streams improve I/O performance by reducing the number of I/O operations.</p>
+                <div class="code-example">
+                    <h3>Example: Buffered I/O</h3>
+                    <pre><code>import java.io.*;
+
+public class BufferedStreamExample {
+    public static void main(String[] args) {
+        // Writing with buffered stream
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("buffered.txt"))) {
+            writer.write("Line 1\n");
+            writer.write("Line 2\n");
+            writer.write("Line 3");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Reading with buffered stream
+        try (BufferedReader reader = new BufferedReader(new FileReader("buffered.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="nio">
+                <h2>NIO (New I/O)</h2>
+                <p>NIO provides a more efficient way to handle I/O operations.</p>
+                <div class="code-example">
+                    <h3>Example: NIO File Operations</h3>
+                    <pre><code>import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+
+public class NIOExample {
+    public static void main(String[] args) {
+        // Writing to a file
+        try {
+            Path path = Paths.get("nio.txt");
+            String content = "Hello, NIO!";
+            Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+            
+            // Reading from a file
+            byte[] bytes = Files.readAllBytes(path);
+            String readContent = new String(bytes, StandardCharsets.UTF_8);
+            System.out.println(readContent);
+            
+            // Copy file
+            Path copyPath = Paths.get("nio_copy.txt");
+            Files.copy(path, copyPath, StandardCopyOption.REPLACE_EXISTING);
+            
+            // Delete file
+            Files.deleteIfExists(copyPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>File I/O Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for file I/O:</p>
+                    <ul>
+                        <li>Always close resources using try-with-resources</li>
+                        <li>Use buffered streams for better performance</li>
+                        <li>Handle exceptions appropriately</li>
+                        <li>Use NIO for modern file operations</li>
+                        <li>Check file existence before operations</li>
+                        <li>Use appropriate character encoding</li>
+                        <li>Consider file locking for concurrent access</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="multithreading.html">Multithreading</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Performance Tuning - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Java Performance Tuning</h1>
+            <p>Understanding and optimizing Java application performance</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Performance Tuning</h2>
+                <p>Java performance tuning involves optimizing various aspects of a Java application to improve its speed, efficiency, and resource utilization. This includes JVM tuning, memory management, and code optimization.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="jvm-tuning">
+                <h2>JVM Tuning</h2>
+                <p>Optimizing JVM settings for better performance:</p>
+                <pre><code class="language-java">// JVM options for memory tuning
+-Xms512m -Xmx1024m -XX:NewSize=256m -XX:MaxNewSize=256m
+
+// Garbage collection tuning
+-XX:+UseG1GC -XX:MaxGCPauseMillis=200
+-XX:+UseParallelGC -XX:ParallelGCThreads=4
+
+// Heap memory settings
+-XX:InitialHeapSize=512m -XX:MaxHeapSize=1024m
+-XX:NewRatio=2 -XX:SurvivorRatio=8</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="memory-management">
+                <h2>Memory Management</h2>
+                <p>Best practices for memory management:</p>
+                <pre><code class="language-java">// Object pooling
+class ObjectPool<T> {
+    private Queue<T> pool = new ConcurrentLinkedQueue<>();
+    
+    public T borrowObject() {
+        T object = pool.poll();
+        return object != null ? object : createObject();
+    }
+    
+    public void returnObject(T object) {
+        pool.offer(object);
+    }
+}
+
+// Memory-efficient collections
+List<String> list = new ArrayList<>(1000); // Pre-allocate size
+Map<String, Integer> map = new HashMap<>(1000, 0.75f); // Load factor
+
+// Weak references
+WeakReference<Object> weakRef = new WeakReference<>(new Object());</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="code-optimization">
+                <h2>Code Optimization</h2>
+                <p>Optimizing Java code for better performance:</p>
+                <pre><code class="language-java">// String concatenation
+StringBuilder sb = new StringBuilder();
+sb.append("Hello").append(" ").append("World");
+
+// Collection optimization
+List<String> list = new ArrayList<>(Arrays.asList("a", "b", "c"));
+Set<String> set = new HashSet<>(list);
+
+// Loop optimization
+for (int i = 0, size = list.size(); i < size; i++) {
+    // Process elements
+}
+
+// Method inlining
+@HotSpotIntrinsicCandidate
+public final int getValue() {
+    return value;
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="profiling">
+                <h2>Profiling</h2>
+                <p>Using profiling tools to identify bottlenecks:</p>
+                <pre><code class="language-java">// JVM Profiling Interface
+import java.lang.management.*;
+
+MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
+
+// Memory usage
+MemoryUsage heapUsage = memoryBean.getHeapMemoryUsage();
+long usedMemory = heapUsage.getUsed();
+
+// Thread information
+ThreadInfo[] threadInfos = threadBean.getThreadInfo(threadBean.getAllThreadIds());
+for (ThreadInfo info : threadInfos) {
+    System.out.println(info.getThreadName() + ": " + info.getThreadState());
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Profile before optimizing</li>
+                    <li>Use appropriate data structures</li>
+                    <li>Minimize object creation</li>
+                    <li>Use StringBuilder for string concatenation</li>
+                    <li>Optimize database queries</li>
+                    <li>Use caching when appropriate</li>
+                    <li>Monitor and tune JVM parameters</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

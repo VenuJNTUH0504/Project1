@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays & Objects - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Arrays & Objects</h1>
+        
+        <p>Arrays and objects are fundamental data structures in JavaScript that allow you to store and organize collections of data. Understanding how to work with these structures is essential for effective JavaScript programming.</p>
+        
+        <h2>Arrays</h2>
+        <p>An array is an ordered collection of values. Each value in an array is called an element, and each element has a numeric position called its index.</p>
+        
+        <h3>Creating Arrays</h3>
+        <pre><code>// Array literal (preferred)
+const fruits = ['apple', 'banana', 'orange'];
+
+// Array constructor
+const numbers = new Array(1, 2, 3, 4, 5);
+
+// Empty array
+const emptyArray = [];
+
+// Array with mixed data types
+const mixed = [42, 'hello', true, null, { name: 'John' }];
+
+// Array of a specific length (with empty slots)
+const fixedLength = new Array(5); // Creates array with 5 empty slots</code></pre>
+        
+        <h3>Accessing Array Elements</h3>
+        <pre><code>const colors = ['red', 'green', 'blue'];
+
+// Access by index (zero-based)
+console.log(colors[0]); // 'red'
+console.log(colors[1]); // 'green'
+console.log(colors[2]); // 'blue'
+
+// Access non-existent index
+console.log(colors[3]); // undefined
+
+// Length property
+console.log(colors.length); // 3
+
+// Access last element
+console.log(colors[colors.length - 1]); // 'blue'</code></pre>
+        
+        <h3>Modifying Arrays</h3>
+        <pre><code>const pets = ['cat', 'dog', 'hamster'];
+
+// Change an element
+pets[1] = 'fish';
+console.log(pets); // ['cat', 'fish', 'hamster']
+
+// Add element to the end
+pets[3] = 'rabbit';
+console.log(pets); // ['cat', 'fish', 'hamster', 'rabbit']
+
+// Add element beyond the length
+pets[6] = 'parrot';
+console.log(pets); // ['cat', 'fish', 'hamster', 'rabbit', empty × 2, 'parrot']
+
+// Arrays are dynamic
+pets.length = 2;
+console.log(pets); // ['cat', 'fish']</code></pre>
+        
+        <h3>Common Array Methods</h3>
+        
+        <h4>Adding and Removing Elements</h4>
+        <pre><code>const stack = ['book1', 'book2'];
+
+// Add to end
+stack.push('book3');
+console.log(stack); // ['book1', 'book2', 'book3']
+
+// Remove from end
+const lastItem = stack.pop();
+console.log(lastItem); // 'book3'
+console.log(stack); // ['book1', 'book2']
+
+// Add to beginning
+stack.unshift('book0');
+console.log(stack); // ['book0', 'book1', 'book2']
+
+// Remove from beginning
+const firstItem = stack.shift();
+console.log(firstItem); // 'book0'
+console.log(stack); // ['book1', 'book2']
+
+// Remove/replace elements at any position
+const letters = ['a', 'b', 'c', 'd', 'e'];
+// Remove 2 elements starting at index 1
+const removed = letters.splice(1, 2);
+console.log(removed); // ['b', 'c']
+console.log(letters); // ['a', 'd', 'e']
+
+// Replace elements
+letters.splice(1, 1, 'x', 'y');
+console.log(letters); // ['a', 'x', 'y', 'e']
+
+// Insert elements without removing any
+letters.splice(2, 0, 'z');
+console.log(letters); // ['a', 'x', 'z', 'y', 'e']</code></pre>
+        
+        <h4>Finding and Searching</h4>
+        <pre><code>const fruits = ['apple', 'banana', 'orange', 'apple', 'pear'];
+
+// Find index of an element
+console.log(fruits.indexOf('banana')); // 1
+console.log(fruits.indexOf('grape')); // -1 (not found)
+console.log(fruits.indexOf('apple')); // 0 (first occurrence)
+console.log(fruits.lastIndexOf('apple')); // 3 (last occurrence)
+
+// Check if an element exists
+console.log(fruits.includes('orange')); // true
+console.log(fruits.includes('grape')); // false
+
+// Find elements that match a condition
+const numbers = [5, 12, 8, 130, 44];
+const found = numbers.find(num => num > 10);
+console.log(found); // 12 (first element > 10)
+
+const foundIndex = numbers.findIndex(num => num > 10);
+console.log(foundIndex); // 1 (index of first element > 10)</code></pre>
+        
+        <h4>Transforming Arrays</h4>
+        <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// Map: create a new array by transforming each element
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+
+// Filter: create a new array with elements that pass a test
+const evens = numbers.filter(num => num % 2 === 0);
+console.log(evens); // [2, 4]
+
+// Reduce: reduce array to a single value
+const sum = numbers.reduce((total, num) => total + num, 0);
+console.log(sum); // 15 (1+2+3+4+5)
+
+// Sort: sort elements in place
+const fruits = ['banana', 'apple', 'orange', 'pear'];
+fruits.sort();
+console.log(fruits); // ['apple', 'banana', 'orange', 'pear']
+
+// Sort numbers (requires comparison function)
+const scores = [40, 100, 1, 5, 25, 10];
+scores.sort((a, b) => a - b); // Ascending
+console.log(scores); // [1, 5, 10, 25, 40, 100]</code></pre>
+        
+        <h4>Other Useful Methods</h4>
+        <pre><code>// Join elements into a string
+const elements = ['Fire', 'Air', 'Water'];
+console.log(elements.join()); // "Fire,Air,Water"
+console.log(elements.join(' - ')); // "Fire - Air - Water"
+
+// Slice: extract a portion of an array
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+console.log(animals.slice(2)); // ['camel', 'duck', 'elephant']
+console.log(animals.slice(2, 4)); // ['camel', 'duck']
+console.log(animals.slice(-2)); // ['duck', 'elephant']
+
+// Concat: merge arrays
+const array1 = ['a', 'b'];
+const array2 = ['c', 'd'];
+const array3 = array1.concat(array2);
+console.log(array3); // ['a', 'b', 'c', 'd']
+
+// Reverse: reverse the order of elements
+const letters = ['a', 'b', 'c'];
+letters.reverse();
+console.log(letters); // ['c', 'b', 'a']</code></pre>
+        
+        <div class="tip-box">
+            <h4>Array Iteration Methods</h4>
+            <pre><code>const items = ['item1', 'item2', 'item3'];
+
+// forEach: execute a function for each element
+items.forEach((item, index) => {
+  console.log(`${index}: ${item}`);
+});
+
+// some: check if at least one element passes a test
+const hasLongItem = items.some(item => item.length > 5);
+console.log(hasLongItem); // false
+
+// every: check if all elements pass a test
+const allShortItems = items.every(item => item.length < 10);
+console.log(allShortItems); // true</code></pre>
+        </div>
+        
+        <h2>Objects</h2>
+        <p>Objects in JavaScript are collections of key-value pairs, where keys are strings (or Symbols) and values can be any data type.</p>
+        
+        <h3>Creating Objects</h3>
+        <pre><code>// Object literal (most common)
+const person = {
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 30,
+  isEmployed: true
+};
+
+// Empty object
+const emptyObject = {};
+
+// Object constructor
+const user = new Object();
+user.name = 'Jane';
+user.age = 25;
+
+// Object with methods
+const calculator = {
+  add: function(a, b) {
+    return a + b;
+  },
+  subtract(a, b) { // Shorthand method syntax (ES6)
+    return a - b;
+  }
+};</code></pre>
+        
+        <h3>Accessing Object Properties</h3>
+        <pre><code>const person = {
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 30
+};
+
+// Dot notation
+console.log(person.firstName); // 'John'
+
+// Bracket notation (useful for dynamic properties)
+console.log(person['lastName']); // 'Doe'
+
+const propertyName = 'age';
+console.log(person[propertyName]); // 30
+
+// Accessing non-existent property
+console.log(person.address); // undefined</code></pre>
+        
+        <h3>Modifying Objects</h3>
+        <pre><code>const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+// Add new properties
+person.age = 30;
+person['isEmployed'] = true;
+
+// Modify existing properties
+person.firstName = 'Jane';
+
+// Delete properties
+delete person.lastName;
+console.log(person); // { firstName: 'Jane', age: 30, isEmployed: true }</code></pre>
+        
+        <h3>Object Methods</h3>
+        <pre><code>// Object.keys(): get array of property names
+const person = { name: 'John', age: 30, job: 'Developer' };
+console.log(Object.keys(person)); // ['name', 'age', 'job']
+
+// Object.values(): get array of property values
+console.log(Object.values(person)); // ['John', 30, 'Developer']
+
+// Object.entries(): get array of [key, value] pairs
+console.log(Object.entries(person));
+// [['name', 'John'], ['age', 30], ['job', 'Developer']]
+
+// Object.assign(): copy properties from one object to another
+const target = { a: 1, b: 2 };
+const source = { b: 3, c: 4 };
+const result = Object.assign(target, source);
+console.log(result); // { a: 1, b: 3, c: 4 }
+console.log(target); // { a: 1, b: 3, c: 4 } (modified)
+
+// Create a new object without modifying the originals
+const merged = Object.assign({}, target, source);
+
+// Object.freeze(): prevent modifications
+const frozen = Object.freeze({ name: 'John' });
+frozen.name = 'Jane'; // Fails silently in non-strict mode
+console.log(frozen.name); // 'John' (unchanged)
+
+// Object.seal(): prevent adding/deleting properties
+const sealed = Object.seal({ name: 'John' });
+sealed.name = 'Jane'; // Allowed (modifying existing property)
+sealed.age = 30; // Fails silently
+delete sealed.name; // Fails silently
+console.log(sealed); // { name: 'Jane' }</code></pre>
+        
+        <h3>Nested Objects</h3>
+        <pre><code>const person = {
+  name: 'John',
+  age: 30,
+  address: {
+    street: '123 Main St',
+    city: 'Boston',
+    state: 'MA',
+    zip: '02101'
+  },
+  hobbies: ['reading', 'hiking', 'coding']
+};
+
+// Accessing nested properties
+console.log(person.address.city); // 'Boston'
+console.log(person.hobbies[1]); // 'hiking'
+
+// Destructuring nested objects (ES6)
+const { name, address: { city, zip } } = person;
+console.log(name); // 'John'
+console.log(city); // 'Boston'
+console.log(zip); // '02101'</code></pre>
+        
+        <h3>Object Destructuring (ES6)</h3>
+        <pre><code>const person = {
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 30,
+  job: 'Developer'
+};
+
+// Basic destructuring
+const { firstName, lastName } = person;
+console.log(firstName); // 'John'
+console.log(lastName); // 'Doe'
+
+// Assigning to different variable names
+const { firstName: fName, lastName: lName } = person;
+console.log(fName); // 'John'
+console.log(lName); // 'Doe'
+
+// Default values
+const { age, salary = 50000 } = person;
+console.log(age); // 30
+console.log(salary); // 50000 (default value used)
+
+// Rest pattern
+const { firstName: name, ...rest } = person;
+console.log(name); // 'John'
+console.log(rest); // { lastName: 'Doe', age: 30, job: 'Developer' }</code></pre>
+        
+        <h3>The 'this' Keyword in Objects</h3>
+        <pre><code>const person = {
+  firstName: 'John',
+  lastName: 'Doe',
+  fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+  setName(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+};
+
+console.log(person.fullName()); // 'John Doe'
+person.setName('Jane', 'Smith');
+console.log(person.fullName()); // 'Jane Smith'</code></pre>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Working with Arrays of Objects</h4>
+            <pre><code>// Array of objects
+const users = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 35 },
+  { id: 4, name: 'Dave', age: 40 }
+];
+
+// Find a specific user
+const bob = users.find(user => user.name === 'Bob');
+console.log(bob); // { id: 2, name: 'Bob', age: 30 }
+
+// Filter users by age
+const olderUsers = users.filter(user => user.age > 30);
+console.log(olderUsers); 
+// [{ id: 3, name: 'Charlie', age: 35 }, { id: 4, name: 'Dave', age: 40 }]
+
+// Transform user data
+const userNames = users.map(user => user.name);
+console.log(userNames); // ['Alice', 'Bob', 'Charlie', 'Dave']
+
+// Calculate average age
+const totalAge = users.reduce((sum, user) => sum + user.age, 0);
+const averageAge = totalAge / users.length;
+console.log(averageAge); // 32.5
+
+// Sort users by age
+users.sort((a, b) => a.age - b.age);
+console.log(users);
+// Sorted from youngest to oldest</code></pre>
+            
+            <h4>Object Spread Operator (ES6+)</h4>
+            <pre><code>// Copying objects
+const original = { a: 1, b: 2 };
+const copy = { ...original };
+console.log(copy); // { a: 1, b: 2 }
+
+// Merging objects
+const obj1 = { a: 1, b: 2 };
+const obj2 = { b: 3, c: 4 };
+const merged = { ...obj1, ...obj2 };
+console.log(merged); // { a: 1, b: 3, c: 4 }
+
+// Adding properties while creating a copy
+const user = { name: 'John', age: 30 };
+const userWithRole = { ...user, role: 'Admin' };
+console.log(userWithRole); // { name: 'John', age: 30, role: 'Admin' }</code></pre>
+            
+            <h4>Converting Between Objects and Arrays</h4>
+            <pre><code>// Object to array of key-value pairs
+const person = { name: 'John', age: 30, job: 'Developer' };
+const entries = Object.entries(person);
+console.log(entries);
+// [['name', 'John'], ['age', 30], ['job', 'Developer']]
+
+// Array of key-value pairs to object
+const newPerson = Object.fromEntries(entries);
+console.log(newPerson); // { name: 'John', age: 30, job: 'Developer' }
+
+// Creating an object from arrays of keys and values
+const keys = ['name', 'age', 'job'];
+const values = ['Sarah', 28, 'Designer'];
+const sarah = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+console.log(sarah); // { name: 'Sarah', age: 28, job: 'Designer' }</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">MDN: JavaScript Arrays</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">MDN: JavaScript Objects</a></li>
+                <li><a href="https://javascript.info/array" target="_blank">JavaScript.info: Arrays</a></li>
+                <li><a href="https://javascript.info/object" target="_blank">JavaScript.info: Objects</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" target="_blank">MDN: Destructuring Assignment</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank">MDN: Spread Syntax</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

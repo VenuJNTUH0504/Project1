@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules & Namespaces - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Modules & Namespaces in TypeScript</h1>
+        
+        <p>TypeScript provides two ways to organize code and prevent naming conflicts: modules and namespaces. Both help structure your code and control which parts are accessible from other files, but they serve different purposes and have different use cases.</p>
+        
+        <h2>Modules</h2>
+        
+        <p>Modules are the primary way to organize code in modern TypeScript applications. They allow you to split your code across multiple files and control what is visible outside each file using exports and imports.</p>
+        
+        <h3>Exporting from a Module</h3>
+        
+        <pre><code>// math.ts
+export function add(x: number, y: number): number {
+    return x + y;
+}
+
+export function subtract(x: number, y: number): number {
+    return x - y;
+}
+
+// You can also export a default value
+export default function multiply(x: number, y: number): number {
+    return x * y;
+}
+
+// Private function (not exported)
+function square(x: number): number {
+    return x * x;
+}</code></pre>
+        
+        <h3>Importing from a Module</h3>
+        
+        <pre><code>// app.ts
+import multiply, { add, subtract } from './math';
+
+console.log(add(1, 2));        // 3
+console.log(subtract(5, 3));   // 2
+console.log(multiply(4, 5));   // 20
+
+// Error: square is not exported
+// console.log(square(4));</code></pre>
+        
+        <h3>Re-exporting</h3>
+        
+        <p>You can re-export items from other modules to create a public API for your library:</p>
+        
+        <pre><code>// index.ts
+export { add, subtract } from './math';
+export * from './utils';
+export { default as format } from './formatter';</code></pre>
+        
+        <h3>Dynamic Imports</h3>
+        
+        <p>TypeScript supports dynamic imports for code splitting and lazy loading:</p>
+        
+        <pre><code>// Using dynamic import for lazy loading
+async function loadMathModule() {
+    const math = await import('./math');
+    console.log(math.add(1, 2));
+    console.log(math.default(4, 5));  // Default export
+}</code></pre>
+        
+        <div class="tip-box">
+            <h4>Module Resolution</h4>
+            <p>TypeScript supports different module resolution strategies:</p>
+            <ul>
+                <li><strong>Node</strong>: Follows Node.js module resolution rules (default for "CommonJS" module)</li>
+                <li><strong>Classic</strong>: Legacy TypeScript resolution algorithm</li>
+                <li><strong>Bundler</strong>: For use with bundlers like webpack, Rollup, etc.</li>
+            </ul>
+            <p>You can configure this in your tsconfig.json:</p>
+            <pre><code>{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    // ...
+  }
+}</code></pre>
+        </div>
+        
+        <h2>Namespaces</h2>
+        
+        <p>Namespaces (formerly called "internal modules") are an older way to organize code in TypeScript. They group related code under a single name and help avoid naming collisions.</p>
+        
+        <h3>Defining a Namespace</h3>
+        
+        <pre><code>// validation.ts
+namespace Validation {
+    export interface StringValidator {
+        isValid(s: string): boolean;
+    }
+    
+    // Not exported, only available inside the namespace
+    const lettersRegexp = /^[A-Za-z]+$/;
+    
+    export class LettersOnlyValidator implements StringValidator {
+        isValid(s: string): boolean {
+            return lettersRegexp.test(s);
+        }
+    }
+    
+    export class ZipCodeValidator implements StringValidator {
+        isValid(s: string): boolean {
+            return s.length === 5 && /^\d+$/.test(s);
+        }
+    }
+}</code></pre>
+        
+        <h3>Using a Namespace</h3>
+        
+        <pre><code>// app.ts
+/// <reference path="validation.ts" />
+
+let validators: { [s: string]: Validation.StringValidator } = {};
+validators["ZIP code"] = new Validation.ZipCodeValidator();
+validators["Letters only"] = new Validation.LettersOnlyValidator();
+
+// Use the validators
+console.log(validators["ZIP code"].isValid("12345"));     // true
+console.log(validators["Letters only"].isValid("hello")); // true</code></pre>
+        
+        <h3>Splitting Namespaces Across Files</h3>
+        
+        <p>Namespaces can be split across multiple files and combined using reference tags:</p>
+        
+        <pre><code>// validators/letters.ts
+namespace Validation {
+    export class LettersOnlyValidator implements StringValidator {
+        isValid(s: string): boolean {
+            return /^[A-Za-z]+$/.test(s);
+        }
+    }
+}
+
+// validators/zip.ts
+namespace Validation {
+    export class ZipCodeValidator implements StringValidator {
+        isValid(s: string): boolean {
+            return s.length === 5 && /^\d+$/.test(s);
+        }
+    }
+}
+
+// app.ts
+/// <reference path="validators/letters.ts" />
+/// <reference path="validators/zip.ts" />
+
+// Use the validators from the combined namespace
+let validators: { [s: string]: Validation.StringValidator } = {};
+validators["ZIP code"] = new Validation.ZipCodeValidator();
+validators["Letters only"] = new Validation.LettersOnlyValidator();</code></pre>
+        
+        <h2>Modules vs Namespaces</h2>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Modules</h4>
+                <ul>
+                    <li>Modern approach, aligned with ES modules</li>
+                    <li>File-based (one module per file)</li>
+                    <li>Explicit imports/exports</li>
+                    <li>Better for large applications</li>
+                    <li>Works well with bundlers</li>
+                    <li>Supports tree-shaking</li>
+                </ul>
+            </div>
+            <div class="comparison-column">
+                <h4>Namespaces</h4>
+                <ul>
+                    <li>Legacy approach</li>
+                    <li>Can span multiple files</li>
+                    <li>Implicit dependencies via reference tags</li>
+                    <li>Better for small scripts</li>
+                    <li>Compiles to global variables</li>
+                    <li>No built-in tree-shaking</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h4>Recommendation</h4>
+            <p>For new projects, it's recommended to use modules instead of namespaces. Modules are the standard way to organize code in modern JavaScript and TypeScript applications.</p>
+        </div>
+        
+        <h2>Module Formats</h2>
+        
+        <p>TypeScript can compile modules to different formats based on your target environment:</p>
+        
+        <table>
+            <tr>
+                <th>Format</th>
+                <th>Description</th>
+                <th>Use Case</th>
+            </tr>
+            <tr>
+                <td>CommonJS</td>
+                <td>Uses <code>require()</code> and <code>module.exports</code></td>
+                <td>Node.js applications</td>
+            </tr>
+            <tr>
+                <td>UMD</td>
+                <td>Universal Module Definition, works in multiple environments</td>
+                <td>Libraries that need to work in both browser and Node.js</td>
+            </tr>
+            <tr>
+                <td>AMD</td>
+                <td>Asynchronous Module Definition, uses <code>define()</code></td>
+                <td>Older browser applications using RequireJS</td>
+            </tr>
+            <tr>
+                <td>ESNext/ES2015+</td>
+                <td>Native JavaScript modules with <code>import</code>/<code>export</code></td>
+                <td>Modern applications with bundlers like webpack</td>
+            </tr>
+            <tr>
+                <td>System</td>
+                <td>SystemJS module format</td>
+                <td>Applications using SystemJS loader</td>
+            </tr>
+        </table>
+        
+        <p>You can specify the module format in your tsconfig.json:</p>
+        
+        <pre><code>{
+  "compilerOptions": {
+    "module": "commonjs",  // or "es2015", "esnext", "umd", "amd", "system"
+    // ...
+  }
+}</code></pre>
+        
+        <h2>Path Mapping</h2>
+        
+        <p>TypeScript allows you to configure custom module resolution paths in your tsconfig.json:</p>
+        
+        <pre><code>{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@shared/*": ["src/shared/*"],
+      "@models/*": ["src/models/*"]
+    }
+  }
+}</code></pre>
+        
+        <p>This allows you to use imports like:</p>
+        
+        <pre><code>import { User } from '@models/user';
+import { Button } from '@shared/components/button';
+import { AuthService } from '@app/services/auth';</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/modules.html" target="_blank">TypeScript Handbook: Modules</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/namespaces.html" target="_blank">TypeScript Handbook: Namespaces</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/module-resolution.html" target="_blank">TypeScript Handbook: Module Resolution</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html" target="_blank">TypeScript Handbook: Namespaces and Modules</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Development - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1c2c, #4a569d, #24243e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #64ffda;
+        }
+
+        .frontend-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #64ffda, #48aeff);
+            -webkit-background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+        
+        .tech-card::after {
+            content: "Learn More →";
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            font-size: 0.9rem;
+            color: #64ffda;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-card:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .tech-card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .tech-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #64ffda;
+        }
+
+        .tech-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #64ffda;
+        }
+
+        .info-section p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card h4 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #64ffda, #48aeff);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1c2c;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Code examples styling */
+        code {
+            display: block;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            border-left: 3px solid #64ffda;
+        }
+        
+
+        
+        @media (max-width: 768px) {
+            .frontend-container {
+                margin: 80px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+            
+            code {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="backend.html">Backend</a>
+                <a href="frameworks.html">Frameworks</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="frontend-container">
+        <div class="hero-section">
+            <h1>Frontend Development</h1>
+            <p>Frontend development is the art of creating the visual and interactive elements of websites and web applications that users see and interact with in their browsers. It's where creativity meets functionality, turning designs into responsive, user-friendly interfaces.</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card" onclick="window.location.href='htmlhome.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+                <h3>HTML</h3>
+                <p>Structure and content of web pages</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='csshome.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+                <h3>CSS</h3>
+                <p>Style and design web pages</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='javascript.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                <h3>JavaScript</h3>
+                <p>Interactive and dynamic web applications</p>
+            </div>
+            <div class="tech-card" onclick="window.location.href='typescript.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript">
+                <h3>TypeScript</h3>
+                <p>Typed superset of JavaScript</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>How Frontend Development Works</h2>
+            <p>Frontend development is the implementation of the visual and interactive elements that users see and interact with in a web application. It's a combination of programming languages, frameworks, and tools that work together to create a seamless user experience.</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Structure (HTML)</h4>
+                    <p>HTML provides the foundation and structure of web pages. It organizes content into elements like headings, paragraphs, images, and forms, creating a semantic structure that browsers can understand.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Style (CSS)</h4>
+                    <p>CSS handles the visual presentation of HTML elements. It controls layout, colors, typography, animations, and responsive design, ensuring websites look great on all devices.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Interactivity (JavaScript)</h4>
+                    <p>JavaScript adds dynamic behavior to web pages. It handles user interactions, updates content in real-time, manages data, and creates complex animations and effects.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Type Safety (TypeScript)</h4>
+                    <p>TypeScript enhances JavaScript by adding static types, making code more reliable and maintainable. It catches errors early in development and improves code documentation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>The Frontend Development Process</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>1. Planning</h4>
+                    <p>Define project requirements, create wireframes, and plan the user interface architecture.</p>
+                </div>
+                <div class="info-card">
+                    <h4>2. Design</h4>
+                    <p>Create visual designs, choose color schemes, typography, and ensure consistent user experience.</p>
+                </div>
+                <div class="info-card">
+                    <h4>3. Development</h4>
+                    <p>Write clean, efficient code using HTML, CSS, and JavaScript to implement the planned features.</p>
+                </div>
+                <div class="info-card">
+                    <h4>4. Testing</h4>
+                    <p>Test functionality, responsiveness, and performance across different browsers and devices.</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Remove the hover effect JS since we're handling it with CSS now
+    </script>
+</body>
+</html> 

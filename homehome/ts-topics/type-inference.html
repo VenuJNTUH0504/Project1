@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Type Inference</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3178c6;  /* TypeScript blue */
+            --secondary-color: #235a97;
+            --accent-color: #007acc;
+            --bg-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #1e1e1e;
+            --code-color: #f8f8f2;
+        }
+
+        .dark-theme {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #2d2d2d;
+            --code-color: #f8f8f2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .content-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .example-section {
+            margin-top: 2rem;
+        }
+
+        .example-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .resources-section {
+            margin-top: 2rem;
+        }
+
+        .resources-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .resources-section ul {
+            list-style-type: none;
+        }
+
+        .resources-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .resources-section a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources-section a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+
+    <div class="theme-toggle">
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i> Toggle Theme
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header animate-fade-in">
+            <h1>TypeScript Type Inference</h1>
+            <p>Understanding how TypeScript automatically determines types</p>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>What is Type Inference?</h2>
+            <p>Type inference is a feature in TypeScript that automatically determines the type of a variable based on its value. This means you don't always have to explicitly declare types, as TypeScript can often figure them out for you.</p>
+            
+            <p>TypeScript's type inference helps reduce the amount of type annotations you need to write while still maintaining type safety.</p>
+
+            <div class="code-block">
+<pre>// Type inference in variable declarations
+let message = "Hello, World!";  // TypeScript infers type as string
+let count = 42;                 // TypeScript infers type as number
+let isActive = true;            // TypeScript infers type as boolean
+
+// If you try to assign a different type later, TypeScript will show an error
+// message = 100;  // Error: Type 'number' is not assignable to type 'string'</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Inference in Function Return Types</h2>
+            <p>TypeScript can also infer the return type of functions based on the return statements:</p>
+
+            <div class="code-block">
+<pre>// Return type is inferred as number
+function add(a: number, b: number) {
+    return a + b;
+}
+
+// Return type is inferred as string
+function greet(name: string) {
+    return `Hello, ${name}!`;
+}
+
+// TypeScript infers the correct return types
+let sum = add(5, 3);         // sum is inferred as number
+let greeting = greet("John"); // greeting is inferred as string</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Contextual Typing</h2>
+            <p>TypeScript can infer types based on the context in which expressions are used. This is called contextual typing:</p>
+
+            <div class="code-block">
+<pre>// The type of 'e' is inferred from the context (MouseEvent)
+document.addEventListener("click", function(e) {
+    console.log(e.button);  // TypeScript knows e is a MouseEvent
+});
+
+// TypeScript infers the type of the parameter in arrow functions too
+const names = ["Alice", "Bob", "Charlie"];
+names.forEach(name => {
+    console.log(name.toUpperCase());  // TypeScript knows 'name' is a string
+});</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Type Inference with Objects and Arrays</h2>
+            <p>TypeScript infers types for object literals and arrays:</p>
+
+            <div class="code-block">
+<pre>// Object type inference
+let person = {
+    name: "Alice",
+    age: 30,
+    isEmployed: true
+};
+// TypeScript infers: { name: string; age: number; isEmployed: boolean; }
+
+// Array type inference
+let numbers = [1, 2, 3, 4, 5];
+// TypeScript infers: number[]
+
+let mixed = [1, "two", 3, "four"];
+// TypeScript infers: (string | number)[]</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Best Practices with Type Inference</h2>
+            <p>While type inference is powerful, there are times when explicit type annotations are better:</p>
+
+            <div class="code-block">
+<pre>// When you want a wider type than what would be inferred
+let id: number | string = 42;  // Without annotation, id would be just number
+
+// When you want to document your code for other developers
+function calculateTotal(items: CartItem[]): number {
+    return items.reduce((total, item) => total + item.price, 0);
+}
+
+// When TypeScript might infer a type that's too specific
+const config: Configuration = {
+    endpoint: "api/data",
+    timeout: 3000
+};
+
+// When you're declaring a variable without initializing it
+let result: number;  // Without this, result would be 'any'
+// ... later ...
+result = calculateSomething();</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in example-section">
+            <h3>Practical Examples</h3>
+            
+            <div class="code-block">
+<pre>// Type inference with destructuring
+const [first, second] = [1, 2];
+// first and second are inferred as numbers
+
+const { name, age } = { name: "Alice", age: 30, country: "USA" };
+// name is inferred as string, age as number
+
+// Type inference with generics
+function identity<T>(arg: T): T {
+    return arg;
+}
+
+let output = identity("myString");
+// output is inferred as string
+
+// Type inference with async/await
+async function fetchData() {
+    const response = await fetch('https://api.example.com/data');
+    const data = await response.json();
+    return data;
+}
+// Return type is inferred as Promise<any></pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in resources-section">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/type-inference.html" target="_blank">TypeScript Handbook: Type Inference</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html" target="_blank">TypeScript Handbook: Everyday Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html" target="_blank">TypeScript Handbook: Functions</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">TypeScript Handbook: Type Narrowing</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('dark-theme')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+    </script>
+</body>
+</html>

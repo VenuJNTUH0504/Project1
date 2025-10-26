@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes & OOP - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        .diagram {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .dark-theme .diagram {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Classes & Object-Oriented Programming</h1>
+        
+        <p>JavaScript supports object-oriented programming (OOP) with classes, introduced in ES6. This feature provides a cleaner, more intuitive syntax for creating objects and implementing inheritance, while still being based on JavaScript's prototype-based inheritance model.</p>
+        
+        <h2>Introduction to OOP in JavaScript</h2>
+        
+        <p>Object-Oriented Programming is a programming paradigm based on the concept of "objects" that can contain data (properties) and code (methods). JavaScript implements OOP principles in its own unique way.</p>
+        
+        <h3>Key OOP Concepts in JavaScript</h3>
+        
+        <ul>
+            <li><strong>Classes</strong>: Templates for creating objects</li>
+            <li><strong>Objects</strong>: Instances of classes</li>
+            <li><strong>Encapsulation</strong>: Bundling data and methods that work on that data</li>
+            <li><strong>Inheritance</strong>: A class can inherit properties and methods from another class</li>
+            <li><strong>Polymorphism</strong>: Objects can take different forms depending on context</li>
+            <li><strong>Abstraction</strong>: Hiding complex implementation details</li>
+        </ul>
+        
+        <h2>Classes in JavaScript</h2>
+        
+        <p>ES6 introduced the <code>class</code> syntax, which is syntactic sugar over JavaScript's existing prototype-based inheritance.</p>
+        
+        <h3>Class Declaration</h3>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Pre-ES6 Constructor Functions</h4>
+                <pre><code>// Constructor function
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+// Adding a method to the prototype
+Person.prototype.greet = function() {
+  return "Hello, my name is " + this.name;
+};
+
+// Creating an instance
+var john = new Person("John", 30);
+console.log(john.greet()); // "Hello, my name is John"</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>ES6 Class Syntax</h4>
+                <pre><code>// Class declaration
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  
+  // Method defined in the class
+  greet() {
+    return `Hello, my name is ${this.name}`;
+  }
+}
+
+// Creating an instance
+const john = new Person("John", 30);
+console.log(john.greet()); // "Hello, my name is John"</code></pre>
+            </div>
+        </div>
+        
+        <div class="tip-box">
+            <h4>Class Expression</h4>
+            <p>Classes can also be defined using class expressions, similar to function expressions:</p>
+            <pre><code>// Unnamed class expression
+const Person = class {
+  constructor(name) {
+    this.name = name;
+  }
+};
+
+// Named class expression
+const Employee = class EmployeeClass {
+  constructor(name) {
+    this.name = name;
+  }
+};</code></pre>
+        </div>
+        
+        <h3>Constructor Method</h3>
+        
+        <p>The <code>constructor</code> method is a special method for creating and initializing objects created with a class. There can only be one <code>constructor</code> method in a class.</p>
+        
+        <pre><code>class Vehicle {
+  constructor(make, model, year) {
+    this.make = make;
+    this.model = model;
+    this.year = year;
+    this.isRunning = false;
+  }
+  
+  // Class methods
+  start() {
+    this.isRunning = true;
+    return `${this.make} ${this.model} started`;
+  }
+  
+  stop() {
+    this.isRunning = false;
+    return `${this.make} ${this.model} stopped`;
+  }
+}
+
+const car = new Vehicle("Toyota", "Corolla", 2020);
+console.log(car.start()); // "Toyota Corolla started"
+console.log(car.isRunning); // true</code></pre>
+        
+        <h3>Class Methods</h3>
+        
+        <p>Methods defined in a class are added to the prototype of the class, making them available to all instances.</p>
+        
+        <pre><code>class Calculator {
+  add(a, b) {
+    return a + b;
+  }
+  
+  subtract(a, b) {
+    return a - b;
+  }
+  
+  multiply(a, b) {
+    return a * b;
+  }
+  
+  divide(a, b) {
+    if (b === 0) throw new Error("Cannot divide by zero");
+    return a / b;
+  }
+}
+
+const calc = new Calculator();
+console.log(calc.add(5, 3));      // 8
+console.log(calc.subtract(5, 3)); // 2
+console.log(calc.multiply(5, 3)); // 15
+console.log(calc.divide(6, 3));   // 2</code></pre>
+        
+        <h3>Static Methods and Properties</h3>
+        
+        <p>Static methods and properties are defined on the class itself, not on instances of the class.</p>
+        
+        <pre><code>class MathUtils {
+  // Static method
+  static square(x) {
+    return x * x;
+  }
+  
+  // Static property (ES2022)
+  static PI = 3.14159;
+  
+  // Instance method
+  calculateArea(radius) {
+    // Access static property using class name
+    return MathUtils.PI * MathUtils.square(radius);
+  }
+}
+
+// Call static method directly on the class
+console.log(MathUtils.square(5)); // 25
+console.log(MathUtils.PI);        // 3.14159
+
+// Instance methods are called on instances
+const utils = new MathUtils();
+console.log(utils.calculateArea(2)); // 12.56636</code></pre>
+        
+        <div class="warning-box">
+            <h4>Static vs. Instance Members</h4>
+            <p>Static members (methods and properties) belong to the class itself, not to instances:</p>
+            <ul>
+                <li>Static members are called on the class: <code>ClassName.staticMethod()</code></li>
+                <li>Instance members are called on instances: <code>instance.method()</code></li>
+                <li>Static methods cannot access instance properties/methods using <code>this</code></li>
+                <li>Static methods are often used for utility functions related to the class</li>
+            </ul>
+        </div>
+        
+        <h3>Getters and Setters</h3>
+        
+        <p>Classes can define getter and setter methods for properties, allowing you to execute code on reading or writing a property.</p>
+        
+        <pre><code>class Temperature {
+  constructor(celsius) {
+    this._celsius = celsius;
+  }
+  
+  // Getter for celsius
+  get celsius() {
+    return this._celsius;
+  }
+  
+  // Setter for celsius
+  set celsius(value) {
+    if (value < -273.15) {
+      throw new Error("Temperature below absolute zero is not possible");
+    }
+    this._celsius = value;
+  }
+  
+  // Getter for fahrenheit
+  get fahrenheit() {
+    return this._celsius * 9/5 + 32;
+  }
+  
+  // Setter for fahrenheit
+  set fahrenheit(value) {
+    this.celsius = (value - 32) * 5/9;
+  }
+}
+
+const temp = new Temperature(25);
+console.log(temp.celsius);    // 25
+console.log(temp.fahrenheit); // 77
+
+temp.celsius = 30;
+console.log(temp.fahrenheit); // 86
+
+temp.fahrenheit = 68;
+console.log(temp.celsius);    // 20</code></pre>
+        
+        <h2>Inheritance</h2>
+        
+        <p>Classes can extend other classes, inheriting their properties and methods. This is done using the <code>extends</code> keyword.</p>
+        
+        <h3>Basic Inheritance</h3>
+        
+        <pre><code>// Parent class
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  speak() {
+    return `${this.name} makes a noise.`;
+  }
+}
+
+// Child class extending Animal
+class Dog extends Animal {
+  constructor(name, breed) {
+    // Call the parent constructor
+    super(name);
+    this.breed = breed;
+  }
+  
+  // Override the speak method
+  speak() {
+    return `${this.name} barks!`;
+  }
+  
+  // Add a new method
+  fetch() {
+    return `${this.name} fetches the ball!`;
+  }
+}
+
+const animal = new Animal("Animal");
+console.log(animal.speak()); // "Animal makes a noise."
+
+const dog = new Dog("Rex", "German Shepherd");
+console.log(dog.speak());    // "Rex barks!"
+console.log(dog.fetch());    // "Rex fetches the ball!"
+console.log(dog.breed);      // "German Shepherd"</code></pre>
+        
+        <div class="tip-box">
+            <h4>The super Keyword</h4>
+            <p>The <code>super</code> keyword is used to call functions on an object's parent:</p>
+            <ul>
+                <li><code>super()</code> calls the parent constructor</li>
+                <li><code>super.methodName()</code> calls a parent method</li>
+                <li>In a constructor, <code>super()</code> must be called before using <code>this</code></li>
+            </ul>
+        </div>
+        
+        <h3>Method Overriding</h3>
+        
+        <p>Child classes can override methods from the parent class by defining a method with the same name.</p>
+        
+        <pre><code>class Shape {
+  constructor(color) {
+    this.color = color;
+  }
+  
+  getArea() {
+    return 0; // Base implementation
+  }
+  
+  describe() {
+    return `A ${this.color} shape with area ${this.getArea()} square units.`;
+  }
+}
+
+class Circle extends Shape {
+  constructor(color, radius) {
+    super(color);
+    this.radius = radius;
+  }
+  
+  // Override getArea method
+  getArea() {
+    return Math.PI * this.radius * this.radius;
+  }
+  
+  // Override describe and call parent method
+  describe() {
+    return `Circle: ${super.describe()} Radius: ${this.radius} units.`;
+  }
+}
+
+class Rectangle extends Shape {
+  constructor(color, width, height) {
+    super(color);
+    this.width = width;
+    this.height = height;
+  }
+  
+  // Override getArea method
+  getArea() {
+    return this.width * this.height;
+  }
+}
+
+const circle = new Circle("red", 5);
+console.log(circle.getArea());  // ~78.54
+console.log(circle.describe()); // "Circle: A red shape with area 78.54 square units. Radius: 5 units."
+
+const rectangle = new Rectangle("blue", 4, 6);
+console.log(rectangle.getArea());  // 24
+console.log(rectangle.describe()); // "A blue shape with area 24 square units."</code></pre>
+        
+        <h3>Checking Instance Type</h3>
+        
+        <p>You can check if an object is an instance of a class using the <code>instanceof</code> operator.</p>
+        
+        <pre><code>const shape = new Shape("purple");
+const circle = new Circle("red", 5);
+const rectangle = new Rectangle("blue", 4, 6);
+
+console.log(circle instanceof Circle);     // true
+console.log(circle instanceof Shape);      // true
+console.log(rectangle instanceof Circle);  // false
+console.log(rectangle instanceof Shape);   // true
+console.log(shape instanceof Rectangle);   // false</code></pre>
+        
+        <h2>Private Class Features</h2>
+        
+        <p>Modern JavaScript (ES2022) supports private class fields and methods, allowing better encapsulation.</p>
+        
+        <pre><code>class BankAccount {
+  // Private field (prefixed with #)
+  #balance = 0;
+  
+  // Private method
+  #validateAmount(amount) {
+    if (amount <= 0) {
+      throw new Error("Amount must be positive");
+    }
+  }
+  
+  constructor(owner, initialBalance = 0) {
+    this.owner = owner;
+    if (initialBalance > 0) {
+      this.#balance = initialBalance;
+    }
+  }
+  
+  // Public method to access private field
+  getBalance() {
+    return this.#balance;
+  }
+  
+  deposit(amount) {
+    this.#validateAmount(amount);
+    this.#balance += amount;
+    return this.#balance;
+  }
+  
+  withdraw(amount) {
+    this.#validateAmount(amount);
+    if (amount > this.#balance) {
+      throw new Error("Insufficient funds");
+    }
+    this.#balance -= amount;
+    return this.#balance;
+  }
+}
+
+const account = new BankAccount("John Doe", 1000);
+console.log(account.getBalance()); // 1000
+account.deposit(500);
+console.log(account.getBalance()); // 1500
+account.withdraw(200);
+console.log(account.getBalance()); // 1300
+
+// These would cause errors:
+// console.log(account.#balance);       // SyntaxError
+// account.#validateAmount(100);        // SyntaxError</code></pre>
+        
+        <div class="warning-box">
+            <h4>Browser Support for Private Fields</h4>
+            <p>Private fields (using the # prefix) are a relatively new feature. For older browsers, you might need to use transpilers like Babel or alternative approaches like closures or naming conventions (e.g., _privateProperty).</p>
+        </div>
+        
+        <h2>Implementing OOP Principles</h2>
+        
+        <h3>Encapsulation</h3>
+        
+        <p>Encapsulation is the bundling of data and methods that operate on that data. Private fields and methods help achieve encapsulation.</p>
+        
+        <pre><code>class Counter {
+  #count = 0;
+  
+  increment() {
+    this.#count++;
+    return this.#count;
+  }
+  
+  decrement() {
+    this.#count--;
+    return this.#count;
+  }
+  
+  get value() {
+    return this.#count;
+  }
+}
+
+const counter = new Counter();
+console.log(counter.value);     // 0
+counter.increment();
+counter.increment();
+console.log(counter.value);     // 2
+counter.decrement();
+console.log(counter.value);     // 1</code></pre>
+        
+        <h3>Inheritance and Polymorphism</h3>
+        
+        <p>Inheritance allows a class to inherit properties and methods from another class. Polymorphism allows methods to do different things based on the object they are acting upon.</p>
+        
+        <pre><code>class Employee {
+  constructor(name, id) {
+    this.name = name;
+    this.id = id;
+  }
+  
+  calculatePay() {
+    return 0; // Base implementation
+  }
+  
+  getDetails() {
+    return `Employee: ${this.name}, ID: ${this.id}`;
+  }
+}
+
+class FullTimeEmployee extends Employee {
+  constructor(name, id, salary) {
+    super(name, id);
+    this.salary = salary;
+  }
+  
+  calculatePay() {
+    return this.salary / 12; // Monthly salary
+  }
+  
+  getDetails() {
+    return `${super.getDetails()}, Type: Full-time, Salary: $${this.salary}`;
+  }
+}
+
+class PartTimeEmployee extends Employee {
+  constructor(name, id, hourlyRate, hoursWorked) {
+    super(name, id);
+    this.hourlyRate = hourlyRate;
+    this.hoursWorked = hoursWorked;
+  }
+  
+  calculatePay() {
+    return this.hourlyRate * this.hoursWorked;
+  }
+  
+  getDetails() {
+    return `${super.getDetails()}, Type: Part-time, Rate: $${this.hourlyRate}/hr`;
+  }
+}
+
+// Polymorphism in action
+function printPayDetails(employee) {
+  console.log(employee.getDetails());
+  console.log(`Pay: $${employee.calculatePay().toFixed(2)}`);
+}
+
+const fullTime = new FullTimeEmployee("John Doe", "FT123", 60000);
+const partTime = new PartTimeEmployee("Jane Smith", "PT456", 20, 80);
+
+printPayDetails(fullTime);
+// Employee: John Doe, ID: FT123, Type: Full-time, Salary: $60000
+// Pay: $5000.00
+
+printPayDetails(partTime);
+// Employee: Jane Smith, ID: PT456, Type: Part-time, Rate: $20/hr
+// Pay: $1600.00</code></pre>
+        
+        <h3>Abstraction</h3>
+        
+        <p>Abstraction means hiding complex implementation details and showing only the necessary features of an object.</p>
+        
+        <pre><code>// Abstract base class (not directly instantiable)
+class Database {
+  constructor() {
+    if (this.constructor === Database) {
+      throw new Error("Abstract classes can't be instantiated.");
+    }
+  }
+  
+  connect() {
+    throw new Error("Method 'connect()' must be implemented.");
+  }
+  
+  query() {
+    throw new Error("Method 'query()' must be implemented.");
+  }
+  
+  close() {
+    throw new Error("Method 'close()' must be implemented.");
+  }
+}
+
+class MySQLDatabase extends Database {
+  constructor(config) {
+    super();
+    this.config = config;
+    this.connection = null;
+  }
+  
+  connect() {
+    console.log("Connecting to MySQL database...");
+    this.connection = { status: "connected", type: "mysql" };
+    return true;
+  }
+  
+  query(sql) {
+    if (!this.connection) {
+      throw new Error("Not connected to database");
+    }
+    console.log(`Executing MySQL query: ${sql}`);
+    return ["result1", "result2"];
+  }
+  
+  close() {
+    console.log("Closing MySQL connection...");
+    this.connection = null;
+  }
+}
+
+class MongoDBDatabase extends Database {
+  constructor(config) {
+    super();
+    this.config = config;
+    this.client = null;
+  }
+  
+  connect() {
+    console.log("Connecting to MongoDB...");
+    this.client = { status: "connected", type: "mongodb" };
+    return true;
+  }
+  
+  query(filter) {
+    if (!this.client) {
+      throw new Error("Not connected to database");
+    }
+    console.log(`Executing MongoDB query with filter: ${JSON.stringify(filter)}`);
+    return [{ id: 1, name: "Document 1" }];
+  }
+  
+  close() {
+    console.log("Closing MongoDB connection...");
+    this.client = null;
+  }
+}
+
+// Usage
+function executeQuery(database, query) {
+  try {
+    database.connect();
+    const results = database.query(query);
+    console.log("Results:", results);
+    database.close();
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+}
+
+const mysqlDb = new MySQLDatabase({ host: "localhost", user: "root" });
+executeQuery(mysqlDb, "SELECT * FROM users");
+
+const mongodb = new MongoDBDatabase({ url: "mongodb://localhost:27017" });
+executeQuery(mongodb, { status: "active" });</code></pre>
+        
+        <h2>Real-World Examples</h2>
+        
+        <h3>Example 1: Building a UI Component System</h3>
+        
+        <pre><code>// Base Component class
+class Component {
+  constructor(id) {
+    this.id = id;
+    this.element = null;
+  }
+  
+  render() {
+    throw new Error("Components must implement render method");
+  }
+  
+  mount(container) {
+    if (!this.element) {
+      this.element = this.render();
+    }
+    container.appendChild(this.element);
+    this.afterMount();
+    return this;
+  }
+  
+  afterMount() {
+    // Hook for subclasses
+  }
+  
+  unmount() {
+    if (this.element && this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element);
+    }
+  }
+}
+
+class Button extends Component {
+  constructor(id, text, onClick) {
+    super(id);
+    this.text = text;
+    this.onClick = onClick;
+  }
+  
+  render() {
+    const button = document.createElement("button");
+    button.id = this.id;
+    button.textContent = this.text;
+    button.className = "ui-button";
+    return button;
+  }
+  
+  afterMount() {
+    this.element.addEventListener("click", this.onClick);
+  }
+  
+  disable() {
+    this.element.disabled = true;
+    return this;
+  }
+  
+  enable() {
+    this.element.disabled = false;
+    return this;
+  }
+}
+
+class TextField extends Component {
+  constructor(id, placeholder, onChange) {
+    super(id);
+    this.placeholder = placeholder;
+    this.onChange = onChange;
+  }
+  
+  render() {
+    const input = document.createElement("input");
+    input.id = this.id;
+    input.type = "text";
+    input.placeholder = this.placeholder;
+    input.className = "ui-textfield";
+    return input;
+  }
+  
+  afterMount() {
+    this.element.addEventListener("input", this.onChange);
+  }
+  
+  getValue() {
+    return this.element.value;
+  }
+  
+  setValue(value) {
+    this.element.value = value;
+    return this;
+  }
+}
+
+// Usage
+const container = document.getElementById("app");
+
+const nameField = new TextField("name-field", "Enter your name", (e) => {
+  console.log("Name changed:", e.target.value);
+});
+
+const submitButton = new Button("submit-btn", "Submit", () => {
+  console.log("Form submitted with name:", nameField.getValue());
+});
+
+nameField.mount(container);
+submitButton.mount(container);</code></pre>
+        
+        <h3>Example 2: Game Development</h3>
+        
+        <pre><code>class GameObject {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.active = true;
+  }
+  
+  update() {
+    // Base update logic
+  }
+  
+  render(ctx) {
+    // Base render logic
+  }
+  
+  isColliding(other) {
+    // Simple collision detection
+    const distance = Math.sqrt(
+      Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2)
+    );
+    return distance < (this.radius + other.radius);
+  }
+}
+
+class Player extends GameObject {
+  constructor(x, y) {
+    super(x, y);
+    this.radius = 20;
+    this.speed = 5;
+    this.color = "blue";
+    this.score = 0;
+  }
+  
+  update(keys) {
+    if (keys.ArrowUp) this.y -= this.speed;
+    if (keys.ArrowDown) this.y += this.speed;
+    if (keys.ArrowLeft) this.x -= this.speed;
+    if (keys.ArrowRight) this.x += this.speed;
+  }
+  
+  render(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
+  }
+  
+  increaseScore(points) {
+    this.score += points;
+  }
+}
+
+class Enemy extends GameObject {
+  constructor(x, y) {
+    super(x, y);
+    this.radius = 15;
+    this.speed = Math.random() * 3 + 1;
+    this.color = "red";
+  }
+  
+  update() {
+    this.y += this.speed;
+    
+    // Reset if off screen
+    if (this.y > 600) {
+      this.y = -this.radius;
+      this.x = Math.random() * 800;
+    }
+  }
+  
+  render(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
+class Collectible extends GameObject {
+  constructor(x, y) {
+    super(x, y);
+    this.radius = 10;
+    this.color = "gold";
+    this.value = 10;
+  }
+  
+  render(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
+  }
+  
+  collect() {
+    this.active = false;
+    return this.value;
+  }
+}
+
+// Game class to manage everything
+class Game {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext("2d");
+    this.player = new Player(400, 500);
+    this.enemies = [];
+    this.collectibles = [];
+    this.keys = {};
+    this.gameOver = false;
+    
+    // Create initial enemies
+    for (let i = 0; i < 5; i++) {
+      this.enemies.push(
+        new Enemy(Math.random() * 800, Math.random() * 300)
+      );
+    }
+    
+    // Create collectibles
+    for (let i = 0; i < 3; i++) {
+      this.collectibles.push(
+        new Collectible(Math.random() * 800, Math.random() * 600)
+      );
+    }
+    
+    // Set up key listeners
+    window.addEventListener("keydown", (e) => {
+      this.keys[e.key] = true;
+    });
+    
+    window.addEventListener("keyup", (e) => {
+      this.keys[e.key] = false;
+    });
+  }
+  
+  update() {
+    if (this.gameOver) return;
+    
+    // Update player
+    this.player.update(this.keys);
+    
+    // Update enemies
+    this.enemies.forEach(enemy => {
+      enemy.update();
+      
+      // Check collision with player
+      if (this.player.isColliding(enemy)) {
+        this.gameOver = true;
+      }
+    });
+    
+    // Update collectibles
+    this.collectibles.forEach(collectible => {
+      if (collectible.active && this.player.isColliding(collectible)) {
+        this.player.increaseScore(collectible.collect());
+      }
+    });
+    
+    // Remove inactive collectibles
+    this.collectibles = this.collectibles.filter(c => c.active);
+    
+    // Add new collectible if needed
+    if (this.collectibles.length < 3 && Math.random() < 0.02) {
+      this.collectibles.push(
+        new Collectible(Math.random() * 800, Math.random() * 600)
+      );
+    }
+  }
+  
+  render() {
+    // Clear canvas
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Render player
+    this.player.render(this.ctx);
+    
+    // Render enemies
+    this.enemies.forEach(enemy => enemy.render(this.ctx));
+    
+    // Render collectibles
+    this.collectibles.forEach(collectible => {
+      if (collectible.active) {
+        collectible.render(this.ctx);
+      }
+    });
+    
+    // Render score
+    this.ctx.font = "24px Arial";
+    this.ctx.fillStyle = "black";
+    this.ctx.fillText(`Score: ${this.player.score}`, 10, 30);
+    
+    // Render game over
+    if (this.gameOver) {
+      this.ctx.font = "48px Arial";
+      this.ctx.fillStyle = "red";
+      this.ctx.fillText("GAME OVER", 300, 300);
+    }
+  }
+  
+  start() {
+    const gameLoop = () => {
+      this.update();
+      this.render();
+      requestAnimationFrame(gameLoop);
+    };
+    
+    gameLoop();
+  }
+}
+
+// Start the game
+const game = new Game("gameCanvas");
+game.start();</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank">MDN: JavaScript Classes</a></li>
+                <li><a href="https://javascript.info/classes" target="_blank">JavaScript.info: Classes</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields" target="_blank">MDN: Private class features</a></li>
+                <li><a href="https://www.patterns.dev/posts/classic-design-patterns/" target="_blank">Design Patterns in JavaScript</a></li>
+                <li><a href="https://exploringjs.com/es6/ch_classes.html" target="_blank">Exploring ES6: Classes</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

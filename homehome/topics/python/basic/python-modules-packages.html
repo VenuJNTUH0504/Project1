@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Modules and Packages - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Modules and Packages</h1>
+            <p>Organizing and reusing code in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="modules">
+                <h2>Modules</h2>
+                <p>Creating and using modules:</p>
+                <pre><code class="language-python"># mymodule.py
+def greet(name):
+    return f"Hello, {name}!"
+
+def add(a, b):
+    return a + b
+
+# main.py
+import mymodule
+
+print(mymodule.greet("Alice"))  # Hello, Alice!
+print(mymodule.add(5, 3))      # 8
+
+# Import specific functions
+from mymodule import greet, add
+
+print(greet("Bob"))  # Hello, Bob!
+print(add(2, 3))    # 5
+
+# Import with alias
+import mymodule as mm
+
+print(mm.greet("Charlie"))  # Hello, Charlie!</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="packages">
+                <h2>Packages</h2>
+                <p>Creating and using packages:</p>
+                <pre><code class="language-python"># Directory structure
+mypackage/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        module3.py
+
+# __init__.py
+from .module1 import function1
+from .module2 import function2
+from .subpackage.module3 import function3
+
+# Using the package
+import mypackage
+
+mypackage.function1()
+mypackage.function2()
+mypackage.function3()
+
+# Import specific modules
+from mypackage import module1
+from mypackage.subpackage import module3</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="standard-library">
+                <h2>Standard Library Modules</h2>
+                <p>Common standard library modules:</p>
+                <pre><code class="language-python"># os - Operating system interface
+import os
+print(os.getcwd())  # Current working directory
+os.mkdir('new_dir')
+
+# sys - System-specific parameters
+import sys
+print(sys.version)  # Python version
+print(sys.argv)     # Command line arguments
+
+# math - Mathematical functions
+import math
+print(math.sqrt(16))  # 4.0
+print(math.pi)        # 3.141592653589793
+
+# datetime - Date and time
+from datetime import datetime
+now = datetime.now()
+print(now.strftime("%Y-%m-%d %H:%M:%S"))
+
+# random - Random number generation
+import random
+print(random.randint(1, 10))  # Random integer
+print(random.choice(['a', 'b', 'c']))  # Random choice
+
+# json - JSON data handling
+import json
+data = {'name': 'John', 'age': 30}
+json_str = json.dumps(data)
+parsed = json.loads(json_str)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="third-party">
+                <h2>Third-Party Packages</h2>
+                <p>Installing and using third-party packages:</p>
+                <pre><code class="language-python"># Install packages using pip
+# pip install requests numpy pandas
+
+# requests - HTTP library
+import requests
+response = requests.get('https://api.example.com/data')
+print(response.json())
+
+# numpy - Numerical computing
+import numpy as np
+array = np.array([1, 2, 3, 4, 5])
+print(array.mean())  # 3.0
+
+# pandas - Data analysis
+import pandas as pd
+df = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]})
+print(df.describe())</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="virtual-environments">
+                <h2>Virtual Environments</h2>
+                <p>Creating and managing virtual environments:</p>
+                <pre><code class="language-python"># Create virtual environment
+# python -m venv myenv
+
+# Activate virtual environment
+# Windows: myenv\Scripts\activate
+# Unix/MacOS: source myenv/bin/activate
+
+# Install packages in virtual environment
+# pip install package_name
+
+# Deactivate virtual environment
+# deactivate
+
+# Requirements file
+# pip freeze > requirements.txt
+# pip install -r requirements.txt</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="relative-imports">
+                <h2>Relative Imports</h2>
+                <p>Using relative imports in packages:</p>
+                <pre><code class="language-python"># Directory structure
+mypackage/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        module3.py
+
+# module1.py
+from . import module2
+from .subpackage import module3
+
+# module3.py
+from .. import module1
+from ..module2 import function2</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use meaningful module and package names</li>
+                    <li>Keep modules focused and single-purpose</li>
+                    <li>Use __init__.py files appropriately</li>
+                    <li>Document modules and packages</li>
+                    <li>Use virtual environments for project isolation</li>
+                    <li>Maintain requirements.txt for dependencies</li>
+                    <li>Follow PEP 8 style guidelines</li>
+                    <li>Handle circular imports carefully</li>
+                    <li>Use relative imports within packages</li>
+                    <li>Test modules independently</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

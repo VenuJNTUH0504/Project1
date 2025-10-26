@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaces - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Interfaces in TypeScript</h1>
+        
+        <p>Interfaces are one of TypeScript's most powerful features. They allow you to define contracts within your code and with code outside your project. Interfaces define the shape that objects must conform to, making your code more predictable and easier to understand.</p>
+        
+        <h2>Basic Interface</h2>
+        
+        <p>An interface defines the structure of an object by specifying property names and their types:</p>
+        
+        <pre><code>// Basic interface definition
+interface Person {
+    firstName: string;
+    lastName: string;
+    age: number;
+}
+
+// Object that implements the interface
+let person: Person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30
+};
+
+// Error: Missing required property 'age'
+// let invalidPerson: Person = {
+//     firstName: "Jane",
+//     lastName: "Doe"
+// };</code></pre>
+        
+        <h2>Optional Properties</h2>
+        
+        <p>Not all properties of an interface may be required. You can mark optional properties with a question mark (?):</p>
+        
+        <pre><code>interface Contact {
+    name: string;
+    email: string;
+    phone?: string;  // Optional property
+    address?: string;  // Optional property
+}
+
+// Both are valid
+let contact1: Contact = {
+    name: "John Doe",
+    email: "john@example.com"
+};
+
+let contact2: Contact = {
+    name: "Jane Doe",
+    email: "jane@example.com",
+    phone: "123-456-7890",
+    address: "123 Main St"
+};</code></pre>
+        
+        <h2>Readonly Properties</h2>
+        
+        <p>Some properties should only be modifiable when an object is first created. You can specify this by putting <code>readonly</code> before the property name:</p>
+        
+        <pre><code>interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+
+let point: Point = { x: 10, y: 20 };
+// point.x = 5;  // Error: Cannot assign to 'x' because it is a read-only property</code></pre>
+        
+        <div class="tip-box">
+            <h4>ReadonlyArray Type</h4>
+            <p>TypeScript comes with a <code>ReadonlyArray&lt;T&gt;</code> type that is the same as <code>Array&lt;T&gt;</code> but with all mutating methods removed:</p>
+            <pre><code>let numbers: ReadonlyArray&lt;number&gt; = [1, 2, 3, 4];
+// numbers.push(5);  // Error: Property 'push' does not exist on type 'readonly number[]'
+// numbers[0] = 10;  // Error: Index signature in type 'readonly number[]' only permits reading</code></pre>
+        </div>
+        
+        <h2>Function Types</h2>
+        
+        <p>Interfaces can describe functions as well as objects. To describe a function type with an interface, give the interface a call signature:</p>
+        
+        <pre><code>// Interface describing a function
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+
+// Function that implements the interface
+let mySearch: SearchFunc = function(src: string, sub: string): boolean {
+    return src.search(sub) > -1;
+};
+
+// TypeScript can infer parameter types
+let mySearch2: SearchFunc = function(src, sub) {
+    return src.search(sub) > -1;
+};</code></pre>
+        
+        <h2>Indexable Types</h2>
+        
+        <p>Interfaces can describe objects that can be indexed like arrays or dictionaries:</p>
+        
+        <pre><code>// Interface with index signature for array-like access
+interface StringArray {
+    [index: number]: string;
+}
+
+let myArray: StringArray = ["Bob", "Fred"];
+let myStr: string = myArray[0];  // "Bob"
+
+// Interface with string index signature for dictionary-like access
+interface Dictionary {
+    [key: string]: string;
+}
+
+let myDict: Dictionary = {
+    "apple": "A fruit",
+    "car": "A vehicle"
+};
+let definition: string = myDict["apple"];  // "A fruit"</code></pre>
+        
+        <p>You can have both types of index signatures, but the numeric indexer must be a subtype of the string indexer:</p>
+        
+        <pre><code>interface MixedDictionary {
+    [index: number]: string;  // Numeric index returns string
+    [key: string]: string | number;  // String index returns string or number
+    length: number;  // Properties must match the string index return type
+}</code></pre>
+        
+        <h2>Class Types</h2>
+        
+        <p>Interfaces can be used to define the contract that classes must adhere to:</p>
+        
+        <pre><code>// Interface for a class
+interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date): void;
+}
+
+// Class implementing the interface
+class Clock implements ClockInterface {
+    currentTime: Date = new Date();
+    
+    setTime(d: Date): void {
+        this.currentTime = d;
+    }
+    
+    constructor(h: number, m: number) {
+        this.currentTime = new Date();
+        this.currentTime.setHours(h);
+        this.currentTime.setMinutes(m);
+    }
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Constructor Signatures</h4>
+            <p>Interfaces cannot directly describe the constructor of a class. If you need to describe both the constructor and instance methods, you need to use separate interfaces:</p>
+            <pre><code>// Interface for the instance side of the class
+interface ClockInterface {
+    tick(): void;
+}
+
+// Interface for the constructor
+interface ClockConstructor {
+    new (hour: number, minute: number): ClockInterface;
+}
+
+// Factory function that accepts a constructor
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+    return new ctor(hour, minute);
+}
+
+// Implement the instance interface
+class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) {}
+    tick() {
+        console.log("beep beep");
+    }
+}
+
+// Create a clock using the factory
+let digital = createClock(DigitalClock, 12, 17);</code></pre>
+        </div>
+        
+        <h2>Extending Interfaces</h2>
+        
+        <p>Interfaces can extend one or more existing interfaces, inheriting their properties and methods:</p>
+        
+        <pre><code>// Base interface
+interface Shape {
+    color: string;
+}
+
+// Extended interface
+interface Square extends Shape {
+    sideLength: number;
+}
+
+// Object must have all properties from both interfaces
+let square: Square = {
+    color: "blue",
+    sideLength: 10
+};</code></pre>
+        
+        <p>An interface can extend multiple interfaces, creating a combination of all the interfaces:</p>
+        
+        <pre><code>interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+// Extending multiple interfaces
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square: Square = {
+    color: "blue",
+    penWidth: 5,
+    sideLength: 10
+};</code></pre>
+        
+        <h2>Hybrid Types</h2>
+        
+        <p>Interfaces can describe objects that act as both a function and an object with additional properties:</p>
+        
+        <pre><code>// Interface for a hybrid object/function
+interface Counter {
+    (start: number): string;  // Function signature
+    interval: number;         // Object property
+    reset(): void;            // Object method
+}
+
+// Create a hybrid object
+function getCounter(): Counter {
+    let counter = function(start: number): string {
+        return "Counter: " + start;
+    } as Counter;
+    
+    counter.interval = 123;
+    counter.reset = function() {
+        console.log("Counter reset");
+    };
+    
+    return counter;
+}
+
+let c = getCounter();
+c(10);          // Call as a function
+c.reset();      // Call a method
+c.interval = 5; // Access a property</code></pre>
+        
+        <h2>Interface vs. Type Alias</h2>
+        
+        <p>TypeScript provides two ways to define object types: interfaces and type aliases. While they are similar, there are some differences:</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Interface</h4>
+                <ul>
+                    <li>Can be extended with <code>extends</code></li>
+                    <li>Can be implemented by classes</li>
+                    <li>Can be merged with other declarations of the same name (declaration merging)</li>
+                    <li>Better for API definitions and object-oriented designs</li>
+                </ul>
+                <pre><code>interface Person {
+    name: string;
+}
+
+interface Person {
+    age: number;
+} 
+
+// Both declarations are merged
+const person: Person = {
+    name: "John",
+    age: 30
+};</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Type Alias</h4>
+                <ul>
+                    <li>Can use union and intersection types directly</li>
+                    <li>Can define tuple and array types more easily</li>
+                    <li>Can define mapped types and conditional types</li>
+                    <li>Cannot be merged with other declarations</li>
+                </ul>
+                <pre><code>type Person = {
+    name: string;
+    age: number;
+};
+
+type PersonOrString = Person | string;
+
+type Coordinates = [number, number];
+
+// Cannot be merged like interfaces
+// type Person = { address: string }; // Error</code></pre>
+            </div>
+        </div>
+        
+        <div class="tip-box">
+            <h4>When to Use Each</h4>
+            <p>As a general rule:</p>
+            <ul>
+                <li>Use <code>interface</code> when you want to define a contract for a class to implement or when you want to take advantage of declaration merging</li>
+                <li>Use <code>type</code> when you need to create complex types using unions, intersections, or mapped types</li>
+            </ul>
+        </div>
+        
+        <h2>Declaration Merging</h2>
+        
+        <p>One unique feature of interfaces is that they can be defined multiple times, and TypeScript will merge them into a single definition:</p>
+        
+        <pre><code>// First declaration
+interface Box {
+    height: number;
+    width: number;
+}
+
+// Second declaration with the same name
+interface Box {
+    length: number;
+    scale: number;
+}
+
+// The merged interface has all properties
+let box: Box = {
+    height: 5,
+    width: 6,
+    length: 10,
+    scale: 1.5
+};</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/objects.html" target="_blank">TypeScript Handbook: Object Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/interfaces.html" target="_blank">TypeScript Handbook: Interfaces</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces" target="_blank">TypeScript Handbook: Everyday Types - Interfaces</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/declaration-merging.html" target="_blank">TypeScript Handbook: Declaration Merging</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

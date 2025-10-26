@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced OOP Concepts in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Advanced OOP Concepts in C++</h1>
+            <p>Mastering advanced object-oriented programming techniques in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Multiple Inheritance</h2>
+            <p>Multiple inheritance allows a class to inherit from more than one base class. This powerful feature enables complex class hierarchies but requires careful management to avoid ambiguity.</p>
+            
+            <pre><code>class Animal {
+public:
+    virtual void eat() = 0;
+};
+
+class Mammal {
+public:
+    virtual void breathe() = 0;
+};
+
+class Bat : public Animal, public Mammal {
+public:
+    void eat() override { /* implementation */ }
+    void breathe() override { /* implementation */ }
+};</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Multiple inheritance can lead to the "diamond problem" when two base classes inherit from a common ancestor.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Virtual Inheritance</h2>
+            <p>Virtual inheritance solves the diamond problem by ensuring that only one instance of the common base class exists in the inheritance hierarchy.</p>
+            
+            <pre><code>class Animal {
+public:
+    virtual void eat() = 0;
+};
+
+class Mammal : virtual public Animal {
+    // Mammal implementation
+};
+
+class Bird : virtual public Animal {
+    // Bird implementation
+};
+
+class Bat : public Mammal, public Bird {
+    // Bat implementation
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Virtual inheritance adds some overhead and should be used only when necessary to resolve ambiguity.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Abstract Classes and Interfaces</h2>
+            <p>Abstract classes provide a way to define interfaces and common functionality that derived classes must implement.</p>
+            
+            <pre><code>class Shape {
+public:
+    virtual double area() const = 0;  // Pure virtual function
+    virtual double perimeter() const = 0;
+    virtual ~Shape() = default;  // Virtual destructor
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+public:
+    Circle(double r) : radius(r) {}
+    double area() const override { return 3.14159 * radius * radius; }
+    double perimeter() const override { return 2 * 3.14159 * radius; }
+};</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Polymorphism and Virtual Functions</h2>
+            <p>Polymorphism allows objects of different classes to be treated uniformly through a common interface.</p>
+            
+            <pre><code>class Animal {
+public:
+    virtual void makeSound() { cout << "Some sound" << endl; }
+    virtual ~Animal() = default;
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override { cout << "Woof!" << endl; }
+};
+
+class Cat : public Animal {
+public:
+    void makeSound() override { cout << "Meow!" << endl; }
+};
+
+void makeAnimalSound(Animal& animal) {
+    animal.makeSound();  // Calls the appropriate override
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Friend Classes and Functions</h2>
+            <p>Friend declarations allow specific classes or functions to access private and protected members of a class.</p>
+            
+            <pre><code>class Matrix {
+private:
+    int data[4][4];
+    friend class MatrixOperations;
+    friend void printMatrix(const Matrix& m);
+};
+
+class MatrixOperations {
+public:
+    static Matrix multiply(const Matrix& a, const Matrix& b) {
+        Matrix result;
+        // Can access private members of Matrix
+        return result;
+    }
+};
+
+void printMatrix(const Matrix& m) {
+    // Can access private members of Matrix
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use friend declarations sparingly as they break encapsulation. Consider alternative designs first.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Operator Overloading</h2>
+            <p>Operator overloading allows you to define custom behavior for operators when used with your classes.</p>
+            
+            <pre><code>class Complex {
+private:
+    double real, imag;
+public:
+    Complex operator+(const Complex& other) const {
+        return Complex(real + other.real, imag + other.imag);
+    }
+    
+    Complex& operator+=(const Complex& other) {
+        real += other.real;
+        imag += other.imag;
+        return *this;
+    }
+    
+    friend std::ostream& operator<<(std::ostream& os, const Complex& c);
+};
+
+std::ostream& operator<<(std::ostream& os, const Complex& c) {
+    os << c.real << " + " << c.imag << "i";
+    return os;
+}</code></pre>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

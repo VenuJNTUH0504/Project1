@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic I/O in Java - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Basic Input/Output in Java</h1>
+            <p>Understanding fundamental input and output operations in Java</p>
+        </header>
+
+        <div class="card">
+            <h2>Console Input/Output</h2>
+            <p>Basic console I/O operations using System.out and Scanner.</p>
+            
+            <pre><code>import java.util.Scanner;
+
+public class ConsoleIO {
+    public static void main(String[] args) {
+        // Output to console
+        System.out.println("Hello, World!");
+        System.out.print("Enter your name: ");
+        
+        // Input from console
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        
+        // Formatted output
+        System.out.printf("Hello, %s! You are %d years old.%n", name, 25);
+        
+        // Close scanner
+        scanner.close();
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Always close Scanner objects to prevent resource leaks.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>File Reading</h2>
+            <p>Reading from files using FileReader and BufferedReader.</p>
+            
+            <pre><code>import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class FileReading {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(
+                new FileReader("input.txt"))) {
+            
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always handle IOExceptions when working with files.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>File Writing</h2>
+            <p>Writing to files using FileWriter and BufferedWriter.</p>
+            
+            <pre><code>import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class FileWriting {
+    public static void main(String[] args) {
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter("output.txt"))) {
+            
+            writer.write("Hello, World!");
+            writer.newLine();
+            writer.write("This is a new line.");
+            
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use try-with-resources for automatic resource management.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Byte Streams</h2>
+            <p>Working with binary data using InputStream and OutputStream.</p>
+            
+            <pre><code>import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class ByteStreams {
+    public static void main(String[] args) {
+        try (FileInputStream in = new FileInputStream("input.bin");
+             FileOutputStream out = new FileOutputStream("output.bin")) {
+            
+            int byteRead;
+            while ((byteRead = in.read()) != -1) {
+                out.write(byteRead);
+            }
+            
+        } catch (IOException e) {
+            System.err.println("Error handling binary data: " + e.getMessage());
+        }
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Byte streams are used for handling binary data like images or executables.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Character Streams</h2>
+            <p>Working with text data using Reader and Writer classes.</p>
+            
+            <pre><code>import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class CharacterStreams {
+    public static void main(String[] args) {
+        try (FileReader reader = new FileReader("input.txt");
+             FileWriter writer = new FileWriter("output.txt")) {
+            
+            int charRead;
+            while ((charRead = reader.read()) != -1) {
+                writer.write(charRead);
+            }
+            
+        } catch (IOException e) {
+            System.err.println("Error handling text data: " + e.getMessage());
+        }
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Character streams handle text data and automatically handle character encoding.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>String Streams</h2>
+            <p>Using StringReader and StringWriter for in-memory string operations.</p>
+            
+            <pre><code>import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.IOException;
+
+public class StringStreams {
+    public static void main(String[] args) {
+        String input = "Hello, World!";
+        
+        try (StringReader reader = new StringReader(input);
+             StringWriter writer = new StringWriter()) {
+            
+            int charRead;
+            while ((charRead = reader.read()) != -1) {
+                writer.write(charRead);
+            }
+            
+            String output = writer.toString();
+            System.out.println(output);
+            
+        } catch (IOException e) {
+            System.err.println("Error handling string streams: " + e.getMessage());
+        }
+    }
+}</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> String streams are useful for in-memory string manipulation.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Data Streams</h2>
+            <p>Reading and writing primitive data types using DataInputStream and DataOutputStream.</p>
+            
+            <pre><code>import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class DataStreams {
+    public static void main(String[] args) {
+        try (DataOutputStream out = new DataOutputStream(
+                new FileOutputStream("data.bin"))) {
+            
+            // Writing primitive data types
+            out.writeInt(42);
+            out.writeDouble(3.14);
+            out.writeBoolean(true);
+            out.writeUTF("Hello");
+            
+        } catch (IOException e) {
+            System.err.println("Error writing data: " + e.getMessage());
+        }
+        
+        try (DataInputStream in = new DataInputStream(
+                new FileInputStream("data.bin"))) {
+            
+            // Reading primitive data types
+            int i = in.readInt();
+            double d = in.readDouble();
+            boolean b = in.readBoolean();
+            String s = in.readUTF();
+            
+            System.out.printf("Read: %d, %f, %b, %s%n", i, d, b, s);
+            
+        } catch (IOException e) {
+            System.err.println("Error reading data: " + e.getMessage());
+        }
+    }
+}</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Data streams must read data in the same order it was written.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

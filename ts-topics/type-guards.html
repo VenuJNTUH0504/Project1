@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Guards - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Type Guards in TypeScript</h1>
+        
+        <p>Type guards are expressions that perform a runtime check to guarantee the type of a value in a specific scope. They allow TypeScript to narrow down the type of a variable within conditional blocks, making your code more type-safe and expressive.</p>
+        
+        <h2>The Problem: Union Types</h2>
+        
+        <p>When working with union types, TypeScript only allows operations that are valid for all possible types in the union:</p>
+        
+        <pre><code>function process(value: string | number) {
+    // Error: Property 'toUpperCase' does not exist on type 'string | number'.
+    // Property 'toUpperCase' does not exist on type 'number'.
+    // value.toUpperCase();
+    
+    // Error: Property 'toFixed' does not exist on type 'string | number'.
+    // Property 'toFixed' does not exist on type 'string'.
+    // value.toFixed(2);
+}</code></pre>
+        
+        <p>Type guards solve this problem by narrowing the type within conditional blocks.</p>
+        
+        <h2>typeof Type Guards</h2>
+        
+        <p>The <code>typeof</code> operator can be used as a type guard for JavaScript's primitive types:</p>
+        
+        <pre><code>function process(value: string | number) {
+    if (typeof value === "string") {
+        // TypeScript knows value is a string here
+        console.log(value.toUpperCase());
+    } else {
+        // TypeScript knows value is a number here
+        console.log(value.toFixed(2));
+    }
+}
+
+// Works with multiple types
+function printValue(value: string | number | boolean | object) {
+    if (typeof value === "string") {
+        console.log("String: " + value);
+    } else if (typeof value === "number") {
+        console.log("Number: " + value.toFixed(2));
+    } else if (typeof value === "boolean") {
+        console.log("Boolean: " + (value ? "Yes" : "No"));
+    } else {
+        console.log("Object: " + JSON.stringify(value));
+    }
+}</code></pre>
+        
+        <div class="tip-box">
+            <h4>typeof Operator Return Values</h4>
+            <p>The <code>typeof</code> operator returns the following string literals:</p>
+            <ul>
+                <li><code>"string"</code> for strings</li>
+                <li><code>"number"</code> for numbers</li>
+                <li><code>"boolean"</code> for booleans</li>
+                <li><code>"undefined"</code> for undefined</li>
+                <li><code>"object"</code> for objects (including null!)</li>
+                <li><code>"function"</code> for functions</li>
+                <li><code>"symbol"</code> for symbols</li>
+                <li><code>"bigint"</code> for BigInt values</li>
+            </ul>
+        </div>
+        
+        <h2>instanceof Type Guards</h2>
+        
+        <p>The <code>instanceof</code> operator checks if an object is an instance of a class or constructor function:</p>
+        
+        <pre><code>class Animal {
+    name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+class Dog extends Animal {
+    bark() {
+        console.log("Woof!");
+    }
+}
+
+class Cat extends Animal {
+    meow() {
+        console.log("Meow!");
+    }
+}
+
+function makeSound(animal: Animal) {
+    if (animal instanceof Dog) {
+        // TypeScript knows animal is a Dog here
+        animal.bark();
+    } else if (animal instanceof Cat) {
+        // TypeScript knows animal is a Cat here
+        animal.meow();
+    } else {
+        console.log("Unknown animal");
+    }
+}
+
+const dog = new Dog("Rex");
+const cat = new Cat("Whiskers");
+
+makeSound(dog);  // Outputs: Woof!
+makeSound(cat);  // Outputs: Meow!</code></pre>
+        
+        <h2>in Operator Type Guards</h2>
+        
+        <p>The <code>in</code> operator checks if a property exists on an object and can be used as a type guard:</p>
+        
+        <pre><code>interface Bird {
+    fly(): void;
+    layEggs(): void;
+}
+
+interface Fish {
+    swim(): void;
+    layEggs(): void;
+}
+
+function move(pet: Bird | Fish) {
+    if ("fly" in pet) {
+        // TypeScript knows pet is a Bird here
+        pet.fly();
+    } else {
+        // TypeScript knows pet is a Fish here
+        pet.swim();
+    }
+}
+
+const bird: Bird = {
+    fly() { console.log("Flying..."); },
+    layEggs() { console.log("Laying eggs..."); }
+};
+
+const fish: Fish = {
+    swim() { console.log("Swimming..."); },
+    layEggs() { console.log("Laying eggs..."); }
+};
+
+move(bird);  // Outputs: Flying...
+move(fish);  // Outputs: Swimming...</code></pre>
+        
+        <h2>User-Defined Type Guards</h2>
+        
+        <p>You can create custom type guard functions using type predicates, which have the form <code>parameterName is Type</code>:</p>
+        
+        <pre><code>// Type guard function for Fish
+function isFish(pet: Fish | Bird): pet is Fish {
+    return (pet as Fish).swim !== undefined;
+}
+
+// Using the type guard
+function move(pet: Fish | Bird) {
+    if (isFish(pet)) {
+        // TypeScript knows pet is a Fish here
+        pet.swim();
+    } else {
+        // TypeScript knows pet is a Bird here
+        pet.fly();
+    }
+}
+
+// More complex example
+interface Car {
+    make: string;
+    model: string;
+    year: number;
+    startEngine(): void;
+}
+
+interface Bicycle {
+    make: string;
+    model: string;
+    year: number;
+    pedal(): void;
+}
+
+// Type guard for Car
+function isCar(vehicle: Car | Bicycle): vehicle is Car {
+    return (vehicle as Car).startEngine !== undefined;
+}
+
+function useVehicle(vehicle: Car | Bicycle) {
+    const info = `${vehicle.make} ${vehicle.model} (${vehicle.year})`;
+    
+    if (isCar(vehicle)) {
+        console.log(`Car: ${info}`);
+        vehicle.startEngine();
+    } else {
+        console.log(`Bicycle: ${info}`);
+        vehicle.pedal();
+    }
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Type Guard Reliability</h4>
+            <p>Make sure your type guards are reliable. In the example above, if a Bicycle also had a startEngine method, the type guard would incorrectly identify it as a Car. Consider using discriminated unions for more reliable type narrowing.</p>
+        </div>
+        
+        <h2>Discriminated Unions</h2>
+        
+        <p>Discriminated unions (also called tagged unions) are a pattern where a common property is used to differentiate between union members:</p>
+        
+        <pre><code>interface Square {
+    kind: "square";
+    size: number;
+}
+
+interface Rectangle {
+    kind: "rectangle";
+    width: number;
+    height: number;
+}
+
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+
+type Shape = Square | Rectangle | Circle;
+
+function calculateArea(shape: Shape): number {
+    switch (shape.kind) {
+        case "square":
+            // TypeScript knows shape is a Square here
+            return shape.size * shape.size;
+        case "rectangle":
+            // TypeScript knows shape is a Rectangle here
+            return shape.width * shape.height;
+        case "circle":
+            // TypeScript knows shape is a Circle here
+            return Math.PI * shape.radius ** 2;
+    }
+}</code></pre>
+        
+        <h2>Exhaustiveness Checking</h2>
+        
+        <p>You can use TypeScript's <code>never</code> type to ensure all cases are handled in a discriminated union:</p>
+        
+        <pre><code>function calculateArea(shape: Shape): number {
+    switch (shape.kind) {
+        case "square":
+            return shape.size * shape.size;
+        case "rectangle":
+            return shape.width * shape.height;
+        case "circle":
+            return Math.PI * shape.radius ** 2;
+        default:
+            // This will cause a compile-time error if a new shape is added
+            // and not handled above
+            const exhaustiveCheck: never = shape;
+            return exhaustiveCheck;
+    }
+}</code></pre>
+        
+        <p>If you add a new shape type but forget to handle it in the switch statement, TypeScript will generate a compile-time error:</p>
+        
+        <pre><code>// Adding a new shape
+interface Triangle {
+    kind: "triangle";
+    base: number;
+    height: number;
+}
+
+// Update the Shape type
+type Shape = Square | Rectangle | Circle | Triangle;
+
+// Error: Type 'Triangle' is not assignable to type 'never'
+// This happens because we didn't handle the "triangle" case</code></pre>
+        
+        <h2>Type Guards with Nullish Values</h2>
+        
+        <p>Type guards are useful for handling potentially null or undefined values:</p>
+        
+        <pre><code>function printName(name: string | null | undefined) {
+    if (name === null) {
+        console.log("Name is null");
+    } else if (name === undefined) {
+        console.log("Name is undefined");
+    } else {
+        // TypeScript knows name is a string here
+        console.log("Name: " + name.toUpperCase());
+    }
+}
+
+// Simplified null check
+function getLength(text: string | null | undefined) {
+    // Non-null assertion operator (!) - use with caution
+    // return text!.length;  // Dangerous if text can be null/undefined
+    
+    // Safe approach with type guard
+    if (text) {
+        // TypeScript knows text is a string here (not null or undefined)
+        return text.length;
+    }
+    return 0;
+}</code></pre>
+        
+        <h2>Type Guards with Arrays</h2>
+        
+        <p>Type guards can be used to check array contents:</p>
+        
+        <pre><code>// Check if an array is non-empty
+function firstElement<T>(arr: T[]): T | undefined {
+    if (arr.length > 0) {
+        // TypeScript knows arr has at least one element
+        return arr[0];
+    }
+    return undefined;
+}
+
+// Type guard for array elements
+function isStringArray(arr: unknown[]): arr is string[] {
+    return arr.every(item => typeof item === "string");
+}
+
+function processItems(items: unknown[]) {
+    if (isStringArray(items)) {
+        // TypeScript knows items is string[] here
+        items.forEach(item => console.log(item.toUpperCase()));
+    } else {
+        console.log("Not a string array");
+    }
+}</code></pre>
+        
+        <h2>Type Guards with Assertion Functions</h2>
+        
+        <p>Assertion functions are a special kind of function that throw an error if a condition is not met:</p>
+        
+        <pre><code>// Assertion function
+function assertIsString(value: unknown): asserts value is string {
+    if (typeof value !== "string") {
+        throw new Error("Value is not a string");
+    }
+}
+
+function processValue(value: unknown) {
+    assertIsString(value);
+    
+    // TypeScript knows value is a string here
+    console.log(value.toUpperCase());
+}
+
+// More complex assertion
+interface User {
+    id: number;
+    name: string;
+}
+
+function assertIsUser(value: unknown): asserts value is User {
+    if (!value || typeof value !== "object") {
+        throw new Error("Not an object");
+    }
+    
+    const user = value as any;
+    if (typeof user.id !== "number" || typeof user.name !== "string") {
+        throw new Error("Not a valid User");
+    }
+}
+
+function processUser(input: unknown) {
+    assertIsUser(input);
+    
+    // TypeScript knows input is a User here
+    console.log(`User ${input.name} has ID ${input.id}`);
+}</code></pre>
+        
+        <h2>Type Guards with Generic Types</h2>
+        
+        <p>Type guards can be combined with generics for more flexible type checking:</p>
+        
+        <pre><code>// Generic type guard
+function isOfType<T>(value: unknown, property: keyof T): value is T {
+    return (
+        value !== null &&
+        value !== undefined &&
+        typeof value === "object" &&
+        property in (value as object)
+    );
+}
+
+interface Product {
+    id: number;
+    name: string;
+    price: number;
+}
+
+interface Order {
+    id: number;
+    items: string[];
+    total: number;
+}
+
+function processEntity(entity: unknown) {
+    if (isOfType<Product>(entity, "price")) {
+        // TypeScript knows entity is a Product here
+        console.log(`Product: ${entity.name}, Price: $${entity.price}`);
+    } else if (isOfType<Order>(entity, "items")) {
+        // TypeScript knows entity is an Order here
+        console.log(`Order with ${entity.items.length} items, Total: $${entity.total}`);
+    } else {
+        console.log("Unknown entity type");
+    }
+}</code></pre>
+        
+        <h2>Best Practices for Type Guards</h2>
+        
+        <table>
+            <tr>
+                <th>Practice</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Use discriminated unions when possible</td>
+                <td>They provide the most reliable type narrowing and are easier to maintain</td>
+            </tr>
+            <tr>
+                <td>Make type guards robust</td>
+                <td>Ensure your type guards correctly identify types in all cases</td>
+            </tr>
+            <tr>
+                <td>Use exhaustiveness checking</td>
+                <td>Helps catch missing cases when types are added or changed</td>
+            </tr>
+            <tr>
+                <td>Prefer built-in guards for primitives</td>
+                <td>Use <code>typeof</code> for primitive types and <code>instanceof</code> for classes</td>
+            </tr>
+            <tr>
+                <td>Create reusable type guards</td>
+                <td>Define type guard functions that can be used across your codebase</td>
+            </tr>
+        </table>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">TypeScript Handbook: Type Narrowing</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates" target="_blank">TypeScript Handbook: Using Type Predicates</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions" target="_blank">TypeScript Handbook: Discriminated Unions</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions" target="_blank">TypeScript 3.7: Assertion Functions</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

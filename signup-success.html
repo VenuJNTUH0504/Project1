@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c3e50, #3498db, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .success-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            color: white;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #1abc9c;
+            stroke-miterlimit: 10;
+            margin: 0 auto 2rem;
+            box-shadow: 0 0 0 #1abc9c;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #1abc9c;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px rgba(26, 188, 156, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
+        <h1>Registration Successful!</h1>
+        <p>Your account has been created successfully. You can now log in with your credentials and start your learning journey with CodeMaster.</p>
+        
+        <div id="user-info" class="user-info" style="background: rgba(255, 255, 255, 0.2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: left;">
+            <h2 style="text-align: center; margin-bottom: 1rem;">Your Account Information</h2>
+            <div id="user-details">
+                <p><i class="fas fa-spinner fa-spin"></i> Loading user information...</p>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <a href="login.html" class="btn login-btn">Login Now</a>
+            <a href="index.html" class="btn home-btn">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user data exists in localStorage
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            const userDetailsDiv = document.getElementById('user-details');
+            
+            if (!userData || !Object.keys(userData).length) {
+                
+                // If no user data is found, redirect to signup page after 2 seconds
+                userDetailsDiv.innerHTML = '<p>No user data found. Redirecting to signup page...</p>';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                // Ensure isLoggedIn flag is set
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Display user information
+                let detailsHTML = '';
+                
+                if (userData.fullname) {
+                    detailsHTML += `<p><strong>Name:</strong> ${userData.fullname}</p>`;
+                }
+                
+                if (userData.email) {
+                    detailsHTML += `<p><strong>Email:</strong> ${userData.email}</p>`;
+                }
+                
+                if (userData.learning_path) {
+                    // Convert learning path to more readable format
+                    let pathName = userData.learning_path;
+                    if (userData.learning_path === 'frontend') pathName = 'Front-End Development';
+                    if (userData.learning_path === 'backend') pathName = 'Back-End Development';
+                    if (userData.learning_path === 'fullstack') pathName = 'Full-Stack Development';
+                    if (userData.learning_path === 'frontend framework') pathName = 'Front-End Framework';
+                    if (userData.learning_path === 'backend framework') pathName = 'Back-End Framework';
+                    
+                    detailsHTML += `<p><strong>Learning Path:</strong> ${pathName}</p>`;
+                }
+                
+                if (userData.id) {
+                    detailsHTML += `<p><strong>User ID:</strong> ${userData.id}</p>`;
+                }
+                
+                userDetailsDiv.innerHTML = detailsHTML;
+            }
+            
+            // Add event listeners to buttons
+            const loginBtn = document.querySelector('.login-btn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    // User is already logged in, redirect to home instead of login
+                    if (localStorage.getItem('isLoggedIn') === 'true') {
+                        e.preventDefault();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+            
+            console.log('User data from localStorage:', userData);
+        });
+    </script>
+</body>
+</html>

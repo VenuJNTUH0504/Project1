@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .pattern-card {
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .pattern-header {
+            background: var(--hover-color);
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .pattern-body {
+            padding: 15px;
+            background-color: var(--card-bg);
+        }
+
+        .pattern-body h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Design Patterns</h1>
+        
+        <p>Design patterns are reusable solutions to common problems in software design. They represent best practices evolved over time by experienced developers. Understanding design patterns helps you write more maintainable, flexible, and scalable code.</p>
+        
+        <h2>Why Use Design Patterns?</h2>
+        <ul>
+            <li>They provide proven solutions to common problems</li>
+            <li>They help create more maintainable and reusable code</li>
+            <li>They establish a common vocabulary for developers</li>
+            <li>They encapsulate best practices and design principles</li>
+            <li>They help avoid reinventing the wheel</li>
+        </ul>
+        
+        <h2>Categories of Design Patterns</h2>
+        <p>Design patterns are typically categorized into three main groups:</p>
+        
+        <ul>
+            <li><strong>Creational Patterns</strong>: Focus on object creation mechanisms</li>
+            <li><strong>Structural Patterns</strong>: Deal with object composition and relationships</li>
+            <li><strong>Behavioral Patterns</strong>: Concerned with communication between objects</li>
+        </ul>
+        
+        <h2>Creational Patterns</h2>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Singleton Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Ensures a class has only one instance and provides a global point of access to it.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Basic Singleton
+const Singleton = (function() {
+  let instance;
+  
+  function createInstance() {
+    const object = new Object({
+      name: 'Singleton Instance',
+      getTime: function() {
+        return new Date().getTime();
+      }
+    });
+    return object;
+  }
+  
+  return {
+    getInstance: function() {
+      if (!instance) {
+        instance = createInstance();
+      }
+      return instance;
+    }
+  };
+})();
+
+// Usage
+const instance1 = Singleton.getInstance();
+const instance2 = Singleton.getInstance();
+
+console.log(instance1 === instance2); // true</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>class Singleton {
+  constructor() {
+    if (Singleton.instance) {
+      return Singleton.instance;
+    }
+    
+    // Instance properties
+    this.config = {
+      apiUrl: 'https://api.example.com',
+      timeout: 3000
+    };
+    
+    // Store the instance
+    Singleton.instance = this;
+  }
+  
+  // Instance methods
+  getConfig() {
+    return this.config;
+  }
+  
+  updateConfig(newConfig) {
+    this.config = { ...this.config, ...newConfig };
+  }
+}
+
+// Usage
+const configManager1 = new Singleton();
+const configManager2 = new Singleton();
+
+console.log(configManager1 === configManager2); // true
+
+configManager1.updateConfig({ timeout: 5000 });
+console.log(configManager2.getConfig().timeout); // 5000</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When exactly one instance of a class is needed</li>
+                    <li>For managing configuration settings</li>
+                    <li>For coordinating actions across the system</li>
+                    <li>For managing shared resources (e.g., connection pools)</li>
+                </ul>
+                
+                <h4>Considerations</h4>
+                <ul>
+                    <li>Can make code harder to test due to hidden dependencies</li>
+                    <li>Can introduce global state, which should be used carefully</li>
+                    <li>Thread safety concerns in multi-threaded environments</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Factory Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Creates objects without exposing the instantiation logic and refers to the newly created object through a common interface.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Simple Factory
+function UserFactory() {
+  this.createUser = function(type, name) {
+    let user;
+    
+    if (type === 'admin') {
+      user = new Admin(name);
+    } else if (type === 'regular') {
+      user = new RegularUser(name);
+    } else if (type === 'guest') {
+      user = new Guest(name);
+    }
+    
+    user.type = type;
+    
+    user.say = function() {
+      console.log(`I am ${this.name}, a ${this.type} user`);
+    };
+    
+    return user;
+  };
+}
+
+// User types
+function Admin(name) {
+  this.name = name;
+  this.permissions = ['read', 'write', 'delete', 'admin'];
+}
+
+function RegularUser(name) {
+  this.name = name;
+  this.permissions = ['read', 'write'];
+}
+
+function Guest(name) {
+  this.name = name;
+  this.permissions = ['read'];
+}
+
+// Usage
+const factory = new UserFactory();
+const admin = factory.createUser('admin', 'John');
+const user = factory.createUser('regular', 'Jane');
+const guest = factory.createUser('guest', 'Bob');
+
+admin.say(); // "I am John, a admin user"
+console.log(admin.permissions); // ['read', 'write', 'delete', 'admin']
+user.say(); // "I am Jane, a regular user"
+guest.say(); // "I am Bob, a guest user"</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>// Base User class
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  say() {
+    console.log(`I am ${this.name}, a ${this.constructor.name}`);
+  }
+}
+
+class Admin extends User {
+  constructor(name) {
+    super(name);
+    this.permissions = ['read', 'write', 'delete', 'admin'];
+  }
+}
+
+class RegularUser extends User {
+  constructor(name) {
+    super(name);
+    this.permissions = ['read', 'write'];
+  }
+}
+
+class Guest extends User {
+  constructor(name) {
+    super(name);
+    this.permissions = ['read'];
+  }
+}
+
+// Factory class
+class UserFactory {
+  static createUser(type, name) {
+    switch (type.toLowerCase()) {
+      case 'admin':
+        return new Admin(name);
+      case 'regular':
+        return new RegularUser(name);
+      case 'guest':
+        return new Guest(name);
+      default:
+        throw new Error(`User type "${type}" is not recognized.`);
+    }
+  }
+}
+
+// Usage
+const admin = UserFactory.createUser('admin', 'John');
+const user = UserFactory.createUser('regular', 'Jane');
+const guest = UserFactory.createUser('guest', 'Bob');
+
+admin.say(); // "I am John, a Admin"
+console.log(admin.permissions); // ['read', 'write', 'delete', 'admin']</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When a class cannot anticipate the type of objects it needs to create</li>
+                    <li>When you want to encapsulate object creation logic</li>
+                    <li>When you need to create different objects based on conditions</li>
+                    <li>When you want to decouple object creation from its implementation</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Module Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Provides a way to encapsulate related methods and variables into a namespace, allowing for private and public members.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Module Pattern using IIFE
+const Calculator = (function() {
+  // Private variables and functions
+  let result = 0;
+  
+  function validate(num) {
+    return typeof num === 'number' && !isNaN(num);
+  }
+  
+  // Public API
+  return {
+    add: function(num) {
+      if (validate(num)) {
+        result += num;
+      }
+      return this;
+    },
+    subtract: function(num) {
+      if (validate(num)) {
+        result -= num;
+      }
+      return this;
+    },
+    multiply: function(num) {
+      if (validate(num)) {
+        result *= num;
+      }
+      return this;
+    },
+    divide: function(num) {
+      if (validate(num) && num !== 0) {
+        result /= num;
+      }
+      return this;
+    },
+    getResult: function() {
+      return result;
+    },
+    reset: function() {
+      result = 0;
+      return this;
+    }
+  };
+})();
+
+// Usage
+Calculator.add(5).multiply(2).subtract(3);
+console.log(Calculator.getResult()); // 7
+Calculator.reset();
+console.log(Calculator.getResult()); // 0</code></pre>
+                
+                <h4>Modern Implementation (ES6 Modules)</h4>
+                <pre><code>// calculator.js
+// Private variables and functions
+let result = 0;
+
+function validate(num) {
+  return typeof num === 'number' && !isNaN(num);
+}
+
+// Public API
+export function add(num) {
+  if (validate(num)) {
+    result += num;
+  }
+  return this;
+}
+
+export function subtract(num) {
+  if (validate(num)) {
+    result -= num;
+  }
+  return this;
+}
+
+export function multiply(num) {
+  if (validate(num)) {
+    result *= num;
+  }
+  return this;
+}
+
+export function divide(num) {
+  if (validate(num) && num !== 0) {
+    result /= num;
+  }
+  return this;
+}
+
+export function getResult() {
+  return result;
+}
+
+export function reset() {
+  result = 0;
+  return this;
+}
+
+// Usage in another file:
+// import { add, multiply, subtract, getResult, reset } from './calculator.js';
+// 
+// add(5);
+// multiply(2);
+// subtract(3);
+// console.log(getResult()); // 7</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When you need to organize related code into a single object</li>
+                    <li>When you want to provide public and private access levels</li>
+                    <li>When you want to avoid polluting the global namespace</li>
+                    <li>For creating reusable components or libraries</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h2>Structural Patterns</h2>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Decorator Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Attaches additional responsibilities to objects dynamically, providing a flexible alternative to subclassing for extending functionality.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Basic component
+function Coffee() {
+  this.cost = function() {
+    return 5;
+  };
+  this.description = function() {
+    return 'Regular coffee';
+  };
+}
+
+// Decorators
+function Milk(coffee) {
+  const cost = coffee.cost();
+  const description = coffee.description();
+  
+  coffee.cost = function() {
+    return cost + 1.5;
+  };
+  coffee.description = function() {
+    return description + ', milk';
+  };
+  
+  return coffee;
+}
+
+function Sugar(coffee) {
+  const cost = coffee.cost();
+  const description = coffee.description();
+  
+  coffee.cost = function() {
+    return cost + 0.5;
+  };
+  coffee.description = function() {
+    return description + ', sugar';
+  };
+  
+  return coffee;
+}
+
+function Caramel(coffee) {
+  const cost = coffee.cost();
+  const description = coffee.description();
+  
+  coffee.cost = function() {
+    return cost + 2;
+  };
+  coffee.description = function() {
+    return description + ', caramel';
+  };
+  
+  return coffee;
+}
+
+// Usage
+let coffee = new Coffee();
+console.log(coffee.description()); // "Regular coffee"
+console.log(coffee.cost()); // 5
+
+coffee = Milk(coffee);
+console.log(coffee.description()); // "Regular coffee, milk"
+console.log(coffee.cost()); // 6.5
+
+coffee = Sugar(coffee);
+console.log(coffee.description()); // "Regular coffee, milk, sugar"
+console.log(coffee.cost()); // 7
+
+coffee = Caramel(coffee);
+console.log(coffee.description()); // "Regular coffee, milk, sugar, caramel"
+console.log(coffee.cost()); // 9</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>// Base component
+class Coffee {
+  cost() {
+    return 5;
+  }
+  
+  description() {
+    return 'Regular coffee';
+  }
+}
+
+// Base decorator
+class CoffeeDecorator {
+  constructor(coffee) {
+    this.coffee = coffee;
+  }
+  
+  cost() {
+    return this.coffee.cost();
+  }
+  
+  description() {
+    return this.coffee.description();
+  }
+}
+
+// Concrete decorators
+class MilkDecorator extends CoffeeDecorator {
+  cost() {
+    return this.coffee.cost() + 1.5;
+  }
+  
+  description() {
+    return this.coffee.description() + ', milk';
+  }
+}
+
+class SugarDecorator extends CoffeeDecorator {
+  cost() {
+    return this.coffee.cost() + 0.5;
+  }
+  
+  description() {
+    return this.coffee.description() + ', sugar';
+  }
+}
+
+class CaramelDecorator extends CoffeeDecorator {
+  cost() {
+    return this.coffee.cost() + 2;
+  }
+  
+  description() {
+    return this.coffee.description() + ', caramel';
+  }
+}
+
+// Usage
+let coffee = new Coffee();
+console.log(coffee.description()); // "Regular coffee"
+console.log(coffee.cost()); // 5
+
+coffee = new MilkDecorator(coffee);
+console.log(coffee.description()); // "Regular coffee, milk"
+console.log(coffee.cost()); // 6.5
+
+coffee = new SugarDecorator(coffee);
+console.log(coffee.description()); // "Regular coffee, milk, sugar"
+console.log(coffee.cost()); // 7
+
+coffee = new CaramelDecorator(coffee);
+console.log(coffee.description()); // "Regular coffee, milk, sugar, caramel"
+console.log(coffee.cost()); // 9</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When you need to add responsibilities to objects dynamically and transparently</li>
+                    <li>When extension by subclassing is impractical or impossible</li>
+                    <li>When you want to add features to individual objects without affecting others</li>
+                    <li>When you need a flexible alternative to subclassing</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Adapter Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Allows objects with incompatible interfaces to work together by creating a middle-layer adapter.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Old API
+function OldCalculator() {
+  this.operations = function(term1, term2, operation) {
+    switch (operation) {
+      case 'add':
+        return term1 + term2;
+      case 'sub':
+        return term1 - term2;
+      default:
+        return NaN;
+    }
+  };
+}
+
+// New API
+function NewCalculator() {
+  this.add = function(term1, term2) {
+    return term1 + term2;
+  };
+  this.sub = function(term1, term2) {
+    return term1 - term2;
+  };
+}
+
+// Adapter
+function CalculatorAdapter() {
+  const newCalc = new NewCalculator();
+  
+  this.operations = function(term1, term2, operation) {
+    switch (operation) {
+      case 'add':
+        // Call the new API
+        return newCalc.add(term1, term2);
+      case 'sub':
+        return newCalc.sub(term1, term2);
+      default:
+        return NaN;
+    }
+  };
+}
+
+// Usage
+const oldCalc = new OldCalculator();
+console.log(oldCalc.operations(10, 5, 'add')); // 15
+
+// Now we can use the adapter to use the new API with the old interface
+const adapter = new CalculatorAdapter();
+console.log(adapter.operations(10, 5, 'add')); // 15</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>// External API (can't be modified)
+class ExternalLibrary {
+  constructor() {
+    this.name = 'External Library';
+  }
+  
+  processData(data) {
+    return {
+      processed: true,
+      result: data.toUpperCase(),
+      timestamp: new Date()
+    };
+  }
+}
+
+// Our application's expected interface
+class AppInterface {
+  constructor() {
+    this.name = 'App Interface';
+  }
+  
+  // Our app expects this method signature
+  transform(input, options = {}) {
+    // Implementation would go here
+  }
+}
+
+// Adapter to make ExternalLibrary work with our app
+class LibraryAdapter extends AppInterface {
+  constructor() {
+    super();
+    this.library = new ExternalLibrary();
+  }
+  
+  // Implement the expected interface but use the external library
+  transform(input, options = {}) {
+    const processed = this.library.processData(input);
+    
+    // Convert the external format to our expected format
+    return {
+      content: processed.result,
+      metadata: {
+        transformed: processed.processed,
+        processedAt: processed.timestamp,
+        options: options
+      }
+    };
+  }
+}
+
+// Usage
+function appCode(transformer, input) {
+  // Our app code expects a transform method
+  const result = transformer.transform(input, { format: 'standard' });
+  console.log(`Transformed: ${result.content}`);
+  console.log('Metadata:', result.metadata);
+}
+
+// Using the adapter
+const adapter = new LibraryAdapter();
+appCode(adapter, 'hello world'); 
+// Transformed: HELLO WORLD
+// Metadata: { transformed: true, processedAt: [Date object], options: { format: 'standard' } }</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When you need to use an existing class with an incompatible interface</li>
+                    <li>When you want to create a reusable class that cooperates with classes that don't have compatible interfaces</li>
+                    <li>When you need to integrate with third-party libraries or APIs</li>
+                    <li>When you're refactoring code and need to maintain backward compatibility</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Proxy Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Provides a surrogate or placeholder for another object to control access to it.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Subject - the real object
+function BankAccount() {
+  this.balance = 0;
+  
+  this.deposit = function(amount) {
+    this.balance += amount;
+    console.log(`Deposited ${amount}. New balance: ${this.balance}`);
+  };
+  
+  this.withdraw = function(amount) {
+    if (amount <= this.balance) {
+      this.balance -= amount;
+      console.log(`Withdrew ${amount}. New balance: ${this.balance}`);
+      return amount;
+    } else {
+      console.log(`Insufficient funds. Current balance: ${this.balance}`);
+      return 0;
+    }
+  };
+  
+  this.getBalance = function() {
+    return this.balance;
+  };
+}
+
+// Proxy
+function BankAccountProxy(owner) {
+  const account = new BankAccount();
+  
+  return {
+    deposit: function(amount) {
+      console.log(`${owner} is making a deposit...`);
+      account.deposit(amount);
+    },
+    
+    withdraw: function(amount) {
+      console.log(`${owner} is making a withdrawal...`);
+      
+      // Additional validation in the proxy
+      if (amount > 1000) {
+        console.log('Withdrawal amount exceeds the daily limit of $1000');
+        return 0;
+      }
+      
+      return account.withdraw(amount);
+    },
+    
+    getBalance: function() {
+      console.log(`${owner} is checking balance...`);
+      return account.getBalance();
+    }
+  };
+}
+
+// Usage
+const johnAccount = new BankAccountProxy('John');
+johnAccount.deposit(1000); // John is making a deposit... Deposited 1000. New balance: 1000
+johnAccount.withdraw(500); // John is making a withdrawal... Withdrew 500. New balance: 500
+johnAccount.withdraw(2000); // John is making a withdrawal... Withdrawal amount exceeds the daily limit of $1000
+console.log(johnAccount.getBalance()); // John is checking balance... 500</code></pre>
+                
+                <h4>Modern Implementation (ES6 Proxy)</h4>
+                <pre><code>// Real subject
+class BankAccount {
+  constructor() {
+    this.balance = 0;
+  }
+  
+  deposit(amount) {
+    this.balance += amount;
+    console.log(`Deposited ${amount}. New balance: ${this.balance}`);
+  }
+  
+  withdraw(amount) {
+    if (amount <= this.balance) {
+      this.balance -= amount;
+      console.log(`Withdrew ${amount}. New balance: ${this.balance}`);
+      return amount;
+    } else {
+      console.log(`Insufficient funds. Current balance: ${this.balance}`);
+      return 0;
+    }
+  }
+  
+  getBalance() {
+    return this.balance;
+  }
+}
+
+// Using ES6 Proxy
+function createBankAccountProxy(owner) {
+  const account = new BankAccount();
+  
+  const handler = {
+    get(target, prop, receiver) {
+      if (prop === 'deposit') {
+        return function(amount) {
+          console.log(`${owner} is making a deposit...`);
+          return target[prop].call(target, amount);
+        };
+      } else if (prop === 'withdraw') {
+        return function(amount) {
+          console.log(`${owner} is making a withdrawal...`);
+          
+          // Additional validation in the proxy
+          if (amount > 1000) {
+            console.log('Withdrawal amount exceeds the daily limit of $1000');
+            return 0;
+          }
+          
+          return target[prop].call(target, amount);
+        };
+      } else if (prop === 'getBalance') {
+        return function() {
+          console.log(`${owner} is checking balance...`);
+          return target[prop].call(target);
+        };
+      }
+      
+      return target[prop];
+    }
+  };
+  
+  return new Proxy(account, handler);
+}
+
+// Usage
+const johnAccount = createBankAccountProxy('John');
+johnAccount.deposit(1000); // John is making a deposit... Deposited 1000. New balance: 1000
+johnAccount.withdraw(500); // John is making a withdrawal... Withdrew 500. New balance: 500
+johnAccount.withdraw(2000); // John is making a withdrawal... Withdrawal amount exceeds the daily limit of $1000
+console.log(johnAccount.getBalance()); // John is checking balance... 500</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When you need to control access to an object</li>
+                    <li>When you want to add functionality when accessing an object (logging, validation, etc.)</li>
+                    <li>For lazy initialization (virtual proxy)</li>
+                    <li>For access control (protection proxy)</li>
+                    <li>For caching results (cache proxy)</li>
+                    <li>For remote resource access (remote proxy)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h2>Behavioral Patterns</h2>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Observer Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Subject (Observable)
+function Subject() {
+  this.observers = []; // Array of observer functions
+}
+
+Subject.prototype = {
+  subscribe: function(fn) {
+    this.observers.push(fn);
+  },
+  
+  unsubscribe: function(fnToRemove) {
+    this.observers = this.observers.filter(fn => fn !== fnToRemove);
+  },
+  
+  notify: function(data) {
+    this.observers.forEach(fn => fn(data));
+  }
+};
+
+// Usage
+const subject = new Subject();
+
+// Add observers
+function observer1(data) {
+  console.log('Observer 1 received:', data);
+}
+
+function observer2(data) {
+  console.log('Observer 2 received:', data);
+}
+
+subject.subscribe(observer1);
+subject.subscribe(observer2);
+
+// Notify all observers
+subject.notify('Hello from subject!');
+// Observer 1 received: Hello from subject!
+// Observer 2 received: Hello from subject!
+
+// Unsubscribe an observer
+subject.unsubscribe(observer1);
+
+// Now only observer2 will be notified
+subject.notify('Hello again!');
+// Observer 2 received: Hello again!</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>// Event Emitter implementation
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+  
+  // Subscribe to an event
+  on(event, listener) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+    this.events[event].push(listener);
+    return () => this.off(event, listener);
+  }
+  
+  // Unsubscribe from an event
+  off(event, listenerToRemove) {
+    if (!this.events[event]) return;
+    
+    this.events[event] = this.events[event].filter(
+      listener => listener !== listenerToRemove
+    );
+  }
+  
+  // Emit an event
+  emit(event, ...args) {
+    if (!this.events[event]) return;
+    
+    this.events[event].forEach(listener => {
+      listener.apply(this, args);
+    });
+  }
+  
+  // Subscribe to an event only once
+  once(event, listener) {
+    const remove = this.on(event, (...args) => {
+      remove();
+      listener.apply(this, args);
+    });
+  }
+}
+
+// Example: News Publisher
+class NewsPublisher extends EventEmitter {
+  constructor() {
+    super();
+    this.news = [];
+  }
+  
+  publishNews(news) {
+    this.news.push(news);
+    this.emit('news', news);
+  }
+  
+  getNews() {
+    return this.news;
+  }
+}
+
+// Usage
+const publisher = new NewsPublisher();
+
+// Subscribe to news
+const unsubscribe = publisher.on('news', news => {
+  console.log('Breaking News:', news.title);
+});
+
+publisher.on('news', news => {
+  console.log('News Alert:', news.title, '-', news.content);
+});
+
+// Publish some news
+publisher.publishNews({
+  title: 'JavaScript Weekly',
+  content: 'New features in ES2022'
+});
+// Breaking News: JavaScript Weekly
+// News Alert: JavaScript Weekly - New features in ES2022
+
+// Unsubscribe from news
+unsubscribe();
+
+// Publish more news (only one subscriber will receive it)
+publisher.publishNews({
+  title: 'Tech Update',
+  content: 'New frameworks released'
+});
+// News Alert: Tech Update - New frameworks released</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When a change to one object requires changing others, and you don't know how many objects need to change</li>
+                    <li>When an object should be able to notify other objects without making assumptions about those objects</li>
+                    <li>For implementing event handling systems</li>
+                    <li>For implementing reactive programming patterns</li>
+                    <li>For implementing publish/subscribe systems</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Strategy Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Defines a family of algorithms, encapsulates each one, and makes them interchangeable. It lets the algorithm vary independently from clients that use it.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Strategy interface (implicit in JavaScript)
+// Each strategy should implement a calculate method
+
+// Concrete strategies
+const regularStrategy = {
+  calculate: function(amount) {
+    return amount;
+  }
+};
+
+const premiumStrategy = {
+  calculate: function(amount) {
+    return amount * 0.9; // 10% discount
+  }
+};
+
+const platinumStrategy = {
+  calculate: function(amount) {
+    return amount * 0.8; // 20% discount
+  }
+};
+
+// Context
+function ShoppingCart(strategy) {
+  this.strategy = strategy;
+  this.items = [];
+}
+
+ShoppingCart.prototype = {
+  setStrategy: function(strategy) {
+    this.strategy = strategy;
+  },
+  
+  addItem: function(item) {
+    this.items.push(item);
+  },
+  
+  calculateTotal: function() {
+    const sum = this.items.reduce((total, item) => total + item.price, 0);
+    return this.strategy.calculate(sum);
+  }
+};
+
+// Usage
+const cart = new ShoppingCart(regularStrategy);
+
+cart.addItem({ name: 'Product 1', price: 100 });
+cart.addItem({ name: 'Product 2', price: 50 });
+
+console.log('Regular total:', cart.calculateTotal()); // 150
+
+// Change strategy to premium
+cart.setStrategy(premiumStrategy);
+console.log('Premium total:', cart.calculateTotal()); // 135
+
+// Change strategy to platinum
+cart.setStrategy(platinumStrategy);
+console.log('Platinum total:', cart.calculateTotal()); // 120</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>// Strategy interface (implicit in JavaScript)
+// Each strategy should implement an execute method
+
+// Concrete strategies
+class RegularPricingStrategy {
+  calculate(amount) {
+    return amount;
+  }
+}
+
+class PremiumPricingStrategy {
+  calculate(amount) {
+    return amount * 0.9; // 10% discount
+  }
+}
+
+class PlatinumPricingStrategy {
+  calculate(amount) {
+    return amount * 0.8; // 20% discount
+  }
+}
+
+class BlackFridayPricingStrategy {
+  calculate(amount) {
+    return amount * 0.5; // 50% discount
+  }
+}
+
+// Context
+class ShoppingCart {
+  constructor(pricingStrategy) {
+    this.pricingStrategy = pricingStrategy;
+    this.items = [];
+  }
+  
+  setPricingStrategy(pricingStrategy) {
+    this.pricingStrategy = pricingStrategy;
+  }
+  
+  addItem(item) {
+    this.items.push(item);
+  }
+  
+  calculateTotal() {
+    const sum = this.items.reduce((total, item) => total + item.price, 0);
+    return this.pricingStrategy.calculate(sum);
+  }
+}
+
+// Usage
+const cart = new ShoppingCart(new RegularPricingStrategy());
+
+cart.addItem({ name: 'Product 1', price: 100 });
+cart.addItem({ name: 'Product 2', price: 50 });
+
+console.log('Regular total:', cart.calculateTotal()); // 150
+
+// Change strategy to premium
+cart.setPricingStrategy(new PremiumPricingStrategy());
+console.log('Premium total:', cart.calculateTotal()); // 135
+
+// Change strategy to Black Friday special
+cart.setPricingStrategy(new BlackFridayPricingStrategy());
+console.log('Black Friday total:', cart.calculateTotal()); // 75</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When you want to define a family of algorithms and make them interchangeable</li>
+                    <li>When you need different variants of an algorithm</li>
+                    <li>When an algorithm uses data that clients shouldn't know about</li>
+                    <li>When a class defines many behaviors that appear as multiple conditional statements</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <div class="pattern-header">Command Pattern</div>
+            <div class="pattern-body">
+                <h4>Purpose</h4>
+                <p>Encapsulates a request as an object, allowing you to parameterize clients with different requests, queue or log requests, and support undoable operations.</p>
+                
+                <h4>Implementation</h4>
+                <pre><code>// Receiver
+function Light() {
+  this.turnOn = function() {
+    console.log('Light is on');
+  };
+  
+  this.turnOff = function() {
+    console.log('Light is off');
+  };
+}
+
+// Command interface
+function Command() {}
+Command.prototype.execute = function() {};
+Command.prototype.undo = function() {};
+
+// Concrete Commands
+function TurnOnCommand(light) {
+  Command.call(this);
+  this.light = light;
+}
+TurnOnCommand.prototype = Object.create(Command.prototype);
+TurnOnCommand.prototype.execute = function() {
+  this.light.turnOn();
+};
+TurnOnCommand.prototype.undo = function() {
+  this.light.turnOff();
+};
+
+function TurnOffCommand(light) {
+  Command.call(this);
+  this.light = light;
+}
+TurnOffCommand.prototype = Object.create(Command.prototype);
+TurnOffCommand.prototype.execute = function() {
+  this.light.turnOff();
+};
+TurnOffCommand.prototype.undo = function() {
+  this.light.turnOn();
+};
+
+// Invoker
+function RemoteControl() {
+  this.commands = {};
+  this.history = [];
+  
+  this.setCommand = function(buttonName, command) {
+    this.commands[buttonName] = command;
+  };
+  
+  this.pressButton = function(buttonName) {
+    const command = this.commands[buttonName];
+    if (command) {
+      command.execute();
+      this.history.push(command);
+    }
+  };
+  
+  this.pressUndo = function() {
+    const command = this.history.pop();
+    if (command) {
+      command.undo();
+    }
+  };
+}
+
+// Usage
+const light = new Light();
+const turnOn = new TurnOnCommand(light);
+const turnOff = new TurnOffCommand(light);
+
+const remote = new RemoteControl();
+remote.setCommand('on', turnOn);
+remote.setCommand('off', turnOff);
+
+remote.pressButton('on'); // Light is on
+remote.pressButton('off'); // Light is off
+remote.pressUndo(); // Light is on (undo the last command)
+remote.pressUndo(); // Light is off (undo the previous command)</code></pre>
+                
+                <h4>Modern Implementation (ES6)</h4>
+                <pre><code>// Receiver
+class TextEditor {
+  constructor() {
+    this.text = '';
+  }
+  
+  insertText(text) {
+    this.text += text;
+    console.log(`Text inserted: "${text}"`);
+    console.log(`Current text: "${this.text}"`);
+  }
+  
+  deleteText(length) {
+    const deletedText = this.text.substring(this.text.length - length);
+    this.text = this.text.substring(0, this.text.length - length);
+    console.log(`Text deleted: "${deletedText}"`);
+    console.log(`Current text: "${this.text}"`);
+    return deletedText;
+  }
+  
+  getText() {
+    return this.text;
+  }
+}
+
+// Command interface (abstract class in JavaScript)
+class Command {
+  execute() {}
+  undo() {}
+}
+
+// Concrete Commands
+class InsertTextCommand extends Command {
+  constructor(editor, text) {
+    super();
+    this.editor = editor;
+    this.text = text;
+  }
+  
+  execute() {
+    this.editor.insertText(this.text);
+  }
+  
+  undo() {
+    this.editor.deleteText(this.text.length);
+  }
+}
+
+class DeleteTextCommand extends Command {
+  constructor(editor, length) {
+    super();
+    this.editor = editor;
+    this.length = length;
+    this.deletedText = '';
+  }
+  
+  execute() {
+    this.deletedText = this.editor.deleteText(this.length);
+  }
+  
+  undo() {
+    this.editor.insertText(this.deletedText);
+  }
+}
+
+// Invoker
+class CommandManager {
+  constructor() {
+    this.history = [];
+    this.redoStack = [];
+  }
+  
+  executeCommand(command) {
+    command.execute();
+    this.history.push(command);
+    this.redoStack = []; // Clear redo stack when a new command is executed
+  }
+  
+  undo() {
+    if (this.history.length > 0) {
+      const command = this.history.pop();
+      command.undo();
+      this.redoStack.push(command);
+    } else {
+      console.log('Nothing to undo');
+    }
+  }
+  
+  redo() {
+    if (this.redoStack.length > 0) {
+      const command = this.redoStack.pop();
+      command.execute();
+      this.history.push(command);
+    } else {
+      console.log('Nothing to redo');
+    }
+  }
+}
+
+// Usage
+const editor = new TextEditor();
+const commandManager = new CommandManager();
+
+// Execute commands
+commandManager.executeCommand(new InsertTextCommand(editor, 'Hello'));
+commandManager.executeCommand(new InsertTextCommand(editor, ' World'));
+commandManager.executeCommand(new DeleteTextCommand(editor, 6)); // Delete " World"
+
+// Undo and redo
+commandManager.undo(); // Undo the delete
+commandManager.undo(); // Undo the second insert
+commandManager.redo(); // Redo the second insert</code></pre>
+                
+                <h4>When to Use</h4>
+                <ul>
+                    <li>When you want to parameterize objects with operations</li>
+                    <li>When you want to queue, specify, and execute requests at different times</li>
+                    <li>When you need to support undo/redo functionality</li>
+                    <li>When you want to structure a system around high-level operations built on primitive operations</li>
+                    <li>For implementing transaction-based systems</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="examples">
+            <h3>Real-World Examples</h3>
+            
+            <h4>MVC Architecture</h4>
+            <p>The Model-View-Controller pattern combines several design patterns:</p>
+            <ul>
+                <li><strong>Observer</strong>: Views observe models for changes</li>
+                <li><strong>Strategy</strong>: Controllers implement different strategies for handling user input</li>
+                <li><strong>Composite</strong>: Views are often composed of subviews</li>
+            </ul>
+            <pre><code>// Simple MVC implementation
+// Model
+class UserModel {
+  constructor(name, email) {
+    this.name = name;
+    this.email = email;
+    this.observers = [];
+  }
+  
+  subscribe(observer) {
+    this.observers.push(observer);
+  }
+  
+  notifyAll() {
+    this.observers.forEach(observer => observer.update(this));
+  }
+  
+  setName(name) {
+    this.name = name;
+    this.notifyAll();
+  }
+  
+  setEmail(email) {
+    this.email = email;
+    this.notifyAll();
+  }
+}
+
+// View
+class UserView {
+  constructor() {
+    this.controller = null;
+  }
+  
+  setController(controller) {
+    this.controller = controller;
+  }
+  
+  update(model) {
+    console.log(`View updated: User ${model.name} (${model.email})`);
+    // In a real app, this would update the DOM
+  }
+  
+  // Simulate user input
+  simulateNameChange(newName) {
+    this.controller.changeName(newName);
+  }
+  
+  simulateEmailChange(newEmail) {
+    this.controller.changeEmail(newEmail);
+  }
+}
+
+// Controller
+class UserController {
+  constructor(model, view) {
+    this.model = model;
+    this.view = view;
+    
+    // Connect view to controller
+    this.view.setController(this);
+    
+    // Connect model to view
+    this.model.subscribe(this.view);
+  }
+  
+  changeName(name) {
+    this.model.setName(name);
+  }
+  
+  changeEmail(email) {
+    this.model.setEmail(email);
+  }
+}
+
+// Usage
+const model = new UserModel('John', 'john@example.com');
+const view = new UserView();
+const controller = new UserController(model, view);
+
+// Initial update
+view.update(model);
+
+// Simulate user interaction
+view.simulateNameChange('Jane');
+view.simulateEmailChange('jane@example.com');</code></pre>
+            
+            <h4>Redux Architecture</h4>
+            <p>Redux combines several patterns:</p>
+            <ul>
+                <li><strong>Command</strong>: Actions are commands that describe state changes</li>
+                <li><strong>Observer</strong>: Store notifies subscribers of state changes</li>
+                <li><strong>Reducer</strong>: A variation of the Strategy pattern for state updates</li>
+            </ul>
+            <pre><code>// Simplified Redux implementation
+// Action Types
+const ADD_TODO = 'ADD_TODO';
+const TOGGLE_TODO = 'TOGGLE_TODO';
+
+// Action Creators
+function addTodo(text) {
+  return {
+    type: ADD_TODO,
+    payload: { text, completed: false, id: Date.now() }
+  };
+}
+
+function toggleTodo(id) {
+  return {
+    type: TOGGLE_TODO,
+    payload: { id }
+  };
+}
+
+// Reducer
+function todoReducer(state = [], action) {
+  switch (action.type) {
+    case ADD_TODO:
+      return [...state, action.payload];
+    case TOGGLE_TODO:
+      return state.map(todo => 
+        todo.id === action.payload.id 
+          ? { ...todo, completed: !todo.completed } 
+          : todo
+      );
+    default:
+      return state;
+  }
+}
+
+// Store
+function createStore(reducer) {
+  let state = reducer(undefined, { type: '@@INIT' });
+  const subscribers = [];
+  
+  return {
+    getState: () => state,
+    
+    dispatch: (action) => {
+      state = reducer(state, action);
+      subscribers.forEach(subscriber => subscriber());
+      return action;
+    },
+    
+    subscribe: (subscriber) => {
+      subscribers.push(subscriber);
+      return () => {
+        const index = subscribers.indexOf(subscriber);
+        if (index !== -1) subscribers.splice(index, 1);
+      };
+    }
+  };
+}
+
+// Usage
+const store = createStore(todoReducer);
+
+// Subscribe to changes
+const unsubscribe = store.subscribe(() => {
+  console.log('State updated:', store.getState());
+});
+
+// Dispatch actions
+store.dispatch(addTodo('Learn design patterns'));
+store.dispatch(addTodo('Apply patterns in real projects'));
+store.dispatch(toggleTodo(store.getState()[0].id));
+
+// Unsubscribe
+unsubscribe();</code></pre>
+        </div>
+        
+        <div class="tip-box">
+            <h4>Tips for Using Design Patterns</h4>
+            <ul>
+                <li><strong>Don't overuse patterns</strong>: Use them only when they solve a specific problem</li>
+                <li><strong>Understand the problem first</strong>: Choose a pattern based on the problem, not vice versa</li>
+                <li><strong>Start simple</strong>: Begin with a simple solution and refactor to patterns when needed</li>
+                <li><strong>Combine patterns</strong>: Real-world applications often use multiple patterns together</li>
+                <li><strong>Document your patterns</strong>: Make it clear which patterns you're using and why</li>
+                <li><strong>Consider performance</strong>: Some patterns introduce overhead that might not be worth it for simple cases</li>
+            </ul>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/" target="_blank">Learning JavaScript Design Patterns by Addy Osmani</a></li>
+                <li><a href="https://refactoring.guru/design-patterns" target="_blank">Refactoring.Guru: Design Patterns</a></li>
+                <li><a href="https://www.patterns.dev/" target="_blank">Patterns.dev: Modern Web App Design Patterns</a></li>
+                <li><a href="https://sourcemaking.com/design_patterns" target="_blank">SourceMaking: Design Patterns</a></li>
+                <li><a href="https://github.com/kamranahmedse/design-patterns-for-humans" target="_blank">Design Patterns for Humans</a></li>
+                <li><a href="https://www.dofactory.com/javascript/design-patterns" target="_blank">DoFactory: JavaScript Design Patterns</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

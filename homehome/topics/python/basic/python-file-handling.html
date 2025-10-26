@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python File Handling - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python File Handling</h1>
+            <p>Working with files in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="file-modes">
+                <h2>File Modes</h2>
+                <p>Common file opening modes:</p>
+                <ul>
+                    <li><code>'r'</code> - Read (default)</li>
+                    <li><code>'w'</code> - Write (truncates file)</li>
+                    <li><code>'a'</code> - Append</li>
+                    <li><code>'x'</code> - Create (fails if exists)</li>
+                    <li><code>'b'</code> - Binary mode</li>
+                    <li><code>'t'</code> - Text mode (default)</li>
+                    <li><code>'+'</code> - Update (read/write)</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="basic-operations">
+                <h2>Basic File Operations</h2>
+                <p>Reading and writing files:</p>
+                <pre><code class="language-python"># Writing to a file
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!\n')
+    file.write('This is a new line.')
+
+# Reading a file
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# Reading line by line
+with open('example.txt', 'r') as file:
+    for line in file:
+        print(line.strip())
+
+# Appending to a file
+with open('example.txt', 'a') as file:
+    file.write('\nThis is appended text.')</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="file-objects">
+                <h2>File Object Methods</h2>
+                <p>Common file object methods:</p>
+                <pre><code class="language-python"># Using file object methods
+with open('example.txt', 'r') as file:
+    # Read first 5 characters
+    first_chars = file.read(5)
+    print(first_chars)
+
+    # Read next line
+    next_line = file.readline()
+    print(next_line)
+
+    # Read all remaining lines
+    remaining_lines = file.readlines()
+    print(remaining_lines)
+
+    # Get current position
+    position = file.tell()
+    print(f"Current position: {position}")
+
+    # Move to position
+    file.seek(0)  # Back to start</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="binary-files">
+                <h2>Binary Files</h2>
+                <p>Working with binary files:</p>
+                <pre><code class="language-python"># Writing binary data
+with open('binary.bin', 'wb') as file:
+    data = bytes([0, 1, 2, 3, 4, 5])
+    file.write(data)
+
+# Reading binary data
+with open('binary.bin', 'rb') as file:
+    data = file.read()
+    print(data)  # Output: b'\x00\x01\x02\x03\x04\x05'
+
+# Working with images
+with open('image.jpg', 'rb') as file:
+    image_data = file.read()
+    # Process image data...</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="file-system">
+                <h2>File System Operations</h2>
+                <p>Working with directories and paths:</p>
+                <pre><code class="language-python">import os
+import shutil
+
+# Directory operations
+os.mkdir('new_directory')
+os.rmdir('empty_directory')
+shutil.rmtree('directory_with_files')
+
+# File operations
+os.rename('old.txt', 'new.txt')
+os.remove('file_to_delete.txt')
+
+# Path operations
+current_dir = os.getcwd()
+file_path = os.path.join(current_dir, 'example.txt')
+is_file = os.path.isfile(file_path)
+is_dir = os.path.isdir(current_dir)
+
+# List directory contents
+files = os.listdir(current_dir)
+for file in files:
+    print(file)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="csv-files">
+                <h2>Working with CSV Files</h2>
+                <p>Reading and writing CSV files:</p>
+                <pre><code class="language-python">import csv
+
+# Writing CSV
+with open('data.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Name', 'Age', 'City'])
+    writer.writerow(['John', '30', 'New York'])
+    writer.writerow(['Alice', '25', 'London'])
+
+# Reading CSV
+with open('data.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+
+# Using DictReader
+with open('data.csv', 'r') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        print(row['Name'], row['Age'])</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="json-files">
+                <h2>Working with JSON Files</h2>
+                <p>Reading and writing JSON files:</p>
+                <pre><code class="language-python">import json
+
+# Writing JSON
+data = {
+    'name': 'John',
+    'age': 30,
+    'city': 'New York'
+}
+
+with open('data.json', 'w') as file:
+    json.dump(data, file, indent=4)
+
+# Reading JSON
+with open('data.json', 'r') as file:
+    data = json.load(file)
+    print(data['name'])  # Output: John</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Always use context managers (with statement)</li>
+                    <li>Handle file exceptions appropriately</li>
+                    <li>Close files properly after use</li>
+                    <li>Use appropriate file modes</li>
+                    <li>Consider file encoding when working with text</li>
+                    <li>Use path manipulation functions for cross-platform compatibility</li>
+                    <li>Back up important files before operations</li>
+                    <li>Use appropriate file formats for different data types</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

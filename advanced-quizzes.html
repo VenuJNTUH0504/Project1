@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">Advanced Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+</body>    
+ <script>
+const questions = [
+    // 10 HTML Advanced Questions
+    {
+        question: "Which HTML5 API allows web pages to store data locally within the user's browser?",
+        options: [
+            "Local Storage",
+            "Session Storage",
+            "Web SQL",
+            "IndexedDB"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the <template> tag in HTML5?",
+        options: [
+            "To declare reusable HTML fragments",
+            "To define a page template",
+            "To include external HTML",
+            "To create a new HTML element"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which attribute is used to make an HTML element editable?",
+        options: [
+            "contenteditable",
+            "editable",
+            "edit",
+            "data-edit"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'srcset' attribute in <img> tag do?",
+        options: [
+            "Provides multiple image sources for responsive images",
+            "Sets the image source",
+            "Defines image size",
+            "Links to an image map"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which HTML element is used for embedding SVG graphics?",
+        options: [
+            "<svg>",
+            "<canvas>",
+            "<vector>",
+            "<graphics>"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the <picture> element in HTML5?",
+        options: [
+            "To provide multiple sources for responsive images",
+            "To display a picture gallery",
+            "To create a slideshow",
+            "To add captions to images"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which HTML tag is used to define a dialog box or window?",
+        options: [
+            "<dialog>",
+            "<modal>",
+            "<popup>",
+            "<window>"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'sandbox' attribute do in an <iframe>?",
+        options: [
+            "Applies extra restrictions to the content in the iframe",
+            "Adds a border to the iframe",
+            "Enables fullscreen mode",
+            "Allows cross-origin requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which HTML element is used to define navigation links?",
+        options: [
+            "<nav>",
+            "<navigation>",
+            "<links>",
+            "<menu>"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the <output> element in HTML5?",
+        options: [
+            "To display the result of a calculation",
+            "To output logs",
+            "To export data",
+            "To print content"
+        ],
+        answer: 0
+    },
+
+    // 10 CSS Advanced Questions
+    {
+        question: "Which CSS property is used for creating grid layouts?",
+        options: [
+            "display: grid",
+            "display: flex",
+            "position: grid",
+            "layout: grid"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'will-change' property do in CSS?",
+        options: [
+            "Hints the browser which properties will change for optimization",
+            "Changes the element's color",
+            "Animates the element",
+            "Sets the transition duration"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which CSS function is used to apply a filter to an image?",
+        options: [
+            "filter()",
+            "image-filter()",
+            "apply-filter()",
+            "img-filter()"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you create a CSS variable?",
+        options: [
+            "--main-color: #333;",
+            "$main-color: #333;",
+            "var main-color = #333;",
+            "@main-color: #333;"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which CSS property is used for custom fonts?",
+        options: [
+            "@font-face",
+            "font-family",
+            "font-style",
+            "font-weight"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the 'object-fit' property?",
+        options: [
+            "Specifies how an <img> or <video> should be resized to fit its container",
+            "Fits text inside a container",
+            "Aligns objects",
+            "Resizes background images"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which CSS property creates a 3D transformation?",
+        options: [
+            "transform: rotateY(45deg);",
+            "transform: skew(20deg);",
+            "transform: scale(2);",
+            "transform: translate(10px, 20px);"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you create a CSS animation?",
+        options: [
+            "@keyframes",
+            "@animation",
+            "animation-keyframes",
+            "keyframes"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'backface-visibility' property control?",
+        options: [
+            "Whether the back face of an element is visible when rotated",
+            "The background color",
+            "The z-index of the element",
+            "The visibility of child elements"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which CSS property is used to create a sticky element?",
+        options: [
+            "position: sticky",
+            "position: fixed",
+            "position: absolute",
+            "position: relative"
+        ],
+        answer: 0
+    },
+
+    // 10 JavaScript Advanced Questions
+    {
+        question: "Which method is used to create a deep copy of an object in JavaScript?",
+        options: [
+            "structuredClone()",
+            "Object.assign()",
+            "JSON.parse(JSON.stringify(obj))",
+            "clone()"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a closure in JavaScript?",
+        options: [
+            "A function with access to its outer scope",
+            "A function that closes the browser",
+            "A function that returns itself",
+            "A function with no parameters"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which operator is used for optional chaining?",
+        options: [
+            "?.",
+            "??",
+            "?.?",
+            "||"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'async' keyword do?",
+        options: [
+            "Allows the use of 'await' inside a function",
+            "Makes a function run faster",
+            "Pauses the function",
+            "Creates a callback"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to fetch data asynchronously in modern JavaScript?",
+        options: [
+            "fetch()",
+            "get()",
+            "request()",
+            "ajax()"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the 'Symbol' type?",
+        options: [
+            "To create unique identifiers",
+            "To create a new data type",
+            "To define a function",
+            "To store numbers"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a promise in JavaScript?",
+        options: [
+            "An object representing the eventual completion or failure of an async operation",
+            "A function that always returns true",
+            "A variable that can't be changed",
+            "A type of loop"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which method is used to merge two arrays?",
+        options: [
+            "concat()",
+            "merge()",
+            "append()",
+            "push()"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'rest' operator (...) do?",
+        options: [
+            "Collects remaining elements into an array",
+            "Spreads elements into arguments",
+            "Pauses execution",
+            "Repeats a function"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which statement is true about 'Map' in JavaScript?",
+        options: [
+            "It allows keys of any type",
+            "It only allows string keys",
+            "It is the same as an object",
+            "It is used for arrays only"
+        ],
+        answer: 0
+    },
+
+    // 10 TypeScript Advanced Questions
+    {
+        question: "What is a TypeScript 'enum'?",
+        options: [
+            "A way to define a set of named constants",
+            "A function",
+            "A class",
+            "A type alias"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you specify a generic function in TypeScript?",
+        options: [
+            "function foo<T>(arg: T): T {}",
+            "function foo(arg: T): T {}",
+            "function foo<T>(arg): T {}",
+            "function foo(arg): T {}"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does 'never' type represent in TypeScript?",
+        options: [
+            "A function that never returns",
+            "A function that always returns null",
+            "A variable that is always undefined",
+            "A type that can be anything"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you create a type alias in TypeScript?",
+        options: [
+            "type MyType = string | number;",
+            "alias MyType = string | number;",
+            "let MyType = string | number;",
+            "define MyType = string | number;"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'Partial<T>' utility type?",
+        options: [
+            "Makes all properties in T optional",
+            "Makes all properties in T required",
+            "Creates a copy of T",
+            "Removes all properties from T"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you specify a readonly property in an interface?",
+        options: [
+            "readonly name: string;",
+            "const name: string;",
+            "static name: string;",
+            "final name: string;"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which keyword is used for type assertions?",
+        options: [
+            "as",
+            "is",
+            "cast",
+            "assert"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between 'interface' and 'type' in TypeScript?",
+        options: [
+            "Interfaces can be extended, types cannot (with some exceptions)",
+            "Types can be extended, interfaces cannot",
+            "There is no difference",
+            "Types are only for primitives"
+        ],
+        answer: 0
+    },
+    {
+        question: "How do you import types only in TypeScript?",
+        options: [
+            "import type { MyType } from './types';",
+            "import { MyType } from './types';",
+            "import types { MyType } from './types';",
+            "import { type MyType } from './types';"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the 'unknown' type represent?",
+        options: [
+            "A type-safe counterpart of 'any'",
+            "A type that is always undefined",
+            "A type that is always null",
+            "A type that can only be a string"
+        ],
+        answer: 0
+    },
+
+    // 10 C++ Advanced Questions
+    {
+        question: "What is a smart pointer in C++?",
+        options: [
+            "An object that manages the lifetime of a dynamically allocated object",
+            "A pointer to a smart object",
+            "A pointer that can only point to integers",
+            "A pointer that is always null"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which C++ feature allows functions to have the same name but different parameters?",
+        options: [
+            "Function overloading",
+            "Function overriding",
+            "Function hiding",
+            "Function templating"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a lambda expression in C++?",
+        options: [
+            "An anonymous function",
+            "A pointer to a function",
+            "A macro",
+            "A template"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'std::move' in C++11?",
+        options: [
+            "To enable move semantics",
+            "To copy an object",
+            "To delete an object",
+            "To allocate memory"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which C++ feature allows defining functions or classes for multiple data types?",
+        options: [
+            "Templates",
+            "Macros",
+            "Inheritance",
+            "Polymorphism"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is RAII in C++?",
+        options: [
+            "Resource Acquisition Is Initialization",
+            "Random Access Is Immediate",
+            "Resource Allocation Is Internal",
+            "Resource Assignment Is Inherited"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'constexpr' in C++11?",
+        options: [
+            "To declare that a value or function can be evaluated at compile time",
+            "To declare a constant pointer",
+            "To declare a constant reference",
+            "To declare a constant variable"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between 'struct' and 'class' in C++?",
+        options: [
+            "Default access specifier: struct is public, class is private",
+            "There is no difference",
+            "Structs cannot have member functions",
+            "Classes cannot have member variables"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'std::unique_ptr'?",
+        options: [
+            "To ensure only one pointer owns the object at a time",
+            "To allow multiple pointers to own the same object",
+            "To create a pointer to a unique object",
+            "To create a pointer to a static object"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a virtual destructor?",
+        options: [
+            "A destructor that can be overridden in derived classes",
+            "A destructor that is never called",
+            "A destructor that deletes virtual functions",
+            "A destructor that is static"
+        ],
+        answer: 0
+    },
+
+    // 10 Java Advanced Questions
+    {
+        question: "What is the purpose of the 'final' keyword in Java?",
+        options: [
+            "To prevent inheritance or modification",
+            "To declare a static variable",
+            "To create an abstract class",
+            "To define a constant method"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a lambda expression in Java?",
+        options: [
+            "An anonymous function",
+            "A static method",
+            "A final variable",
+            "A type of class"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the 'Stream' API in Java 8?",
+        options: [
+            "To process sequences of elements in a functional style",
+            "To create threads",
+            "To handle files",
+            "To manage network connections"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between 'HashMap' and 'ConcurrentHashMap'?",
+        options: [
+            "ConcurrentHashMap is thread-safe, HashMap is not",
+            "HashMap is faster",
+            "HashMap allows null keys, ConcurrentHashMap does not",
+            "There is no difference"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the 'Optional' class in Java 8?",
+        options: [
+            "To avoid null pointer exceptions",
+            "To create optional parameters",
+            "To define a constant",
+            "To create a thread"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is method reference in Java?",
+        options: [
+            "A shorthand for calling a method by name",
+            "A reference to a class",
+            "A reference to a variable",
+            "A reference to a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'synchronized' keyword?",
+        options: [
+            "To control access to a method or block by multiple threads",
+            "To create a static method",
+            "To declare a constant",
+            "To define a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between 'abstract class' and 'interface'?",
+        options: [
+            "Abstract class can have implementation, interface cannot (before Java 8)",
+            "Interface can have constructors",
+            "Abstract class cannot have abstract methods",
+            "There is no difference"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'volatile' keyword?",
+        options: [
+            "To indicate a variable may be changed by multiple threads",
+            "To declare a constant",
+            "To create a static variable",
+            "To define a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'try-with-resources' statement?",
+        options: [
+            "To automatically close resources after use",
+            "To catch exceptions",
+            "To create a thread",
+            "To define a package"
+        ],
+        answer: 0
+    },
+
+    // 10 Python Advanced Questions
+    {
+        question: "What is a generator in Python?",
+        options: [
+            "A function that returns an iterator and yields values",
+            "A function that returns a list",
+            "A function that generates random numbers",
+            "A function that creates a class"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a decorator in Python?",
+        options: [
+            "A function that modifies another function",
+            "A function that creates a class",
+            "A function that returns a list",
+            "A function that generates random numbers"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'with' statement in Python?",
+        options: [
+            "To simplify exception handling and resource management",
+            "To create a loop",
+            "To define a function",
+            "To import a module"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a list comprehension?",
+        options: [
+            "A concise way to create lists",
+            "A function that returns a list",
+            "A method to compress lists",
+            "A type of loop"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'yield' keyword?",
+        options: [
+            "To return a value from a generator",
+            "To stop a loop",
+            "To define a function",
+            "To import a module"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between 'deep copy' and 'shallow copy'?",
+        options: [
+            "Deep copy copies all nested objects, shallow copy does not",
+            "Shallow copy copies all nested objects, deep copy does not",
+            "There is no difference",
+            "Deep copy is faster"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a lambda function in Python?",
+        options: [
+            "An anonymous function",
+            "A named function",
+            "A recursive function",
+            "A generator function"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'property' decorator?",
+        options: [
+            "To define getter/setter methods for a class attribute",
+            "To create a static method",
+            "To define a class",
+            "To create a generator"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of '__init__.py' file?",
+        options: [
+            "To mark a directory as a Python package",
+            "To initialize a class",
+            "To define a function",
+            "To import a module"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'super()' in Python?",
+        options: [
+            "To call a method from the parent class",
+            "To create a superclass",
+            "To define a class",
+            "To create a generator"
+        ],
+        answer: 0
+    },
+
+    // 10 Go (Golang) Advanced Questions
+    {
+        question: "What is a goroutine in Go?",
+        options: [
+            "A lightweight thread managed by Go runtime",
+            "A function",
+            "A package",
+            "A variable"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a channel in Go?",
+        options: [
+            "A way to communicate between goroutines",
+            "A function",
+            "A package",
+            "A variable"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'defer' statement in Go?",
+        options: [
+            "To ensure a function call is performed later, usually for cleanup",
+            "To delay variable initialization",
+            "To create a goroutine",
+            "To import a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a select statement in Go?",
+        options: [
+            "A way to wait on multiple channel operations",
+            "A way to select a variable",
+            "A way to select a function",
+            "A way to select a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a struct in Go?",
+        options: [
+            "A collection of fields",
+            "A function",
+            "A package",
+            "A variable"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'interface{}' in Go?",
+        options: [
+            "It can hold any type of value",
+            "It defines a function",
+            "It creates a goroutine",
+            "It imports a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'go mod'?",
+        options: [
+            "To manage dependencies in Go projects",
+            "To create a goroutine",
+            "To define a module",
+            "To import a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'panic' and 'recover' in Go?",
+        options: [
+            "To handle errors and recover from panics",
+            "To create a goroutine",
+            "To define a function",
+            "To import a package"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the zero value of a string in Go?",
+        options: [
+            "\"\" (empty string)",
+            "nil",
+            "0",
+            "undefined"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'init()' function in Go?",
+        options: [
+            "To initialize variables or state before main() runs",
+            "To create a goroutine",
+            "To define a package",
+            "To import a module"
+        ],
+        answer: 0
+    },
+
+    // 20 React Advanced Questions
+    {
+        question: "What is React Context API used for?",
+        options: [
+            "To share state/data globally across components",
+            "To manage component lifecycle",
+            "To create animations",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a Higher Order Component (HOC) in React?",
+        options: [
+            "A function that takes a component and returns a new component",
+            "A component with more props",
+            "A component that renders higher in the DOM",
+            "A component that manages state"
+        ],
+        answer: 0
+    },
+    {
+        question: "What does the useMemo hook do?",
+        options: [
+            "Memoizes a computed value to avoid unnecessary recalculations",
+            "Memoizes a function",
+            "Creates a new component",
+            "Handles side effects"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between useEffect and useLayoutEffect?",
+        options: [
+            "useLayoutEffect runs synchronously after all DOM mutations, useEffect runs asynchronously",
+            "There is no difference",
+            "useEffect runs before rendering",
+            "useLayoutEffect is for server-side rendering"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is React Fiber?",
+        options: [
+            "A new reconciliation engine for React",
+            "A CSS library",
+            "A state management tool",
+            "A testing framework"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of React's key prop?",
+        options: [
+            "To help React identify which items have changed, are added, or are removed",
+            "To set the value of an input",
+            "To create a unique ID",
+            "To manage state"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is code splitting in React?",
+        options: [
+            "Breaking up code into smaller bundles for faster load times",
+            "Splitting CSS files",
+            "Splitting HTML files",
+            "Splitting state"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is React Suspense used for?",
+        options: [
+            "To handle loading states for async components",
+            "To pause rendering",
+            "To manage errors",
+            "To handle routing"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of React.lazy()?",
+        options: [
+            "To load components lazily (on demand)",
+            "To create slow animations",
+            "To delay state updates",
+            "To manage context"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between controlled and uncontrolled components?",
+        options: [
+            "Controlled components are managed by React state, uncontrolled by the DOM",
+            "Uncontrolled components are faster",
+            "Controlled components can't have refs",
+            "There is no difference"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of useCallback hook?",
+        options: [
+            "Memoizes a callback function to prevent unnecessary re-renders",
+            "Memoizes a value",
+            "Creates a new component",
+            "Handles side effects"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of error boundaries in React?",
+        options: [
+            "To catch JavaScript errors in child components and display a fallback UI",
+            "To prevent rendering",
+            "To manage state",
+            "To handle HTTP errors"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between React.PureComponent and React.Component?",
+        options: [
+            "PureComponent implements shouldComponentUpdate with a shallow prop/state comparison",
+            "There is no difference",
+            "Component is faster",
+            "PureComponent can't have state"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of forwardRef in React?",
+        options: [
+            "To pass refs to child components",
+            "To create a new ref",
+            "To manage state",
+            "To handle events"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is server-side rendering (SSR) in React?",
+        options: [
+            "Rendering React components on the server and sending HTML to the client",
+            "Rendering on the client only",
+            "Rendering with CSS",
+            "Rendering with JavaScript only"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is hydration in React?",
+        options: [
+            "Attaching event listeners to server-rendered HTML",
+            "Adding water to components",
+            "Refreshing state",
+            "Re-rendering components"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of React.Fragment?",
+        options: [
+            "To group multiple elements without adding extra nodes to the DOM",
+            "To create a new component",
+            "To manage state",
+            "To handle events"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of useImperativeHandle hook?",
+        options: [
+            "To customize the instance value that is exposed to parent components when using refs",
+            "To create a new ref",
+            "To manage state",
+            "To handle events"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of React.memo?",
+        options: [
+            "To memoize a functional component to prevent unnecessary re-renders",
+            "To memoize a value",
+            "To create a new component",
+            "To handle side effects"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of useReducer hook?",
+        options: [
+            "To manage complex state logic in functional components",
+            "To reduce array values",
+            "To create a new component",
+            "To handle side effects"
+        ],
+        answer: 0
+    },
+
+    // 20 Node.js Advanced Questions
+    {
+        question: "What is the purpose of the cluster module in Node.js?",
+        options: [
+            "To enable load balancing over multiple CPU cores",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is an event loop in Node.js?",
+        options: [
+            "A mechanism that handles asynchronous callbacks",
+            "A loop that runs forever",
+            "A function that repeats",
+            "A type of array"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a stream in Node.js?",
+        options: [
+            "An abstract interface for working with streaming data",
+            "A function",
+            "A type of array",
+            "A type of object"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of process.nextTick()?",
+        options: [
+            "To schedule a callback to be invoked in the next iteration of the event loop",
+            "To create a new process",
+            "To terminate a process",
+            "To delay execution"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of Buffer in Node.js?",
+        options: [
+            "To handle binary data",
+            "To store text data",
+            "To create a web server",
+            "To manage events"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is middleware in Express.js?",
+        options: [
+            "A function that has access to the request and response objects",
+            "A type of database",
+            "A type of server",
+            "A type of route"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of req.params in Express.js?",
+        options: [
+            "To access route parameters",
+            "To access query parameters",
+            "To access headers",
+            "To access cookies"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the difference between process.env and process.argv?",
+        options: [
+            "process.env is for environment variables, process.argv is for command-line arguments",
+            "There is no difference",
+            "Both are for environment variables",
+            "Both are for command-line arguments"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of async/await in Node.js?",
+        options: [
+            "To write asynchronous code in a synchronous style",
+            "To create a new process",
+            "To handle events",
+            "To manage files"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the crypto module in Node.js?",
+        options: [
+            "To provide cryptographic functionality",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the child_process module?",
+        options: [
+            "To spawn and manage child processes",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the os module in Node.js?",
+        options: [
+            "To provide operating system-related utility methods",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the path module in Node.js?",
+        options: [
+            "To work with file and directory paths",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the util module in Node.js?",
+        options: [
+            "To provide utility functions",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the dns module in Node.js?",
+        options: [
+            "To perform DNS lookups and name resolution functions",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the net module in Node.js?",
+        options: [
+            "To create servers and clients",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the http module in Node.js?",
+        options: [
+            "To create HTTP servers and clients",
+            "To manage files",
+            "To handle events",
+            "To manage processes"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the zlib module in Node.js?",
+        options: [
+            "To provide compression and decompression functionality",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the events module in Node.js?",
+        options: [
+            "To handle events and event-driven programming",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the readline module in Node.js?",
+        options: [
+            "To read data from a readable stream one line at a time",
+            "To create a web server",
+            "To manage files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+
+    // 20 Spring Framework Advanced Questions
+    {
+        question: "What is Dependency Injection in Spring?",
+        options: [
+            "A design pattern to inject dependencies at runtime",
+            "A way to create new beans",
+            "A method to inject SQL queries",
+            "A type of annotation"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to mark a class as a Spring configuration class?",
+        options: [
+            "@Configuration",
+            "@Component",
+            "@Bean",
+            "@Service"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of @Autowired annotation?",
+        options: [
+            "To automatically inject dependencies",
+            "To define a bean",
+            "To create a REST endpoint",
+            "To mark a class as a controller"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a REST controller in Spring?",
+        options: [
+            "@RestController",
+            "@Controller",
+            "@Service",
+            "@Repository"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of @Transactional annotation?",
+        options: [
+            "To manage transactions automatically",
+            "To create a new bean",
+            "To define a REST endpoint",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the default scope of a Spring bean?",
+        options: [
+            "Singleton",
+            "Prototype",
+            "Request",
+            "Session"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to define a bean in Java-based configuration?",
+        options: [
+            "@Bean",
+            "@Component",
+            "@Service",
+            "@Autowired"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of @Qualifier annotation?",
+        options: [
+            "To specify which bean to inject when multiple candidates exist",
+            "To define a bean",
+            "To create a REST endpoint",
+            "To mark a class as a controller"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used for mapping HTTP GET requests?",
+        options: [
+            "@GetMapping",
+            "@PostMapping",
+            "@RequestMapping(method = RequestMethod.GET)",
+            "@RequestParam"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of @Value annotation?",
+        options: [
+            "To inject values from property files",
+            "To define a bean",
+            "To create a REST endpoint",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of ApplicationContext in Spring?",
+        options: [
+            "It is the central interface to provide configuration for an application",
+            "It is used for database connections",
+            "It is used for logging",
+            "It is used for transaction management"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to handle exceptions globally in Spring MVC?",
+        options: [
+            "@ControllerAdvice",
+            "@ExceptionHandler",
+            "@RestControllerAdvice",
+            "@ResponseStatus"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of @RequestParam annotation?",
+        options: [
+            "To extract query parameters from the request",
+            "To map path variables",
+            "To define a bean",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to map path variables in Spring MVC?",
+        options: [
+            "@PathVariable",
+            "@RequestParam",
+            "@RequestBody",
+            "@ResponseBody"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of @ComponentScan annotation?",
+        options: [
+            "To specify the packages to scan for annotated components",
+            "To define a bean",
+            "To create a REST endpoint",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of @ResponseBody annotation?",
+        options: [
+            "To indicate that the return value should be bound to the web response body",
+            "To map path variables",
+            "To define a bean",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to inject HTTP request body into a method parameter?",
+        options: [
+            "@RequestBody",
+            "@ResponseBody",
+            "@RequestParam",
+            "@PathVariable"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of @Repository annotation?",
+        options: [
+            "To indicate that the class is a DAO component",
+            "To define a bean",
+            "To create a REST endpoint",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of @Primary annotation?",
+        options: [
+            "To indicate that a bean should be given preference when multiple candidates are qualified",
+            "To define a bean",
+            "To create a REST endpoint",
+            "To inject dependencies"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which annotation is used to schedule tasks in Spring?",
+        options: [
+            "@Scheduled",
+            "@Async",
+            "@EnableScheduling",
+            "@Task"
+        ],
+        answer: 0
+    },
+
+    // 20 Django Advanced Questions
+    {
+        question: "What is a Django middleware?",
+        options: [
+            "A framework of hooks into Django's request/response processing",
+            "A type of model",
+            "A template tag",
+            "A database migration"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to create a new Django app?",
+        options: [
+            "python manage.py startapp appname",
+            "python manage.py newapp appname",
+            "django-admin createapp appname",
+            "django-admin startproject appname"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of @login_required decorator in Django?",
+        options: [
+            "To restrict access to authenticated users only",
+            "To create a login form",
+            "To define a model",
+            "To create a template"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a Django QuerySet?",
+        options: [
+            "A collection of database queries",
+            "A type of model",
+            "A template tag",
+            "A middleware"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which file is used for URL routing in a Django app?",
+        options: [
+            "urls.py",
+            "routes.py",
+            "views.py",
+            "models.py"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of Django's ORM?",
+        options: [
+            "To interact with the database using Python code",
+            "To render templates",
+            "To handle HTTP requests",
+            "To manage static files"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the 'makemigrations' command?",
+        options: [
+            "To create new database migrations based on model changes",
+            "To apply migrations to the database",
+            "To create a new app",
+            "To start the development server"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which setting is used to define static files directory in Django?",
+        options: [
+            "STATICFILES_DIRS",
+            "MEDIA_ROOT",
+            "TEMPLATES_DIRS",
+            "STATIC_ROOT"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of the 'render' function in Django views?",
+        options: [
+            "To render a template with a context",
+            "To redirect to another URL",
+            "To handle form submissions",
+            "To create a model"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to apply migrations in Django?",
+        options: [
+            "python manage.py migrate",
+            "python manage.py makemigrations",
+            "python manage.py runserver",
+            "python manage.py collectstatic"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of the 'superuser' in Django?",
+        options: [
+            "To provide admin access to the Django admin site",
+            "To create a new app",
+            "To manage static files",
+            "To handle HTTP requests"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is a Django model?",
+        options: [
+            "A Python class that defines the structure of database tables",
+            "A template tag",
+            "A middleware",
+            "A static file"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which decorator is used for class-based views in Django?",
+        options: [
+            "@method_decorator",
+            "@login_required",
+            "@csrf_exempt",
+            "@require_POST"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'reverse' function in Django?",
+        options: [
+            "To get the URL of a view by its name",
+            "To reverse a string",
+            "To reverse a list",
+            "To reverse a queryset"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'csrf_token' in Django templates?",
+        options: [
+            "To protect against Cross-Site Request Forgery attacks",
+            "To create a new user",
+            "To handle static files",
+            "To manage database migrations"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which command is used to create a superuser in Django?",
+        options: [
+            "python manage.py createsuperuser",
+            "python manage.py newuser",
+            "python manage.py adduser",
+            "python manage.py superuser"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'get_object_or_404' in Django?",
+        options: [
+            "To retrieve an object or return a 404 error if not found",
+            "To create a new object",
+            "To delete an object",
+            "To update an object"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'MEDIA_ROOT' in Django settings?",
+        options: [
+            "To define the directory for user-uploaded files",
+            "To define the directory for static files",
+            "To define the database location",
+            "To define the template directory"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the use of 'prefetch_related' in Django ORM?",
+        options: [
+            "To optimize database queries by prefetching related objects",
+            "To create a new model",
+            "To render a template",
+            "To handle form submissions"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the purpose of 'signals' in Django?",
+        options: [
+            "To allow decoupled applications to get notified when certain actions occur",
+            "To send HTTP requests",
+            "To manage static files",
+            "To create database migrations"
+        ],
+        answer: 0
+    }
+];
+
+let currentQuestion = 0;
+let userAnswers = Array(questions.length).fill(null);
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    const quizContent = document.getElementById('quiz-content');
+    quizContent.innerHTML = `
+        <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+        <div class="question-text">${q.question}</div>
+        <ul class="options">
+            ${q.options.map((opt, idx) => `
+                <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                    ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                </li>
+            `).join('')}
+        </ul>
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+            ${currentQuestion === questions.length - 1
+                ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+            }
+        </div>
+    `;
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.onclick = function() {
+            const idx = Number(this.getAttribute('data-idx'));
+            userAnswers[currentQuestion] = idx;
+            renderQuestion();
+        };
+    });
+
+    document.getElementById('prev-btn').onclick = () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion();
+        }
+    };
+
+    if (currentQuestion < questions.length - 1) {
+        document.getElementById('next-btn').onclick = () => {
+            if (userAnswers[currentQuestion] !== null) {
+                currentQuestion++;
+                renderQuestion();
+            }
+        };
+    } else {
+        document.getElementById('submit-btn').onclick = showResultWithFeedback;
+    }
+}
+
+function showResultWithFeedback() {
+    let score = 0;
+    let mistaken = [];
+    userAnswers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) {
+            score++;
+        } else {
+            mistaken.push(idx);
+        }
+    });
+
+    let feedback = "";
+    if (mistaken.length > 0) {
+        feedback = `<div style="margin-top:1.5rem;text-align:left;">
+            <strong>Review your mistakes:</strong>
+            <ul style="margin-top:0.5rem;">` +
+            mistaken.map(idx => `
+                <li>
+                    <b>Q${idx + 1}:</b> ${questions[idx].question}<br>
+                    <span style="color:#28a745;">Correct: ${questions[idx].options[questions[idx].answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                    <br>
+                    <span style="color:#888;font-size:0.97em;">${explanations[idx]}</span>
+                </li>
+            `).join('') +
+            `</ul>
+            </div>
+            <div style="margin-top:1rem;">
+                <strong>Show all questions and answers:</strong>
+                <ul style="margin-top:0.5rem;">
+                    ${questions.map((q, idx) => `
+                        <li style="margin-bottom:0.7em;">
+                            <b>Q${idx + 1}:</b> ${q.question}<br>
+                            <span style="color:#28a745;">Answer: ${q.options[q.answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>`;
+    }
+
+    document.getElementById('quiz-content').innerHTML = `
+        <div class="result">
+            <div style="font-size:2.1rem;font-weight:700;margin-bottom:0.7rem;">
+            Your Score: ${score} / ${questions.length}
+            </div>
+            <button class="nav-btn" style="margin-bottom:1.2rem;" onclick="location.reload()">Try Again</button>
+            ${feedback}
+        </div>
+    `;
+}
+renderQuestion();
+</script>
+</html>

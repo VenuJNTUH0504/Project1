@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Text Formatting Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .example-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .tag-example {
+            color: #e74c3c;
+            font-family: 'Courier New', monospace;
+            background-color: #f7f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .live-example {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Text Formatting Guide</h1>
+
+        <h2>Basic Text Formatting</h2>
+        <p>HTML provides various elements for formatting text to enhance readability and emphasize content. These formatting options help create visually appealing and well-structured documents.</p>
+
+        <h2>Bold Text</h2>
+        <p>There are two ways to make text bold in HTML: the <tag-example>&lt;strong&gt;</tag-example> tag and the <tag-example>&lt;b&gt;</tag-example> tag. The <tag-example>&lt;strong&gt;</tag-example> tag is semantic and indicates strong importance, while <tag-example>&lt;b&gt;</tag-example> is purely stylistic.</p>
+        <div class="example-box">
+            <p>Code: <tag-example>&lt;strong&gt;Important text&lt;/strong&gt;</tag-example></p>
+            <div class="live-example">
+                Result: <strong>Important text</strong>
+            </div>
+        </div>
+
+        <h2>Italic Text</h2>
+        <p>For italic text, you can use either the <tag-example>&lt;em&gt;</tag-example> tag for emphasis or the <tag-example>&lt;i&gt;</tag-example> tag for stylistic purposes. The <tag-example>&lt;em&gt;</tag-example> tag is preferred when the text needs to be emphasized semantically.</p>
+        <div class="example-box">
+            <p>Code: <tag-example>&lt;em&gt;Emphasized text&lt;/em&gt;</tag-example></p>
+            <div class="live-example">
+                Result: <em>Emphasized text</em>
+            </div>
+        </div>
+
+        <h2>Underlined Text</h2>
+        <p>The <tag-example>&lt;u&gt;</tag-example> tag is used to underline text. However, it's important to note that underlining text should be used sparingly as it can be confused with hyperlinks.</p>
+        <div class="example-box">
+            <p>Code: <tag-example>&lt;u&gt;Underlined text&lt;/u&gt;</tag-example></p>
+            <div class="live-example">
+                Result: <u>Underlined text</u>
+            </div>
+        </div>
+
+        <h2>Strikethrough Text</h2>
+        <p>The <tag-example>&lt;del&gt;</tag-example> or <tag-example>&lt;s&gt;</tag-example> tags can be used to create strikethrough text, indicating that content has been deleted or is no longer valid.</p>
+        <div class="example-box">
+            <p>Code: <tag-example>&lt;del&gt;Deleted text&lt;/del&gt;</tag-example></p>
+            <div class="live-example">
+                Result: <del>Deleted text</del>
+            </div>
+        </div>
+
+        <h2>Subscript and Superscript</h2>
+        <p>Use <tag-example>&lt;sub&gt;</tag-example> for subscript and <tag-example>&lt;sup&gt;</tag-example> for superscript text. These are commonly used in mathematical equations or chemical formulas.</p>
+        <div class="example-box">
+            <p>Code: H<tag-example>&lt;sub&gt;2&lt;/sub&gt;</tag-example>O and X<tag-example>&lt;sup&gt;2&lt;/sup&gt;</tag-example></p>
+            <div class="live-example">
+                Result: H<sub>2</sub>O and X<sup>2</sup>
+            </div>
+        </div>
+
+        <h2>Highlighted Text</h2>
+        <p>The <tag-example>&lt;mark&gt;</tag-example> tag is used to highlight text, similar to using a highlighter pen on paper.</p>
+        <div class="example-box">
+            <p>Code: <tag-example>&lt;mark&gt;Highlighted text&lt;/mark&gt;</tag-example></p>
+            <div class="live-example">
+                Result: <mark>Highlighted text</mark>
+            </div>
+        </div>
+
+        <h2>Text Alignment</h2>
+        <p>While text alignment is typically handled with CSS, HTML provides basic alignment capabilities through the style attribute or CSS classes. Text can be aligned left, right, center, or justified.</p>
+        <div class="example-box">
+            <p>Code: <tag-example>&lt;p style="text-align: center"&gt;Centered text&lt;/p&gt;</tag-example></p>
+            <div class="live-example" style="text-align: center">
+                Result: Centered text
+            </div>
+        </div>
+
+        <h2>Best Practices</h2>
+        <p>When formatting text in HTML, remember these key points:</p>
+        <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <li>Use semantic elements when possible (<tag-example>&lt;strong&gt;</tag-example> over <tag-example>&lt;b&gt;</tag-example>)</li>
+            <li>Avoid overusing text formatting</li>
+            <li>Consider accessibility when choosing formatting options</li>
+            <li>Use CSS for styling when possible</li>
+            <li>Maintain consistency throughout your document</li>
+        </ul>
+
+        <a href="htmlhome.html" class="back-button">Back</a>
+    </div>
+</body>
+</html> 

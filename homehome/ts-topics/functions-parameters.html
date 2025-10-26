@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functions & Parameters - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Functions & Parameters in TypeScript</h1>
+        
+        <p>Functions are the fundamental building blocks of any application in TypeScript. TypeScript enhances JavaScript functions with type annotations for parameters and return values, making your code more robust and maintainable.</p>
+        
+        <h2>Function Declarations</h2>
+        
+        <p>There are several ways to declare functions in TypeScript:</p>
+        
+        <h3>Named Functions</h3>
+        
+        <pre><code>// Named function with type annotations
+function add(x: number, y: number): number {
+    return x + y;
+}
+
+// Call the function
+let result = add(5, 3);  // result: 8</code></pre>
+        
+        <h3>Anonymous Functions</h3>
+        
+        <pre><code>// Anonymous function assigned to a variable
+let add = function(x: number, y: number): number {
+    return x + y;
+};
+
+// Call the function
+let result = add(5, 3);  // result: 8</code></pre>
+        
+        <h3>Arrow Functions</h3>
+        
+        <pre><code>// Arrow function with type annotations
+let add = (x: number, y: number): number => {
+    return x + y;
+};
+
+// Shorter syntax for simple return
+let multiply = (x: number, y: number): number => x * y;
+
+// Call the functions
+let sum = add(5, 3);       // sum: 8
+let product = multiply(5, 3);  // product: 15</code></pre>
+        
+        <h2>Function Type Annotations</h2>
+        
+        <p>TypeScript allows you to specify the types of function parameters and return values:</p>
+        
+        <pre><code>// Function with parameter and return type annotations
+function greet(name: string): string {
+    return `Hello, ${name}!`;
+}
+
+// Function type annotation for a variable
+let sayHello: (name: string) => string;
+
+// Assign a compatible function
+sayHello = function(name: string) {
+    return `Hello, ${name}!`;
+};
+
+// Alternative arrow function syntax
+sayHello = (name: string) => `Hello, ${name}!`;</code></pre>
+        
+        <div class="tip-box">
+            <h4>Type Inference for Return Types</h4>
+            <p>TypeScript can often infer the return type of a function, but it's a good practice to explicitly specify it for better documentation and to catch errors if the implementation changes:</p>
+            <pre><code>// Return type is inferred as number
+function add(x: number, y: number) {
+    return x + y;
+}
+
+// Explicitly specified return type
+function add(x: number, y: number): number {
+    return x + y;
+}</code></pre>
+        </div>
+        
+        <h2>Optional Parameters</h2>
+        
+        <p>In TypeScript, you can make function parameters optional by adding a question mark (?) after the parameter name:</p>
+        
+        <pre><code>// Optional parameter (lastName is optional)
+function buildName(firstName: string, lastName?: string): string {
+    if (lastName) {
+        return `${firstName} ${lastName}`;
+    } else {
+        return firstName;
+    }
+}
+
+// Both calls are valid
+let result1 = buildName("John");          // "John"
+let result2 = buildName("John", "Doe");   // "John Doe"</code></pre>
+        
+        <div class="warning-box">
+            <h4>Important Note</h4>
+            <p>Optional parameters must come after required parameters. The following is not allowed:</p>
+            <pre><code>// Error: Required parameter cannot follow an optional parameter
+function buildName(firstName?: string, lastName: string): string {
+    // ...
+}</code></pre>
+        </div>
+        
+        <h2>Default Parameters</h2>
+        
+        <p>You can provide default values for parameters, which will be used if the parameter is not provided or is undefined:</p>
+        
+        <pre><code>// Default parameter (greeting has a default value)
+function greet(name: string, greeting: string = "Hello"): string {
+    return `${greeting}, ${name}!`;
+}
+
+// Both calls are valid
+let result1 = greet("John");              // "Hello, John!"
+let result2 = greet("John", "Hi");        // "Hi, John!"
+let result3 = greet("John", undefined);   // "Hello, John!"</code></pre>
+        
+        <h2>Rest Parameters</h2>
+        
+        <p>Rest parameters allow you to work with multiple parameters as a group. In TypeScript, you can type rest parameters as arrays:</p>
+        
+        <pre><code>// Rest parameter (items is an array of strings)
+function buildList(firstItem: string, ...restItems: string[]): string {
+    return firstItem + " " + restItems.join(" ");
+}
+
+// Call with multiple arguments
+let list = buildList("Apple", "Banana", "Cherry");  // "Apple Banana Cherry"</code></pre>
+        
+        <h2>Function Overloads</h2>
+        
+        <p>TypeScript allows you to specify multiple function types for the same function, known as function overloads. This is useful when a function can accept different types of arguments:</p>
+        
+        <pre><code>// Function overload signatures
+function getItem(id: number): Item;
+function getItem(name: string): Item;
+
+// Implementation signature (must be compatible with all overloads)
+function getItem(idOrName: number | string): Item {
+    if (typeof idOrName === "number") {
+        // Find item by id
+        return database.getItemById(idOrName);
+    } else {
+        // Find item by name
+        return database.getItemByName(idOrName);
+    }
+}</code></pre>
+        
+        <div class="tip-box">
+            <h4>Overload Resolution</h4>
+            <p>When TypeScript resolves overloads, it picks the first matching overload going from top to bottom. Put more specific overloads before less specific ones.</p>
+        </div>
+        
+        <h2>Generic Functions</h2>
+        
+        <p>Generic functions allow you to create functions that work with a variety of types rather than a single type:</p>
+        
+        <pre><code>// Generic function
+function identity&lt;T&gt;(arg: T): T {
+    return arg;
+}
+
+// Call with explicit type argument
+let output1 = identity&lt;string&gt;("hello");  // Type: string
+
+// Call with inferred type argument
+let output2 = identity(42);  // Type: number</code></pre>
+        
+        <p>Generic functions are particularly useful for creating reusable components:</p>
+        
+        <pre><code>// Generic function with constraints
+function getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K): T[K] {
+    return obj[key];
+}
+
+let person = { name: "John", age: 30 };
+let name = getProperty(person, "name");  // Type: string
+let age = getProperty(person, "age");    // Type: number
+// let invalid = getProperty(person, "job");  // Error: "job" is not in keyof person</code></pre>
+        
+        <h2>Contextual Typing</h2>
+        
+        <p>TypeScript can infer the types of function parameters based on the context in which the function is used:</p>
+        
+        <pre><code>// Array.forEach provides context for the callback function
+let names = ["Alice", "Bob", "Charlie"];
+
+// Parameter 'name' is inferred to be of type string
+names.forEach(function(name) {
+    console.log(name.toUpperCase());  // No error, TypeScript knows 'name' is a string
+});</code></pre>
+        
+        <h2>Void Type</h2>
+        
+        <p>The <code>void</code> type is used to indicate that a function doesn't return a value:</p>
+        
+        <pre><code>// Function with void return type
+function logMessage(message: string): void {
+    console.log(message);
+    // No return statement needed
+}
+
+// Even if there is a return statement with no value, the return type is void
+function doSomething(): void {
+    // Do something...
+    return;  // Valid
+    // return "value";  // Error: Type 'string' is not assignable to type 'void'
+}</code></pre>
+        
+        <h2>Never Type</h2>
+        
+        <p>The <code>never</code> type represents values that never occur. It is used for functions that never return (e.g., functions that throw exceptions or have infinite loops):</p>
+        
+        <pre><code>// Function that always throws an exception
+function throwError(message: string): never {
+    throw new Error(message);
+}
+
+// Function with an infinite loop
+function infiniteLoop(): never {
+    while (true) {
+        // Some code...
+    }
+}</code></pre>
+        
+        <h2>this Parameters</h2>
+        
+        <p>TypeScript allows you to specify the type of <code>this</code> in function calls:</p>
+        
+        <pre><code>interface User {
+    id: number;
+    name: string;
+    updateName(newName: string): void;
+}
+
+function updateUser(this: User, newName: string): void {
+    this.name = newName;
+}
+
+let user: User = {
+    id: 1,
+    name: "John",
+    updateName: updateUser
+};
+
+user.updateName("Jane");  // Works
+// updateUser("Jane");  // Error: 'this' context is required</code></pre>
+        
+        <h2>Function Type Compatibility</h2>
+        
+        <p>TypeScript uses structural typing for function compatibility. A function is compatible with another if its parameters are compatible (contravariant) and its return type is compatible (covariant):</p>
+        
+        <pre><code>// Function type compatibility
+let func1 = (a: number) => 0;
+let func2 = (b: number, s: string) => 0;
+
+// func2 can be assigned to func1, but not vice versa
+func1 = func2;  // Error: func2 has more required parameters
+func2 = func1;  // OK: Extra parameters are ignored when assigning to func2</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html" target="_blank">TypeScript Handbook: Functions</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/more-on-functions.html" target="_blank">TypeScript Handbook: More on Functions</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/generics.html" target="_blank">TypeScript Handbook: Generics</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads" target="_blank">TypeScript Handbook: Function Overloads</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

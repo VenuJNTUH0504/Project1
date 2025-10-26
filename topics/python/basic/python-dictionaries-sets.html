@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Dictionaries and Sets - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Dictionaries and Sets</h1>
+            <p>Understanding Python's mapping and set data types</p>
+        </header>
+
+        <div class="card">
+            <section id="dictionaries">
+                <h2>Dictionaries</h2>
+                <p>Dictionaries are mutable mappings of key-value pairs:</p>
+                <pre><code class="language-python"># Creating dictionaries
+person = {
+    "name": "John",
+    "age": 30,
+    "city": "New York"
+}
+
+# Accessing values
+print(person["name"])  # Output: John
+print(person.get("age"))  # Output: 30
+
+# Modifying dictionaries
+person["age"] = 31  # Update value
+person["job"] = "Engineer"  # Add new key-value pair
+del person["city"]  # Remove key-value pair
+
+# Dictionary methods
+keys = person.keys()  # Get all keys
+values = person.values()  # Get all values
+items = person.items()  # Get all key-value pairs</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="dictionary-methods">
+                <h2>Dictionary Methods</h2>
+                <p>Common dictionary operations and methods:</p>
+                <pre><code class="language-python"># Dictionary methods
+person = {"name": "John", "age": 30}
+
+# Checking existence
+if "name" in person:
+    print("Name exists")
+
+# Getting with default
+age = person.get("age", 0)  # Returns 0 if key doesn't exist
+
+# Updating dictionary
+person.update({"city": "New York", "job": "Engineer"})
+
+# Removing items
+person.pop("age")  # Remove and return value
+person.popitem()  # Remove and return last item
+person.clear()  # Remove all items
+
+# Dictionary comprehension
+squares = {x: x**2 for x in range(5)}
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="sets">
+                <h2>Sets</h2>
+                <p>Sets are mutable collections of unique elements:</p>
+                <pre><code class="language-python"># Creating sets
+fruits = {"apple", "banana", "cherry"}
+numbers = {1, 2, 3, 4, 5}
+
+# Adding elements
+fruits.add("orange")
+fruits.update(["grape", "kiwi"])
+
+# Removing elements
+fruits.remove("apple")  # Raises error if not found
+fruits.discard("banana")  # No error if not found
+fruits.pop()  # Remove and return random element
+
+# Set operations
+set1 = {1, 2, 3}
+set2 = {3, 4, 5}
+
+union = set1 | set2  # {1, 2, 3, 4, 5}
+intersection = set1 & set2  # {3}
+difference = set1 - set2  # {1, 2}
+symmetric_diff = set1 ^ set2  # {1, 2, 4, 5}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="set-methods">
+                <h2>Set Methods</h2>
+                <p>Common set operations and methods:</p>
+                <pre><code class="language-python"># Set methods
+set1 = {1, 2, 3}
+set2 = {3, 4, 5}
+
+# Set operations
+set1.union(set2)  # Returns new set with all elements
+set1.intersection(set2)  # Returns new set with common elements
+set1.difference(set2)  # Returns new set with elements in set1 but not set2
+set1.symmetric_difference(set2)  # Returns new set with elements in either set but not both
+
+# Set comparisons
+set1.issubset(set2)  # True if all elements of set1 are in set2
+set1.issuperset(set2)  # True if all elements of set2 are in set1
+set1.isdisjoint(set2)  # True if sets have no common elements
+
+# Set comprehension
+squares = {x**2 for x in range(10)}
+evens = {x for x in range(20) if x % 2 == 0}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="dictionary-vs-set">
+                <h2>Dictionaries vs Sets</h2>
+                <p>Key differences between dictionaries and sets:</p>
+                <ul>
+                    <li>Dictionaries store key-value pairs, sets store unique elements</li>
+                    <li>Dictionaries use curly braces with colons <code>{key: value}</code>, sets use curly braces <code>{element}</code></li>
+                    <li>Dictionaries are ordered (Python 3.7+), sets are unordered</li>
+                    <li>Dictionaries are mutable, sets are mutable</li>
+                    <li>Dictionaries are used for mapping relationships, sets for unique collections</li>
+                    <li>Both use hash tables for efficient lookups</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="nested-structures">
+                <h2>Nested Structures</h2>
+                <p>Working with nested dictionaries and sets:</p>
+                <pre><code class="language-python"># Nested dictionaries
+company = {
+    "name": "Tech Corp",
+    "departments": {
+        "engineering": {"head": "John", "size": 50},
+        "marketing": {"head": "Sarah", "size": 20}
+    }
+}
+
+# Accessing nested values
+print(company["departments"]["engineering"]["head"])  # Output: John
+
+# Dictionary of sets
+student_courses = {
+    "Alice": {"Math", "Physics", "Chemistry"},
+    "Bob": {"History", "English", "Math"}
+}
+
+# Set of dictionaries
+unique_people = {
+    {"name": "John", "age": 30},
+    {"name": "Sarah", "age": 25}
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use dictionaries for key-value relationships</li>
+                    <li>Use sets for unique collections and set operations</li>
+                    <li>Choose appropriate keys for dictionaries</li>
+                    <li>Use dictionary comprehension for transformations</li>
+                    <li>Consider using sets for membership testing</li>
+                    <li>Document complex nested structures</li>
+                    <li>Use appropriate data structures for the task</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

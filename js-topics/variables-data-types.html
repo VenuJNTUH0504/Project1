@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variables & Data Types - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Variables & Data Types</h1>
+        
+        <p>JavaScript has several data types that are used to store different kinds of values. Understanding these types is fundamental to writing effective JavaScript code.</p>
+        
+        <h2>Primitive Data Types</h2>
+        <ul>
+            <li><strong>String</strong>: Represents textual data. Example: <code>'Hello'</code>, <code>"World"</code></li>
+            <li><strong>Number</strong>: Represents numeric values. Example: <code>42</code>, <code>3.14</code></li>
+            <li><strong>Boolean</strong>: Represents logical values. Example: <code>true</code>, <code>false</code></li>
+            <li><strong>Undefined</strong>: Represents a variable that has been declared but not assigned a value. Example: <code>let x;</code></li>
+            <li><strong>Null</strong>: Represents the intentional absence of any object value. Example: <code>let empty = null;</code></li>
+            <li><strong>Symbol</strong> (ES6): Represents a unique identifier. Example: <code>Symbol('description')</code></li>
+            <li><strong>BigInt</strong> (ES2020): Represents integers larger than the Number type can handle. Example: <code>9007199254740991n</code></li>
+        </ul>
+        
+        <h2>Reference Types</h2>
+        <ul>
+            <li><strong>Object</strong>: Collections of key-value pairs. Example: <code>{ name: 'John', age: 30 }</code></li>
+            <li><strong>Array</strong>: Ordered collections of values. Example: <code>[1, 2, 3, 4]</code></li>
+            <li><strong>Function</strong>: Callable objects. Example: <code>function greet() { return 'Hello'; }</code></li>
+            <li><strong>Date</strong>: Represents dates and times. Example: <code>new Date()</code></li>
+            <li><strong>RegExp</strong>: Regular expressions for pattern matching. Example: <code>/pattern/</code></li>
+        </ul>
+        
+        <h2>Variable Declaration</h2>
+        <p>Variables in JavaScript can be declared using:</p>
+        <ul>
+            <li><code>var</code>: Function-scoped, can be redeclared and updated. Not recommended in modern JavaScript.</li>
+            <li><code>let</code>: Block-scoped, can be updated but not redeclared within the same scope.</li>
+            <li><code>const</code>: Block-scoped, cannot be updated or redeclared. The value is constant.</li>
+        </ul>
+        
+        <div class="examples">
+            <h3>Examples</h3>
+            <pre><code>// Variable declarations
+let name = 'John';
+const age = 30;
+var isStudent = true;
+
+// Primitive types
+const greeting = 'Hello, World!';  // String
+const pi = 3.14159;                // Number
+const isActive = false;            // Boolean
+let undefinedVar;                  // Undefined
+const emptyValue = null;           // Null
+const uniqueId = Symbol('id');     // Symbol
+const bigNumber = 1234567890123456789012345n; // BigInt
+
+// Reference types
+const person = {                   // Object
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 30
+};
+
+const numbers = [1, 2, 3, 4, 5];   // Array
+
+function add(a, b) {               // Function
+    return a + b;
+}
+
+const today = new Date();          // Date
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // RegExp
+
+// Type checking
+console.log(typeof greeting);      // "string"
+console.log(typeof pi);            // "number"
+console.log(typeof isActive);      // "boolean"
+console.log(typeof undefinedVar);  // "undefined"
+console.log(typeof emptyValue);    // "object" (historical bug in JavaScript)
+console.log(typeof uniqueId);      // "symbol"
+console.log(typeof bigNumber);     // "bigint"
+console.log(typeof person);        // "object"
+console.log(typeof numbers);       // "object"
+console.log(typeof add);           // "function"
+console.log(typeof today);         // "object"
+console.log(typeof emailPattern);  // "object"
+
+// Dynamic typing
+let dynamicVar = 42;
+console.log(typeof dynamicVar);    // "number"
+dynamicVar = "Now I'm a string";
+console.log(typeof dynamicVar);    // "string"
+</code></pre>
+        </div>
+        
+        <p>JavaScript is a dynamically typed language, which means variables can change types during runtime. This flexibility can be powerful but also requires careful handling to avoid unexpected behavior.</p>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures" target="_blank">MDN: JavaScript Data Types and Data Structures</a></li>
+                <li><a href="https://javascript.info/variables" target="_blank">JavaScript.info: Variables</a></li>
+                <li><a href="https://www.w3schools.com/js/js_datatypes.asp" target="_blank">W3Schools: JavaScript Data Types</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

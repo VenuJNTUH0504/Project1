@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Variables and Data Types - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .data-type-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-type-table th, .data-type-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .data-type-table th {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .data-type-table tr:hover {
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Variables and Data Types</h1>
+            <p>Understanding variables and data types in Python</p>
+        </header>
+
+        <div class="card">
+            <section id="variables">
+                <h2>Variables in Python</h2>
+                <p>Variables are containers for storing data values. In Python, variables are created when you assign a value to them:</p>
+                <pre><code class="language-python"># Variable assignment
+name = "John"
+age = 25
+height = 1.75
+is_student = True</code></pre>
+                <div class="note">
+                    <p>Python is dynamically typed, which means you don't need to declare the type of a variable when you create it.</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="data-types">
+                <h2>Basic Data Types</h2>
+                <table class="data-type-table">
+                    <thead>
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>int</code></td>
+                            <td>Integer numbers</td>
+                            <td><code>42</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>float</code></td>
+                            <td>Floating-point numbers</td>
+                            <td><code>3.14</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>str</code></td>
+                            <td>Text strings</td>
+                            <td><code>"Hello"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>bool</code></td>
+                            <td>Boolean values</td>
+                            <td><code>True</code> or <code>False</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="type-conversion">
+                <h2>Type Conversion</h2>
+                <p>Python provides built-in functions to convert between different data types:</p>
+                <pre><code class="language-python"># Converting between types
+number = 42
+float_number = float(number)  # Convert to float
+string_number = str(number)   # Convert to string
+boolean_value = bool(number)  # Convert to boolean</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="variable-naming">
+                <h2>Variable Naming Rules</h2>
+                <ul>
+                    <li>Variable names can only contain letters, numbers, and underscores</li>
+                    <li>Variable names cannot start with a number</li>
+                    <li>Variable names are case-sensitive</li>
+                    <li>Variable names should be descriptive and meaningful</li>
+                    <li>Use snake_case for variable names (e.g., <code>user_name</code>)</li>
+                </ul>
+                <div class="warning">
+                    <p>Avoid using Python keywords as variable names (e.g., <code>if</code>, <code>for</code>, <code>while</code>).</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="multiple-assignment">
+                <h2>Multiple Assignment</h2>
+                <p>Python allows you to assign values to multiple variables in one line:</p>
+                <pre><code class="language-python"># Multiple assignment
+x, y, z = 1, 2, 3
+
+# Swapping variables
+a = 5
+b = 10
+a, b = b, a  # Swap values</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="constants">
+                <h2>Constants</h2>
+                <p>While Python doesn't have built-in constants, it's a convention to use uppercase letters for variables that should be treated as constants:</p>
+                <pre><code class="language-python"># Constants (convention)
+PI = 3.14159
+GRAVITY = 9.81
+MAX_CONNECTIONS = 100</code></pre>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

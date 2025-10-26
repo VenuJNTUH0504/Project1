@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Variables</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js"></script>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f9fa;
+            --code-border: #e9ecef;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2a2a2a;
+            --code-border: #3a3a3a;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--code-border);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+
+        .example-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--code-bg);
+            border-radius: 10px;
+        }
+
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .note {
+            background-color: rgba(255, 243, 205, 0.3);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background-color: rgba(248, 215, 218, 0.3);
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background-color: rgba(209, 231, 221, 0.3);
+            border-left: 4px solid #198754;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--code-border);
+        }
+
+        th {
+            background-color: var(--code-bg);
+        }
+
+        .editor-container {
+            margin: 20px 0;
+        }
+
+        .CodeMirror {
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+    <div class="container">
+        <a href="javascript.html" class="back-button">← Back to JavaScript Home</a>
+        
+        <div class="header">
+            <h1>JavaScript Variables</h1>
+        </div>
+
+        <section>
+            <h2>What are Variables?</h2>
+            <p>Variables are containers for storing data values. In JavaScript, variables are used to store data that can be manipulated and referenced throughout your code.</p>
+            
+            <div class="note">
+                <strong>Note:</strong> JavaScript is a dynamically typed language, which means you don't need to specify the data type of a variable when you declare it.
+            </div>
+        </section>
+
+        <section>
+            <h2>Variable Declaration</h2>
+            <p>In JavaScript, there are three ways to declare variables:</p>
+            
+            <h3>1. Using <code>var</code> (older method)</h3>
+            <div class="code-block">
+                <pre>var name = "John";
+var age = 30;
+var isStudent = true;</pre>
+            </div>
+            
+            <h3>2. Using <code>let</code> (introduced in ES6)</h3>
+            <div class="code-block">
+                <pre>let name = "John";
+let age = 30;
+let isStudent = true;</pre>
+            </div>
+            
+            <h3>3. Using <code>const</code> (for constants, introduced in ES6)</h3>
+            <div class="code-block">
+                <pre>const PI = 3.14159;
+const MAX_SIZE = 100;
+const USER_ROLE = "admin";</pre>
+            </div>
+            
+            <div class="tip">
+                <strong>Best Practice:</strong> In modern JavaScript, it's recommended to use <code>const</code> by default, and only use <code>let</code> when you know the variable's value will change. Avoid using <code>var</code> in new code.
+            </div>
+        </section>
+
+        <section>
+            <h2>Variable Scope</h2>
+            <p>The scope of a variable determines where in your code the variable is accessible.</p>
+            
+            <h3>Global Scope</h3>
+            <p>Variables declared outside of any function or block have global scope and can be accessed from anywhere in the code.</p>
+            <div class="code-block">
+                <pre>let globalVar = "I am global";
+
+function testFunction() {
+    console.log(globalVar); // Accessible here
+}
+
+console.log(globalVar); // Accessible here too</pre>
+            </div>
+            
+            <h3>Function Scope</h3>
+            <p>Variables declared inside a function are only accessible within that function.</p>
+            <div class="code-block">
+                <pre>function testFunction() {
+    let functionVar = "I am function-scoped";
+    console.log(functionVar); // Accessible here
+}
+
+// console.log(functionVar); // Error: functionVar is not defined</pre>
+            </div>
+            
+            <h3>Block Scope</h3>
+            <p>Variables declared with <code>let</code> and <code>const</code> inside a block (enclosed by curly braces) are only accessible within that block.</p>
+            <div class="code-block">
+                <pre>if (true) {
+    let blockVar = "I am block-scoped";
+    const BLOCK_CONSTANT = 123;
+    console.log(blockVar); // Accessible here
+    console.log(BLOCK_CONSTANT); // Accessible here
+}
+
+// console.log(blockVar); // Error: blockVar is not defined
+// console.log(BLOCK_CONSTANT); // Error: BLOCK_CONSTANT is not defined</pre>
+            </div>
+            
+            <div class="warning">
+                <strong>Important:</strong> Variables declared with <code>var</code> are not block-scoped. They are either function-scoped or global.
+            </div>
+        </section>
+
+        <section>
+            <h2>Variable Hoisting</h2>
+            <p>Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope.</p>
+            
+            <h3>Hoisting with <code>var</code></h3>
+            <div class="code-block">
+                <pre>console.log(x); // Outputs: undefined (not an error)
+var x = 5;
+console.log(x); // Outputs: 5</pre>
+            </div>
+            <p>The above code behaves as if it was written like this:</p>
+            <div class="code-block">
+                <pre>var x; // Declaration is hoisted
+console.log(x); // Outputs: undefined
+x = 5; // Assignment stays in place
+console.log(x); // Outputs: 5</pre>
+            </div>
+            
+            <h3>Hoisting with <code>let</code> and <code>const</code></h3>
+            <div class="code-block">
+                <pre>// console.log(y); // Error: Cannot access 'y' before initialization
+let y = 10;
+console.log(y); // Outputs: 10</pre>
+            </div>
+            <p>Variables declared with <code>let</code> and <code>const</code> are hoisted but not initialized. The period between the start of the scope and the declaration is called the "temporal dead zone".</p>
+        </section>
+
+        <section>
+            <h2>Data Types in JavaScript</h2>
+            <p>JavaScript variables can hold different types of data:</p>
+            
+            <table>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>String</td>
+                    <td>Textual data</td>
+                    <td><code>let name = "John";</code></td>
+                </tr>
+                <tr>
+                    <td>Number</td>
+                    <td>Numeric data (integers and floating-point)</td>
+                    <td><code>let age = 30; let price = 19.99;</code></td>
+                </tr>
+                <tr>
+                    <td>Boolean</td>
+                    <td>Logical data (true/false)</td>
+                    <td><code>let isActive = true;</code></td>
+                </tr>
+                <tr>
+                    <td>Undefined</td>
+                    <td>Variable declared but not assigned a value</td>
+                    <td><code>let result;</code></td>
+                </tr>
+                <tr>
+                    <td>Null</td>
+                    <td>Intentional absence of any object value</td>
+                    <td><code>let user = null;</code></td>
+                </tr>
+                <tr>
+                    <td>Object</td>
+                    <td>Complex data structure</td>
+                    <td><code>let person = {name: "John", age: 30};</code></td>
+                </tr>
+                <tr>
+                    <td>Array</td>
+                    <td>Ordered list of values</td>
+                    <td><code>let colors = ["red", "green", "blue"];</code></td>
+                </tr>
+                <tr>
+                    <td>Symbol</td>
+                    <td>Unique and immutable primitive value</td>
+                    <td><code>let id = Symbol("id");</code></td>
+                </tr>
+                <tr>
+                    <td>BigInt</td>
+                    <td>Integers of arbitrary length</td>
+                    <td><code>let bigNumber = 1234567890123456789012345n;</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Variable Naming Rules</h2>
+            <ul>
+                <li>Variable names must start with a letter, underscore (_), or dollar sign ($)</li>
+                <li>Variable names cannot start with a number</li>
+                <li>Variable names can only contain letters, numbers, underscores, or dollar signs</li>
+                <li>Variable names are case-sensitive (<code>name</code> and <code>Name</code> are different variables)</li>
+                <li>Reserved words (like JavaScript keywords) cannot be used as variable names</li>
+            </ul>
+            
+            <div class="code-block">
+                <pre>// Valid variable names
+let name = "John";
+let _count = 5;
+let $price = 19.99;
+let firstName = "John";
+let last_name = "Doe";
+
+// Invalid variable names
+// let 1name = "John"; // Cannot start with a number
+// let my-var = 10; // Hyphens are not allowed
+// let function = "test"; // Reserved word</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Interactive Examples</h2>
+            
+            <h3>Example 1: Variable Declaration and Assignment</h3>
+            <div class="editor-container">
+                <textarea id="editor1">
+// Try running this code
+let message;
+console.log("Value of message:", message); // undefined
+
+message = "Hello, JavaScript!";
+console.log("Value of message:", message); // Hello, JavaScript!
+
+// Declare and assign in one step
+let username = "user123";
+console.log("Username:", username);
+
+// Constants
+const API_KEY = "abc123xyz";
+console.log("API Key:", API_KEY);
+
+// This would cause an error if uncommented
+// API_KEY = "new_key"; // Error: Assignment to constant variable
+</textarea>
+            </div>
+            
+            <h3>Example 2: Variable Scope</h3>
+            <div class="editor-container">
+                <textarea id="editor2">
+// Global variable
+let globalVar = "I am global";
+
+function scopeTest() {
+    // Function-scoped variable
+    let functionVar = "I am function-scoped";
+    
+    // Block scope
+    if (true) {
+        let blockVar = "I am block-scoped";
+        var varVariable = "I am function-scoped (var)";
+        
+        console.log("Inside block - blockVar:", blockVar);
+        console.log("Inside block - functionVar:", functionVar);
+        console.log("Inside block - globalVar:", globalVar);
+    }
+    
+    console.log("Inside function - functionVar:", functionVar);
+    console.log("Inside function - globalVar:", globalVar);
+    console.log("Inside function - varVariable:", varVariable);
+    
+    // This would cause an error if uncommented
+    // console.log("Inside function - blockVar:", blockVar); // Error: blockVar is not defined
+}
+
+scopeTest();
+console.log("Global scope - globalVar:", globalVar);
+
+// These would cause errors if uncommented
+// console.log("Global scope - functionVar:", functionVar); // Error
+// console.log("Global scope - blockVar:", blockVar); // Error
+// console.log("Global scope - varVariable:", varVariable); // Error
+</textarea>
+            </div>
+            
+            <h3>Example 3: Data Types</h3>
+            <div class="editor-container">
+                <textarea id="editor3">
+// String
+let name = "John Doe";
+console.log("Type of name:", typeof name);
+
+// Number
+let age = 30;
+let price = 19.99;
+console.log("Type of age:", typeof age);
+console.log("Type of price:", typeof price);
+
+// Boolean
+let isActive = true;
+console.log("Type of isActive:", typeof isActive);
+
+// Undefined
+let undefinedVar;
+console.log("Type of undefinedVar:", typeof undefinedVar);
+
+// Null
+let nullVar = null;
+console.log("Type of nullVar:", typeof nullVar); // Note: this outputs "object" (a known JavaScript quirk)
+
+// Object
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30
+};
+console.log("Type of person:", typeof person);
+console.log("Person object:", person);
+
+// Array (technically an object in JavaScript)
+let colors = ["red", "green", "blue"];
+console.log("Type of colors:", typeof colors);
+console.log("Is colors an array?", Array.isArray(colors));
+console.log("Colors array:", colors);
+
+// Symbol
+let id = Symbol("id");
+console.log("Type of id:", typeof id);
+
+// BigInt
+let bigNumber = 1234567890123456789012345n;
+console.log("Type of bigNumber:", typeof bigNumber);
+</textarea>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+
+        // Initialize CodeMirror editors
+        let editor1 = CodeMirror.fromTextArea(document.getElementById("editor1"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: false
+        });
+
+        let editor2 = CodeMirror.fromTextArea(document.getElementById("editor2"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: false
+        });
+
+        let editor3 = CodeMirror.fromTextArea(document.getElementById("editor3"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true,
+            readOnly: false
+        });
+    </script>
+</body>
+</html>

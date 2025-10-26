@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TypeScript Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">TypeScript Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "What is TypeScript?",
+            options: [
+                "A superset of JavaScript that adds static typing.",
+                "A CSS preprocessor.",
+                "A database language.",
+                "A JavaScript runtime."
+            ],
+            answer: 0
+        },
+        {
+            question: "Which file extension is used for TypeScript files?",
+            options: [
+                ".js",
+                ".ts",
+                ".tsx",
+                ".tjs"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you declare a variable with a string type in TypeScript?",
+            options: [
+                "let name: string;",
+                "string name;",
+                "let name = String;",
+                "var name: text;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which command compiles TypeScript to JavaScript?",
+            options: [
+                "tsc",
+                "tsrun",
+                "tscompile",
+                "tsbuild"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify an array of numbers in TypeScript?",
+            options: [
+                "number[]",
+                "Array<number>",
+                "Both A and B",
+                "num[]"
+            ],
+            answer: 2
+        },
+        {
+            question: "What does the 'any' type represent?",
+            options: [
+                "A variable can be of any type.",
+                "A variable must be a number.",
+                "A variable must be a string.",
+                "A variable must be an object."
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you define an interface in TypeScript?",
+            options: [
+                "interface Person { name: string; age: number; }",
+                "type Person = { name: string; age: number; }",
+                "Both A and B",
+                "class Person { name: string; age: number; }"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which of the following is NOT a valid TypeScript type?",
+            options: [
+                "number",
+                "string",
+                "boolean",
+                "integer"
+            ],
+            answer: 3
+        },
+        {
+            question: "How do you specify a function parameter as optional?",
+            options: [
+                "function foo(bar?: string) {}",
+                "function foo(optional bar: string) {}",
+                "function foo(bar: string?) {}",
+                "function foo(bar: string = optional) {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the output type of the following function? function add(a: number, b: number): number { return a + b; }",
+            options: [
+                "number",
+                "string",
+                "any",
+                "void"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you define a tuple type in TypeScript?",
+            options: [
+                "[string, number]",
+                "tuple<string, number>",
+                "Array<string, number>",
+                "{string, number}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which keyword is used to define a constant in TypeScript?",
+            options: [
+                "const",
+                "let",
+                "var",
+                "constant"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a function that returns nothing?",
+            options: [
+                "void",
+                "null",
+                "undefined",
+                "never"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the purpose of the 'never' type?",
+            options: [
+                "For functions that never return.",
+                "For variables that can be any type.",
+                "For variables that are always null.",
+                "For functions that return undefined."
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you use a type assertion in TypeScript?",
+            options: [
+                "let x = value as string;",
+                "let x = <string>value;",
+                "Both A and B",
+                "let x = string(value);"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which of the following is a valid enum declaration?",
+            options: [
+                "enum Color { Red, Green, Blue }",
+                "enum Color = { Red, Green, Blue }",
+                "enum Color: { Red, Green, Blue }",
+                "enum Color[Red, Green, Blue]"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you import a module in TypeScript?",
+            options: [
+                "import { something } from './module';",
+                "require('./module');",
+                "include './module';",
+                "import './module.js';"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the default access modifier for class members in TypeScript?",
+            options: [
+                "public",
+                "private",
+                "protected",
+                "readonly"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you define a readonly property in an interface?",
+            options: [
+                "readonly id: number;",
+                "const id: number;",
+                "id: readonly number;",
+                "id: number readonly;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to define a union type?",
+            options: [
+                "let value: string | number;",
+                "let value = string | number;",
+                "type Value = string | number;",
+                "function foo(bar: string | number) {}"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you specify a generic function in TypeScript?",
+            options: [
+                "function identity<T>(arg: T): T { return arg; }",
+                "function identity(arg: T): T { return arg; }",
+                "function identity<T>(arg): T { return arg; }",
+                "function identity(arg): T { return arg; }"
+            ],
+            answer: 0
+        },
+        {
+            question: "What does the 'unknown' type represent?",
+            options: [
+                "A type-safe counterpart of 'any'.",
+                "A type that can only be a string.",
+                "A type that is always undefined.",
+                "A type that is always null."
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you enable strict type checking in TypeScript?",
+            options: [
+                "Set 'strict': true in tsconfig.json.",
+                "Use --strict flag in tsc.",
+                "Both A and B.",
+                "TypeScript is always strict."
+            ],
+            answer: 2
+        },
+        {
+            question: "Which of the following is a valid intersection type?",
+            options: [
+                "type A = B & C;",
+                "type A = B | C;",
+                "type A = B, C;",
+                "type A = B && C;"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you define a class in TypeScript?",
+            options: [
+                "class MyClass {}",
+                "MyClass class {}",
+                "define class MyClass {}",
+                "class: MyClass {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a function parameter with a default value?",
+            options: [
+                "function foo(bar: string = 'hello') {}",
+                "function foo(bar = 'hello': string) {}",
+                "function foo(bar?: string = 'hello') {}",
+                "function foo(bar: string?) = 'hello' {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to define a type alias?",
+            options: [
+                "type Point = { x: number; y: number; }",
+                "type Point = [number, number]",
+                "type Point = number | string",
+                "type = Point { x: number; y: number; }"
+            ],
+            answer: 3
+        },
+        {
+            question: "How do you specify a nullable type?",
+            options: [
+                "let value: string | null;",
+                "let value: string?;",
+                "let value: nullable string;",
+                "let value: string | undefined | null;"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the output type of Array.prototype.map in TypeScript?",
+            options: [
+                "Array<U>",
+                "Array<T>",
+                "Array<any>",
+                "Array<unknown>"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you define a function type in TypeScript?",
+            options: [
+                "type Fn = (a: number) => string;",
+                "type Fn = function(a: number): string;",
+                "type Fn = [number] => string;",
+                "type Fn = (a: number): string;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a valid way to extend an interface?",
+            options: [
+                "interface B extends A {}",
+                "interface B implements A {}",
+                "interface B inherit A {}",
+                "interface B : A {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a property as optional in an interface?",
+            options: [
+                "name?: string;",
+                "optional name: string;",
+                "name: string?;",
+                "name: optional string;"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the correct way to use a decorator in TypeScript?",
+            options: [
+                "@Component({})",
+                "#Component({})",
+                "Component@({})",
+                "Component#({})"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a type for a promise that resolves to a string?",
+            options: [
+                "Promise<string>",
+                "Promise.String",
+                "Promise<string[]>",
+                "PromiseType<string>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to define a module?",
+            options: [
+                "export class MyClass {}",
+                "module MyModule {}",
+                "export function myFunc() {}",
+                "import { MyClass } from './myclass';"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you specify a rest parameter in TypeScript?",
+            options: [
+                "function foo(...args: number[]) {}",
+                "function foo(args...: number[]) {}",
+                "function foo(args: ...number[]) {}",
+                "function foo(args: number[]...) {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the output type of the following? let x: unknown = 5; let y: number = x;",
+            options: [
+                "Error: Type 'unknown' is not assignable to type 'number'.",
+                "y is of type unknown.",
+                "y is of type any.",
+                "y is of type number."
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a function that never returns?",
+            options: [
+                "function fail(): never { throw new Error('fail'); }",
+                "function fail(): void { throw new Error('fail'); }",
+                "function fail(): null { throw new Error('fail'); }",
+                "function fail(): undefined { throw new Error('fail'); }"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a valid way to use type guards?",
+            options: [
+                "if (typeof x === 'string') { ... }",
+                "if (x is string) { ... }",
+                "if (x: string) { ... }",
+                "if (typeof x == string) { ... }"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify an index signature in an interface?",
+            options: [
+                "[key: string]: number;",
+                "key: string => number;",
+                "index: string, number;",
+                "key: string = number;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to define a literal type?",
+            options: [
+                "type Direction = 'left' | 'right';",
+                "type Direction = left | right;",
+                "let dir: 'left' | 'right';",
+                "function move(dir: 'left' | 'right') {}"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you specify a type for a class property?",
+            options: [
+                "name: string;",
+                "let name: string;",
+                "var name: string;",
+                "name = string;"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a valid way to use generics in a class?",
+            options: [
+                "class Box<T> { value: T; }",
+                "class Box(value: T) {}",
+                "class Box<T> { value: string; }",
+                "class Box<T> = { value: T; }"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a type for a function parameter that can be either a string or undefined?",
+            options: [
+                "param: string | undefined",
+                "param?: string",
+                "Both A and B",
+                "param: string?"
+            ],
+            answer: 2
+        },
+        {
+            question: "What is the output of typeof null in TypeScript?",
+            options: [
+                "'object'",
+                "'null'",
+                "'undefined'",
+                "'number'"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a type for a function that returns a promise of a number?",
+            options: [
+                "(): Promise<number>",
+                "(): number",
+                "(): Promise",
+                "(): number[]"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a valid way to use mapped types?",
+            options: [
+                "type Readonly<T> = { readonly [P in keyof T]: T[P]; }",
+                "type Readonly<T> = { [P: keyof T]: T[P]; }",
+                "type Readonly<T> = { [P in T]: T[P]; }",
+                "type Readonly<T> = { readonly P in keyof T: T[P]; }"
+            ],
+            answer: 0
+        },
+        {
+            question: "How do you specify a type for a function that takes a callback?",
+            options: [
+                "function foo(callback: (x: number) => void) {}",
+                "function foo(callback: number => void) {}",
+                "function foo(callback: void(x: number)) {}",
+                "function foo(callback: function(x: number): void) {}"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to use type inference?",
+            options: [
+                "let x = 5;",
+                "let y: number = 10;",
+                "let z;",
+                "let a: any = 'hello';"
+            ],
+            answer: 2
+        },
+        {
+            question: "How do you specify a type for a function that returns void?",
+            options: [
+                "(): void",
+                "(): undefined",
+                "(): null",
+                "(): never"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a valid way to use keyof?",
+            options: [
+                "type Keys = keyof Person;",
+                "type Keys = key of Person;",
+                "type Keys = keyof(Person);",
+                "type Keys = Person.keyof;"
+            ],
+            answer: 0
+        }
+    ];
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+            <div class="question-text">${q.question}</div>
+            <ul class="options">
+                ${q.options.map((opt, idx) => `
+                    <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                        ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                ${currentQuestion === questions.length - 1
+                    ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                    : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+                }
+            </div>
+        `;
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.onclick = function() {
+                const idx = Number(this.getAttribute('data-idx'));
+                userAnswers[currentQuestion] = idx;
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('next-btn').onclick = () => {
+                if (userAnswers[currentQuestion] !== null) {
+                    currentQuestion++;
+                    renderQuestion();
+                }
+            };
+        } else {
+            document.getElementById('submit-btn').onclick = showResult;
+        }
+    }
+
+    function showResult() {
+        let score = 0;
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].answer) score++;
+        });
+        document.getElementById('quiz-content').innerHTML = `
+            <div class="result">
+                You scored ${score} out of ${questions.length}!<br>
+                <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            </div>
+        `;
+    }
+
+    renderQuestion();
+    </script>
+</body>
+</html>

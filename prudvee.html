@@ -1,0 +1,79 @@
+<!-- save as index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Editor with Run Feature</title>
+
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <!-- CodeMirror Theme (optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #editor { height: 400px; border: 1px solid #ccc; }
+        #output { white-space: pre-wrap; background: #f5f5f5; padding: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>Code Runner</h1>
+
+    <select id="language">
+        <option value="71">Python (3.8.1)</option>
+        <option value="50">C (GCC 9.2)</option>
+        <option value="54">C++ (G++ 9.2)</option>
+        <option value="62">Java (OpenJDK 13)</option>
+        <option value="63">JavaScript (Node.js 12.14)</option>
+    </select>
+
+    <div id="editor">// Write your code here...</div>
+
+    <button onclick="runCode()" style="margin-top: 10px;">Run Code</button>
+
+    <h3>Output:</h3>
+    <div id="output"></div>
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+
+    <script>
+        // Setup CodeMirror editor
+        var editor = CodeMirror(document.getElementById('editor'), {
+            mode: 'python',
+            theme: 'dracula',
+            lineNumbers: true
+        });
+
+        function runCode() {
+            const sourceCode = editor.getValue();
+            const languageId = document.getElementById('language').value;
+
+            fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-RapidAPI-Key': 'e00b4814c4msh04d223cc5621536p14ee1ejsnb2938be183a5', // 🔥 You need your API Key here!
+                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+                },
+                body: JSON.stringify({
+                    source_code: sourceCode,
+                    language_id: languageId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').textContent = data.stdout || data.stderr || 'No output';
+            })
+            .catch(error => {
+                document.getElementById('output').textContent = 'Error: ' + error;
+            });
+        }
+    </script>
+
+</body>
+</html>

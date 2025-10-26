@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 8 Features - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Java 8 Features</h1>
+            <p>Exploring the major features introduced in Java 8</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Java 8</h2>
+                <p>Java 8 introduced several significant features that changed how we write Java code.</p>
+                <div class="note">
+                    <p>Key features introduced in Java 8:</p>
+                    <ul>
+                        <li>Lambda Expressions</li>
+                        <li>Stream API</li>
+                        <li>Functional Interfaces</li>
+                        <li>Method References</li>
+                        <li>Default Methods</li>
+                        <li>Optional Class</li>
+                        <li>Date and Time API</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="lambda-expressions">
+                <h2>Lambda Expressions</h2>
+                <p>Lambda expressions provide a clear and concise way to represent a method interface using an expression.</p>
+                <div class="code-example">
+                    <h3>Example: Lambda Expressions</h3>
+                    <pre><code>// Before Java 8
+Runnable r = new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("Hello World");
+    }
+};
+
+// With Lambda Expressions
+Runnable r = () -> System.out.println("Hello World");
+
+// More examples
+Comparator<String> comparator = (s1, s2) -> s1.compareTo(s2);
+Consumer<String> consumer = s -> System.out.println(s);
+Predicate<Integer> isEven = n -> n % 2 == 0;</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="stream-api">
+                <h2>Stream API</h2>
+                <p>The Stream API provides a functional approach to processing collections of objects.</p>
+                <div class="code-example">
+                    <h3>Example: Stream Operations</h3>
+                    <pre><code>List<String> names = Arrays.asList("John", "Alice", "Bob", "Charlie");
+
+// Filter and collect
+List<String> filteredNames = names.stream()
+    .filter(name -> name.startsWith("A"))
+    .collect(Collectors.toList());
+
+// Map and collect
+List<Integer> nameLengths = names.stream()
+    .map(String::length)
+    .collect(Collectors.toList());
+
+// Reduce
+int totalLength = names.stream()
+    .mapToInt(String::length)
+    .sum();
+
+// Sort
+List<String> sortedNames = names.stream()
+    .sorted()
+    .collect(Collectors.toList());
+
+// Group by
+Map<Integer, List<String>> namesByLength = names.stream()
+    .collect(Collectors.groupingBy(String::length));</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="functional-interfaces">
+                <h2>Functional Interfaces</h2>
+                <p>Functional interfaces are interfaces with a single abstract method.</p>
+                <div class="code-example">
+                    <h3>Example: Functional Interfaces</h3>
+                    <pre><code>// Built-in functional interfaces
+Function<String, Integer> stringToInt = Integer::parseInt;
+Predicate<String> isLong = s -> s.length() > 10;
+Consumer<String> printer = System.out::println;
+Supplier<String> stringSupplier = () -> "Hello";
+UnaryOperator<String> toUpper = String::toUpperCase;
+
+// Custom functional interface
+@FunctionalInterface
+interface StringProcessor {
+    String process(String input);
+    
+    // Can have default methods
+    default String processTwice(String input) {
+        return process(process(input));
+    }
+}
+
+// Usage
+StringProcessor upperCase = String::toUpperCase;
+StringProcessor addPrefix = s -> "Prefix_" + s;</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="method-references">
+                <h2>Method References</h2>
+                <p>Method references provide a way to refer to methods without executing them.</p>
+                <div class="code-example">
+                    <h3>Example: Method References</h3>
+                    <pre><code>// Static method reference
+Function<String, Integer> parseInt = Integer::parseInt;
+
+// Instance method reference
+String str = "Hello";
+Supplier<Integer> length = str::length;
+
+// Constructor reference
+Supplier<List<String>> listSupplier = ArrayList::new;
+
+// Arbitrary object method reference
+Function<String, String> toUpperCase = String::toUpperCase;
+
+// Usage in streams
+List<String> names = Arrays.asList("John", "Alice", "Bob");
+names.forEach(System.out::println);
+List<String> upperNames = names.stream()
+    .map(String::toUpperCase)
+    .collect(Collectors.toList());</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="default-methods">
+                <h2>Default Methods</h2>
+                <p>Default methods allow adding new methods to interfaces without breaking existing implementations.</p>
+                <div class="code-example">
+                    <h3>Example: Default Methods</h3>
+                    <pre><code>interface Vehicle {
+    void start();
+    
+    default void stop() {
+        System.out.println("Vehicle stopped");
+    }
+}
+
+interface FourWheeler {
+    default void print() {
+        System.out.println("I am a four wheeler");
+    }
+}
+
+class Car implements Vehicle, FourWheeler {
+    @Override
+    public void start() {
+        System.out.println("Car started");
+    }
+    
+    // Resolving multiple inheritance of default methods
+    @Override
+    public void print() {
+        Vehicle.super.print();
+        FourWheeler.super.print();
+        System.out.println("I am a car");
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="optional">
+                <h2>Optional Class</h2>
+                <p>Optional is a container object used to represent a value that may or may not be present.</p>
+                <div class="code-example">
+                    <h3>Example: Optional Usage</h3>
+                    <pre><code>public class OptionalExample {
+    public static void main(String[] args) {
+        // Creating Optional
+        Optional<String> empty = Optional.empty();
+        Optional<String> nonEmpty = Optional.of("Hello");
+        Optional<String> nullable = Optional.ofNullable(null);
+        
+        // Checking presence
+        if (nonEmpty.isPresent()) {
+            System.out.println(nonEmpty.get());
+        }
+        
+        // Using ifPresent
+        nonEmpty.ifPresent(System.out::println);
+        
+        // Using orElse
+        String value = nullable.orElse("Default");
+        
+        // Using orElseGet
+        String value2 = nullable.orElseGet(() -> "Default from supplier");
+        
+        // Using orElseThrow
+        try {
+            String value3 = nullable.orElseThrow(() -> 
+                new RuntimeException("Value not present"));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        // Using map and flatMap
+        Optional<Integer> length = nonEmpty.map(String::length);
+        Optional<String> upper = nonEmpty.map(String::toUpperCase);
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="date-time-api">
+                <h2>Date and Time API</h2>
+                <p>The new Date and Time API provides a comprehensive model for date and time handling.</p>
+                <div class="code-example">
+                    <h3>Example: Date and Time Operations</h3>
+                    <pre><code>import java.time.*;
+
+public class DateTimeExample {
+    public static void main(String[] args) {
+        // Current date and time
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        LocalDateTime dateTime = LocalDateTime.now();
+        
+        // Creating specific dates
+        LocalDate birthday = LocalDate.of(1990, Month.JANUARY, 1);
+        LocalTime meetingTime = LocalTime.of(14, 30);
+        
+        // Duration and Period
+        Duration duration = Duration.between(now, now.plusHours(2));
+        Period period = Period.between(today, today.plusDays(7));
+        
+        // Formatting
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formatted = dateTime.format(formatter);
+        
+        // Parsing
+        LocalDateTime parsed = LocalDateTime.parse("01/01/2020 12:00", formatter);
+        
+        // Time zones
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Europe/Paris"));
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Java 8 Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for using Java 8 features:</p>
+                    <ul>
+                        <li>Use lambda expressions for cleaner, more readable code</li>
+                        <li>Prefer method references over lambda expressions when possible</li>
+                        <li>Use Stream API for collection processing</li>
+                        <li>Use Optional to handle null values</li>
+                        <li>Use the new Date and Time API instead of old Date/Calendar</li>
+                        <li>Keep lambda expressions short and focused</li>
+                        <li>Use parallel streams carefully and only when beneficial</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="concurrency-utilities.html">Concurrency Utilities</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

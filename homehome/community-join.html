@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Our Community</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; }
+        .container { max-width: 400px; margin: 60px auto; background: #fff; padding: 32px; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+        h2 { text-align: center; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #3498db; color: #fff; border: none; border-radius: 4px; }
+        button:hover { background: #217dbb; }
+        .success, .error { text-align: center; margin-top: 10px; }
+        .success { color: #27ae60; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Join Our Community</h2>
+        <form id="communityForm">
+            <input type="text" name="name" placeholder="Full Name" required />
+            <input type="email" name="email" placeholder="Email Address" required />
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Join</button>
+        </form>
+        <div id="message"></div>
+    </div>
+    <script>
+        document.getElementById('communityForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                name: form.name.value,
+                email: form.email.value,
+                username: form.username.value,
+                password: form.password.value
+            };
+            const res = await fetch('/api/community/join', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const msg = document.getElementById('message');
+            if (res.ok) {
+                msg.innerHTML = '<div class=\"success\">Welcome to the community!</div>';
+                form.reset();
+            } else {
+                const err = await res.json();
+                msg.innerHTML = `<div class=\"error\">${err.error || 'Signup failed.'}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

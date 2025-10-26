@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Java Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">Java Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "Which of the following is the correct extension for a Java source file?",
+            options: [".java", ".class", ".js", ".jav"],
+            answer: 0
+        },
+        {
+            question: "Which keyword is used to define a class in Java?",
+            options: ["class", "Class", "define", "struct"],
+            answer: 0
+        },
+        {
+            question: "Which method is the entry point of a Java program?",
+            options: ["main", "Main", "start", "run"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a Java primitive type?",
+            options: ["int", "float", "String", "boolean"],
+            answer: 2
+        },
+        {
+            question: "Which operator is used to compare two values for equality in Java?",
+            options: ["==", "=", "equals", "!="],
+            answer: 0
+        },
+        {
+            question: "Which of the following is used to create an object in Java?",
+            options: ["new", "create", "malloc", "alloc"],
+            answer: 0
+        },
+        {
+            question: "Which keyword is used to inherit a class in Java?",
+            options: ["extends", "implements", "inherits", "instanceof"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java access modifier?",
+            options: ["public", "private", "protected", "package"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to import a package in Java?",
+            options: ["import", "package", "include", "using"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to declare a main method?",
+            options: ["public static void main(String[] args)", "static public void main(String args[])", "void main(String[] args)", "public void main(String[] args)"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid loop in Java?",
+            options: ["for", "while", "repeat", "do-while"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is used to handle exceptions in Java?",
+            options: ["try-catch", "try-except", "catch-throw", "error handling"],
+            answer: 0
+        },
+        {
+            question: "Which keyword is used to prevent inheritance in Java?",
+            options: ["final", "static", "const", "sealed"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java identifier?",
+            options: ["_myVar", "myVar1", "1myVar", "$myVar"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is the correct way to declare an array of 10 integers?",
+            options: ["int[] arr = new int[10];", "int arr[10];", "array arr = new int[10];", "int arr = new int[10];"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java keyword?",
+            options: ["volatile", "transient", "unsigned", "synchronized"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is used to define an interface in Java?",
+            options: ["interface", "Interface", "implements", "abstract"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java data type?",
+            options: ["double", "float", "real", "char"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is the correct way to comment a single line in Java?",
+            options: ["// comment", "/* comment */", "# comment", "-- comment"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java string method?",
+            options: ["length()", "size()", "charAt()", "substring()"],
+            answer: 1
+        },
+        {
+            question: "Which of the following is used to terminate a loop in Java?",
+            options: ["break", "continue", "exit", "stop"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to declare a constant in Java?",
+            options: ["final int x = 10;", "const int x = 10;", "static int x = 10;", "int const x = 10;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java operator?",
+            options: ["instanceof", ">>>", "?:", "=>"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to create a thread in Java?",
+            options: ["Thread class", "Runnable interface", "Both A and B", "Process class"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is NOT a valid Java exception?",
+            options: ["NullPointerException", "IOException", "FileNotFoundException", "SegmentationFault"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to read input from the user?",
+            options: ["Scanner sc = new Scanner(System.in);", "cin >> x;", "input();", "read();"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java collection?",
+            options: ["ArrayList", "HashMap", "Vector", "arraylist"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to define a package in Java?",
+            options: ["package", "import", "namespace", "module"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java loop control statement?",
+            options: ["break", "continue", "goto", "return"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is the correct way to inherit an interface?",
+            options: ["implements", "extends", "inherits", "instanceof"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java access specifier?",
+            options: ["public", "private", "protected", "internal"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to convert a string to an integer?",
+            options: ["Integer.parseInt()", "parseInt()", "toInt()", "convert()"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java wrapper class?",
+            options: ["Integer", "Float", "Character", "String"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to declare a 2D array?",
+            options: ["int[][] arr = new int[3][4];", "int arr[3][4];", "int arr[][] = new int[3][4];", "Both A and C"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is NOT a valid Java string literal?",
+            options: ["\"Hello\"", "'Hello'", "\"\"", "\"123\""],
+            answer: 1
+        },
+        {
+            question: "Which of the following is used to handle multiple exceptions?",
+            options: ["multi-catch", "multi-try", "catch-all", "try-multi"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java file I/O class?",
+            options: ["FileReader", "FileWriter", "FileInputStream", "FileScanner"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to declare an abstract method?",
+            options: ["abstract void run();", "void abstract run();", "abstract run();", "void run() abstract;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java interface?",
+            options: ["Runnable", "Serializable", "Cloneable", "Iterableable"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to stop a thread in Java?",
+            options: ["stop()", "destroy()", "terminate()", "kill()"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java exception handling keyword?",
+            options: ["try", "catch", "throw", "except"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to create a subclass?",
+            options: ["class B extends A {}", "class B implements A {}", "class B inherits A {}", "class B : A {}"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java Math method?",
+            options: ["Math.abs()", "Math.sqrt()", "Math.power()", "Math.max()"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is used to define a constant in an interface?",
+            options: ["public static final", "final static", "const", "static const"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java annotation?",
+            options: ["@Override", "@Deprecated", "@SuppressWarnings", "@Optional"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to throw an exception?",
+            options: ["throw new Exception();", "raise Exception();", "throw Exception;", "throw;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java collection interface?",
+            options: ["List", "Set", "Map", "Array"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to get the length of an array?",
+            options: ["arr.length", "arr.size()", "arr.length()", "arr.getLength()"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid Java modifier?",
+            options: ["public", "private", "protected", "friend"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to override a method?",
+            options: ["@Override", "@override", "override", "Override"],
+            answer: 0
+        }
+    ];
+
+    const explanations = [
+        ".java is the extension for Java source files.",
+        "'class' is the keyword to define a class.",
+        "main() is the entry point for Java programs.",
+        "String is not a primitive type in Java.",
+        "'==' compares two values for equality.",
+        "'new' creates an object in Java.",
+        "'extends' is used for inheritance.",
+        "'package' is not an access modifier.",
+        "'import' is used to import packages.",
+        "public static void main(String[] args) is the correct main method.",
+        "'repeat' is not a Java loop.",
+        "'try-catch' handles exceptions in Java.",
+        "'final' prevents inheritance.",
+        "Identifiers cannot start with a digit.",
+        "int[] arr = new int[10]; declares an array of 10 integers.",
+        "'unsigned' is not a Java keyword.",
+        "'interface' defines an interface.",
+        "'real' is not a Java data type.",
+        "// is the single-line comment syntax.",
+        "size() is not a method of Java String.",
+        "'break' terminates a loop.",
+        "'final' declares a constant.",
+        "'=>' is not a Java operator.",
+        "Both Thread class and Runnable interface can create threads.",
+        "SegmentationFault is not a Java exception.",
+        "Scanner is used for user input in Java.",
+        "'arraylist' is not a valid Java collection.",
+        "'package' defines a package.",
+        "'goto' is not a Java loop control statement.",
+        "'implements' is used for interface inheritance.",
+        "'internal' is not a Java access specifier.",
+        "Integer.parseInt() converts a string to int.",
+        "String is not a wrapper class.",
+        "Both A and C are valid 2D array declarations.",
+        "Single quotes are for char, not string literals.",
+        "multi-catch handles multiple exceptions.",
+        "FileScanner is not a Java file I/O class.",
+        "abstract void run(); declares an abstract method.",
+        "Iterableable is not a Java interface.",
+        "stop() stops a thread (deprecated).",
+        "'except' is not a Java exception keyword.",
+        "class B extends A {} creates a subclass.",
+        "Math.power() is not a valid Math method.",
+        "public static final defines a constant in an interface.",
+        "@Optional is not a standard Java annotation.",
+        "throw new Exception(); throws an exception.",
+        "Array is not a Java collection interface.",
+        "arr.length gives the length of an array.",
+        "'friend' is not a Java modifier.",
+        "@Override is used to override a method."
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+            <div class="question-text">${q.question}</div>
+            <ul class="options">
+                ${q.options.map((opt, idx) => `
+                    <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                        ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                ${currentQuestion === questions.length - 1
+                    ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                    : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+                }
+            </div>
+        `;
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.onclick = function() {
+                const idx = Number(this.getAttribute('data-idx'));
+                userAnswers[currentQuestion] = idx;
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('next-btn').onclick = () => {
+                if (userAnswers[currentQuestion] !== null) {
+                    currentQuestion++;
+                    renderQuestion();
+                }
+            };
+        } else {
+            document.getElementById('submit-btn').onclick = showResultWithFeedback;
+        }
+    }
+
+    function showResultWithFeedback() {
+        let score = 0;
+        let mistaken = [];
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].answer) {
+                score++;
+            } else {
+                mistaken.push(idx);
+            }
+        });
+
+        let feedback = "";
+        if (mistaken.length > 0) {
+            feedback = `<div style="margin-top:1.5rem;text-align:left;">
+                <strong>Review your mistakes:</strong>
+                <ul style="margin-top:0.5rem;">` +
+                mistaken.map(idx => `
+                    <li>
+                        <b>Q${idx + 1}:</b> ${questions[idx].question}<br>
+                        <span style="color:#28a745;">Correct: ${questions[idx].options[questions[idx].answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                        <br>
+                        <span style="color:#888;font-size:0.97em;">${explanations[idx]}</span>
+                    </li>
+                `).join('') +
+                `</ul>
+            </div>`;
+        }
+
+        document.getElementById('quiz-content').innerHTML = `
+            <div class="result">
+                You scored ${score} out of ${questions.length}!<br>
+                <button class="nav-btn" onclick="location.reload()">Try Again</button>
+                ${feedback}
+            </div>
+        `;
+    }
+
+    renderQuestion();
+    </script>
+</body>
+</html>

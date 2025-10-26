@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object-Oriented Programming in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Object-Oriented Programming in C++</h1>
+            <p>Understanding the core concepts of OOP in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to OOP</h2>
+            <p>Object-Oriented Programming is a programming paradigm that organizes code into objects that contain data and code. It provides a clear modular structure for programs, making it excellent for large, complex, and actively maintained software systems.</p>
+            
+            <div class="note">
+                <p><strong>Note:</strong> C++ is a multi-paradigm language that fully supports object-oriented programming principles while maintaining the efficiency of C.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Classes and Objects</h2>
+            <p>Classes are the fundamental building blocks of OOP in C++. A class is a user-defined data type that encapsulates data and functions that operate on that data.</p>
+            <pre><code>class Car {
+private:
+    string brand;
+    int year;
+    
+public:
+    Car(string b, int y) : brand(b), year(y) {}
+    
+    void displayInfo() {
+        cout << year << " " << brand << endl;
+    }
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use meaningful names for classes and their members. Follow a consistent naming convention throughout your code.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Encapsulation</h2>
+            <p>Encapsulation is the bundling of data and the methods that operate on that data within a single unit or class. It restricts direct access to some of an object's components, which is a means of preventing accidental interference and misuse of the methods and data.</p>
+            <pre><code>class BankAccount {
+private:
+    double balance;  // Private data member
+    
+public:
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    double getBalance() {
+        return balance;
+    }
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Make data members private and provide public methods to access and modify them when necessary.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Inheritance</h2>
+            <p>Inheritance allows a class to inherit attributes and methods from another class. This promotes code reuse and establishes a relationship between parent and child classes.</p>
+            <pre><code>class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Some sound" << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Woof!" << endl;
+    }
+};</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Use inheritance judiciously. Overuse of inheritance can lead to complex and hard-to-maintain code hierarchies.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Polymorphism</h2>
+            <p>Polymorphism allows objects of different classes to be treated as objects of a common base class. It enables you to perform a single action in different ways.</p>
+            <pre><code>class Shape {
+public:
+    virtual double area() = 0;  // Pure virtual function
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+    
+public:
+    Circle(double r) : radius(r) {}
+    
+    double area() override {
+        return 3.14159 * radius * radius;
+    }
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Note:</strong> Virtual functions enable runtime polymorphism in C++. The <code>override</code> keyword helps catch errors and improves code readability.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Abstraction</h2>
+            <p>Abstraction means hiding complex implementation details and showing only the necessary features of an object.</p>
+            <pre><code>class Database {
+private:
+    // Complex implementation details
+    void connectToServer();
+    void authenticateConnection();
+    void executeQuery();
+    
+public:
+    // Simple interface for users
+    bool save(const Data& data) {
+        connectToServer();
+        authenticateConnection();
+        return executeQuery();
+    }
+};</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use abstraction to hide complexity and provide simple interfaces for users of your classes.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

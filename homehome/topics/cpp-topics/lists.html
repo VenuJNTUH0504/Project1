@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Arrays & Strings</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid var(--text-color);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .array-visualization {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .array-container {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .array-element {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--primary-color);
+            margin-right: 5px;
+            font-weight: bold;
+            background-color: var(--card-bg);
+        }
+
+        .array-index {
+            width: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--text-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>C++ Arrays & Strings</h1>
+            <p>Working with collections of data in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to Arrays</h2>
+            <p>An array is a collection of elements of the same type, stored in contiguous memory locations. Arrays provide a way to store multiple values under a single variable name, with each value accessed using an index.</p>
+            
+            <div class="note">
+                <p><strong>Key Characteristics of Arrays in C++:</strong></p>
+                <ul>
+                    <li>Fixed size (determined at compile time for static arrays)</li>
+                    <li>Elements are stored in contiguous memory locations</li>
+                    <li>All elements must be of the same data type</li>
+                    <li>Zero-indexed (first element is at index 0)</li>
+                    <li>No built-in bounds checking (accessing out-of-bounds elements causes undefined behavior)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Declaring and Initializing Arrays</h2>
+            
+            <h3>Array Declaration</h3>
+            <pre><code>// Syntax: data_type array_name[size];
+
+// Examples
+int numbers[5];         // Array of 5 integers
+double prices[100];     // Array of 100 doubles
+char letters[26];       // Array of 26 characters</code></pre>
+            
+            <h3>Array Initialization</h3>
+            <pre><code>// Initialize at declaration
+int numbers[5] = {10, 20, 30, 40, 50};
+
+// Partial initialization (remaining elements are set to 0)
+int partial[5] = {10, 20, 30};  // Equivalent to {10, 20, 30, 0, 0}
+
+// Omitting the size (compiler determines it based on the initializer)
+int auto_sized[] = {10, 20, 30, 40, 50};  // Size is 5
+
+// Initialize all elements to zero
+int zeros[10] = {0};  // All elements are 0
+
+// C++11 uniform initialization
+int modern[5]{10, 20, 30, 40, 50};</code></pre>
+            
+            <div class="array-visualization">
+                <div class="array-container">
+                    <div class="array-element">10</div>
+                    <div class="array-element">20</div>
+                    <div class="array-element">30</div>
+                    <div class="array-element">40</div>
+                    <div class="array-element">50</div>
+                </div>
+                <div class="array-container">
+                    <div class="array-index">0</div>
+                    <div class="array-index">1</div>
+                    <div class="array-index">2</div>
+                    <div class="array-index">3</div>
+                    <div class="array-index">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Accessing and Modifying Array Elements</h2>
+            
+            <h3>Accessing Elements</h3>
+            <pre><code>int numbers[5] = {10, 20, 30, 40, 50};
+
+// Accessing individual elements using index
+int first = numbers[0];   // 10
+int third = numbers[2];   // 30
+
+// Modifying elements
+numbers[1] = 25;          // Changes the second element to 25
+numbers[4] = numbers[3];  // Copies the value of the fourth element to the fifth</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> C++ does not perform bounds checking on array accesses. Accessing an element outside the array bounds (e.g., <code>numbers[10]</code> for an array of size 5) leads to undefined behavior, which might cause crashes or security vulnerabilities.</p>
+            </div>
+            
+            <h3>Iterating Through Arrays</h3>
+            <pre><code>int numbers[5] = {10, 20, 30, 40, 50};
+
+// Using a for loop with index
+for (int i = 0; i < 5; i++) {
+    std::cout << numbers[i] << " ";
+}
+// Output: 10 20 30 40 50
+
+// Using range-based for loop (C++11)
+for (int num : numbers) {
+    std::cout << num << " ";
+}
+// Output: 10 20 30 40 50</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Array Size and Memory</h2>
+            
+            <h3>Determining Array Size</h3>
+            <pre><code>int numbers[] = {10, 20, 30, 40, 50};
+
+// Using sizeof operator
+int size = sizeof(numbers) / sizeof(numbers[0]);
+std::cout << "Array size: " << size << std::endl;  // Output: 5
+
+// Using std::size (C++17)
+#include <iterator>
+size_t size = std::size(numbers);
+std::cout << "Array size: " << size << std::endl;  // Output: 5</code></pre>
+            
+            <h3>Memory Layout</h3>
+            <p>Arrays are stored in contiguous memory locations, which means the elements are placed one after another in memory.</p>
+            
+            <pre><code>int numbers[5] = {10, 20, 30, 40, 50};
+
+// Print memory addresses of array elements
+for (int i = 0; i < 5; i++) {
+    std::cout << "Address of numbers[" << i << "]: " << &numbers[i] << std::endl;
+}
+
+// Output (addresses will vary):
+// Address of numbers[0]: 0x7ffee13b9a50
+// Address of numbers[1]: 0x7ffee13b9a54
+// Address of numbers[2]: 0x7ffee13b9a58
+// Address of numbers[3]: 0x7ffee13b9a5c
+// Address of numbers[4]: 0x7ffee13b9a60</code></pre>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Notice that each address differs by 4 bytes (for an int array), which is the size of an int on most systems. This demonstrates the contiguous nature of array storage.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Multidimensional Arrays</h2>
+            <p>C++ supports multidimensional arrays, which are essentially arrays of arrays. The most common form is the two-dimensional array, which can be visualized as a table with rows and columns.</p>
+            
+            <h3>Declaring and Initializing 2D Arrays</h3>
+            <pre><code>// Declaration
+int matrix[3][4];  // 3 rows, 4 columns
+
+// Initialization
+int matrix[3][4] = {
+    {1, 2, 3, 4},    // Row 0
+    {5, 6, 7, 8},    // Row 1
+    {9, 10, 11, 12}  // Row 2
+};
+
+// Partial initialization
+int partial[3][4] = {
+    {1, 2},          // Row 0: {1, 2, 0, 0}
+    {5},             // Row 1: {5, 0, 0, 0}
+    {9, 10, 11}      // Row 2: {9, 10, 11, 0}
+};</code></pre>
+            
+            <h3>Accessing Elements in 2D Arrays</h3>
+            <pre><code>int matrix[3][4] = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+// Accessing individual elements
+int element = matrix[1][2];  // Row 1, Column 2: 7
+
+// Modifying elements
+matrix[0][3] = 100;  // Changes the element at Row 0, Column 3 to 100
+
+// Iterating through a 2D array
+for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 4; j++) {
+        std::cout << matrix[i][j] << " ";
+    }
+    std::cout << std::endl;
+}
+
+// Output:
+// 1 2 3 100
+// 5 6 7 8
+// 9 10 11 12</code></pre>
+            
+            <h3>Higher-Dimensional Arrays</h3>
+            <pre><code>// 3D array (2x3x4)
+int cube[2][3][4] = {
+    {  // First 2D array (cube[0])
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    },
+    {  // Second 2D array (cube[1])
+        {13, 14, 15, 16},
+        {17, 18, 19, 20},
+        {21, 22, 23, 24}
+    }
+};
+
+// Accessing elements
+int element = cube[1][0][2];  // 15</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Arrays and Functions</h2>
+            
+            <h3>Passing Arrays to Functions</h3>
+            <p>When you pass an array to a function, you're actually passing a pointer to the first element of the array. This means the function can modify the original array.</p>
+            
+            <pre><code>// Function that takes an array as parameter
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+// Alternative syntax using pointer notation
+void printArray(int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+// Function that modifies an array
+void doubleValues(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        arr[i] *= 2;  // Doubles each element
+    }
+}
+
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    
+    printArray(numbers, size);  // Output: 1 2 3 4 5
+    
+    doubleValues(numbers, size);
+    printArray(numbers, size);  // Output: 2 4 6 8 10
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Passing Multidimensional Arrays</h3>
+            <pre><code>// For a 2D array, you must specify all dimensions except the first
+void print2DArray(int arr[][4], int rows) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < 4; j++) {
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+int main() {
+    int matrix[3][4] = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    };
+    
+    print2DArray(matrix, 3);
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Returning Arrays from Functions</h3>
+            <p>C++ doesn't allow returning arrays directly from functions, but there are several workarounds:</p>
+            
+            <pre><code>// 1. Return a pointer to a static array
+int* createArray() {
+    static int arr[5] = {1, 2, 3, 4, 5};  // Static ensures the array persists after function returns
+    return arr;
+}
+
+// 2. Pass the array as an output parameter
+void fillArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        arr[i] = i * 10;
+    }
+}
+
+// 3. Use std::array (C++11)
+#include <array>
+std::array<int, 5> createModernArray() {
+    return {1, 2, 3, 4, 5};
+}
+
+// 4. Use std::vector (more flexible)
+#include <vector>
+std::vector<int> createVector(int size) {
+    std::vector<int> vec(size);
+    for (int i = 0; i < size; i++) {
+        vec[i] = i * 10;
+    }
+    return vec;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> Returning a pointer to a local (non-static) array is dangerous, as the array will be destroyed when the function exits, leading to undefined behavior when the pointer is dereferenced.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>C-Style Strings</h2>
+            <p>In C++, a C-style string is an array of characters terminated by a null character (<code>'\0'</code>). C++ inherited this string representation from C.</p>
+            
+            <h3>Declaring and Initializing C-Style Strings</h3>
+            <pre><code>// Declaration and initialization
+char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+
+// Simplified initialization (compiler adds the null terminator)
+char greeting[] = "Hello";
+
+// Declaring with explicit size (must include space for null terminator)
+char message[10] = "Hello";  // Uses 6 characters (including '\0'), 4 unused</code></pre>
+            
+            <div class="array-visualization">
+                <div class="array-container">
+                    <div class="array-element">H</div>
+                    <div class="array-element">e</div>
+                    <div class="array-element">l</div>
+                    <div class="array-element">l</div>
+                    <div class="array-element">o</div>
+                    <div class="array-element">\0</div>
+                </div>
+                <div class="array-container">
+                    <div class="array-index">0</div>
+                    <div class="array-index">1</div>
+                    <div class="array-index">2</div>
+                    <div class="array-index">3</div>
+                    <div class="array-index">4</div>
+                    <div class="array-index">5</div>
+                </div>
+            </div>
+            
+            <h3>String Input and Output</h3>
+            <pre><code>#include <iostream>
+
+int main() {
+    char name[50];
+    
+    std::cout << "Enter your name: ";
+    std::cin >> name;  // Reads until whitespace
+    std::cout << "Hello, " << name << "!" << std::endl;
+    
+    // Reading a line with spaces
+    char fullName[100];
+    std::cout << "Enter your full name: ";
+    std::cin.ignore();  // Clear the newline from previous input
+    std::cin.getline(fullName, 100);
+    std::cout << "Hello, " << fullName << "!" << std::endl;
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Common String Functions</h3>
+            <p>C++ provides several functions for working with C-style strings in the <code>&lt;cstring&gt;</code> header:</p>
+            
+            <pre><code>#include <cstring>
+
+int main() {
+    char str1[20] = "Hello";
+    char str2[20] = "World";
+    char result[40];
+    
+    // String length
+    size_t len = strlen(str1);  // 5
+    
+    // String copy
+    strcpy(result, str1);  // result now contains "Hello"
+    
+    // String concatenation
+    strcat(result, " ");    // result now contains "Hello "
+    strcat(result, str2);   // result now contains "Hello World"
+    
+    // String comparison
+    int cmp = strcmp(str1, str2);  // Negative value (str1 < str2)
+    
+    // Finding a character
+    char* ptr = strchr(result, 'W');  // Points to 'W' in "Hello World"
+    if (ptr) {
+        std::cout << "Found 'W' at position: " << (ptr - result) << std::endl;
+    }
+    
+    return 0;
+}</code></pre>
+            
+            <div class="warning">
+                <p><strong>Warning:</strong> C-style string functions like <code>strcpy</code> and <code>strcat</code> don't perform bounds checking, which can lead to buffer overflows. Modern C++ code should prefer <code>std::string</code> for safety and convenience.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>std::string Class</h2>
+            <p>The <code>std::string</code> class, defined in the <code>&lt;string&gt;</code> header, provides a safer and more convenient way to work with strings in C++.</p>
+            
+            <h3>Creating and Initializing std::string</h3>
+            <pre><code>#include <string>
+
+int main() {
+    // Different ways to create strings
+    std::string s1;                    // Empty string
+    std::string s2 = "Hello";          // Initialize with C-style string
+    std::string s3("World");           // Constructor syntax
+    std::string s4(5, 'A');            // String of 5 'A's: "AAAAA"
+    std::string s5 = s2;               // Copy of another string
+    std::string s6 = s2 + " " + s3;    // Concatenation: "Hello World"
+    
+    return 0;
+}</code></pre>
+            
+            <h3>String Operations</h3>
+            <pre><code>#include <string>
+#include <iostream>
+
+int main() {
+    std::string str = "Hello, World!";
+    
+    // Length and size
+    size_t length = str.length();  // 13
+    size_t size = str.size();      // 13 (same as length)
+    
+    // Accessing characters
+    char first = str[0];           // 'H'
+    char last = str[str.length() - 1];  // '!'
+    
+    // Modifying strings
+    str[7] = 'w';                  // Changes "Hello, World!" to "Hello, world!"
+    
+    // Appending
+    str += " Welcome";             // Appends to the string
+    
+    // Substring
+    std::string sub = str.substr(7, 5);  // "world"
+    
+    // Finding
+    size_t pos = str.find("world");      // Returns position (7) or std::string::npos if not found
+    
+    // Replacing
+    str.replace(7, 5, "C++");      // Replace "world" with "C++"
+    
+    // Inserting
+    str.insert(7, "amazing ");     // Insert at position 7
+    
+    // Erasing
+    str.erase(7, 8);               // Remove 8 characters starting at position 7
+    
+    // Clearing
+    str.clear();                   // Empty the string
+    
+    // Checking if empty
+    bool isEmpty = str.empty();    // true
+    
+    return 0;
+}</code></pre>
+            
+            <h3>String Input and Output</h3>
+            <pre><code>#include <string>
+#include <iostream>
+
+int main() {
+    std::string name;
+    
+    std::cout << "Enter your name: ";
+    std::cin >> name;  // Reads until whitespace
+    std::cout << "Hello, " << name << "!" << std::endl;
+    
+    // Reading a line with spaces
+    std::string fullName;
+    std::cout << "Enter your full name: ";
+    std::cin.ignore();  // Clear the newline from previous input
+    std::getline(std::cin, fullName);
+    std::cout << "Hello, " << fullName << "!" << std::endl;
+    
+    return 0;
+}</code></pre>
+            
+            <h3>String Conversion</h3>
+            <pre><code>#include <string>
+#include <iostream>
+
+int main() {
+    // Converting between std::string and C-style strings
+    std::string str = "Hello";
+    const char* cstr = str.c_str();  // Get C-style string from std::string
+    
+    // Converting numbers to strings
+    int num = 42;
+    std::string numStr = std::to_string(num);  // "42"
+    
+    // Converting strings to numbers
+    std::string numText = "123.45";
+    int intValue = std::stoi(numText);       // 123
+    double doubleValue = std::stod(numText); // 123.45
+    
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>String View (C++17)</h2>
+            <p><code>std::string_view</code>, introduced in C++17, provides a non-owning reference to a string. It's useful for functions that need to read but not modify strings, as it avoids unnecessary copying.</p>
+            
+            <pre><code>#include <string_view>
+#include <iostream>
+
+// Function that takes a string_view parameter
+void printUppercase(std::string_view sv) {
+    for (char c : sv) {
+        std::cout << static_cast<char>(std::toupper(c));
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    // string_view can refer to different types of strings without copying
+    std::string str = "Hello, World!";
+    const char* cstr = "C-style string";
+    
+    printUppercase(str);    // HELLO, WORLD!
+    printUppercase(cstr);   // C-STYLE STRING
+    printUppercase("Literal string");  // LITERAL STRING
+    
+    // Creating a substring view without copying
+    std::string_view sv = str;
+    std::string_view sub_sv = sv.substr(7, 5);  // "World"
+    std::cout << sub_sv << std::endl;
+    
+    return 0;
+}</code></pre>
+            
+            <div class="note">
+                <p><strong>Note:</strong> <code>std::string_view</code> doesn't own the string it refers to, so you must ensure the original string outlives the string_view. It's also not null-terminated, so be careful when passing it to functions expecting C-style strings.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Modern Array Alternatives</h2>
+            <p>C++ provides several modern alternatives to traditional arrays that offer additional safety and functionality.</p>
+            
+            <h3>std::array (C++11)</h3>
+            <p><code>std::array</code> is a container that encapsulates fixed-size arrays. It combines the performance and accessibility of a C-style array with the benefits of a standard container.</p>
+            
+            <pre><code>#include <array>
+#include <iostream>
+
+int main() {
+    // Declaration and initialization
+    std::array<int, 5> numbers = {10, 20, 30, 40, 50};
+    
+    // Accessing elements
+    std::cout << "First element: " << numbers[0] << std::endl;
+    std::cout << "Second element: " << numbers.at(1) << std::endl;  // Bounds checking
+    
+    // Size
+    std::cout << "Size: " << numbers.size() << std::endl;
+    
+    // Iterating
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+    
+    // Using with algorithms
+    std::sort(numbers.begin(), numbers.end());
+    
+    return 0;
+}</code></pre>
+            
+            <h3>std::vector</h3>
+            <p><code>std::vector</code> is a dynamic array that can resize itself automatically when elements are added or removed. It's one of the most versatile and commonly used containers in C++.</p>
+            
+            <pre><code>#include <vector>
+#include <iostream>
+
+int main() {
+    // Declaration and initialization
+    std::vector<int> numbers = {10, 20, 30};
+    
+    // Adding elements
+    numbers.push_back(40);  // Add to the end
+    numbers.push_back(50);
+    
+    // Accessing elements
+    std::cout << "First element: " << numbers[0] << std::endl;
+    std::cout << "Second element: " << numbers.at(1) << std::endl;  // Bounds checking
+    
+    // Size and capacity
+    std::cout << "Size: " << numbers.size() << std::endl;
+    std::cout << "Capacity: " << numbers.capacity() << std::endl;
+    
+    // Resizing
+    numbers.resize(10);  // Now has 10 elements (new ones initialized to 0)
+    
+    // Inserting elements
+    numbers.insert(numbers.begin() + 2, 25);  // Insert 25 at index 2
+    
+    // Removing elements
+    numbers.pop_back();  // Remove the last element
+    numbers.erase(numbers.begin() + 1);  // Remove element at index 1
+    
+    // Clearing
+    numbers.clear();  // Remove all elements
+    
+    // Check if empty
+    bool isEmpty = numbers.empty();  // true
+    
+    return 0;
+}</code></pre>
+            
+            <h3>2D Vectors</h3>
+            <pre><code>#include <vector>
+#include <iostream>
+
+int main() {
+    // Creating a 3x4 matrix
+    std::vector<std::vector<int>> matrix(3, std::vector<int>(4, 0));
+    
+    // Initializing
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            matrix[i][j] = i * 4 + j + 1;
+        }
+    }
+    
+    // Accessing elements
+    std::cout << "Element at (1,2): " << matrix[1][2] << std::endl;
+    
+    // Printing the matrix
+    for (const auto& row : matrix) {
+        for (int val : row) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+    }
+    
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Common Array and String Algorithms</h2>
+            
+            <h3>Finding Elements</h3>
+            <pre><code>#include <algorithm>
+#include <vector>
+#include <string>
+#include <iostream>
+
+int main() {
+    // Finding in arrays
+    int numbers[] = {10, 20, 30, 40, 50};
+    int* found = std::find(std::begin(numbers), std::end(numbers), 30);
+    
+    if (found != std::end(numbers)) {
+        std::cout << "Found 30 at position: " << (found - numbers) << std::endl;
+    }
+    
+    // Finding in vectors
+    std::vector<int> vec = {10, 20, 30, 40, 50};
+    auto it = std::find(vec.begin(), vec.end(), 30);
+    
+    if (it != vec.end()) {
+        std::cout << "Found 30 at position: " << (it - vec.begin()) << std::endl;
+    }
+    
+    // Finding in strings
+    std::string str = "Hello, World!";
+    size_t pos = str.find("World");
+    
+    if (pos != std::string::npos) {
+        std::cout << "Found 'World' at position: " << pos << std::endl;
+    }
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Sorting</h3>
+            <pre><code>#include <algorithm>
+#include <vector>
+#include <string>
+#include <iostream>
+
+int main() {
+    // Sorting arrays
+    int numbers[] = {50, 30, 10, 40, 20};
+    std::sort(std::begin(numbers), std::end(numbers));
+    
+    // Sorting vectors
+    std::vector<int> vec = {50, 30, 10, 40, 20};
+    std::sort(vec.begin(), vec.end());
+    
+    // Sorting strings
+    std::string str = "dbace";
+    std::sort(str.begin(), str.end());  // str becomes "abcde"
+    
+    // Custom sorting (descending order)
+    std::sort(vec.begin(), vec.end(), std::greater<int>());
+    
+    // Custom sorting with lambda
+    std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David"};
+    std::sort(names.begin(), names.end(), 
+              [](const std::string& a, const std::string& b) {
+                  return a.length() < b.length();  // Sort by length
+              });
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Transforming</h3>
+            <pre><code>#include <algorithm>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <cctype>
+
+int main() {
+    // Transforming vectors
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+    std::transform(vec.begin(), vec.end(), vec.begin(),
+                  [](int x) { return x * x; });  // Square each element
+    
+    // Transforming strings
+    std::string str = "Hello, World!";
+    std::transform(str.begin(), str.end(), str.begin(),
+                  [](char c) { return std::toupper(c); });  // Convert to uppercase
+    
+    std::cout << str << std::endl;  // "HELLO, WORLD!"
+    
+    return 0;
+}</code></pre>
+            
+            <h3>Counting and Accumulating</h3>
+            <pre><code>#include <algorithm>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <iostream>
+
+int main() {
+    std::vector<int> vec = {1, 2, 3, 4, 5, 2, 3, 2};
+    
+    // Counting occurrences
+    int count = std::count(vec.begin(), vec.end(), 2);
+    std::cout << "Number 2 appears " << count << " times" << std::endl;
+    
+    // Counting if condition is met
+    int evenCount = std::count_if(vec.begin(), vec.end(),
+                                 [](int x) { return x % 2 == 0; });
+    std::cout << "Even numbers: " << evenCount << std::endl;
+    
+    // Summing elements
+    int sum = std::accumulate(vec.begin(), vec.end(), 0);
+    std::cout << "Sum: " << sum << std::endl;
+    
+    // Product of elements
+    int product = std::accumulate(vec.begin(), vec.end(), 1,
+                                 [](int a, int b) { return a * b; });
+    std::cout << "Product: " << product << std::endl;
+    
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Best Practices</h2>
+            
+            <h3>For Arrays</h3>
+            <ul>
+                <li>Prefer <code>std::array</code> or <code>std::vector</code> over C-style arrays for better safety and functionality.</li>
+                <li>Always check array bounds before accessing elements to prevent buffer overflows.</li>
+                <li>Use range-based for loops when possible for cleaner and safer iteration.</li>
+                <li>Be careful with array decay when passing arrays to functions.</li>
+                <li>Consider using <code>std::span</code> (C++20) for function parameters that accept array-like data.</li>
+            </ul>
+            
+            <h3>For Strings</h3>
+            <ul>
+                <li>Prefer <code>std::string</code> over C-style strings for most use cases.</li>
+                <li>Use <code>std::string_view</code> for non-modifying string operations to avoid unnecessary copying.</li>
+                <li>Be aware of potential performance implications when concatenating strings in loops.</li>
+                <li>Use <code>reserve()</code> to pre-allocate memory for strings that will grow significantly.</li>
+                <li>Remember that <code>std::string</code> is not guaranteed to be null-terminated internally, though <code>c_str()</code> returns a null-terminated string.</li>
+            </ul>
+            
+            <h3>General Tips</h3>
+            <ul>
+                <li>Use the appropriate container for your needs: arrays for fixed-size collections, vectors for dynamic collections.</li>
+                <li>Leverage the algorithms in the Standard Library (<code>&lt;algorithm&gt;</code>) for common operations.</li>
+                <li>Be mindful of memory management, especially with large arrays or strings.</li>
+                <li>Consider using move semantics (C++11) when working with large strings or containers to avoid unnecessary copying.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Comparison of Array and String Types</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>C-style Array</th>
+                    <th>std::array</th>
+                    <th>std::vector</th>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>Fixed at compile time</td>
+                    <td>Fixed at compile time</td>
+                    <td>Dynamic (can resize)</td>
+                </tr>
+                <tr>
+                    <td>Memory</td>
+                    <td>Stack (unless dynamically allocated)</td>
+                    <td>Stack</td>
+                    <td>Heap</td>
+                </tr>
+                <tr>
+                    <td>Bounds Checking</td>
+                    <td>None</td>
+                    <td>With <code>at()</code> method</td>
+                    <td>With <code>at()</code> method</td>
+                </tr>
+                <tr>
+                    <td>Size Query</td>
+                    <td>Manual (<code>sizeof(arr)/sizeof(arr[0])</code>)</td>
+                    <td><code>size()</code> method</td>
+                    <td><code>size()</code> method</td>
+                </tr>
+                <tr>
+                    <td>Iterator Support</td>
+                    <td>Limited</td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>Algorithm Compatibility</td>
+                    <td>With <code>std::begin/end</code></td>
+                    <td>Full</td>
+                    <td>Full</td>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>Highest</td>
+                    <td>Very High</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>Safety</td>
+                    <td>Low</td>
+                    <td>Medium</td>
+                    <td>Medium</td>
+                </tr>
+            </table>
+            
+            <table class="comparison-table" style="margin-top: 30px;">
+                <tr>
+                    <th>Feature</th>
+                    <th>C-style String</th>
+                    <th>std::string</th>
+                    <th>std::string_view</th>
+                </tr>
+                <tr>
+                    <td>Memory Management</td>
+                    <td>Manual</td>
+                    <td>Automatic</td>
+                    <td>Non-owning reference</td>
+                </tr>
+                <tr>
+                    <td>Size Limit</td>
+                    <td>Fixed at declaration</td>
+                    <td>Dynamic</td>
+                    <td>Based on referenced string</td>
+                </tr>
+                <tr>
+                    <td>Null Termination</td>
+                    <td>Required</td>
+                    <td>Handled internally</td>
+                    <td>Not required</td>
+                </tr>
+                <tr>
+                    <td>Modification</td>
+                    <td>Limited</td>
+                    <td>Extensive API</td>
+                    <td>Read-only</td>
+                </tr>
+                <tr>
+                    <td>Safety</td>
+                    <td>Low</td>
+                    <td>High</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>High</td>
+                    <td>Medium</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>Memory Overhead</td>
+                    <td>Low</td>
+                    <td>Medium</td>
+                    <td>Very Low</td>
+                </tr>
+                <tr>
+                    <td>C++11 Move Semantics</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td>N/A</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

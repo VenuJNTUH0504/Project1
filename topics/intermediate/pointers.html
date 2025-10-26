@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pointers & References in C++ - CodeMaster</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="../../cpp-homepage.html" class="back-button">
+        <span>← Back to C++ Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Pointers & References in C++</h1>
+            <p>Understanding memory management and indirect access in C++</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction to Pointers</h2>
+            <p>Pointers are variables that store memory addresses of other variables. They are powerful features in C++ that enable direct memory manipulation and efficient programming.</p>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Pointers are one of the most powerful but also most dangerous features in C++. Use them carefully to avoid memory leaks and undefined behavior.</p>
+            </div>
+
+            <pre><code>int number = 42;
+int* ptr = &number;  // ptr stores the address of number
+cout << *ptr;       // Prints 42 (dereferencing)</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>Dynamic Memory Allocation</h2>
+            <p>Dynamic memory allocation allows you to allocate memory at runtime using the <code>new</code> operator. This memory must be manually deallocated using <code>delete</code>.</p>
+            
+            <pre><code>// Single object allocation
+int* ptr = new int(42);
+delete ptr;  // Don't forget to deallocate!
+
+// Array allocation
+int* arr = new int[5];
+delete[] arr;  // Use delete[] for arrays</code></pre>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always match <code>new</code> with <code>delete</code> and <code>new[]</code> with <code>delete[]</code> to avoid memory leaks.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>References</h2>
+            <p>References provide an alternative way to alias existing variables. Unlike pointers, references must be initialized when declared and cannot be null.</p>
+            
+            <pre><code>int number = 42;
+int& ref = number;  // ref is an alias for number
+ref = 24;          // number is now 24</code></pre>
+
+            <div class="note">
+                <p><strong>Best Practice:</strong> Use references instead of pointers when you don't need reassignment or null values.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Smart Pointers</h2>
+            <p>Smart pointers are wrapper classes that manage memory automatically. They help prevent memory leaks and make code safer.</p>
+            
+            <pre><code>#include <memory>
+
+// Unique pointer (exclusive ownership)
+std::unique_ptr<int> uptr = std::make_unique<int>(42);
+
+// Shared pointer (shared ownership)
+std::shared_ptr<int> sptr = std::make_shared<int>(42);</code></pre>
+
+            <div class="note">
+                <p><strong>Modern C++:</strong> Prefer smart pointers over raw pointers for automatic memory management.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Common Pitfalls</h2>
+            <p>Here are some common issues to watch out for when working with pointers:</p>
+            
+            <ul>
+                <li>Dereferencing null pointers</li>
+                <li>Memory leaks (forgetting to delete)</li>
+                <li>Dangling pointers (pointing to deleted memory)</li>
+                <li>Double deletion</li>
+            </ul>
+
+            <div class="warning">
+                <p><strong>Warning:</strong> Always initialize pointers and check for null before dereferencing.</p>
+            </div>
+
+            <pre><code>// Bad practice
+int* ptr;           // Uninitialized pointer
+*ptr = 42;         // Undefined behavior!
+
+// Good practice
+int* ptr = nullptr;  // Initialize to nullptr
+if (ptr) {          // Check before using
+    *ptr = 42;
+}</code></pre>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

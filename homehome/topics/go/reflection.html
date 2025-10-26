@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Reflection - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+            --gradient-start: #00ADD8;
+            --gradient-end: #5D4037;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+            --gradient-start: #00ADD8;
+            --gradient-end: #8D6E63;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent var(--primary-color) transparent transparent;
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .note::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .warning::before {
+            content: '⚠️';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Reflection</h1>
+            <p>Understanding and using reflection in Go</p>
+        </header>
+
+        <div class="card">
+            <section id="reflection-basics">
+                <h2>Reflection Basics</h2>
+                <p>Basic reflection operations in Go:</p>
+                <pre><code class="language-go">// Getting type information
+var x float64 = 3.4
+t := reflect.TypeOf(x)
+v := reflect.ValueOf(x)
+
+// Type and value information
+fmt.Println("Type:", t)
+fmt.Println("Value:", v)
+fmt.Println("Kind:", v.Kind())
+fmt.Println("Float value:", v.Float())
+
+// Setting values
+var y float64 = 3.4
+v = reflect.ValueOf(&y).Elem()
+v.SetFloat(7.1)
+fmt.Println("New value:", y)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="struct-reflection">
+                <h2>Struct Reflection</h2>
+                <p>Reflecting on struct types and values:</p>
+                <pre><code class="language-go">// Struct reflection
+type Person struct {
+    Name string
+    Age  int
+}
+
+p := Person{"Alice", 25}
+v := reflect.ValueOf(p)
+
+// Getting field information
+for i := 0; i < v.NumField(); i++ {
+    field := v.Type().Field(i)
+    value := v.Field(i)
+    fmt.Printf("%s: %v\n", field.Name, value)
+}
+
+// Setting struct fields
+v = reflect.ValueOf(&p).Elem()
+v.FieldByName("Age").SetInt(30)
+fmt.Println("Updated person:", p)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="function-reflection">
+                <h2>Function Reflection</h2>
+                <p>Reflecting on functions:</p>
+                <pre><code class="language-go">// Function reflection
+func Add(a, b int) int {
+    return a + b
+}
+
+// Getting function information
+f := reflect.ValueOf(Add)
+fmt.Println("Function type:", f.Type())
+
+// Calling functions through reflection
+args := []reflect.Value{
+    reflect.ValueOf(10),
+    reflect.ValueOf(20),
+}
+result := f.Call(args)
+fmt.Println("Result:", result[0].Int())</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="interface-reflection">
+                <h2>Interface Reflection</h2>
+                <p>Reflecting on interfaces:</p>
+                <pre><code class="language-go">// Interface reflection
+var i interface{} = "hello"
+v := reflect.ValueOf(i)
+
+// Checking interface type
+if v.Kind() == reflect.String {
+    fmt.Println("String value:", v.String())
+}
+
+// Type assertions with reflection
+if v.Type().AssignableTo(reflect.TypeOf("")) {
+    s := v.Interface().(string)
+    fmt.Println("Converted string:", s)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="custom-tags">
+                <h2>Custom Tags</h2>
+                <p>Using struct tags with reflection:</p>
+                <pre><code class="language-go">// Struct with tags
+type User struct {
+    Name string `json:"name" validate:"required"`
+    Age  int    `json:"age" validate:"min=18"`
+}
+
+// Reading tags
+t := reflect.TypeOf(User{})
+field, _ := t.FieldByName("Name")
+fmt.Println("JSON tag:", field.Tag.Get("json"))
+fmt.Println("Validate tag:", field.Tag.Get("validate"))
+
+// Processing tags
+func ProcessTags(v interface{}) {
+    t := reflect.TypeOf(v)
+    for i := 0; i < t.NumField(); i++ {
+        field := t.Field(i)
+        if tag := field.Tag.Get("validate"); tag != "" {
+            fmt.Printf("Field %s has validation: %s\n", field.Name, tag)
+        }
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use reflection sparingly and only when necessary</li>
+                    <li>Prefer type assertions over reflection when possible</li>
+                    <li>Handle panics from reflection operations</li>
+                    <li>Cache reflection results for performance</li>
+                    <li>Use struct tags for metadata</li>
+                    <li>Document reflection usage clearly</li>
+                    <li>Consider alternatives to reflection</li>
+                    <li>Test reflection code thoroughly</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

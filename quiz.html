@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Quizzes - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e94560;
+        }
+
+        .quiz-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 2rem;
+            background: rgba(255, 255, 255, 0.1) url('https://img.freepik.com/free-vector/quiz-word-concept_23-2147844150.jpg?w=1380&t=st=1684789654~exp=1684790254~hmac=2240b7759c9c6117a3d7b81da3c4c2ed222eca70c64d93a0b73d49f3a5c15c8b') no-repeat right center;
+            background-size: contain;
+            background-blend-mode: overlay;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(26, 26, 46, 0.9) 0%, rgba(26, 26, 46, 0.7) 50%, rgba(26, 26, 46, 0.5) 100%);
+            z-index: 1;
+        }
+        
+        .hero-section h1, .hero-section p {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quiz-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .quiz-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(233, 69, 96, 0.2), rgba(255, 107, 107, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .quiz-card:hover::before {
+            opacity: 1;
+        }
+        
+        .quiz-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px 0 rgba(31, 38, 135, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .quiz-card img {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .quiz-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .quiz-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #e94560;
+        }
+
+        .quiz-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #e94560, #ff6b6b);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .difficulty-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .difficulty-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #e94560;
+            text-align: center;
+        }
+
+        .difficulty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .difficulty-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .difficulty-card::after {
+            content: "Explore →";
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            font-size: 0.9rem;
+            color: #e94560;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-card::before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 2.5rem;
+            color: rgba(233, 69, 96, 0.6);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .difficulty-card:nth-child(1)::before {
+            content: '\f19d'; /* graduation cap */
+        }
+        
+        .difficulty-card:nth-child(2)::before {
+            content: '\f5fc'; /* laptop-code */
+        }
+        
+        .difficulty-card:nth-child(3)::before {
+            content: '\f2db'; /* microchip */
+        }
+
+        .difficulty-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(233, 69, 96, 0.4);
+            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.2);
+        }
+        
+        .difficulty-card:hover::before {
+            color: rgba(233, 69, 96, 0.8);
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+        
+        .difficulty-card:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .difficulty-card h4 {
+            color: #e94560;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .difficulty-card p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #e94560, #ff6b6b);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            gap: 8px;
+            z-index: 1001;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                margin: 80px 1rem 50px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://img.icons8.com/color/96/000000/source-code.png" alt="CodeMaster Logo">
+                CodeMaster
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Main Content -->
+        <div class="quiz-container">
+        <div class="hero-section">
+            <h1>Programming Quizzes</h1>
+            <p>Test your programming knowledge with our interactive quizzes! Choose your preferred programming language and difficulty level to get started. Each quiz is designed to help you learn and improve your coding skills.</p>
+        </div>
+
+        <div class="quiz-grid">
+            <div class="quiz-card" onclick="location.href='html-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+                <h3>HTML Quiz</h3>
+                <p>Test your knowledge of HTML programming, from basic syntax to advanced concepts.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+            <div class="quiz-card" onclick="location.href='css-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+                <h3>CSS Quiz</h3>
+                <p>Challenge yourself with CSS concepts, from basic syntax to advanced concepts.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+            <div class="quiz-card" onclick="location.href='js-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                <h3>JavaScript Quiz</h3>
+                <p>Test your understanding of JavaScript programming, from basic syntax to advanced concepts.</p>
+                <button class="quiz-btn" >Start Quiz</button>
+            </div>
+            <!-- TypeScript Quiz Card -->
+            <div class="quiz-card" onclick="location.href='ts-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript">
+                <h3>TypeScript Quiz</h3>
+                <p>Assess your TypeScript skills, from type basics to advanced features and best practices.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+            <div class="quiz-card" onclick="location.href='cpp-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++">
+                <h3>C++ Quiz</h3>
+                <p>Challenge yourself with C++ programming, including memory management, templates, and STL.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+            <div class="quiz-card" onclick="location.href='java-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">
+                <h3>Java Quiz</h3>
+                <p>Test your knowledge of Java programming, from basic syntax to advanced concepts.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+            <div class="quiz-card" onclick="location.href='python-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                <h3>Python Quiz</h3>
+                <p>Test your knowledge of Python programming, from basic syntax to advanced concepts like decorators and generators.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+            <!-- Golang Quiz Card -->
+            <div class="quiz-card" onclick="location.href='go-quiz.html'">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Golang">
+                <h3>Golang Quiz</h3>
+                <p>Test your Go programming knowledge, from goroutines and channels to interfaces and concurrency patterns.</p>
+                <button class="quiz-btn">Start Quiz</button>
+            </div>
+        </div>
+
+        <div class="difficulty-section">
+            <h2>Quiz Difficulty Levels</h2>
+            <div class="difficulty-grid">
+                <div class="difficulty-card" onclick="location.href='beginner-quizzes.html'">
+                    <h4>Beginner</h4>
+                    <p>Perfect for those new to programming. Covers basic syntax, data types, and simple algorithms.</p>
+                </div>
+                <div class="difficulty-card" onclick="location.href='intermediate-quizzes.html'">
+                    <h4>Intermediate</h4>
+                    <p>For programmers with some experience. Tests understanding of OOP, data structures, and common patterns.</p>
+                </div>
+                <div class="difficulty-card" onclick="location.href='advanced-quizzes.html'">
+                    <h4>Advanced</h4>
+                    <p>Challenges experienced developers with complex algorithms, design patterns, and optimization techniques.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript functionality can be added here if needed
+    </script>
+</body>
+</html> 

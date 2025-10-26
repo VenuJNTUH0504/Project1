@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Generics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3178c6;  /* TypeScript blue */
+            --secondary-color: #235a97;
+            --accent-color: #007acc;
+            --bg-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #1e1e1e;
+            --code-color: #f8f8f2;
+        }
+
+        .dark-theme {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #2d2d2d;
+            --code-color: #f8f8f2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .content-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .example-section {
+            margin-top: 2rem;
+        }
+
+        .example-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .resources-section {
+            margin-top: 2rem;
+        }
+
+        .resources-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .resources-section ul {
+            list-style-type: none;
+        }
+
+        .resources-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .resources-section a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources-section a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+
+    <div class="theme-toggle">
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i> Toggle Theme
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header animate-fade-in">
+            <h1>TypeScript Generics</h1>
+            <p>Creating reusable components with type safety</p>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>What are Generics?</h2>
+            <p>Generics are a way to create reusable components that can work with a variety of types rather than a single one. They allow you to write flexible, reusable functions and classes without sacrificing type safety.</p>
+            
+            <p>With generics, you can create components that work over a variety of types rather than a single one, which helps to create more reusable code while maintaining type safety.</p>
+
+            <div class="code-block">
+<pre>// A simple generic function
+function identity&lt;T&gt;(arg: T): T {
+    return arg;
+}
+
+// Using the generic function
+let output1 = identity&lt;string&gt;("myString");  // type of output will be 'string'
+let output2 = identity&lt;number&gt;(100);        // type of output will be 'number'
+
+// Type inference - compiler will figure out the type
+let output3 = identity("myString");  // type of output will be 'string'</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Generic Interfaces and Classes</h2>
+            <p>You can also use generics with interfaces and classes to create reusable components:</p>
+
+            <div class="code-block">
+<pre>// Generic interface
+interface GenericIdentityFn&lt;T&gt; {
+    (arg: T): T;
+}
+
+// Generic class
+class GenericNumber&lt;T&gt; {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+}
+
+// Using the generic class
+let myGenericNumber = new GenericNumber&lt;number&gt;();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function(x, y) { return x + y; };</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Generic Constraints</h2>
+            <p>Sometimes you want to limit the types that a generic type parameter can accept. You can do this using constraints:</p>
+
+            <div class="code-block">
+<pre>// Creating a constraint using an interface
+interface Lengthwise {
+    length: number;
+}
+
+// Using the constraint in a generic function
+function loggingIdentity&lt;T extends Lengthwise&gt;(arg: T): T {
+    console.log(arg.length);  // Now we know it has a .length property
+    return arg;
+}
+
+// This works
+loggingIdentity({ length: 10, value: 3 });
+
+// This would error because number doesn't have a .length property
+// loggingIdentity(3);</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Using Type Parameters in Generic Constraints</h2>
+            <p>You can declare a type parameter that is constrained by another type parameter:</p>
+
+            <div class="code-block">
+<pre>function getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K) {
+    return obj[key];
+}
+
+let x = { a: 1, b: 2, c: 3, d: 4 };
+
+getProperty(x, "a"); // okay
+getProperty(x, "m"); // error: Argument of type 'm' isn't assignable to 'a' | 'b' | 'c' | 'd'</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in">
+            <h2>Generic Type Aliases</h2>
+            <p>You can also create generic type aliases:</p>
+
+            <div class="code-block">
+<pre>type Container&lt;T&gt; = { value: T };
+
+let numberContainer: Container&lt;number&gt; = { value: 0 };
+let stringContainer: Container&lt;string&gt; = { value: "Hello" };</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in example-section">
+            <h3>Practical Examples</h3>
+            
+            <div class="code-block">
+<pre>// Generic function to create a typed array
+function createArray&lt;T&gt;(length: number, value: T): T[] {
+    return Array(length).fill(value);
+}
+
+// Create an array of strings
+const stringArray = createArray(3, "hi");  // returns ["hi", "hi", "hi"]
+
+// Create an array of numbers
+const numberArray = createArray(3, 42);    // returns [42, 42, 42]
+
+// Generic function to reverse an array
+function reverseArray&lt;T&gt;(array: T[]): T[] {
+    return array.slice().reverse();
+}
+
+// Reverse a string array
+const reversedStrings = reverseArray(["a", "b", "c"]);  // returns ["c", "b", "a"]
+
+// Reverse a number array
+const reversedNumbers = reverseArray([1, 2, 3]);        // returns [3, 2, 1]</pre>
+            </div>
+        </div>
+
+        <div class="content-section animate-fade-in resources-section">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/generics.html" target="_blank">TypeScript Handbook: Generics</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html#generic-functions" target="_blank">TypeScript Handbook: Generic Functions</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/classes.html#generic-classes" target="_blank">TypeScript Handbook: Generic Classes</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/keyof-types.html" target="_blank">TypeScript Handbook: Keyof Type Operator</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('dark-theme')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+    </script>
+</body>
+</html>

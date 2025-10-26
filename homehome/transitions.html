@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Transitions & Transforms</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .transition-example, .transform-example, .combined-example {
+            display: inline-block;
+            border: 2px solid #4a90e2;
+            padding: 20px 40px;
+            margin: 10px 0;
+            background: #f39c12;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        .transition-example {
+            transition: background 0.5s, color 0.5s;
+        }
+        .transition-example:hover {
+            background: #4a90e2;
+            color: #fff;
+        }
+        .transform-example {
+            transition: transform 0.3s;
+        }
+        .transform-example:hover {
+            transform: scale(1.2) rotate(10deg);
+            background: #4a90e2;
+        }
+        .combined-example {
+            transition: transform 0.5s, background 0.5s;
+        }
+        .combined-example:hover {
+            transform: translateY(-10px) scale(1.1);
+            background: #222;
+            color: #f39c12;
+        }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Transitions &amp; Transforms</h1>
+        <p>CSS Transitions and Transforms allow you to create smooth, interactive visual effects and animations on your web elements.</p>
+
+        <h2>Key Concepts</h2>
+
+        <h3>1. CSS Transitions</h3>
+        <p>Transitions enable you to change property values smoothly (over a given duration) instead of instantly.</p>
+        <div class="example-box">
+            <div class="transition-example">Hover me!</div>
+            <code>transition: background 0.5s, color 0.5s;</code>
+        </div>
+
+        <h3>2. CSS Transforms</h3>
+        <p>Transforms let you rotate, scale, skew, or move elements in 2D or 3D space.</p>
+        <div class="example-box">
+            <div class="transform-example">Hover me!</div>
+            <code>transform: scale(1.2) rotate(10deg);</code>
+        </div>
+
+        <h3>3. Combining Transitions &amp; Transforms</h3>
+        <p>You can combine transitions and transforms for more dynamic effects.</p>
+        <div class="example-box">
+            <div class="combined-example">Hover me!</div>
+            <code>transition: transform 0.5s, background 0.5s;<br>transform: translateY(-10px) scale(1.1);</code>
+        </div>
+
+        <h2>Common Properties</h2>
+        <ul>
+            <li><b>transition-property:</b> The CSS property you want to animate (e.g., <code>background</code>, <code>transform</code>).</li>
+            <li><b>transition-duration:</b> How long the transition takes (e.g., <code>0.5s</code>).</li>
+            <li><b>transition-timing-function:</b> The speed curve (e.g., <code>ease</code>, <code>linear</code>).</li>
+            <li><b>transform:</b> Functions like <code>scale()</code>, <code>rotate()</code>, <code>translate()</code>, <code>skew()</code>.</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

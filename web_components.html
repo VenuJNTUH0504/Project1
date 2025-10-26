@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(120deg, #6a11cb, #2575fc);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #6a11cb;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #2575fc;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #6a11cb;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2575fc;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        .code-box {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .demo-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .note {
+            background-color: #e8e4f3;
+            border-left: 4px solid #6a11cb;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #6a11cb;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #2575fc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .component-example {
+            border: 2px solid #6a11cb;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web Components Guide</h1>
+
+        <h2>Introduction to Web Components</h2>
+        <p>Web Components are a set of web platform APIs that allow you to create reusable, encapsulated HTML elements. They consist of three main technologies: Custom Elements, Shadow DOM, and HTML Templates.</p>
+
+        <h2>Custom Elements</h2>
+        <p>Custom Elements allow you to define your own HTML elements:</p>
+        <div class="code-box">
+            class MyComponent extends HTMLElement {
+                constructor() {
+                    super();
+                    this.innerHTML = `<h3>My Custom Component</h3>`;
+                }
+            }
+            customElements.define('my-component', MyComponent);
+        </div>
+
+        <div class="demo-box">
+            <h3>Usage Example:</h3>
+            <div class="code-box">
+                &lt;my-component&gt;&lt;/my-component&gt;
+            </div>
+        </div>
+
+        <h2>Shadow DOM</h2>
+        <p>Shadow DOM provides encapsulation for JavaScript, CSS, and templating in a Web Component:</p>
+        <div class="code-box">
+            class ShadowComponent extends HTMLElement {
+                constructor() {
+                    super();
+                    const shadow = this.attachShadow({mode: 'open'});
+                    shadow.innerHTML = `
+                        <style>
+                            .container { padding: 10px; }
+                        </style>
+                        <div class="container">
+                            <slot></slot>
+                        </div>
+                    `;
+                }
+            }
+        </div>
+
+        <h2>HTML Templates</h2>
+        <p>HTML Templates allow you to define reusable markup:</p>
+        <div class="code-box">
+            &lt;template id="my-template"&gt;
+                &lt;style&gt;
+                    .card { border: 1px solid #ccc; padding: 10px; }
+                &lt;/style&gt;
+                &lt;div class="card"&gt;
+                    &lt;slot name="title"&gt;&lt;/slot&gt;
+                    &lt;slot name="content"&gt;&lt;/slot&gt;
+                &lt;/div&gt;
+            &lt;/template&gt;
+        </div>
+
+        <h2>Lifecycle Callbacks</h2>
+        <div class="note">
+            <ul>
+                <li><strong>connectedCallback()</strong> - Called when element is added to document</li>
+                <li><strong>disconnectedCallback()</strong> - Called when element is removed</li>
+                <li><strong>adoptedCallback()</strong> - Called when element is moved to new document</li>
+                <li><strong>attributeChangedCallback()</strong> - Called when attributes are changed</li>
+            </ul>
+        </div>
+
+        <h2>Creating a Complete Web Component</h2>
+        <div class="code-box">
+            class UserCard extends HTMLElement {
+                constructor() {
+                    super();
+                    const shadow = this.attachShadow({mode: 'open'});
+                    
+                    const template = `
+                        <style>
+                            .card {
+                                border: 2px solid #6a11cb;
+                                padding: 15px;
+                                border-radius: 8px;
+                            }
+                            h3 { color: #6a11cb; }
+                        </style>
+                        <div class="card">
+                            <h3>${this.getAttribute('name')}</h3>
+                            <p>${this.getAttribute('title')}</p>
+                        </div>
+                    `;
+                    
+                    shadow.innerHTML = template;
+                }
+            }
+            customElements.define('user-card', UserCard);
+        </div>
+
+        <h2>Using Attributes and Properties</h2>
+        <p>Handling attributes in Web Components:</p>
+        <div class="code-box">
+            static get observedAttributes() {
+                return ['name', 'title'];
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                if (oldValue !== newValue) {
+                    this[name] = newValue;
+                    this.render();
+                }
+            }
+        </div>
+
+        <h2>Event Handling</h2>
+        <p>Adding event listeners to Web Components:</p>
+        <div class="code-box">
+            connectedCallback() {
+                this.shadowRoot.querySelector('button')
+                    .addEventListener('click', () => {
+                        this.dispatchEvent(new CustomEvent('custom-click'));
+                    });
+            }
+        </div>
+
+        <h2>Best Practices</h2>
+        <div class="note">
+            <ul>
+                <li>Use Shadow DOM for style encapsulation</li>
+                <li>Follow naming conventions (must contain a hyphen)</li>
+                <li>Keep components focused and single-purpose</li>
+                <li>Document your components well</li>
+                <li>Handle cleanup in disconnectedCallback</li>
+                <li>Use attributes for configuration</li>
+            </ul>
+        </div>
+
+        <h2>Browser Support and Polyfills</h2>
+        <div class="note">
+            <p>For older browsers, you may need polyfills:</p>
+            <ul>
+                <li>@webcomponents/webcomponentsjs</li>
+                <li>Custom Elements polyfill</li>
+                <li>Shadow DOM polyfill</li>
+                <li>HTML Template polyfill</li>
+            </ul>
+        </div>
+
+        <h2>Performance Considerations</h2>
+        <div class="note">
+            <ul>
+                <li>Minimize Shadow DOM operations</li>
+                <li>Use template elements for better performance</li>
+                <li>Lazy load components when possible</li>
+                <li>Optimize attribute observations</li>
+                <li>Consider using adoptedStyleSheets for shared styles</li>
+            </ul>
+        </div>
+
+        <a href="htmlhome.html" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html> 

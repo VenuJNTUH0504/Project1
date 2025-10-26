@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Union Types - TypeScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #3178c6, #4c8ddb);
+            --hover-shadow: rgba(49, 120, 198, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #235a97, #3178c6);
+            --hover-shadow: rgba(35, 90, 151, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #3178c6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #235a97;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(49, 120, 198, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(49, 120, 198, 0.3);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-box {
+            background-color: rgba(49, 120, 198, 0.1);
+            border-left: 4px solid #3178c6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--code-border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-theme tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <a href="../typescript.html" class="home-button">Back to TypeScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Union Types in TypeScript</h1>
+        
+        <p>Union types are a powerful feature in TypeScript that allows a variable to hold values of multiple types. They provide flexibility while maintaining type safety, letting you express a value that could be one of several types.</p>
+        
+        <h2>Basic Union Types</h2>
+        
+        <p>A union type is written as a vertical bar (<code>|</code>) separated list of types:</p>
+        
+        <pre><code>// Variable that can be either a string or a number
+let id: string | number;
+
+// Both assignments are valid
+id = 101;
+id = "U101";
+
+// Error: Type 'boolean' is not assignable to type 'string | number'
+// id = true;</code></pre>
+        
+        <h2>Working with Union Types</h2>
+        
+        <p>When working with union types, you can only access members that are common to all types in the union:</p>
+        
+        <pre><code>function printId(id: number | string) {
+    console.log("ID: " + id);  // OK: toString() is available on both string and number
+    
+    // Error: Property 'toUpperCase' does not exist on type 'number | string'.
+    // Property 'toUpperCase' does not exist on type 'number'.
+    // console.log(id.toUpperCase());
+}</code></pre>
+        
+        <h2>Type Narrowing</h2>
+        
+        <p>To work with properties that exist on only one type in the union, you need to narrow the type using type guards:</p>
+        
+        <pre><code>function printId(id: number | string) {
+    if (typeof id === "string") {
+        // In this branch, id is of type 'string'
+        console.log(id.toUpperCase());
+    } else {
+        // In this branch, id is of type 'number'
+        console.log(id.toFixed(2));
+    }
+}</code></pre>
+        
+        <div class="tip-box">
+            <h4>Common Type Guards</h4>
+            <p>TypeScript supports several ways to narrow types:</p>
+            <ul>
+                <li><code>typeof</code> for primitive types</li>
+                <li><code>instanceof</code> for class instances</li>
+                <li>Custom type predicates with user-defined type guards</li>
+                <li>The <code>in</code> operator for checking if a property exists on an object</li>
+            </ul>
+        </div>
+        
+        <h2>Union Types with Arrays</h2>
+        
+        <p>You can create arrays that contain elements of different types using union types:</p>
+        
+        <pre><code>// Array that can contain both strings and numbers
+let mixed: (string | number)[] = ["hello", 42, "world", 100];
+
+// Array that can be either all strings or all numbers
+let stringOrNumberArray: string[] | number[] = [1, 2, 3];
+stringOrNumberArray = ["a", "b", "c"];  // Also valid
+
+// Error: Type '(string | number)[]' is not assignable to type 'string[] | number[]'
+// stringOrNumberArray = [1, "a", 2];  // Not valid</code></pre>
+        
+        <h2>Literal Types in Unions</h2>
+        
+        <p>Union types can include literal types, which are specific values rather than general types:</p>
+        
+        <pre><code>// Function that accepts specific string values
+function setAlignment(alignment: "left" | "right" | "center") {
+    // ...
+}
+
+setAlignment("left");  // OK
+setAlignment("right");  // OK
+// Error: Argument of type '"top"' is not assignable to parameter of type '"left" | "right" | "center"'
+// setAlignment("top");</code></pre>
+        
+        <h2>Discriminated Unions</h2>
+        
+        <p>A common pattern in TypeScript is to create a discriminated union, where each type in the union contains a common property (the "discriminant") that can be used to narrow the type:</p>
+        
+        <pre><code>interface Square {
+    kind: "square";
+    size: number;
+}
+
+interface Rectangle {
+    kind: "rectangle";
+    width: number;
+    height: number;
+}
+
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+
+type Shape = Square | Rectangle | Circle;
+
+function calculateArea(shape: Shape): number {
+    switch (shape.kind) {
+        case "square":
+            return shape.size * shape.size;
+        case "rectangle":
+            return shape.width * shape.height;
+        case "circle":
+            return Math.PI * shape.radius * shape.radius;
+    }
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Exhaustiveness Checking</h4>
+            <p>TypeScript can help ensure you've handled all possible types in a union by using a never type and the compiler's exhaustiveness checking:</p>
+            <pre><code>function assertNever(x: never): never {
+    throw new Error("Unexpected object: " + x);
+}
+
+function calculateArea(shape: Shape): number {
+    switch (shape.kind) {
+        case "square":
+            return shape.size * shape.size;
+        case "rectangle":
+            return shape.width * shape.height;
+        case "circle":
+            return Math.PI * shape.radius * shape.radius;
+        default:
+            // If a new shape type is added and not handled above,
+            // TypeScript will generate a compile-time error
+            return assertNever(shape);
+    }
+}</code></pre>
+        </div>
+        
+        <h2>Intersection Types vs Union Types</h2>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Union Types (|)</h4>
+                <p>A value can be <strong>one of</strong> the specified types</p>
+                <pre><code>type A = string | number;
+// Value can be either string OR number</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Intersection Types (&)</h4>
+                <p>A value must satisfy <strong>all</strong> of the specified types</p>
+                <pre><code>type B = { name: string } & { age: number };
+// Value must have both name AND age</code></pre>
+            </div>
+        </div>
+        
+        <h2>Optional Properties vs Union with Undefined</h2>
+        
+        <p>There are two ways to express that a property might not be present:</p>
+        
+        <pre><code>// Using optional property
+interface User1 {
+    name: string;
+    email?: string;  // email might not be present
+}
+
+// Using union with undefined
+interface User2 {
+    name: string;
+    email: string | undefined;  // email must be present, but might be undefined
+}
+
+// These are different:
+const user1: User1 = { name: "Alice" };  // OK, email can be omitted
+const user2: User2 = { name: "Bob" };    // Error: Property 'email' is missing
+const user3: User2 = { name: "Charlie", email: undefined };  // OK</code></pre>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types" target="_blank">TypeScript Handbook: Union Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">TypeScript Handbook: Type Narrowing</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types" target="_blank">TypeScript Handbook: Literal Types</a></li>
+                <li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions" target="_blank">TypeScript Handbook: Discriminated Unions</a></li>
+                <li><a href="https://www.typescriptlang.org/play" target="_blank">TypeScript Playground</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

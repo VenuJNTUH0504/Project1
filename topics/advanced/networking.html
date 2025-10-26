@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Network Programming - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../python-homepage.html" class="back-button">
+        <span>Python Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Python Network Programming</h1>
+            <p>Building network applications with Python</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Network Programming</h2>
+                <p>Python provides powerful libraries for network programming, making it easy to create network applications, servers, and clients.</p>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="socket-programming">
+                <h2>Socket Programming</h2>
+                <p>Basic socket programming in Python:</p>
+                <pre><code class="language-python"># Server
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(('localhost', 12345))
+server.listen(5)
+
+print("Server listening...")
+while True:
+    client, addr = server.accept()
+    print(f"Connection from {addr}")
+    client.send(b"Hello, client!")
+    client.close()
+
+# Client
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('localhost', 12345))
+response = client.recv(1024)
+print(response.decode())
+client.close()</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="http-clients">
+                <h2>HTTP Clients</h2>
+                <p>Making HTTP requests using the requests library:</p>
+                <pre><code class="language-python">import requests
+
+# GET request
+response = requests.get('https://api.example.com/data')
+print(response.json())
+
+# POST request
+data = {'key': 'value'}
+response = requests.post('https://api.example.com/data', json=data)
+print(response.status_code)
+
+# With authentication
+response = requests.get(
+    'https://api.example.com/secure',
+    auth=('username', 'password')
+)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="http-servers">
+                <h2>HTTP Servers</h2>
+                <p>Creating HTTP servers using Flask:</p>
+                <pre><code class="language-python">from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Welcome to the API!"
+
+@app.route('/api/data', methods=['GET', 'POST'])
+def handle_data():
+    if request.method == 'GET':
+        return jsonify({'message': 'GET request received'})
+    elif request.method == 'POST':
+        data = request.json
+        return jsonify({'received': data})
+
+if __name__ == '__main__':
+    app.run(debug=True)</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="websockets">
+                <h2>WebSockets</h2>
+                <p>Real-time communication using WebSockets:</p>
+                <pre><code class="language-python"># Server
+from websockets import serve
+import asyncio
+
+async def echo(websocket):
+    async for message in websocket:
+        await websocket.send(message)
+
+async def main():
+    async with serve(echo, "localhost", 8765):
+        await asyncio.Future()  # run forever
+
+asyncio.run(main())
+
+# Client
+import websockets
+import asyncio
+
+async def hello():
+    async with websockets.connect("ws://localhost:8765") as websocket:
+        await websocket.send("Hello, server!")
+        response = await websocket.recv()
+        print(response)
+
+asyncio.run(hello())</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Always handle network errors and timeouts</li>
+                    <li>Use connection pooling for better performance</li>
+                    <li>Implement proper security measures (SSL/TLS)</li>
+                    <li>Consider using async/await for better scalability</li>
+                    <li>Follow RESTful API design principles</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

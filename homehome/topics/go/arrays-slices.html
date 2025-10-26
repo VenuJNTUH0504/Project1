@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Arrays & Slices - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Arrays & Slices</h1>
+            <p>Understanding arrays and slices in Go</p>
+        </header>
+
+        <div class="card">
+            <section id="arrays">
+                <h2>Arrays</h2>
+                <p>Arrays in Go are fixed-size sequences of elements of the same type:</p>
+                <pre><code class="language-go">// Array declaration
+var numbers [5]int
+numbers[0] = 1
+numbers[1] = 2
+
+// Array initialization
+primes := [6]int{2, 3, 5, 7, 11, 13}
+
+// Array with ellipsis
+days := [...]string{"Monday", "Tuesday", "Wednesday"}
+
+// Multi-dimensional array
+var matrix [3][3]int
+matrix[0][0] = 1
+matrix[1][1] = 1
+matrix[2][2] = 1</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="slices">
+                <h2>Slices</h2>
+                <p>Slices are dynamic views into arrays or other slices:</p>
+                <pre><code class="language-go">// Slice declaration
+var s []int
+
+// Slice from array
+primes := [6]int{2, 3, 5, 7, 11, 13}
+s := primes[1:4] // [3, 5, 7]
+
+// Slice literal
+s := []int{1, 2, 3, 4, 5}
+
+// Slice with make
+s := make([]int, 5)     // length = 5, capacity = 5
+s := make([]int, 0, 5)  // length = 0, capacity = 5</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="slice-operations">
+                <h2>Slice Operations</h2>
+                <p>Common operations on slices:</p>
+                <pre><code class="language-go">// Append elements
+s := []int{1, 2, 3}
+s = append(s, 4, 5) // [1, 2, 3, 4, 5]
+
+// Copy slices
+src := []int{1, 2, 3}
+dst := make([]int, len(src))
+copy(dst, src)
+
+// Slice expressions
+s := []int{1, 2, 3, 4, 5}
+s[1:3]  // [2, 3]
+s[:3]   // [1, 2, 3]
+s[3:]   // [4, 5]
+s[:]    // [1, 2, 3, 4, 5]</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="slice-capacity">
+                <h2>Slice Capacity</h2>
+                <p>Understanding slice capacity and length:</p>
+                <pre><code class="language-go">// Length and capacity
+s := make([]int, 3, 5)
+fmt.Println(len(s)) // 3
+fmt.Println(cap(s)) // 5
+
+// Growing slices
+s := []int{1, 2, 3}
+fmt.Println(len(s), cap(s)) // 3, 3
+s = append(s, 4)
+fmt.Println(len(s), cap(s)) // 4, 6
+
+// Slicing and capacity
+s := []int{1, 2, 3, 4, 5}
+s1 := s[1:3]
+fmt.Println(len(s1), cap(s1)) // 2, 4</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="slice-iteration">
+                <h2>Slice Iteration</h2>
+                <p>Different ways to iterate over slices:</p>
+                <pre><code class="language-go">// Basic for loop
+s := []int{1, 2, 3}
+for i := 0; i < len(s); i++ {
+    fmt.Println(s[i])
+}
+
+// Range loop
+s := []int{1, 2, 3}
+for index, value := range s {
+    fmt.Printf("Index: %d, Value: %d\n", index, value)
+}
+
+// Range loop without index
+s := []int{1, 2, 3}
+for _, value := range s {
+    fmt.Println(value)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Prefer slices over arrays for most use cases</li>
+                    <li>Use make when you know the capacity in advance</li>
+                    <li>Be careful with slice capacity when appending</li>
+                    <li>Use copy when you need to create independent slices</li>
+                    <li>Consider the performance implications of slice operations</li>
+                    <li>Use range for iteration when possible</li>
+                    <li>Be aware of slice aliasing</li>
+                    <li>Document slice capacity requirements</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

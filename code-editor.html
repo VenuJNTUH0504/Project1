@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #f7fafd;
+            color: #22223b;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .fullscreen-editor {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+        }
+        .editor-pane {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+        }
+        .editor-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+            background: #f7fafd;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .language-selector {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #bfc9d1;
+            background: #f7fafd;
+            color: #22223b;
+            font-size: 1rem;
+        }
+        .editor-controls {
+            margin-left: auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .control-btn {
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #3973f7;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+        .control-btn:hover {
+            background-color: #2451a6;
+        }
+        #editor {
+            flex: 1 1 0;
+            min-height: 0;
+            min-width: 0;
+        }
+        .output-pane {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: #f4f6fa;
+        }
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+            background: #f7fafd;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .output-header h3 {
+            margin: 0;
+            color: #22223b;
+            font-size: 1.2rem;
+        }
+        .clear-btn {
+            background-color: #3973f7;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 0.25rem 0.8rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .clear-btn:hover {
+            background-color: #2451a6;
+        }
+        #output {
+            flex: 1 1 0;
+            background: #e9ecef;
+            border-radius: 0 0 4px 4px;
+            padding: 1rem;
+            font-family: 'Fira Mono', 'Consolas', monospace;
+            font-size: 1.05rem;
+            color: #22223b;
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            min-height: 0;
+        }
+        .stdin-section {
+            background: #f7fafd;
+            border-top: 1px solid #e2e8f0;
+            padding: 0 1.2rem 1.2rem 1.2rem;
+        }
+        .stdin-section details {
+            margin-top: 1.2rem;
+        }
+        .stdin-section summary {
+            color: #3973f7;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 1.05rem;
+        }
+        .stdin-section textarea {
+            width: 100%;
+            min-height: 60px;
+            margin-top: 0.7rem;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-size: 1rem;
+            background: #fff;
+            resize: vertical;
+        }
+        @media (max-width: 900px) {
+            .fullscreen-editor {
+                flex-direction: column;
+            }
+            .editor-pane, .output-pane {
+                min-height: 40vh;
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fullscreen-editor">
+        <div class="editor-pane">
+            <div class="editor-toolbar">
+                <select class="language-selector" id="languageSelect">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                    <option value="c">C</option>
+                    <option value="csharp">C#</option>
+                    <option value="go">Go</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="swift">Swift</option>
+                    <option value="php">PHP</option>
+                    <option value="kotlin">Kotlin</option>
+                    <option value="perl">Perl</option>
+                    <option value="r">R</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                </select>
+                <div class="editor-controls">
+                    <button class="control-btn" onclick="runCode()">Run</button>
+                    <button class="control-btn" onclick="saveCode()">Save</button>
+                    <button class="control-btn" onclick="formatCode()">Format</button>
+                </div>
+            </div>
+            <div id="editor"></div>
+        </div>
+        <div class="output-pane">
+            <div class="output-header">
+                <h3>Output</h3>
+                <button class="clear-btn" onclick="clearOutput()">Clear</button>
+            </div>
+            <pre id="output">// Code output will appear here</pre>
+            <div class="stdin-section">
+                <details>
+                    <summary>Program Input (stdin)</summary>
+                    <textarea id="stdin" placeholder="Enter input for your program here..."></textarea>
+                </details>
+            </div>
+        </div>
+    </div>
+    <script>
+        let editor;
+        const PISTON_API_URL = 'https://emkc.org/api/v2/piston/execute';
+        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: '// Write your code here\n',
+                language: 'javascript',
+                theme: 'vs-light',
+                automaticLayout: true,
+                minimap: { enabled: true },
+                fontSize: 15,
+                lineNumbers: 'on',
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                cursorStyle: 'line',
+                tabSize: 4,
+                wordWrap: 'on'
+            });
+            updateLanguage('javascript');
+        });
+        function updateLanguage(language) {
+            const languageMap = {
+                'python': 'python',
+                'javascript': 'javascript',
+                'typescript': 'typescript',
+                'java': 'java',
+                'cpp': 'cpp',
+                'c': 'c',
+                'csharp': 'csharp',
+                'go': 'go',
+                'ruby': 'ruby',
+                'swift': 'swift',
+                'php': 'php',
+                'kotlin': 'kotlin',
+                'perl': 'perl',
+                'r': 'r',
+                'html': 'html',
+                'css': 'css'
+            };
+            const monacoLanguage = languageMap[language] || 'plaintext';
+            monaco.editor.setModelLanguage(editor.getModel(), monacoLanguage);
+        }
+        document.getElementById('languageSelect').addEventListener('change', function(e) {
+            updateLanguage(e.target.value);
+        });
+        async function runCode() {
+            const language = document.getElementById('languageSelect').value;
+            const code = editor.getValue();
+            const output = document.getElementById('output');
+            const stdin = document.getElementById('stdin') ? document.getElementById('stdin').value : '';
+            output.textContent = '// Code output will appear here';
+            output.style.color = '#22223b';
+            if (["html", "css", "javascript", "typescript"].includes(language)) {
+                if (language === "html") {
+                    runHtml(code, output);
+                } else if (language === "css") {
+                    runHtml(`<style>${code}</style>`, output);
+                } else if (language === "javascript") {
+                    runHtml(`<script>${code}<'/script>`, output);
+                } else if (language === "typescript") {
+                    output.textContent = 'Running TypeScript...';
+                    try {
+                        const tsCode = code;
+                        const transpileUrl = 'https://www.typescriptlang.org/play?ts=4.9.5&ssl=1&ssc=1&pln=1&pc=1#code/' + btoa(unescape(encodeURIComponent(tsCode)));
+                        output.innerHTML = `Open <a href="${transpileUrl}" target="_blank">TypeScript Playground</a> to run this code.`;
+                    } catch (e) {
+                        output.textContent = 'Error running TypeScript.';
+                    }
+                }
+                return;
+            }
+            output.textContent = 'Running...';
+            try {
+                const response = await fetch(PISTON_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ language: language, source: code, stdin: stdin })
+                });
+                const data = await response.json();
+                if (data.run) {
+                    output.textContent = (data.run.output || '') + (data.run.stderr ? '\n' + data.run.stderr : '');
+                } else {
+                    output.textContent = 'Error: Could not execute code. API Response: ' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+            }
+        }
+        function runHtml(html, output) {
+            // Create a sandboxed iframe and display its output
+            const iframe = document.createElement('iframe');
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.minHeight = '300px';
+            iframe.style.border = '1px solid #bfc9d1';
+            iframe.sandbox = 'allow-scripts allow-same-origin';
+            output.innerHTML = '';
+            output.appendChild(iframe);
+            setTimeout(() => {
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(html);
+                iframe.contentDocument.close();
+            }, 100);
+        }
+        function clearOutput() {
+            const output = document.getElementById('output');
+            output.textContent = '// Code output will appear here';
+            output.style.color = '#22223b';
+        }
+        function saveCode() {
+            const code = editor.getValue();
+            const language = document.getElementById('languageSelect').value;
+            const extensions = {
+                python: 'py', cpp: 'cpp', java: 'java', go: 'go', javascript: 'js', typescript: 'ts', c: 'c', csharp: 'cs', ruby: 'rb', swift: 'swift', php: 'php', kotlin: 'kt', perl: 'pl', r: 'r', html: 'html', css: 'css'
+            };
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `code.${extensions[language] || 'txt'}`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        function formatCode() {
+            if (editor) {
+                try {
+                    editor.getAction('editor.action.formatDocument').run();
+                } catch (error) {
+                    const output = document.getElementById('output');
+                    output.textContent = 'Code formatting is not available for this language.';
+                    setTimeout(() => {
+                        output.textContent = '// Code output will appear here';
+                    }, 3000);
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Handling (try/catch) - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Error Handling (try/catch)</h1>
+        
+        <p>Error handling is a critical aspect of writing robust JavaScript applications. It allows you to gracefully handle unexpected situations, provide meaningful feedback to users, and prevent your application from crashing when something goes wrong.</p>
+        
+        <h2>Types of Errors in JavaScript</h2>
+        <p>JavaScript has several built-in error types:</p>
+        
+        <ul>
+            <li><strong>SyntaxError</strong>: Occurs when there's a mistake in the syntax of your code</li>
+            <li><strong>ReferenceError</strong>: Occurs when referencing a variable that doesn't exist</li>
+            <li><strong>TypeError</strong>: Occurs when a value is not of the expected type</li>
+            <li><strong>RangeError</strong>: Occurs when a value is not in the expected range</li>
+            <li><strong>URIError</strong>: Occurs when using global URI handling functions incorrectly</li>
+            <li><strong>EvalError</strong>: Occurs when using the eval() function incorrectly</li>
+            <li><strong>Error</strong>: The generic error object, base for all other error types</li>
+        </ul>
+        
+        <h3>Examples of Common Errors</h3>
+        <pre><code>// SyntaxError
+// const user = { name: "John", age: 30; }  // Missing comma, using semicolon
+
+// ReferenceError
+console.log(undefinedVariable);  // Variable doesn't exist
+
+// TypeError
+const str = "Hello";
+str.push("World");  // String doesn't have a push method
+
+// RangeError
+const arr = new Array(-1);  // Cannot create array with negative length</code></pre>
+        
+        <h2>The try/catch Statement</h2>
+        <p>The <code>try/catch</code> statement allows you to "try" running some code and "catch" potential errors without crashing your program.</p>
+        
+        <h3>Basic Syntax</h3>
+        <pre><code>try {
+  // Code that might throw an error
+} catch (error) {
+  // Code to handle the error
+}</code></pre>
+        
+        <h3>Simple Example</h3>
+        <pre><code>try {
+  // Attempt to access a property of an undefined variable
+  console.log(nonExistentVariable.property);
+} catch (error) {
+  console.error('An error occurred:', error.message);
+  // Output: "An error occurred: Cannot read properties of undefined (reading 'property')"
+}</code></pre>
+        
+        <h3>The Error Object</h3>
+        <p>When an error occurs, JavaScript creates an Error object with properties that provide information about the error:</p>
+        
+        <ul>
+            <li><code>name</code>: The name of the error (e.g., "ReferenceError")</li>
+            <li><code>message</code>: A human-readable description of the error</li>
+            <li><code>stack</code>: A stack trace showing where the error occurred</li>
+        </ul>
+        
+        <pre><code>try {
+  throw new Error('Something went wrong');
+} catch (error) {
+  console.log('Error name:', error.name);       // "Error"
+  console.log('Error message:', error.message); // "Something went wrong"
+  console.log('Error stack:', error.stack);     // Stack trace information
+}</code></pre>
+        
+        <h3>The finally Clause</h3>
+        <p>The <code>finally</code> clause executes code after the <code>try</code> and <code>catch</code> blocks, regardless of whether an error occurred or not.</p>
+        
+        <pre><code>function processFile() {
+  let file = null;
+  
+  try {
+    file = openFile('example.txt');
+    // Process the file
+    return 'File processed successfully';
+  } catch (error) {
+    console.error('Error processing file:', error.message);
+    return 'Error processing file';
+  } finally {
+    // This will run regardless of whether there was an error
+    if (file) {
+      closeFile(file); // Always close the file
+      console.log('File closed');
+    }
+  }
+}</code></pre>
+        
+        <div class="tip-box">
+            <h4>When to Use finally</h4>
+            <p>The <code>finally</code> block is particularly useful for cleanup operations that should happen regardless of success or failure, such as:</p>
+            <ul>
+                <li>Closing file handles</li>
+                <li>Closing database connections</li>
+                <li>Releasing resources</li>
+                <li>Resetting state variables</li>
+            </ul>
+        </div>
+        
+        <h2>Throwing Errors</h2>
+        <p>You can manually throw errors using the <code>throw</code> statement. This is useful when you detect a problem in your code and want to signal that something went wrong.</p>
+        
+        <pre><code>function divide(a, b) {
+  if (b === 0) {
+    throw new Error('Division by zero is not allowed');
+  }
+  return a / b;
+}
+
+try {
+  const result = divide(10, 0);
+  console.log('Result:', result);
+} catch (error) {
+  console.error('Error:', error.message); // "Error: Division by zero is not allowed"
+}</code></pre>
+        
+        <h3>Creating Custom Error Types</h3>
+        <p>You can create custom error types by extending the built-in Error class. This allows you to create more specific errors for your application.</p>
+        
+        <pre><code>// Define a custom error type
+class ValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
+// Define another custom error type
+class DatabaseError extends Error {
+  constructor(message, code) {
+    super(message);
+    this.name = 'DatabaseError';
+    this.code = code;
+  }
+}
+
+// Using custom errors
+function validateUser(user) {
+  if (!user) {
+    throw new ValidationError('User object is required');
+  }
+  
+  if (!user.name) {
+    throw new ValidationError('User name is required');
+  }
+  
+  if (user.age < 18) {
+    throw new ValidationError('User must be at least 18 years old');
+  }
+}
+
+try {
+  validateUser({ name: 'John', age: 16 });
+} catch (error) {
+  if (error instanceof ValidationError) {
+    console.error('Validation failed:', error.message);
+  } else if (error instanceof DatabaseError) {
+    console.error(`Database error (${error.code}):`, error.message);
+  } else {
+    console.error('Unknown error:', error);
+  }
+}</code></pre>
+        
+        <h2>Error Handling in Asynchronous Code</h2>
+        
+        <h3>Promises</h3>
+        <p>Promises have built-in error handling using the <code>.catch()</code> method.</p>
+        
+        <pre><code>function fetchData() {
+  return new Promise((resolve, reject) => {
+    // Simulate an API call
+    setTimeout(() => {
+      const success = Math.random() > 0.5;
+      if (success) {
+        resolve({ id: 1, name: 'John' });
+      } else {
+        reject(new Error('Failed to fetch data'));
+      }
+    }, 1000);
+  });
+}
+
+fetchData()
+  .then(data => {
+    console.log('Data received:', data);
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+  })
+  .finally(() => {
+    console.log('Operation completed');
+  });</code></pre>
+        
+        <h3>Async/Await</h3>
+        <p>With async/await, you can use traditional try/catch blocks for asynchronous code.</p>
+        
+        <pre><code>async function getUserData(userId) {
+  try {
+    const response = await fetch(`https://api.example.com/users/${userId}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user data:', error.message);
+    // You can re-throw the error or return a default value
+    return { error: true, message: error.message };
+  }
+}
+
+// Using the function
+async function displayUserProfile(userId) {
+  const userData = await getUserData(userId);
+  
+  if (userData.error) {
+    displayErrorMessage(userData.message);
+  } else {
+    displayUserInfo(userData);
+  }
+}</code></pre>
+        
+        <div class="warning-box">
+            <h4>Common Mistake: Forgetting try/catch with await</h4>
+            <p>A common mistake is forgetting to wrap <code>await</code> calls in try/catch blocks. Without proper error handling, unhandled promise rejections can crash your application.</p>
+            <div class="comparison">
+                <div class="comparison-column">
+                    <h4>Incorrect</h4>
+                    <pre><code>async function fetchData() {
+  // No error handling!
+  const response = await fetch('/api/data');
+  const data = await response.json();
+  return data;
+}</code></pre>
+                </div>
+                <div class="comparison-column">
+                    <h4>Correct</h4>
+                    <pre><code>async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Re-throw or handle appropriately
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <h2>Best Practices for Error Handling</h2>
+        
+        <h3>1. Be Specific About What You Catch</h3>
+        <p>Catch specific errors rather than catching all errors indiscriminately.</p>
+        
+        <pre><code>try {
+  // Code that might throw different types of errors
+} catch (error) {
+  if (error instanceof TypeError) {
+    // Handle type errors
+  } else if (error instanceof RangeError) {
+    // Handle range errors
+  } else if (error.name === 'ValidationError') {
+    // Handle validation errors
+  } else {
+    // Handle other errors or re-throw
+    throw error;
+  }
+}</code></pre>
+        
+        <h3>2. Provide Meaningful Error Messages</h3>
+        <p>Error messages should be clear and helpful, providing context about what went wrong.</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Poor Error Message</h4>
+                <pre><code>if (!isValid) {
+  throw new Error('Invalid input');
+}</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Better Error Message</h4>
+                <pre><code>if (!isValid) {
+  throw new Error(
+    'Invalid email format: ' + 
+    email + 
+    '. Email must contain @ symbol.'
+  );
+}</code></pre>
+            </div>
+        </div>
+        
+        <h3>3. Log Errors Appropriately</h3>
+        <p>Log errors with enough context to help with debugging, but be careful not to log sensitive information.</p>
+        
+        <pre><code>try {
+  processUserData(userData);
+} catch (error) {
+  // Log with context
+  console.error(
+    `Error processing user data for user ${userData.id}:`, 
+    error.message,
+    { timestamp: new Date(), errorCode: error.code }
+  );
+  
+  // Show user-friendly message
+  displayErrorToUser('We encountered a problem processing your data.');
+}</code></pre>
+        
+        <h3>4. Don't Swallow Errors</h3>
+        <p>"Swallowing" errors means catching them but not handling them properly, which can make debugging difficult.</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Swallowing Errors (Bad)</h4>
+                <pre><code>try {
+  riskyOperation();
+} catch (error) {
+  // Error is caught but ignored!
+}</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Proper Handling (Good)</h4>
+                <pre><code>try {
+  riskyOperation();
+} catch (error) {
+  // Log the error
+  console.error('Error in riskyOperation:', error);
+  
+  // Take appropriate action
+  notifyUser();
+  
+  // Optionally re-throw if can't handle here
+  throw error;
+}</code></pre>
+            </div>
+        </div>
+        
+        <h3>5. Clean Up Resources</h3>
+        <p>Always clean up resources, even when errors occur, using <code>finally</code> blocks.</p>
+        
+        <pre><code>let connection = null;
+try {
+  connection = openDatabaseConnection();
+  // Use the connection
+} catch (error) {
+  console.error('Database error:', error);
+  // Handle the error
+} finally {
+  if (connection) {
+    connection.close(); // Always close the connection
+  }
+}</code></pre>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Form Validation with Error Handling</h4>
+            <pre><code>function validateForm(formData) {
+  const errors = [];
+  
+  try {
+    // Check required fields
+    if (!formData.name) {
+      errors.push('Name is required');
+    }
+    
+    if (!formData.email) {
+      errors.push('Email is required');
+    } else if (!isValidEmail(formData.email)) {
+      errors.push('Email format is invalid');
+    }
+    
+    if (!formData.password) {
+      errors.push('Password is required');
+    } else if (formData.password.length < 8) {
+      errors.push('Password must be at least 8 characters');
+    }
+    
+    // If we have errors, throw a validation error
+    if (errors.length > 0) {
+      const error = new ValidationError('Form validation failed');
+      error.errors = errors;
+      throw error;
+    }
+    
+    return { valid: true };
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return { 
+        valid: false, 
+        errors: error.errors 
+      };
+    }
+    
+    // For unexpected errors
+    console.error('Unexpected validation error:', error);
+    return { 
+      valid: false, 
+      errors: ['An unexpected error occurred'] 
+    };
+  }
+}
+
+// Usage
+const formData = {
+  name: 'John',
+  email: 'invalid-email',
+  password: 'pass'
+};
+
+const result = validateForm(formData);
+
+if (!result.valid) {
+  // Display errors to the user
+  result.errors.forEach(error => {
+    console.log('- ' + error);
+  });
+} else {
+  // Submit the form
+  submitForm(formData);
+}</code></pre>
+            
+            <h4>API Error Handling</h4>
+            <pre><code>async function fetchUserData(userId) {
+  try {
+    const response = await fetch(`/api/users/${userId}`);
+    
+    // Handle HTTP errors
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      
+      // Create appropriate error based on status code
+      if (response.status === 404) {
+        throw new NotFoundError(`User with ID ${userId} not found`);
+      } else if (response.status === 401 || response.status === 403) {
+        throw new AuthorizationError('Not authorized to access this user');
+      } else {
+        throw new ApiError(
+          `API error: ${errorData.message || response.statusText}`,
+          response.status
+        );
+      }
+    }
+    
+    // Parse JSON (this could also throw)
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Re-throw our custom errors
+    if (error instanceof NotFoundError || 
+        error instanceof AuthorizationError || 
+        error instanceof ApiError) {
+      throw error;
+    }
+    
+    // Handle network errors
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      throw new NetworkError('Network error: Unable to connect to the server');
+    }
+    
+    // Handle JSON parsing errors
+    if (error instanceof SyntaxError && error.message.includes('JSON')) {
+      throw new ApiError('Invalid response format from the server');
+    }
+    
+    // Handle any other unexpected errors
+    console.error('Unexpected error in fetchUserData:', error);
+    throw new Error('An unexpected error occurred while fetching user data');
+  }
+}
+
+// Usage with error handling
+async function displayUserProfile(userId) {
+  try {
+    const userData = await fetchUserData(userId);
+    renderUserProfile(userData);
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      showNotFoundMessage();
+    } else if (error instanceof AuthorizationError) {
+      redirectToLogin();
+    } else if (error instanceof NetworkError) {
+      showOfflineMessage();
+    } else {
+      showGenericErrorMessage(error.message);
+    }
+  }
+}</code></pre>
+            
+            <h4>Error Boundary Pattern (Inspired by React)</h4>
+            <pre><code>class ErrorBoundary {
+  constructor(fallbackFn) {
+    this.fallbackFn = fallbackFn || (() => console.log('An error occurred'));
+  }
+  
+  wrap(fn) {
+    return async (...args) => {
+      try {
+        return await fn(...args);
+      } catch (error) {
+        console.error('Error caught by boundary:', error);
+        return this.fallbackFn(error);
+      }
+    };
+  }
+}
+
+// Usage
+const errorBoundary = new ErrorBoundary((error) => {
+  // Display a user-friendly error message
+  document.getElementById('error-container').innerHTML = `
+    <div class="error-message">
+      <h3>Something went wrong</h3>
+      <p>${error.message}</p>
+      <button onclick="location.reload()">Try Again</button>
+    </div>
+  `;
+  
+  // Return a default value
+  return { error: true, message: error.message };
+});
+
+// Wrap a function with error handling
+const safeLoadData = errorBoundary.wrap(async () => {
+  const response = await fetch('/api/data');
+  if (!response.ok) throw new Error('Failed to load data');
+  return response.json();
+});
+
+// Now you can use safeLoadData without try/catch
+safeLoadData().then(data => {
+  if (!data.error) {
+    renderData(data);
+  }
+});</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank">MDN: try...catch Statement</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error" target="_blank">MDN: Error Object</a></li>
+                <li><a href="https://javascript.info/try-catch" target="_blank">JavaScript.info: Error Handling</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" target="_blank">MDN: Control Flow and Error Handling</a></li>
+                <li><a href="https://web.dev/articles/handling-errors" target="_blank">web.dev: Handling Errors</a></li>
+                <li><a href="https://www.joyent.com/node-js/production/design/errors" target="_blank">Joyent: Error Handling in Node.js</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

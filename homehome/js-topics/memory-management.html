@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Management - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box h4 {
+            margin-top: 0;
+            color: #ffc107;
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .diagram {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .dark-theme .diagram {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Memory Management</h1>
+        
+        <p>Memory management in JavaScript is largely handled automatically by the JavaScript engine, but understanding how it works is crucial for writing efficient and leak-free applications. This knowledge becomes especially important when building complex or long-running applications.</p>
+        
+        <h2>JavaScript Memory Model</h2>
+        
+        <p>JavaScript uses a memory model with several key components:</p>
+        
+        <ul>
+            <li><strong>Stack</strong>: Stores primitive values and references to objects</li>
+            <li><strong>Heap</strong>: Stores objects and functions</li>
+            <li><strong>Call Stack</strong>: Tracks function calls and execution context</li>
+            <li><strong>Event Loop</strong>: Manages asynchronous operations</li>
+        </ul>
+        
+        <h3>Stack vs. Heap</h3>
+        <pre><code>// Stack memory example (primitive values)
+let a = 10;        // Stored directly on the stack
+let b = "Hello";   // Stored directly on the stack
+let c = true;      // Stored directly on the stack
+
+// Heap memory example (objects)
+let person = {     // Reference stored on stack, object stored in heap
+  name: "John",
+  age: 30
+};
+
+let numbers = [1, 2, 3, 4]; // Reference on stack, array in heap
+
+function createObject() {
+  // Local variables are stored on the stack
+  let x = 20;
+  
+  // Objects are stored in the heap
+  return { value: x };
+}</code></pre>
+        
+        <div class="diagram">
+            <img src="https://mdn.mozillademos.org/files/8629/memory-model.png" alt="JavaScript Memory Model" style="max-width: 100%; height: auto;">
+            <p><em>Simplified representation of JavaScript memory model</em></p>
+        </div>
+        
+        <h2>Garbage Collection</h2>
+        
+        <p>JavaScript uses automatic garbage collection to reclaim memory that's no longer needed. The primary algorithm used is called "Mark and Sweep".</p>
+        
+        <h3>How Garbage Collection Works</h3>
+        <ol>
+            <li><strong>Mark</strong>: The garbage collector identifies and marks all objects that are still reachable from the root objects (global objects, currently executing functions, etc.)</li>
+            <li><strong>Sweep</strong>: It then removes all objects that weren't marked in the previous step</li>
+        </ol>
+        
+        <pre><code>// Example of garbage collection
+function createObjects() {
+  let obj1 = { name: "Object 1" }; // Created in heap
+  let obj2 = { name: "Object 2" }; // Created in heap
+  
+  return obj1; // obj1 is returned and remains accessible
+  // obj2 becomes unreachable and will be garbage collected
+}
+
+let result = createObjects();
+// At this point, obj2 from the function is eligible for garbage collection
+// result still references obj1, so it's not garbage collected</code></pre>
+        
+        <h3>Memory Lifecycle</h3>
+        <ol>
+            <li><strong>Allocation</strong>: Memory is allocated when you create variables, objects, arrays, etc.</li>
+            <li><strong>Use</strong>: Memory is used when you read from or write to allocated memory</li>
+            <li><strong>Release</strong>: Memory is released when it's no longer needed (handled by garbage collection)</li>
+        </ol>
+        
+        <h2>Common Memory Issues</h2>
+        
+        <h3>Memory Leaks</h3>
+        <p>Memory leaks occur when memory that is no longer needed is not released. Here are common causes:</p>
+        
+        <h4>1. Unintended Global Variables</h4>
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Memory Leak</h4>
+                <pre><code>function createGlobalLeak() {
+  leakyVariable = "I'm leaking!"; // Missing 'var', 'let', or 'const'
+}
+
+createGlobalLeak();
+// leakyVariable is now a global variable and won't be garbage collected</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Fixed Version</h4>
+                <pre><code>function noLeak() {
+  let localVariable = "I'm contained!";
+}
+
+noLeak();
+// localVariable is scoped to the function and will be garbage collected</code></pre>
+            </div>
+        </div>
+        
+        <h4>2. Forgotten Timers and Callbacks</h4>
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Memory Leak</h4>
+                <pre><code>function startTimer() {
+  const largeData = new Array(10000).fill('x');
+  
+  setInterval(function() {
+    // This timer keeps running and references largeData
+    console.log('Timer running, data length:', largeData.length);
+  }, 1000);
+}
+
+startTimer();
+// The interval keeps largeData in memory indefinitely</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Fixed Version</h4>
+                <pre><code>function startTimerFixed() {
+  const largeData = new Array(10000).fill('x');
+  
+  const timerId = setInterval(function() {
+    console.log('Timer running, data length:', largeData.length);
+  }, 1000);
+  
+  // Store the timer ID so it can be cleared later
+  return timerId;
+}
+
+const timer = startTimerFixed();
+
+// Later, when no longer needed:
+clearInterval(timer);
+// Now largeData can be garbage collected</code></pre>
+            </div>
+        </div>
+        
+        <h4>3. Closures Capturing Variables</h4>
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Memory Leak</h4>
+                <pre><code>function createLeakyClosures() {
+  const largeData = new Array(10000).fill('data');
+  
+  return function inner() {
+    // This inner function captures largeData
+    console.log('Data length:', largeData.length);
+    // But never actually uses it meaningfully
+  };
+}
+
+const leakyFunction = createLeakyClosures();
+// largeData is kept in memory as long as leakyFunction exists</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Fixed Version</h4>
+                <pre><code>function createEfficientClosure() {
+  const largeData = new Array(10000).fill('data');
+  const dataLength = largeData.length; // Extract only what's needed
+  
+  return function inner() {
+    // Only captures the length, not the entire array
+    console.log('Data length:', dataLength);
+  };
+}
+
+const efficientFunction = createEfficientClosure();
+// Only dataLength is kept, largeData can be garbage collected</code></pre>
+            </div>
+        </div>
+        
+        <h4>4. Detached DOM References</h4>
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Memory Leak</h4>
+                <pre><code>// Store a reference to a DOM element
+let button = document.getElementById('myButton');
+
+// Set up event handler
+button.addEventListener('click', function() {
+  console.log('Button clicked');
+});
+
+// Later, remove the button from the DOM
+button.parentNode.removeChild(button);
+
+// But we still have a reference to it!
+// button still references the DOM element
+// The element won't be garbage collected</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Fixed Version</h4>
+                <pre><code>// Store a reference to a DOM element
+let button = document.getElementById('myButton');
+
+// Named function for the event handler
+function handleClick() {
+  console.log('Button clicked');
+}
+
+// Set up event handler
+button.addEventListener('click', handleClick);
+
+// Later, when removing the button:
+// 1. Remove the event listener
+button.removeEventListener('click', handleClick);
+
+// 2. Remove from DOM
+button.parentNode.removeChild(button);
+
+// 3. Clear the reference
+button = null;
+
+// Now the button element can be garbage collected</code></pre>
+            </div>
+        </div>
+        
+        <h4>5. Circular References</h4>
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Memory Leak</h4>
+                <pre><code>function createCircularReference() {
+  let obj1 = {};
+  let obj2 = {};
+  
+  // Create circular reference
+  obj1.ref = obj2;
+  obj2.ref = obj1;
+  
+  return obj1;
+}
+
+let result = createCircularReference();
+// Modern garbage collectors can handle this,
+// but it's still a potential issue in some cases</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Fixed Version</h4>
+                <pre><code>function avoidCircularReference() {
+  let obj1 = {};
+  let obj2 = {};
+  
+  // Use WeakMap for one-way reference
+  const map = new WeakMap();
+  map.set(obj1, obj2);
+  
+  // To access obj2 from obj1:
+  // map.get(obj1)
+  
+  return { obj1, getObj2: () => map.get(obj1) };
+}
+
+let result = avoidCircularReference();
+// No circular reference, and WeakMap doesn't prevent
+// garbage collection of its keys</code></pre>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h4>Signs of Memory Leaks</h4>
+            <ul>
+                <li>Application becomes slower over time</li>
+                <li>Increasing memory usage in browser task manager</li>
+                <li>Page performance degrades after navigating back and forth</li>
+                <li>Browser tab crashes with "out of memory" errors</li>
+                <li>Unexpected high CPU usage</li>
+            </ul>
+        </div>
+        
+        <h2>Memory Optimization Techniques</h2>
+        
+        <h3>1. Object Pooling</h3>
+        <p>Reuse objects instead of creating new ones to reduce garbage collection pressure.</p>
+        
+        <pre><code>// Object pool implementation
+class ObjectPool {
+  constructor(createFn, resetFn, initialSize = 5) {
+    this.createFn = createFn;
+    this.resetFn = resetFn;
+    this.pool = [];
+    
+    // Pre-populate the pool
+    for (let i = 0; i < initialSize; i++) {
+      this.pool.push(this.createFn());
+    }
+  }
+  
+  get() {
+    if (this.pool.length === 0) {
+      return this.createFn();
+    }
+    return this.pool.pop();
+  }
+  
+  release(obj) {
+    this.resetFn(obj);
+    this.pool.push(obj);
+  }
+}
+
+// Example: Particle system
+const particlePool = new ObjectPool(
+  // Create function
+  () => ({ x: 0, y: 0, velocity: { x: 0, y: 0 }, active: false }),
+  
+  // Reset function
+  (particle) => {
+    particle.x = 0;
+    particle.y = 0;
+    particle.velocity.x = 0;
+    particle.velocity.y = 0;
+    particle.active = false;
+  }
+);
+
+// Using the pool
+function createParticle(x, y, velocityX, velocityY) {
+  const particle = particlePool.get();
+  particle.x = x;
+  particle.y = y;
+  particle.velocity.x = velocityX;
+  particle.velocity.y = velocityY;
+  particle.active = true;
+  return particle;
+}
+
+function removeParticle(particle) {
+  particlePool.release(particle);
+}</code></pre>
+        
+        <h3>2. Use Typed Arrays for Binary Data</h3>
+        <p>When working with binary data or large arrays of numbers, use typed arrays for better memory efficiency.</p>
+        
+        <pre><code>// Regular array (less memory efficient)
+const regularArray = new Array(1000000).fill(0);
+
+// Typed array (more memory efficient)
+const typedArray = new Float32Array(1000000);
+
+// Working with typed arrays
+function processData(data) {
+  const buffer = new ArrayBuffer(data.length * 4); // 4 bytes per float
+  const view = new Float32Array(buffer);
+  
+  for (let i = 0; i < data.length; i++) {
+    view[i] = processValue(data[i]);
+  }
+  
+  return view;
+}
+
+// Example: Image processing
+function grayscale(imageData) {
+  const pixels = imageData.data; // Uint8ClampedArray
+  const length = pixels.length;
+  
+  for (let i = 0; i < length; i += 4) {
+    const avg = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+    pixels[i] = avg;     // Red
+    pixels[i + 1] = avg; // Green
+    pixels[i + 2] = avg; // Blue
+    // pixels[i + 3] is Alpha (unchanged)
+  }
+  
+  return imageData;
+}</code></pre>
+        
+        <h3>3. Avoid Creating Objects in Loops</h3>
+        <p>Creating objects inside loops can create a lot of garbage collection pressure.</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Inefficient</h4>
+                <pre><code>function processItems(items) {
+  const results = [];
+  
+  for (let i = 0; i < items.length; i++) {
+    // Creating a new object in each iteration
+    const processedItem = {
+      id: items[i].id,
+      value: items[i].value * 2,
+      timestamp: new Date() // Creates a new Date object each time
+    };
+    
+    results.push(processedItem);
+  }
+  
+  return results;
+}</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>Optimized</h4>
+                <pre><code>function processItems(items) {
+  const results = [];
+  const timestamp = new Date(); // Create once outside the loop
+  
+  // Reuse this object for temporary calculations
+  const temp = { id: 0, value: 0, timestamp: timestamp };
+  
+  for (let i = 0; i < items.length; i++) {
+    // Update the temporary object
+    temp.id = items[i].id;
+    temp.value = items[i].value * 2;
+    
+    // Clone the object for storage
+    results.push({...temp});
+    
+    // Alternative: Use Object.assign
+    // results.push(Object.assign({}, temp));
+  }
+  
+  return results;
+}</code></pre>
+            </div>
+        </div>
+        
+        <h3>4. Use WeakMap and WeakSet</h3>
+        <p>Use WeakMap and WeakSet when you need to associate data with objects without preventing garbage collection.</p>
+        
+        <pre><code>// Using WeakMap to store metadata about DOM elements
+const elementData = new WeakMap();
+
+function setupElement(element, data) {
+  // Store data associated with the element
+  elementData.set(element, {
+    createdAt: new Date(),
+    config: data,
+    eventsBound: false
+  });
+}
+
+function getElementData(element) {
+  return elementData.get(element);
+}
+
+// Example usage
+const button = document.getElementById('myButton');
+setupElement(button, { clickCount: 0, lastClicked: null });
+
+button.addEventListener('click', function() {
+  const data = getElementData(button);
+  data.clickCount++;
+  data.lastClicked = new Date();
+});
+
+// If the button is removed from the DOM and no other references exist,
+// both the button and its associated data can be garbage collected</code></pre>
+        
+        <h3>5. Dispose Resources Properly</h3>
+        <p>Explicitly clean up resources when they're no longer needed.</p>
+        
+        <pre><code>class ResourceManager {
+  constructor() {
+    this.resources = new Map();
+    this.eventHandlers = new Map();
+  }
+  
+  // Acquire a resource
+  acquire(id, resource) {
+    this.resources.set(id, resource);
+    
+    // Set up event handlers
+    const handler = () => this.handleEvent(id);
+    this.eventHandlers.set(id, handler);
+    
+    // Attach event listener
+    window.addEventListener('resize', handler);
+    
+    return resource;
+  }
+  
+  // Release a resource
+  release(id) {
+    // Remove event listeners
+    const handler = this.eventHandlers.get(id);
+    if (handler) {
+      window.removeEventListener('resize', handler);
+      this.eventHandlers.delete(id);
+    }
+    
+    // Release the resource
+    const resource = this.resources.get(id);
+    if (resource && typeof resource.dispose === 'function') {
+      resource.dispose();
+    }
+    
+    this.resources.delete(id);
+  }
+  
+  // Clean up all resources
+  dispose() {
+    // Release all resources
+    for (const id of this.resources.keys()) {
+      this.release(id);
+    }
+    
+    this.resources.clear();
+    this.eventHandlers.clear();
+  }
+  
+  handleEvent(id) {
+    const resource = this.resources.get(id);
+    if (resource) {
+      console.log(`Handling event for resource ${id}`);
+    }
+  }
+}
+
+// Usage
+const manager = new ResourceManager();
+const resource1 = manager.acquire('resource1', { data: 'example' });
+
+// When done with a specific resource
+manager.release('resource1');
+
+// When done with everything
+manager.dispose();</code></pre>
+        
+        <h2>Memory Profiling and Debugging</h2>
+        
+        <h3>Using Chrome DevTools</h3>
+        <p>Chrome DevTools provides powerful tools for memory profiling:</p>
+        
+        <h4>1. Memory Snapshots</h4>
+        <ol>
+            <li>Open Chrome DevTools (F12 or Ctrl+Shift+I)</li>
+            <li>Go to the "Memory" tab</li>
+            <li>Select "Heap Snapshot" and click "Take Snapshot"</li>
+            <li>Analyze the memory usage by object type</li>
+            <li>Take multiple snapshots and compare them to identify leaks</li>
+        </ol>
+        
+        <h4>2. Allocation Timeline</h4>
+        <ol>
+            <li>In the "Memory" tab, select "Allocation instrumentation on timeline"</li>
+            <li>Click "Start" to begin recording</li>
+            <li>Perform actions in your application</li>
+            <li>Click "Stop" to analyze the allocations over time</li>
+        </ol>
+        
+        <h4>3. Performance Monitor</h4>
+        <ol>
+            <li>In DevTools, press Esc to open the drawer</li>
+            <li>Click on the "⋮" menu and select "Performance monitor"</li>
+            <li>Monitor JS heap size, DOM nodes, and other metrics in real-time</li>
+        </ol>
+        
+        <h3>Programmatic Memory Measurement</h3>
+        <p>You can also measure memory usage programmatically:</p>
+        
+        <pre><code>// Check memory usage (Chrome only)
+function logMemoryUsage() {
+  if (window.performance && window.performance.memory) {
+    const memory = window.performance.memory;
+    console.log('Total JS heap size:', (memory.totalJSHeapSize / 1048576).toFixed(2), 'MB');
+    console.log('Used JS heap size:', (memory.usedJSHeapSize / 1048576).toFixed(2), 'MB');
+    console.log('JS heap size limit:', (memory.jsHeapSizeLimit / 1048576).toFixed(2), 'MB');
+  } else {
+    console.log('Memory API not available');
+  }
+}
+
+// Track memory over time
+function monitorMemory(intervalMs = 5000) {
+  return setInterval(logMemoryUsage, intervalMs);
+}
+
+// Start monitoring
+const monitorId = monitorMemory();
+
+// Stop monitoring
+clearInterval(monitorId);</code></pre>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Implementing a Cache with Automatic Cleanup</h4>
+            <pre><code>class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map();
+  }
+  
+  get(key) {
+    if (!this.cache.has(key)) return undefined;
+    
+    // Get the value
+    const value = this.cache.get(key);
+    
+    // Refresh the key (remove and re-add to put it at the end)
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    
+    return value;
+  }
+  
+  put(key, value) {
+    // If key exists, refresh it
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    }
+    // If at capacity, remove the oldest item (first item in Map)
+    else if (this.cache.size >= this.capacity) {
+      const oldestKey = this.cache.keys().next().value;
+      this.cache.delete(oldestKey);
+    }
+    
+    // Add the new key-value pair
+    this.cache.set(key, value);
+  }
+  
+  clear() {
+    this.cache.clear();
+  }
+  
+  size() {
+    return this.cache.size;
+  }
+}
+
+// Usage
+const cache = new LRUCache(3);
+cache.put('key1', 'value1');
+cache.put('key2', 'value2');
+cache.put('key3', 'value3');
+
+console.log(cache.get('key1')); // 'value1'
+
+// This will evict 'key2' since 'key1' was recently accessed
+cache.put('key4', 'value4');
+
+console.log(cache.get('key2')); // undefined (evicted)
+console.log(cache.get('key3')); // 'value3'
+console.log(cache.get('key4')); // 'value4'</code></pre>
+            
+            <h4>Memory-Efficient Event Handling</h4>
+            <pre><code>class EventManager {
+  constructor() {
+    this.events = {};
+  }
+  
+  // Add event listener
+  on(element, eventType, handler, options) {
+    // Create a unique key for this element-event combination
+    const key = this.getEventKey(element, eventType);
+    
+    if (!this.events[key]) {
+      this.events[key] = new Set();
+    }
+    
+    // Store the handler
+    this.events[key].add(handler);
+    
+    // Attach the actual event listener
+    element.addEventListener(eventType, handler, options);
+  }
+  
+  // Remove event listener
+  off(element, eventType, handler) {
+    const key = this.getEventKey(element, eventType);
+    
+    if (this.events[key]) {
+      if (handler) {
+        // Remove specific handler
+        this.events[key].delete(handler);
+        element.removeEventListener(eventType, handler);
+      } else {
+        // Remove all handlers for this event
+        this.events[key].forEach(h => {
+          element.removeEventListener(eventType, h);
+        });
+        delete this.events[key];
+      }
+    }
+  }
+  
+  // Remove all event listeners from an element
+  clearElement(element) {
+    // Find all keys that start with this element's ID
+    const elementId = element.id || this.getElementId(element);
+    
+    Object.keys(this.events).forEach(key => {
+      if (key.startsWith(elementId)) {
+        const [, eventType] = key.split(':');
+        this.off(element, eventType);
+      }
+    });
+  }
+  
+  // Generate a unique key for element-event pair
+  getEventKey(element, eventType) {
+    const elementId = element.id || this.getElementId(element);
+    return `${elementId}:${eventType}`;
+  }
+  
+  // Generate a unique ID for an element if it doesn't have one
+  getElementId(element) {
+    if (!element._uniqueId) {
+      element._uniqueId = 'e_' + Math.random().toString(36).substr(2, 9);
+    }
+    return element._uniqueId;
+  }
+  
+  // Clean up all event listeners
+  dispose() {
+    Object.keys(this.events).forEach(key => {
+      const [elementId, eventType] = key.split(':');
+      const element = document.getElementById(elementId) || 
+                     document.querySelector(`[data-id="${elementId}"]`);
+      
+      if (element) {
+        this.off(element, eventType);
+      }
+    });
+    
+    this.events = {};
+  }
+}
+
+// Usage
+const eventManager = new EventManager();
+
+const button = document.getElementById('myButton');
+const clickHandler = () => console.log('Button clicked');
+
+// Add event listener
+eventManager.on(button, 'click', clickHandler);
+
+// Later, when cleaning up:
+eventManager.off(button, 'click', clickHandler);
+
+// Or remove all events from an element:
+eventManager.clearElement(button);
+
+// Or clean up everything:
+eventManager.dispose();</code></pre>
+        </div>
+        
+        <div class="tip-box">
+            <h4>Best Practices for Memory Management</h4>
+            <ul>
+                <li><strong>Limit variable scope</strong>: Use block scope with <code>let</code> and <code>const</code> instead of function or global scope</li>
+                <li><strong>Clean up event listeners</strong>: Always remove event listeners when they're no longer needed</li>
+                <li><strong>Avoid large object literals</strong>: Break them down into smaller objects when possible</li>
+                <li><strong>Be careful with closures</strong>: Ensure they don't unintentionally capture large objects</li>
+                <li><strong>Use appropriate data structures</strong>: Choose the right collection type for your data (Map, Set, WeakMap, etc.)</li>
+                <li><strong>Implement dispose patterns</strong>: Create cleanup methods for complex objects</li>
+                <li><strong>Profile regularly</strong>: Use memory profiling tools to identify issues early</li>
+                <li><strong>Reuse objects</strong>: Consider object pooling for frequently created/destroyed objects</li>
+                <li><strong>Null references</strong>: Set references to <code>null</code> when they're no longer needed</li>
+                <li><strong>Avoid memory-intensive polyfills</strong>: Use modern browsers or lightweight alternatives</li>
+            </ul>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.chrome.com/docs/devtools/memory-problems/" target="_blank">Chrome DevTools: Fix Memory Problems</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management" target="_blank">MDN: Memory Management</a></li>
+                <li><a href="https://v8.dev/blog/trash-talk" target="_blank">V8 Blog: Trash talk - the Orinoco garbage collector</a></li>
+                <li><a href="https://github.com/paulirish/memory-stats.js" target="_blank">memory-stats.js: Monitor memory usage in real-time</a></li>
+                <li><a href="https://web.dev/articles/detached-window-memory-leaks" target="_blank">web.dev: Detached window memory leaks</a></li>
+                <li><a href="https://auth0.com/blog/four-types-of-leaks-in-your-javascript-code-and-how-to-get-rid-of-them/" target="_blank">Auth0: Four Types of Memory Leaks in JavaScript and How to Get Rid Of Them</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap" target="_blank">MDN: WeakMap</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet" target="_blank">MDN: WeakSet</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

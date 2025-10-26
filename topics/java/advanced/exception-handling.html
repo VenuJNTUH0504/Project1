@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exception Handling - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Exception Handling in Java</h1>
+            <p>Understanding how to handle errors and exceptions in Java programs</p>
+        </header>
+
+        <div class="card">
+            <section id="introduction">
+                <h2>Introduction to Exceptions</h2>
+                <p>Exceptions are events that occur during the execution of a program that disrupt the normal flow of instructions.</p>
+                <div class="note">
+                    <p>Types of exceptions:</p>
+                    <ul>
+                        <li>Checked Exceptions (Compile-time exceptions)</li>
+                        <li>Unchecked Exceptions (Runtime exceptions)</li>
+                        <li>Errors (Serious problems that are not expected to be caught)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="try-catch">
+                <h2>Try-Catch Block</h2>
+                <p>The try-catch block is used to handle exceptions in Java.</p>
+                <div class="code-example">
+                    <h3>Example: Basic Try-Catch</h3>
+                    <pre><code>try {
+    // Code that might throw an exception
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    // Handle the exception
+    System.out.println("Cannot divide by zero");
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Key points about try-catch:</p>
+                    <ul>
+                        <li>Try block contains code that might throw an exception</li>
+                        <li>Catch block handles the exception</li>
+                        <li>Multiple catch blocks can be used</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="finally">
+                <h2>Finally Block</h2>
+                <p>The finally block is used to execute important code such as closing resources, regardless of whether an exception occurs or not.</p>
+                <div class="code-example">
+                    <h3>Example: Try-Catch-Finally</h3>
+                    <pre><code>try {
+    // Code that might throw an exception
+    FileReader file = new FileReader("test.txt");
+} catch (FileNotFoundException e) {
+    System.out.println("File not found");
+} finally {
+    // This code will always execute
+    System.out.println("Finally block executed");
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="throw-throws">
+                <h2>Throw and Throws</h2>
+                <p>The 'throw' keyword is used to explicitly throw an exception, while 'throws' is used to declare exceptions that might occur in a method.</p>
+                <div class="code-example">
+                    <h3>Example: Throw and Throws</h3>
+                    <pre><code>class AgeValidator {
+    void validateAge(int age) throws InvalidAgeException {
+        if (age < 0) {
+            throw new InvalidAgeException("Age cannot be negative");
+        }
+    }
+}
+
+class InvalidAgeException extends Exception {
+    InvalidAgeException(String message) {
+        super(message);
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="custom-exceptions">
+                <h2>Custom Exceptions</h2>
+                <p>Java allows you to create your own exception classes by extending the Exception class.</p>
+                <div class="code-example">
+                    <h3>Example: Custom Exception</h3>
+                    <pre><code>class InsufficientFundsException extends Exception {
+    private double amount;
+    
+    InsufficientFundsException(double amount) {
+        this.amount = amount;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="exception-hierarchy">
+                <h2>Exception Hierarchy</h2>
+                <p>Java exceptions are organized in a hierarchy with Throwable at the top.</p>
+                <div class="note">
+                    <p>Exception hierarchy:</p>
+                    <ul>
+                        <li>Throwable
+                            <ul>
+                                <li>Error
+                                    <ul>
+                                        <li>OutOfMemoryError</li>
+                                        <li>StackOverflowError</li>
+                                    </ul>
+                                </li>
+                                <li>Exception
+                                    <ul>
+                                        <li>RuntimeException
+                                            <ul>
+                                                <li>NullPointerException</li>
+                                                <li>ArrayIndexOutOfBoundsException</li>
+                                            </ul>
+                                        </li>
+                                        <li>IOException</li>
+                                        <li>SQLException</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Exception Handling Best Practices</h2>
+                <div class="note">
+                    <p>Best practices for exception handling:</p>
+                    <ul>
+                        <li>Use specific exceptions instead of general ones</li>
+                        <li>Don't catch exceptions you can't handle</li>
+                        <li>Always clean up resources in finally block</li>
+                        <li>Log exceptions properly</li>
+                        <li>Don't use exceptions for flow control</li>
+                        <li>Document all exceptions in method signatures</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="collection-framework.html">Collection Framework</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

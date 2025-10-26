@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>C++ Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+    .submit-btn {
+        background: #28a745;
+    }
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">C++ Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "Which of the following is the correct file extension for a C++ source file?",
+            options: [".cpp", ".c", ".ccs", ".cp"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is used to output data in C++?",
+            options: ["cout", "cin", "printf", "output"],
+            answer: 0
+        },
+        {
+            question: "Which header file is required for using std::cout and std::cin?",
+            options: ["<iostream>", "<stdio.h>", "<conio.h>", "<stdlib.h>"],
+            answer: 0
+        },
+        {
+            question: "What is the correct way to start the main function in C++?",
+            options: ["int main()", "void main()", "main()", "public static void main()"],
+            answer: 0
+        },
+        {
+            question: "Which operator is used for input in C++?",
+            options: [">>", "<<", "->", "<>"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid C++ data type?",
+            options: ["float", "real", "int", "char"],
+            answer: 1
+        },
+        {
+            question: "Which of the following is the correct way to declare a constant in C++?",
+            options: ["const int x = 10;", "int const x = 10;", "#define x 10", "All of the above"],
+            answer: 3
+        },
+        {
+            question: "Which keyword is used to create an object in C++?",
+            options: ["new", "create", "object", "malloc"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is used to define a class in C++?",
+            options: ["class", "struct", "object", "define"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to comment a single line in C++?",
+            options: ["// comment", "/* comment */", "# comment", "-- comment"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid access specifier in C++?",
+            options: ["public", "private", "protected", "package"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to allocate memory dynamically in C++?",
+            options: ["new", "malloc", "calloc", "alloc"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to include a header file in C++?",
+            options: ["#include <iostream>", "#include iostream", "import iostream", "using iostream"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a loop structure in C++?",
+            options: ["for", "while", "repeat", "do-while"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is the correct way to declare a pointer in C++?",
+            options: ["int *ptr;", "int ptr;", "pointer int ptr;", "int &ptr;"],
+            answer: 0
+        },
+        {
+            question: "Which operator is used to access members of a structure through a pointer?",
+            options: ["->", ".", "::", ":"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid C++ keyword?",
+            options: ["auto", "register", "signed", "unsigneds"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to deallocate memory allocated by new?",
+            options: ["delete", "free", "remove", "dispose"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to declare an array of 10 integers?",
+            options: ["int arr[10];", "int arr = new int[10];", "array<int> arr(10);", "int arr(10);"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to define a function in C++?",
+            options: ["int sum(int a, int b) { return a + b; }", "function sum(int a, int b) { return a + b; }", "def sum(a, b): return a + b", "sum(int a, int b) { return a + b; }"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to overload a function in C++?",
+            options: ["By changing the number of parameters", "By changing the type of parameters", "By changing the return type only", "By changing the order of parameters"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is used to define a constant pointer in C++?",
+            options: ["int *const ptr;", "const int *ptr;", "const int ptr;", "int const ptr;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to declare a reference variable?",
+            options: ["int &ref = x;", "int ref = &x;", "int *ref = x;", "ref int x;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a feature of C++?",
+            options: ["Object-oriented", "Platform independent bytecode", "Operator overloading", "Templates"],
+            answer: 1
+        },
+        {
+            question: "Which of the following is the correct way to inherit a class in C++?",
+            options: ["class B : public A {}", "class B inherits A {}", "class B extends A {}", "class B -> A {}"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a type of constructor in C++?",
+            options: ["Default constructor", "Copy constructor", "Move constructor", "Virtual constructor"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to make a member function inline?",
+            options: ["inline", "inlined", "fast", "register"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to declare a template function?",
+            options: ["template<typename T>", "template<class T>", "Both A and B", "template<T>"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is NOT a valid STL container?",
+            options: ["vector", "list", "map", "arraylist"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to handle exceptions in C++?",
+            options: ["try-catch", "try-except", "catch-throw", "error handling"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to throw an exception?",
+            options: ["throw exception;", "raise exception;", "throw new exception();", "throw;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid access specifier for base class inheritance?",
+            options: ["public", "private", "protected", "internal"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to declare a pure virtual function?",
+            options: ["virtual void func() = 0;", "void func() = 0;", "pure virtual void func();", "virtual void func();"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is used to read a line of text from the user?",
+            options: ["getline(cin, str);", "cin >> str;", "scanf(\"%s\", str);", "read(str);"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid C++ operator?",
+            options: ["::", "->", "?:", "=>"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to define a namespace?",
+            options: ["namespace ns { }", "package ns { }", "module ns { }", "space ns { }"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid way to initialize a vector?",
+            options: ["vector<int> v;", "vector<int> v(10);", "vector<int> v = {1,2,3};", "vector v[10];"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to open a file for writing?",
+            options: ["ofstream file(\"data.txt\");", "ifstream file(\"data.txt\");", "fstream file(\"data.txt\", ios::in);", "file.open(\"data.txt\", write);"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid C++ preprocessor directive?",
+            options: ["#include", "#define", "#using", "#ifdef"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is used to terminate a program abnormally?",
+            options: ["exit()", "abort()", "terminate()", "All of the above"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to declare a static member variable?",
+            options: ["static int x;", "int static x;", "Both A and B", "static x int;"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is NOT a valid C++ string function?",
+            options: ["length()", "size()", "append()", "add()"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to declare a 2D array?",
+            options: ["int arr[3][4];", "int arr[3,4];", "int arr[3][4] = {};", "Both A and C"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is NOT a valid C++ loop control statement?",
+            options: ["break", "continue", "goto", "repeat"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to declare a friend function?",
+            options: ["friend void func();", "void friend func();", "friend function func();", "void func() friend;"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid C++ cast operator?",
+            options: ["static_cast", "dynamic_cast", "const_cast", "convert_cast"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is used to prevent a class from being inherited?",
+            options: ["final", "sealed", "static", "const"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is the correct way to declare an enum?",
+            options: ["enum Color { Red, Green, Blue };", "enum Color = { Red, Green, Blue };", "enum Color: { Red, Green, Blue };", "enum Color[Red, Green, Blue];"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is NOT a valid C++ standard library header?",
+            options: ["<vector>", "<map>", "<string>", "<arraylist>"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is the correct way to use std::sort?",
+            options: ["std::sort(arr, arr+n);", "sort(arr, arr+n);", "std::sort(arr);", "sort(arr);"],
+            answer: 0
+        }
+    ];
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+            <div class="question-text">${q.question}</div>
+            <ul class="options">
+                ${q.options.map((opt, idx) => `
+                    <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                        ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                ${currentQuestion === questions.length - 1
+                    ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                    : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+                }
+            </div>
+        `;
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.onclick = function() {
+                const idx = Number(this.getAttribute('data-idx'));
+                userAnswers[currentQuestion] = idx;
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('next-btn').onclick = () => {
+                if (userAnswers[currentQuestion] !== null) {
+                    currentQuestion++;
+                    renderQuestion();
+                }
+            };
+        } else {
+            document.getElementById('submit-btn').onclick = showResult;
+        }
+    }
+
+    function showResult() {
+        let score = 0;
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].answer) score++;
+        });
+        document.getElementById('quiz-content').innerHTML = `
+            <div class="result">
+                You scored ${score} out of ${questions.length}!<br>
+                <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            </div>
+        `;
+    }
+
+    renderQuestion();
+    </script>
+</body>
+</html>
+<script>
+/**
+ * Show correct answers and explanations for mistaken questions after quiz submission.
+ */
+const explanations = [
+    "C++ source files use the .cpp extension.",
+    "'cout' is used for output in C++.",
+    "<iostream> is required for std::cout and std::cin.",
+    "The main function starts with 'int main()'.",
+    "'>>' is the input operator in C++.",
+    "'real' is not a valid C++ data type.",
+    "All listed methods can declare a constant in C++.",
+    "'new' is used to create objects in C++.",
+    "'class' is used to define a class.",
+    "'// comment' is the single-line comment syntax.",
+    "'package' is not a valid access specifier.",
+    "'new' allocates memory dynamically in C++.",
+    "'#include <iostream>' is the correct syntax.",
+    "'repeat' is not a C++ loop structure.",
+    "'int *ptr;' declares a pointer.",
+    "'->' accesses structure members via pointer.",
+    "'unsigneds' is not a C++ keyword.",
+    "'delete' deallocates memory allocated by new.",
+    "'int arr[10];' declares an array of 10 integers.",
+    "Option A is the correct C++ function definition.",
+    "Changing return type only is not valid for overloading.",
+    "'int *const ptr;' is a constant pointer.",
+    "'int &ref = x;' declares a reference variable.",
+    "C++ does not use platform independent bytecode.",
+    "'class B : public A {}' is correct inheritance syntax.",
+    "'Virtual constructor' does not exist in C++.",
+    "'inline' makes a function inline.",
+    "Both A and B are valid template declarations.",
+    "'arraylist' is not an STL container.",
+    "'try-catch' handles exceptions in C++.",
+    "'throw exception;' is the correct syntax.",
+    "'internal' is not a valid inheritance specifier.",
+    "'virtual void func() = 0;' declares a pure virtual function.",
+    "'getline(cin, str);' reads a line from user.",
+    "'=>' is not a valid C++ operator.",
+    "'namespace ns { }' defines a namespace.",
+    "'vector v[10];' is not a valid vector initialization.",
+    "'ofstream file(\"data.txt\");' opens file for writing.",
+    "'#using' is not a valid preprocessor directive.",
+    "All listed functions can terminate a program abnormally.",
+    "Both A and B are valid static member declarations.",
+    "'add()' is not a C++ string function.",
+    "Both A and C are valid 2D array declarations.",
+    "'repeat' is not a loop control statement.",
+    "'friend void func();' declares a friend function.",
+    "'convert_cast' is not a valid cast operator.",
+    "'final' prevents inheritance in C++.",
+    "'enum Color { Red, Green, Blue };' is correct.",
+    "'<arraylist>' is not a standard library header.",
+    "'std::sort(arr, arr+n);' is correct usage."
+];
+
+function showResultWithFeedback() {
+    let score = 0;
+    let mistaken = [];
+    userAnswers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) {
+            score++;
+        } else {
+            mistaken.push(idx);
+        }
+    });
+
+    let feedback = "";
+    if (mistaken.length > 0) {
+        feedback = `<div style="margin-top:1.5rem;text-align:left;">
+            <strong>Review your mistakes:</strong>
+            <ul style="margin-top:0.5rem;">` +
+            mistaken.map(idx => `
+                <li>
+                    <b>Q${idx + 1}:</b> ${questions[idx].question}<br>
+                    <span style="color:#28a745;">Correct: ${questions[idx].options[questions[idx].answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                    <br>
+                    <span style="color:#888;font-size:0.97em;">${explanations[idx]}</span>
+                </li>
+            `).join('') +
+            `</ul>
+        </div>`;
+    }
+
+    document.getElementById('quiz-content').innerHTML = `
+        <div class="result">
+            You scored ${score} out of ${questions.length}!<br>
+            <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            ${feedback}
+        </div>
+    `;
+}
+
+// Replace showResult with the new function
+showResult = showResultWithFeedback;
+</script>

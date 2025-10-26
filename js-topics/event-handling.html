@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Handling - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Event Handling</h1>
+        
+        <p>Event handling is a fundamental aspect of JavaScript that allows you to create interactive web applications. Events are actions or occurrences that happen in the browser, such as a user clicking a button, pressing a key, or the page finishing loading. JavaScript can "listen" for these events and execute code in response.</p>
+        
+        <h2>Understanding Events</h2>
+        <p>Events are signals that something has happened in the browser. They can be triggered by:</p>
+        <ul>
+            <li>User actions (clicks, key presses, mouse movements)</li>
+            <li>Browser actions (page loading, form submission)</li>
+            <li>API or DOM changes (animations completing, content loading)</li>
+        </ul>
+        
+        <h3>Common Events</h3>
+        <ul>
+            <li><strong>Mouse Events</strong>: click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave</li>
+            <li><strong>Keyboard Events</strong>: keydown, keyup, keypress</li>
+            <li><strong>Form Events</strong>: submit, change, focus, blur, input</li>
+            <li><strong>Document/Window Events</strong>: load, resize, scroll, unload, DOMContentLoaded</li>
+            <li><strong>Touch Events</strong>: touchstart, touchend, touchmove, touchcancel</li>
+            <li><strong>Drag Events</strong>: dragstart, drag, dragend, dragenter, dragleave, dragover, drop</li>
+        </ul>
+        
+        <h2>Event Handlers</h2>
+        <p>There are three main ways to assign event handlers in JavaScript:</p>
+        
+        <h3>1. HTML Attribute (Inline)</h3>
+        <pre><code>&lt;button onclick="alert('Button clicked!')">Click Me&lt;/button>
+
+&lt;button onclick="handleClick()">Click Me&lt;/button>
+&lt;script>
+function handleClick() {
+  alert('Button clicked!');
+}
+&lt;/script></code></pre>
+        
+        <div class="tip-box">
+            <h4>Note on Inline Event Handlers</h4>
+            <p>While inline event handlers are simple, they're generally not recommended for several reasons:</p>
+            <ul>
+                <li>They mix HTML and JavaScript, making code harder to maintain</li>
+                <li>They don't follow the separation of concerns principle</li>
+                <li>Multiple event handlers can't be attached to the same element</li>
+                <li>They have limited access to event properties</li>
+            </ul>
+        </div>
+        
+        <h3>2. DOM Property</h3>
+        <pre><code>const button = document.getElementById('myButton');
+
+// Assign a function to the onclick property
+button.onclick = function() {
+  alert('Button clicked!');
+};
+
+// Or use a named function
+function handleClick() {
+  alert('Button clicked!');
+}
+button.onclick = handleClick;</code></pre>
+        
+        <p>Limitations of this approach:</p>
+        <ul>
+            <li>Only one handler can be assigned per event type on an element</li>
+            <li>No control over the order of execution if multiple elements have the same event</li>
+        </ul>
+        
+        <h3>3. Event Listeners (Recommended)</h3>
+        <pre><code>const button = document.getElementById('myButton');
+
+// Add an event listener
+button.addEventListener('click', function() {
+  alert('Button clicked!');
+});
+
+// Using a named function
+function handleClick() {
+  alert('Button clicked!');
+}
+button.addEventListener('click', handleClick);
+
+// Multiple listeners can be added
+button.addEventListener('click', function() {
+  console.log('Another handler for the same button');
+});</code></pre>
+        
+        <p>Advantages of event listeners:</p>
+        <ul>
+            <li>Multiple event handlers can be attached to the same event</li>
+            <li>More control over event propagation</li>
+            <li>Can add event listeners during capturing phase</li>
+            <li>Can be removed when no longer needed</li>
+        </ul>
+        
+        <h3>Removing Event Listeners</h3>
+        <pre><code>function handleClick() {
+  alert('Button clicked!');
+  
+  // Remove the event listener after it's triggered once
+  button.removeEventListener('click', handleClick);
+}
+
+const button = document.getElementById('myButton');
+button.addEventListener('click', handleClick);
+
+// To remove an event listener, you need a reference to the same function
+// Anonymous functions can't be removed this way
+button.removeEventListener('click', handleClick);</code></pre>
+        
+        <h2>The Event Object</h2>
+        <p>When an event occurs, the browser creates an event object with details about the event. This object is automatically passed to event handlers.</p>
+        
+        <pre><code>const button = document.getElementById('myButton');
+
+button.addEventListener('click', function(event) {
+  // 'event' is the event object
+  console.log('Event type:', event.type);
+  console.log('Target element:', event.target);
+  console.log('Current target:', event.currentTarget);
+  console.log('Mouse position:', event.clientX, event.clientY);
+});
+
+// Using arrow function
+button.addEventListener('click', (event) => {
+  console.log('Event object:', event);
+});</code></pre>
+        
+        <h3>Common Event Object Properties</h3>
+        <ul>
+            <li><code>event.type</code>: The type of event (e.g., "click", "keydown")</li>
+            <li><code>event.target</code>: The element that triggered the event</li>
+            <li><code>event.currentTarget</code>: The element that the event handler is attached to</li>
+            <li><code>event.preventDefault()</code>: Method to prevent the default action</li>
+            <li><code>event.stopPropagation()</code>: Method to stop event bubbling</li>
+            <li><code>event.timeStamp</code>: The time when the event occurred</li>
+        </ul>
+        
+        <h3>Event-Specific Properties</h3>
+        <pre><code>// Mouse event properties
+element.addEventListener('click', (event) => {
+  console.log('Mouse position:', event.clientX, event.clientY);
+  console.log('Alt key pressed:', event.altKey);
+  console.log('Ctrl key pressed:', event.ctrlKey);
+  console.log('Shift key pressed:', event.shiftKey);
+  console.log('Mouse button:', event.button); // 0: left, 1: middle, 2: right
+});
+
+// Keyboard event properties
+document.addEventListener('keydown', (event) => {
+  console.log('Key pressed:', event.key);
+  console.log('Key code:', event.keyCode); // Deprecated but still used
+  console.log('Alt key pressed:', event.altKey);
+  console.log('Ctrl key pressed:', event.ctrlKey);
+  console.log('Shift key pressed:', event.shiftKey);
+});
+
+// Form event properties
+form.addEventListener('submit', (event) => {
+  event.preventDefault(); // Prevent form submission
+  console.log('Form submitted');
+});</code></pre>
+        
+        <h2>Event Propagation</h2>
+        <p>When an event occurs on an element, it doesn't just trigger event handlers on that element, but also on its ancestors (bubbling) or descendants (capturing).</p>
+        
+        <h3>Event Bubbling</h3>
+        <p>By default, events "bubble up" from the target element to its ancestors.</p>
+        
+        <pre><code>&lt;div id="outer">
+  &lt;div id="middle">
+    &lt;button id="inner">Click Me&lt;/button>
+  &lt;/div>
+&lt;/div>
+
+&lt;script>
+  document.getElementById('outer').addEventListener('click', function() {
+    console.log('Outer div clicked');
+  });
+  
+  document.getElementById('middle').addEventListener('click', function() {
+    console.log('Middle div clicked');
+  });
+  
+  document.getElementById('inner').addEventListener('click', function() {
+    console.log('Button clicked');
+  });
+&lt;/script>
+
+// When the button is clicked, the output will be:
+// "Button clicked"
+// "Middle div clicked"
+// "Outer div clicked"</code></pre>
+        
+        <h3>Event Capturing</h3>
+        <p>Event capturing is the opposite of bubbling. Events are first captured by the outermost element and then propagated to the inner elements.</p>
+        
+        <pre><code>// The third parameter 'true' enables capturing phase
+document.getElementById('outer').addEventListener('click', function() {
+  console.log('Outer div clicked - capturing');
+}, true);
+
+document.getElementById('middle').addEventListener('click', function() {
+  console.log('Middle div clicked - capturing');
+}, true);
+
+document.getElementById('inner').addEventListener('click', function() {
+  console.log('Button clicked - capturing');
+}, true);
+
+// When the button is clicked, the output will be:
+// "Outer div clicked - capturing"
+// "Middle div clicked - capturing"
+// "Button clicked - capturing"</code></pre>
+        
+        <h3>Stopping Propagation</h3>
+        <p>You can stop event propagation using <code>event.stopPropagation()</code>.</p>
+        
+        <pre><code>document.getElementById('middle').addEventListener('click', function(event) {
+  console.log('Middle div clicked');
+  event.stopPropagation(); // Prevents the event from reaching outer div
+});
+
+// When the middle div is clicked, outer div's handler won't be called</code></pre>
+        
+        <h3>Preventing Default Behavior</h3>
+        <p>Many events have default actions associated with them (e.g., clicking a link navigates to a new page). You can prevent these default actions using <code>event.preventDefault()</code>.</p>
+        
+        <pre><code>// Prevent form submission
+document.getElementById('myForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  console.log('Form submission prevented');
+  // Validate form or submit via AJAX instead
+});
+
+// Prevent link navigation
+document.getElementById('myLink').addEventListener('click', function(event) {
+  event.preventDefault();
+  console.log('Link click prevented');
+  // Do something else instead
+});</code></pre>
+        
+        <h2>Event Delegation</h2>
+        <p>Event delegation is a technique where you attach a single event listener to a parent element instead of multiple listeners on child elements. It leverages event bubbling to handle events for multiple elements.</p>
+        
+        <div class="comparison">
+            <div class="comparison-column">
+                <h4>Without Event Delegation</h4>
+                <pre><code>// Inefficient approach for many items
+const items = document.querySelectorAll('.item');
+
+// Attach event to each item
+items.forEach(item => {
+  item.addEventListener('click', function() {
+    console.log('Item clicked:', this.textContent);
+  });
+});
+
+// New items added later won't have listeners</code></pre>
+            </div>
+            <div class="comparison-column">
+                <h4>With Event Delegation</h4>
+                <pre><code>// Efficient approach
+const list = document.getElementById('itemList');
+
+// Single event listener on parent
+list.addEventListener('click', function(event) {
+  // Check if clicked element is an item
+  if (event.target.classList.contains('item')) {
+    console.log('Item clicked:', event.target.textContent);
+  }
+});
+
+// Works for dynamically added items too!</code></pre>
+            </div>
+        </div>
+        
+        <h3>Benefits of Event Delegation</h3>
+        <ul>
+            <li>Fewer event listeners = better performance</li>
+            <li>Less memory usage</li>
+            <li>No need to rebind events for dynamically added elements</li>
+            <li>Cleaner code for handling similar elements</li>
+        </ul>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Form Validation</h4>
+            <pre><code>const form = document.getElementById('registrationForm');
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  let isValid = true;
+  const errorMessages = [];
+  
+  // Get form fields
+  const username = document.getElementById('username').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  
+  // Validate username
+  if (username === '') {
+    isValid = false;
+    errorMessages.push('Username is required');
+  } else if (username.length < 3) {
+    isValid = false;
+    errorMessages.push('Username must be at least 3 characters');
+  }
+  
+  // Validate email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    isValid = false;
+    errorMessages.push('Please enter a valid email address');
+  }
+  
+  // Validate password
+  if (password.length < 8) {
+    isValid = false;
+    errorMessages.push('Password must be at least 8 characters');
+  }
+  
+  // Display errors or submit form
+  if (!isValid) {
+    const errorContainer = document.getElementById('errorContainer');
+    errorContainer.innerHTML = errorMessages.map(msg => `<p>${msg}</p>`).join('');
+  } else {
+    console.log('Form is valid, submitting...');
+    // form.submit(); // Uncomment to actually submit the form
+  }
+});</code></pre>
+            
+            <h4>Image Gallery with Event Delegation</h4>
+            <pre><code>const gallery = document.getElementById('imageGallery');
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const closeButton = document.getElementById('closeButton');
+
+// Event delegation for all gallery images
+gallery.addEventListener('click', function(event) {
+  // Check if clicked element is an image
+  if (event.target.tagName === 'IMG') {
+    // Get the full-size image URL (stored in data attribute)
+    const fullSizeUrl = event.target.dataset.fullsize;
+    
+    // Set the lightbox image source
+    lightboxImage.src = fullSizeUrl;
+    
+    // Show the lightbox
+    lightbox.style.display = 'flex';
+  }
+});
+
+// Close lightbox when close button is clicked
+closeButton.addEventListener('click', function() {
+  lightbox.style.display = 'none';
+});
+
+// Also close lightbox when clicking outside the image
+lightbox.addEventListener('click', function(event) {
+  if (event.target === lightbox) {
+    lightbox.style.display = 'none';
+  }
+});</code></pre>
+            
+            <h4>Drag and Drop</h4>
+            <pre><code>const draggableItems = document.querySelectorAll('.draggable');
+const dropZones = document.querySelectorAll('.drop-zone');
+
+// Set up draggable items
+draggableItems.forEach(item => {
+  item.setAttribute('draggable', 'true');
+  
+  item.addEventListener('dragstart', function(event) {
+    // Store the item's ID in the drag operation
+    event.dataTransfer.setData('text/plain', this.id);
+    this.classList.add('dragging');
+  });
+  
+  item.addEventListener('dragend', function() {
+    this.classList.remove('dragging');
+  });
+});
+
+// Set up drop zones
+dropZones.forEach(zone => {
+  // Allow drops by preventing default behavior
+  zone.addEventListener('dragover', function(event) {
+    event.preventDefault();
+    this.classList.add('drag-over');
+  });
+  
+  zone.addEventListener('dragleave', function() {
+    this.classList.remove('drag-over');
+  });
+  
+  zone.addEventListener('drop', function(event) {
+    event.preventDefault();
+    this.classList.remove('drag-over');
+    
+    // Get the dragged item's ID
+    const itemId = event.dataTransfer.getData('text/plain');
+    const item = document.getElementById(itemId);
+    
+    // Append the item to the drop zone
+    this.appendChild(item);
+  });
+});</code></pre>
+            
+            <h4>Debouncing Events</h4>
+            <pre><code>// Debounce function to limit how often a function can be called
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+// Example: Search input with debouncing
+const searchInput = document.getElementById('searchInput');
+
+// Without debouncing (would run on every keystroke)
+// searchInput.addEventListener('input', function() {
+//   console.log('Searching for:', this.value);
+// });
+
+// With debouncing (runs 500ms after user stops typing)
+searchInput.addEventListener('input', debounce(function() {
+  console.log('Searching for:', this.value);
+  // Perform search operation
+}, 500));</code></pre>
+        </div>
+        
+        <div class="tip-box">
+            <h4>Best Practices for Event Handling</h4>
+            <ul>
+                <li>Use <code>addEventListener</code> instead of inline event handlers or DOM properties</li>
+                <li>Remove event listeners when they're no longer needed (especially important in single-page applications)</li>
+                <li>Use event delegation for collections of similar elements</li>
+                <li>Debounce or throttle events that fire rapidly (like scroll, resize, or input)</li>
+                <li>Keep event handler functions small and focused</li>
+                <li>Be careful with event.preventDefault() - only use it when necessary</li>
+                <li>Consider accessibility - ensure keyboard events complement mouse events</li>
+            </ul>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener" target="_blank">MDN: addEventListener()</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank">MDN: Event Reference</a></li>
+                <li><a href="https://javascript.info/events" target="_blank">JavaScript.info: Introduction to Browser Events</a></li>
+                <li><a href="https://javascript.info/event-delegation" target="_blank">JavaScript.info: Event Delegation</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" target="_blank">MDN: Event Interface</a></li>
+                <li><a href="https://www.smashingmagazine.com/2013/11/an-introduction-to-dom-events/" target="_blank">Smashing Magazine: Introduction to DOM Events</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

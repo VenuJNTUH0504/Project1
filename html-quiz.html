@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Quiz</title>
+    <link rel="stylesheet" href="frontend.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f4f6fb;
+        color: #222;
+    }
+
+    .navbar {
+        background: #2d3e50;
+        color: #fff;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+    }
+
+    .navbar-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .navbar-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+
+    .navbar-link:hover {
+        color: #ffd700;
+    }
+
+    .quiz-container {
+        background: #fff;
+        max-width: 520px;
+        margin: 3rem auto 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+
+    .quiz-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3e50;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    .question-number {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+
+    .options {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .option {
+        background: #f4f6fb;
+        border: 1px solid #e0e4ea;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s, border 0.18s;
+        font-size: 1rem;
+    }
+
+    .option.selected,
+    .option:hover {
+        background: #e3f0ff;
+        border-color: #3399ff;
+    }
+
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-btn {
+        background: #3399ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6rem 1.4rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 0.5rem;
+    }
+
+    .nav-btn:disabled {
+        background: #b3d6fc;
+        cursor: not-allowed;
+    }
+
+    .submit-btn {
+        background: #28a745;
+    }
+
+    .result {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #2d3e50;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+        .quiz-container {
+            padding: 1rem 0.5rem 1.5rem 0.5rem;
+        }
+        .navbar-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .quiz-header {
+            font-size: 1.3rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">Web Learning</a>
+            <div class="navbar-links">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="quiz.html" class="navbar-link">Quiz</a>
+                <a href="courses.html" class="navbar-link">Courses</a>
+                <a href="practice.html" class="navbar-link">Practice</a>
+            </div>
+        </div>
+    </nav>
+    <div class="quiz-container">
+        <div class="quiz-header">HTML Quiz</div>
+        <div id="quiz-content"></div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "What does HTML stand for?",
+            options: [
+                "Hyper Text Markup Language",
+                "Home Tool Markup Language",
+                "Hyperlinks and Text Markup Language",
+                "Hyperlinking Text Mark Language"
+            ],
+            answer: 0
+        },
+        {
+            question: "Who is making the Web standards?",
+            options: [
+                "Mozilla",
+                "Microsoft",
+                "The World Wide Web Consortium",
+                "Google"
+            ],
+            answer: 2
+        },
+        {
+            question: "Choose the correct HTML element for the largest heading:",
+            options: [
+                "<heading>",
+                "<h6>",
+                "<h1>",
+                "<head>"
+            ],
+            answer: 2
+        },
+        {
+            question: "What is the correct HTML element for inserting a line break?",
+            options: [
+                "<break>",
+                "<br>",
+                "<lb>",
+                "<linebreak>"
+            ],
+            answer: 1
+        },
+        {
+            question: "What is the correct HTML for adding a background color?",
+            options: [
+                "<body bg='yellow'>",
+                "<background>yellow</background>",
+                "<body style='background-color:yellow;'>",
+                "<bgcolor>yellow</bgcolor>"
+            ],
+            answer: 2
+        },
+        {
+            question: "Choose the correct HTML element to define important text",
+            options: [
+                "<b>",
+                "<important>",
+                "<strong>",
+                "<i>"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which character is used to indicate an end tag?",
+            options: [
+                "*",
+                "/",
+                "<",
+                "^"
+            ],
+            answer: 1
+        },
+        {
+            question: "How can you make a numbered list?",
+            options: [
+                "<ul>",
+                "<ol>",
+                "<dl>",
+                "<list>"
+            ],
+            answer: 1
+        },
+        {
+            question: "How can you make a bulleted list?",
+            options: [
+                "<ol>",
+                "<ul>",
+                "<dl>",
+                "<list>"
+            ],
+            answer: 1
+        },
+        {
+            question: "What is the correct HTML for making a text input field?",
+            options: [
+                "<input type='text'>",
+                "<textfield>",
+                "<textinput type='text'>",
+                "<input text='field'>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML element defines the title of a document?",
+            options: [
+                "<meta>",
+                "<title>",
+                "<head>",
+                "<header>"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which HTML attribute specifies an alternate text for an image, if the image cannot be displayed?",
+            options: [
+                "title",
+                "alt",
+                "src",
+                "longdesc"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which doctype is correct for HTML5?",
+            options: [
+                "<!DOCTYPE html>",
+                "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'>",
+                "<!DOCTYPE HTML5>",
+                "<doctype html>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML element is used to specify a footer for a document or section?",
+            options: [
+                "<bottom>",
+                "<section>",
+                "<footer>",
+                "<foot>"
+            ],
+            answer: 2
+        },
+        {
+            question: "What is the correct HTML element for playing video files?",
+            options: [
+                "<media>",
+                "<movie>",
+                "<video>",
+                "<play>"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which input type defines a slider control?",
+            options: [
+                "slider",
+                "range",
+                "controls",
+                "scroll"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which HTML element is used to display a scalar measurement within a range?",
+            options: [
+                "<gauge>",
+                "<measure>",
+                "<meter>",
+                "<range>"
+            ],
+            answer: 2
+        },
+        {
+            question: "How do you create a hyperlink in HTML?",
+            options: [
+                "<a url='http://example.com'>Example</a>",
+                "<a href='http://example.com'>Example</a>",
+                "<link href='http://example.com'>Example</link>",
+                "<a>http://example.com</a>"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which HTML element is used to specify a header for a document or section?",
+            options: [
+                "<header>",
+                "<head>",
+                "<top>",
+                "<section>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML element is used to embed JavaScript code?",
+            options: [
+                "<js>",
+                "<javascript>",
+                "<script>",
+                "<code>"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which HTML tag is used to display a picture on a webpage?",
+            options: [
+                "<img>",
+                "<picture>",
+                "<src>",
+                "<image>"
+            ],
+            answer: 0
+        },
+        {
+            question: "What is the correct HTML for creating a checkbox?",
+            options: [
+                "<input type='checkbox'>",
+                "<checkbox>",
+                "<input type='check'>",
+                "<input checkbox>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define an internal style sheet?",
+            options: [
+                "<css>",
+                "<style>",
+                "<script>",
+                "<stylesheet>"
+            ],
+            answer: 1
+        },
+        {
+            question: "How do you create a drop-down list in HTML?",
+            options: [
+                "<input type='dropdown'>",
+                "<dropdown>",
+                "<select>",
+                "<list>"
+            ],
+            answer: 2
+        },
+        {
+            question: "Which HTML tag is used to define a table row?",
+            options: [
+                "<tr>",
+                "<td>",
+                "<table-row>",
+                "<row>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a table cell?",
+            options: [
+                "<cell>",
+                "<td>",
+                "<tr>",
+                "<tablecell>"
+            ],
+            answer: 1
+        },
+        {
+            question: "How can you make an e-mail link in HTML?",
+            options: [
+                "<a href='mailto:someone@example.com'>",
+                "<mail href='someone@example.com'>",
+                "<a mail='someone@example.com'>",
+                "<mail>someone@example.com</mail>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a list item?",
+            options: [
+                "<li>",
+                "<ul>",
+                "<ol>",
+                "<item>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a division or a section?",
+            options: [
+                "<div>",
+                "<section>",
+                "<span>",
+                "<article>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a paragraph?",
+            options: [
+                "<p>",
+                "<para>",
+                "<paragraph>",
+                "<pg>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a comment?",
+            options: [
+                "<!-- Comment -->",
+                "// Comment",
+                "<comment>",
+                "# Comment"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a navigation link section?",
+            options: [
+                "<nav>",
+                "<navigation>",
+                "<navbar>",
+                "<links>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a block of preformatted text?",
+            options: [
+                "<pre>",
+                "<code>",
+                "<format>",
+                "<text>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a line through text?",
+            options: [
+                "<strike>",
+                "<del>",
+                "<s>",
+                "All of the above"
+            ],
+            answer: 3
+        },
+        {
+            question: "Which HTML tag is used to define a superscripted text?",
+            options: [
+                "<super>",
+                "<sup>",
+                "<sub>",
+                "<script>"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which HTML tag is used to define a subscripted text?",
+            options: [
+                "<sub>",
+                "<sup>",
+                "<script>",
+                "<small>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a horizontal rule?",
+            options: [
+                "<hr>",
+                "<line>",
+                "<horizontal>",
+                "<rule>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a form for user input?",
+            options: [
+                "<form>",
+                "<input>",
+                "<userinput>",
+                "<textbox>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define bold text?",
+            options: [
+                "<b>",
+                "<bold>",
+                "<strong>",
+                "<em>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a label for an input element?",
+            options: [
+                "<label>",
+                "<inputlabel>",
+                "<input>",
+                "<formlabel>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a clickable button?",
+            options: [
+                "<button>",
+                "<input type='button'>",
+                "<btn>",
+                "Both <button> and <input type='button'>"
+            ],
+            answer: 3
+        },
+        {
+            question: "Which HTML tag is used to define a list with numbers?",
+            options: [
+                "<ol>",
+                "<ul>",
+                "<li>",
+                "<dl>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a list with bullets?",
+            options: [
+                "<ul>",
+                "<ol>",
+                "<li>",
+                "<dl>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a description list?",
+            options: [
+                "<dl>",
+                "<ul>",
+                "<ol>",
+                "<list>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a term in a description list?",
+            options: [
+                "<dt>",
+                "<dd>",
+                "<li>",
+                "<term>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a description of a term in a description list?",
+            options: [
+                "<dd>",
+                "<dt>",
+                "<li>",
+                "<desc>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a section that is quoted from another source?",
+            options: [
+                "<blockquote>",
+                "<quote>",
+                "<q>",
+                "<cite>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a short inline quotation?",
+            options: [
+                "<q>",
+                "<blockquote>",
+                "<quote>",
+                "<cite>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a time/date?",
+            options: [
+                "<time>",
+                "<date>",
+                "<datetime>",
+                "<clock>"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which HTML tag is used to define a progress bar?",
+            options: [
+                "<progress>",
+                "<bar>",
+                "<meter>",
+                "<range>"
+            ],
+            answer: 0
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+            <div class="question-text">${q.question}</div>
+            <ul class="options">
+                ${q.options.map((opt, idx) => `
+                    <li class="option${userAnswers[currentQuestion] === idx ? ' selected' : ''}" data-idx="${idx}">
+                        ${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                ${currentQuestion === questions.length - 1
+                    ? `<button class="nav-btn submit-btn" id="submit-btn">Submit</button>`
+                    : `<button class="nav-btn" id="next-btn" ${userAnswers[currentQuestion] === null ? 'disabled' : ''}>Next</button>`
+                }
+            </div>
+        `;
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.onclick = function() {
+                const idx = Number(this.getAttribute('data-idx'));
+                userAnswers[currentQuestion] = idx;
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('next-btn').onclick = () => {
+                if (userAnswers[currentQuestion] !== null) {
+                    currentQuestion++;
+                    renderQuestion();
+                }
+            };
+        } else {
+            document.getElementById('submit-btn').onclick = showResult;
+        }
+    }
+
+    function showResult() {
+        let score = 0;
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].answer) score++;
+        });
+        document.getElementById('quiz-content').innerHTML = `
+            <div class="result">
+                You scored ${score} out of ${questions.length}!<br>
+                <button class="nav-btn" onclick="location.reload()">Try Again</button>
+            </div>
+        `;
+    }
+
+    renderQuestion();
+    </script>
+</body>
+</html>

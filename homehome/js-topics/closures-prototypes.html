@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closures & Prototypes - JavaScript Learning</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --hover-color: linear-gradient(145deg, #4ECDC4, #6BE5D9);
+            --hover-shadow: rgba(78, 205, 196, 0.3);
+            --code-bg: #f8f8f8;
+            --code-border: #e0e0e0;
+        }
+
+        .dark-theme {
+            --primary-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --hover-color: linear-gradient(145deg, #00B894, #00CEC9);
+            --hover-shadow: rgba(0, 184, 148, 0.3);
+            --code-bg: #2d2d2d;
+            --code-border: #444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--hover-color);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid var(--code-border);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid var(--code-border);
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .home-button:before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--code-border);
+        }
+
+        .resources h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: #2aa198;
+        }
+
+        .examples {
+            margin-top: 30px;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--code-border);
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            background-image: var(--hover-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tip-box {
+            background-color: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            margin-top: 0;
+            color: #4ECDC4;
+        }
+
+        .comparison {
+            display: flex;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-column {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.1);
+        }
+
+        .dark-theme .comparison-column:first-child {
+            background-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .dark-theme .comparison-column:last-child {
+            background-color: rgba(100, 255, 100, 0.2);
+        }
+
+        .comparison h4 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../javascript.html" class="home-button">Back to JavaScript Topics</a>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <h1>Closures & Prototypes</h1>
+        
+        <p>Closures and prototypes are two fundamental concepts in JavaScript that enable powerful programming patterns. Understanding these concepts is essential for writing efficient and maintainable JavaScript code.</p>
+        
+        <h2>Closures</h2>
+        
+        <p>A closure is a function that has access to its own scope, the scope of the outer function, and the global scope, even after the outer function has finished executing.</p>
+        
+        <h3>How Closures Work</h3>
+        <pre><code>function outerFunction(outerVariable) {
+  // This inner function is a closure
+  return function innerFunction(innerVariable) {
+    console.log('Outer Variable:', outerVariable);
+    console.log('Inner Variable:', innerVariable);
+  };
+}
+
+// Create a closure
+const closure = outerFunction('Outside');
+
+// The closure can still access outerVariable
+// even though outerFunction has completed execution
+closure('Inside'); 
+// Output:
+// Outer Variable: Outside
+// Inner Variable: Inside</code></pre>
+        
+        <p>In this example, <code>innerFunction</code> forms a closure because it "remembers" and has access to <code>outerVariable</code> from its parent scope, even after <code>outerFunction</code> has finished executing.</p>
+        
+        <h3>Key Characteristics of Closures</h3>
+        <ul>
+            <li>Closures have access to variables in their own scope, parent function's scope, and global scope</li>
+            <li>The inner function preserves the scope chain of the parent function at the time of creation</li>
+            <li>Each closure references a different execution context</li>
+            <li>Closures store references to variables, not their values at the time of creation</li>
+        </ul>
+        
+        <h3>Practical Uses of Closures</h3>
+        
+        <h4>1. Data Privacy / Encapsulation</h4>
+        <pre><code>function createCounter() {
+  // Private variable
+  let count = 0;
+  
+  return {
+    increment: function() {
+      count++;
+      return count;
+    },
+    decrement: function() {
+      count--;
+      return count;
+    },
+    getValue: function() {
+      return count;
+    }
+  };
+}
+
+const counter = createCounter();
+console.log(counter.getValue()); // 0
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
+console.log(counter.decrement()); // 1
+
+// The 'count' variable is not directly accessible
+console.log(counter.count); // undefined</code></pre>
+        
+        <h4>2. Function Factories</h4>
+        <pre><code>function createMultiplier(multiplier) {
+  return function(number) {
+    return number * multiplier;
+  };
+}
+
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+
+console.log(double(5)); // 10
+console.log(triple(5)); // 15</code></pre>
+        
+        <h4>3. Maintaining State in Callbacks</h4>
+        <pre><code>function handleButtonClick(buttonId) {
+  let clickCount = 0;
+  
+  return function() {
+    clickCount++;
+    console.log(`Button ${buttonId} was clicked ${clickCount} times`);
+  };
+}
+
+// Each button gets its own click handler with its own counter
+const handleButton1 = handleButtonClick('button1');
+const handleButton2 = handleButtonClick('button2');
+
+// Simulating clicks
+handleButton1(); // Button button1 was clicked 1 times
+handleButton1(); // Button button1 was clicked 2 times
+handleButton2(); // Button button2 was clicked 1 times</code></pre>
+        
+        <h4>4. Implementing Modules</h4>
+        <pre><code>// IIFE (Immediately Invoked Function Expression) Module Pattern
+const calculator = (function() {
+  // Private variables and functions
+  let result = 0;
+  
+  function validateNumber(num) {
+    return typeof num === 'number' && !isNaN(num);
+  }
+  
+  // Public API
+  return {
+    add: function(num) {
+      if (validateNumber(num)) {
+        result += num;
+      }
+      return this;
+    },
+    subtract: function(num) {
+      if (validateNumber(num)) {
+        result -= num;
+      }
+      return this;
+    },
+    multiply: function(num) {
+      if (validateNumber(num)) {
+        result *= num;
+      }
+      return this;
+    },
+    getResult: function() {
+      return result;
+    },
+    reset: function() {
+      result = 0;
+      return this;
+    }
+  };
+})();
+
+console.log(calculator.add(5).multiply(2).subtract(3).getResult()); // 7</code></pre>
+        
+        <div class="tip-box">
+            <h4>Common Closure Pitfalls</h4>
+            <p>Be aware of these common issues when working with closures:</p>
+            <ul>
+                <li><strong>Memory Leaks</strong>: Closures can lead to memory leaks if they reference large objects that are no longer needed</li>
+                <li><strong>Loop Variables in Closures</strong>: Using closures in loops can lead to unexpected behavior if you're not careful with variable scoping</li>
+                <li><strong>Performance Impact</strong>: Excessive use of closures can impact performance, as each closure maintains its own scope</li>
+            </ul>
+            <pre><code>// Common pitfall: closures in loops with var
+function createFunctions() {
+  var functions = [];
+  
+  // This doesn't work as expected with 'var'
+  for (var i = 0; i < 3; i++) {
+    functions.push(function() {
+      console.log(i);
+    });
+  }
+  
+  return functions;
+}
+
+const fns = createFunctions();
+fns[0](); // 3 (not 0)
+fns[1](); // 3 (not 1)
+fns[2](); // 3 (not 2)
+
+// Solution 1: Use let instead of var (block scope)
+function createFunctionsFixed1() {
+  const functions = [];
+  
+  for (let i = 0; i < 3; i++) {
+    functions.push(function() {
+      console.log(i);
+    });
+  }
+  
+  return functions;
+}
+
+// Solution 2: Use an IIFE to create a new scope
+function createFunctionsFixed2() {
+  const functions = [];
+  
+  for (var i = 0; i < 3; i++) {
+    functions.push(
+      (function(value) {
+        return function() {
+          console.log(value);
+        };
+      })(i)
+    );
+  }
+  
+  return functions;
+}</code></pre>
+        </div>
+        
+        <h2>Prototypes</h2>
+        
+        <p>Prototypes are a fundamental mechanism in JavaScript that enables objects to inherit properties and methods from other objects. JavaScript is often described as a prototype-based language.</p>
+        
+        <h3>Prototype Chain</h3>
+        <p>When you try to access a property of an object, JavaScript first looks for the property on the object itself. If it doesn't find it, it looks at the object's prototype, then the prototype's prototype, and so on up the chain until it reaches the end (usually <code>Object.prototype</code>).</p>
+        
+        <pre><code>// Simple object
+const person = {
+  name: 'John',
+  greet() {
+    return `Hello, my name is ${this.name}`;
+  }
+};
+
+// Object inheriting from person
+const employee = Object.create(person);
+employee.jobTitle = 'Developer';
+
+// employee has access to properties from person
+console.log(employee.name); // 'John'
+console.log(employee.greet()); // 'Hello, my name is John'
+
+// We can override inherited properties
+employee.name = 'Jane';
+console.log(employee.greet()); // 'Hello, my name is Jane'
+
+// Check prototype chain
+console.log(Object.getPrototypeOf(employee) === person); // true</code></pre>
+        
+        <h3>Constructor Functions and Prototypes</h3>
+        <p>Before ES6 classes, constructor functions were the primary way to create objects with shared methods.</p>
+        
+        <pre><code>// Constructor function
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+// Adding methods to the prototype
+Person.prototype.greet = function() {
+  return `Hello, my name is ${this.name} and I am ${this.age} years old`;
+};
+
+Person.prototype.celebrateBirthday = function() {
+  this.age++;
+  return `Happy Birthday! Now I am ${this.age} years old`;
+};
+
+// Creating instances
+const john = new Person('John', 30);
+const jane = new Person('Jane', 25);
+
+console.log(john.greet()); // "Hello, my name is John and I am 30 years old"
+console.log(jane.greet()); // "Hello, my name is Jane and I am 25 years old"
+
+console.log(jane.celebrateBirthday()); // "Happy Birthday! Now I am 26 years old"
+
+// All instances share the same methods
+console.log(john.greet === jane.greet); // true</code></pre>
+        
+        <h3>Prototypal Inheritance</h3>
+        <p>Prototypal inheritance allows objects to inherit properties and methods from other objects.</p>
+        
+        <pre><code>// Parent constructor
+function Animal(name) {
+  this.name = name;
+}
+
+Animal.prototype.makeSound = function() {
+  return "Some generic sound";
+};
+
+// Child constructor
+function Dog(name, breed) {
+  // Call parent constructor
+  Animal.call(this, name);
+  this.breed = breed;
+}
+
+// Set up inheritance
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog; // Fix the constructor property
+
+// Add or override methods
+Dog.prototype.makeSound = function() {
+  return "Woof!";
+};
+
+Dog.prototype.fetch = function() {
+  return `${this.name} is fetching the ball!`;
+};
+
+// Create instances
+const genericAnimal = new Animal("Generic Animal");
+const rex = new Dog("Rex", "German Shepherd");
+
+console.log(genericAnimal.makeSound()); // "Some generic sound"
+console.log(rex.makeSound()); // "Woof!"
+console.log(rex.fetch()); // "Rex is fetching the ball!"
+
+// Inheritance checks
+console.log(rex instanceof Dog); // true
+console.log(rex instanceof Animal); // true
+console.log(rex instanceof Object); // true</code></pre>
+        
+        <h3>ES6 Classes (Syntactic Sugar)</h3>
+        <p>ES6 introduced class syntax, which is syntactic sugar over the prototype-based inheritance model.</p>
+        
+        <pre><code>// Parent class
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  makeSound() {
+    return "Some generic sound";
+  }
+}
+
+// Child class extending Animal
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name); // Call parent constructor
+    this.breed = breed;
+  }
+  
+  makeSound() {
+    return "Woof!";
+  }
+  
+  fetch() {
+    return `${this.name} is fetching the ball!`;
+  }
+}
+
+// Create instances
+const genericAnimal = new Animal("Generic Animal");
+const rex = new Dog("Rex", "German Shepherd");
+
+console.log(genericAnimal.makeSound()); // "Some generic sound"
+console.log(rex.makeSound()); // "Woof!"
+console.log(rex.fetch()); // "Rex is fetching the ball!"
+
+// Under the hood, it's still using prototypes
+console.log(rex.__proto__ === Dog.prototype); // true
+console.log(Dog.prototype.__proto__ === Animal.prototype); // true</code></pre>
+        
+        <div class="tip-box">
+            <h4>ES6 Classes vs. Prototype Inheritance</h4>
+            <p>ES6 classes provide a cleaner, more familiar syntax for creating objects and implementing inheritance, but they're just syntactic sugar over JavaScript's prototype-based inheritance.</p>
+            <div class="comparison">
+                <div class="comparison-column">
+                    <h4>Prototype Approach</h4>
+                    <pre><code>// Constructor
+function Person(name) {
+  this.name = name;
+}
+
+// Method on prototype
+Person.prototype.greet = function() {
+  return `Hello, I'm ${this.name}`;
+};
+
+// Static method
+Person.create = function(name) {
+  return new Person(name);
+};
+
+// Inheritance
+function Employee(name, title) {
+  Person.call(this, name);
+  this.title = title;
+}
+
+Employee.prototype = Object.create(Person.prototype);
+Employee.prototype.constructor = Employee;
+
+Employee.prototype.work = function() {
+  return `${this.name} is working`;
+};</code></pre>
+                </div>
+                <div class="comparison-column">
+                    <h4>Class Approach</h4>
+                    <pre><code>// Class definition
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  // Instance method
+  greet() {
+    return `Hello, I'm ${this.name}`;
+  }
+  
+  // Static method
+  static create(name) {
+    return new Person(name);
+  }
+}
+
+// Inheritance
+class Employee extends Person {
+  constructor(name, title) {
+    super(name);
+    this.title = title;
+  }
+  
+  work() {
+    return `${this.name} is working`;
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Object.create() and Pure Prototypal Inheritance</h3>
+        <p><code>Object.create()</code> provides a way to create objects with a specified prototype, enabling pure prototypal inheritance.</p>
+        
+        <pre><code>// Base object
+const personPrototype = {
+  init(name, age) {
+    this.name = name;
+    this.age = age;
+    return this;
+  },
+  greet() {
+    return `Hello, my name is ${this.name}`;
+  },
+  describe() {
+    return `I am ${this.age} years old`;
+  }
+};
+
+// Create a new object with personPrototype as its prototype
+const john = Object.create(personPrototype).init('John', 30);
+console.log(john.greet()); // "Hello, my name is John"
+console.log(john.describe()); // "I am 30 years old"
+
+// Create another object that inherits from personPrototype
+const employeePrototype = Object.create(personPrototype);
+employeePrototype.init = function(name, age, job) {
+  // Call the parent init method
+  personPrototype.init.call(this, name, age);
+  this.job = job;
+  return this;
+};
+employeePrototype.work = function() {
+  return `I am working as a ${this.job}`;
+};
+
+// Create an employee
+const jane = Object.create(employeePrototype).init('Jane', 25, 'Developer');
+console.log(jane.greet()); // "Hello, my name is Jane"
+console.log(jane.work()); // "I am working as a Developer"</code></pre>
+        
+        <h2>Combining Closures and Prototypes</h2>
+        <p>Closures and prototypes can be combined to create powerful patterns in JavaScript.</p>
+        
+        <h3>Private Members with Closures in Constructors</h3>
+        <pre><code>function Counter() {
+  // Private variable
+  let count = 0;
+  
+  // Public methods that access the private variable
+  this.increment = function() {
+    count++;
+    return count;
+  };
+  
+  this.decrement = function() {
+    count--;
+    return count;
+  };
+  
+  this.getCount = function() {
+    return count;
+  };
+}
+
+const counter = new Counter();
+console.log(counter.getCount()); // 0
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
+console.log(counter.decrement()); // 1</code></pre>
+        
+        <p>However, this approach creates new function objects for each instance, which can be memory-inefficient.</p>
+        
+        <h3>Combining Prototype Methods with Private Variables</h3>
+        <pre><code>// Module pattern combined with constructor function
+const CounterModule = (function() {
+  // Private static variable shared by all instances
+  const counters = new WeakMap();
+  
+  function Counter() {
+    // Initialize private data for this instance
+    counters.set(this, { count: 0 });
+  }
+  
+  // Prototype methods that access private data
+  Counter.prototype.increment = function() {
+    const data = counters.get(this);
+    data.count++;
+    return data.count;
+  };
+  
+  Counter.prototype.decrement = function() {
+    const data = counters.get(this);
+    data.count--;
+    return data.count;
+  };
+  
+  Counter.prototype.getCount = function() {
+    return counters.get(this).count;
+  };
+  
+  return Counter;
+})();
+
+const counter1 = new CounterModule();
+const counter2 = new CounterModule();
+
+console.log(counter1.increment()); // 1
+console.log(counter1.increment()); // 2
+console.log(counter2.increment()); // 1 (separate instance)
+
+// Methods are shared through the prototype
+console.log(counter1.increment === counter2.increment); // true</code></pre>
+        
+        <div class="examples">
+            <h3>Practical Examples</h3>
+            
+            <h4>Implementing a Mixin Pattern</h4>
+            <pre><code>// Mixin: a collection of methods that can be added to a class's prototype
+const FlyingMixin = {
+  fly() {
+    return `${this.name} is flying!`;
+  },
+  land() {
+    return `${this.name} has landed`;
+  }
+};
+
+const SwimmingMixin = {
+  swim() {
+    return `${this.name} is swimming`;
+  },
+  dive() {
+    return `${this.name} is diving underwater`;
+  }
+};
+
+// Base class
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  eat() {
+    return `${this.name} is eating`;
+  }
+}
+
+// Bird class with flying abilities
+class Bird extends Animal {
+  constructor(name) {
+    super(name);
+  }
+}
+// Apply the mixin
+Object.assign(Bird.prototype, FlyingMixin);
+
+// Duck class with both flying and swimming abilities
+class Duck extends Animal {
+  constructor(name) {
+    super(name);
+  }
+}
+// Apply multiple mixins
+Object.assign(Duck.prototype, FlyingMixin, SwimmingMixin);
+
+// Create instances
+const eagle = new Bird("Eagle");
+const duck = new Duck("Duck");
+
+console.log(eagle.eat());    // "Eagle is eating"
+console.log(eagle.fly());    // "Eagle is flying!"
+console.log(duck.eat());     // "Duck is eating"
+console.log(duck.fly());     // "Duck is flying!"
+console.log(duck.swim());    // "Duck is swimming"</code></pre>
+            
+            <h4>Implementing a Simple State Machine</h4>
+            <pre><code>// State machine using closures and prototypes
+function createStateMachine(initialState, transitions, callbacks) {
+  // Private variables in closure
+  let currentState = initialState;
+  
+  // The state machine object
+  const machine = {
+    // Get current state
+    getState() {
+      return currentState;
+    },
+    
+    // Trigger a transition
+    transition(event) {
+      const possibleTransitions = transitions[currentState];
+      const nextState = possibleTransitions && possibleTransitions[event];
+      
+      if (!nextState) {
+        console.error(`Invalid transition: ${event} from state ${currentState}`);
+        return false;
+      }
+      
+      // Execute exit callback for current state
+      if (callbacks[currentState] && callbacks[currentState].exit) {
+        callbacks[currentState].exit();
+      }
+      
+      // Update state
+      const prevState = currentState;
+      currentState = nextState;
+      
+      // Execute enter callback for new state
+      if (callbacks[currentState] && callbacks[currentState].enter) {
+        callbacks[currentState].enter(prevState);
+      }
+      
+      return true;
+    }
+  };
+  
+  return machine;
+}
+
+// Example: Traffic Light
+const trafficLight = createStateMachine(
+  'red', // Initial state
+  {
+    // Transitions
+    'red': { 'timer': 'green' },
+    'green': { 'timer': 'yellow' },
+    'yellow': { 'timer': 'red' }
+  },
+  {
+    // State callbacks
+    'red': {
+      enter() { console.log('Red light on: Stop!'); },
+      exit() { console.log('Red light off'); }
+    },
+    'green': {
+      enter() { console.log('Green light on: Go!'); },
+      exit() { console.log('Green light off'); }
+    },
+    'yellow': {
+      enter() { console.log('Yellow light on: Prepare to stop!'); },
+      exit() { console.log('Yellow light off'); }
+    }
+  }
+);
+
+console.log('Current state:', trafficLight.getState()); // "red"
+trafficLight.transition('timer'); // Red → Green
+console.log('Current state:', trafficLight.getState()); // "green"
+trafficLight.transition('timer'); // Green → Yellow
+console.log('Current state:', trafficLight.getState()); // "yellow"
+trafficLight.transition('timer'); // Yellow → Red
+console.log('Current state:', trafficLight.getState()); // "red"</code></pre>
+            
+            <h4>Implementing a Custom Event Emitter</h4>
+            <pre><code>// Event Emitter using prototypes
+function EventEmitter() {
+  this._events = {};
+}
+
+EventEmitter.prototype.on = function(event, listener) {
+  if (!this._events[event]) {
+    this._events[event] = [];
+  }
+  this._events[event].push(listener);
+  return this;
+};
+
+EventEmitter.prototype.off = function(event, listener) {
+  if (!this._events[event]) return this;
+  
+  if (!listener) {
+    delete this._events[event];
+    return this;
+  }
+  
+  const index = this._events[event].indexOf(listener);
+  if (index !== -1) {
+    this._events[event].splice(index, 1);
+  }
+  return this;
+};
+
+EventEmitter.prototype.emit = function(event, ...args) {
+  if (!this._events[event]) return false;
+  
+  this._events[event].forEach(listener => {
+    listener.apply(this, args);
+  });
+  return true;
+};
+
+EventEmitter.prototype.once = function(event, listener) {
+  const onceWrapper = (...args) => {
+    listener.apply(this, args);
+    this.off(event, onceWrapper);
+  };
+  return this.on(event, onceWrapper);
+};
+
+// Usage
+const emitter = new EventEmitter();
+
+function messageHandler(message) {
+  console.log('Message received:', message);
+}
+
+emitter.on('message', messageHandler);
+emitter.on('message', message => {
+  console.log('Another handler:', message);
+});
+
+emitter.once('special', message => {
+  console.log('Special event (fires only once):', message);
+});
+
+emitter.emit('message', 'Hello World'); // Triggers both handlers
+emitter.emit('special', 'One-time event'); // Triggers the once handler
+emitter.emit('special', 'This won\'t be handled'); // No handler left
+
+emitter.off('message', messageHandler);
+emitter.emit('message', 'This triggers only the second handler');</code></pre>
+        </div>
+        
+        <div class="resources">
+            <h3>Additional Resources</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures" target="_blank">MDN: Closures</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain" target="_blank">MDN: Inheritance and the Prototype Chain</a></li>
+                <li><a href="https://javascript.info/closure" target="_blank">JavaScript.info: Variable Scope, Closure</a></li>
+                <li><a href="https://javascript.info/prototype-inheritance" target="_blank">JavaScript.info: Prototypal Inheritance</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank">MDN: Classes</a></li>
+                <li><a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/" target="_blank">Learning JavaScript Design Patterns by Addy Osmani</a></li>
+                <li><a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank">What the heck is the event loop anyway? by Philip Roberts</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Units</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; color: #222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        .dark-theme { background: #181c24; color: #fff; }
+        .container { max-width: 900px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .dark-theme .container { background: #23272f; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 30px; padding: 10px 20px; text-decoration: none; font-weight: 500; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .back-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #4a90e2, #f39c12); color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .toggle-btn:hover { background: linear-gradient(135deg, #f39c12, #4a90e2); }
+        h1 { color: #4a90e2; margin-bottom: 1rem; }
+        .dark-theme h1 { color: #f39c12; }
+        h2 { margin-top: 2rem; color: #f39c12; }
+        .dark-theme h2 { color: #4a90e2; }
+        .example-box { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .dark-theme .example-box { background: #2c313a; }
+        .unit-example { display: flex; align-items: center; gap: 16px; margin: 10px 0; }
+        .unit-sample { background: #4a90e2; color: white; padding: 10px 20px; border-radius: 6px; min-width: 80px; text-align: center; }
+        .unit-desc { flex: 1; }
+        code { background: #eee; color: #c7254e; padding: 2px 6px; border-radius: 4px; }
+        .dark-theme code { background: #222; color: #f39c12; }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i> Toggle Theme</button>
+    <a href="csshome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to CSS Home</a>
+    <div class="container">
+        <h1>CSS Units</h1>
+        <p>CSS uses different units to express length, size, and spacing. Understanding these units helps you create responsive and scalable layouts.</p>
+
+        <h2>Common CSS Units</h2>
+        
+        <h3>1. px (Pixels)</h3>
+        <div class="example-box">
+            <div class="unit-example">
+                <div class="unit-sample" style="font-size:16px;">16px</div>
+                <div class="unit-desc">Absolute unit. 1px equals one device pixel. Commonly used for precise control.</div>
+            </div>
+            <code>font-size: 16px;</code>
+        </div>
+
+        <h3>2. em</h3>
+        <div class="example-box">
+            <div class="unit-example">
+                <div class="unit-sample" style="font-size:2em;">2em</div>
+                <div class="unit-desc">Relative to the font-size of the element. 2em is twice the current font size.</div>
+            </div>
+            <code>font-size: 2em;</code>
+        </div>
+
+        <h3>3. rem</h3>
+        <div class="example-box">
+            <div class="unit-example">
+                <div class="unit-sample" style="font-size:2rem;">2rem</div>
+                <div class="unit-desc">Relative to the root element's font-size. Consistent across the document.</div>
+            </div>
+            <code>font-size: 2rem;</code>
+        </div>
+
+        <h3>4. % (Percent)</h3>
+        <div class="example-box">
+            <div class="unit-example">
+                <div class="unit-sample" style="width:60%; background:#f39c12;">60%</div>
+                <div class="unit-desc">Relative to the parent element. Useful for responsive layouts.</div>
+            </div>
+            <code>width: 60%;</code>
+        </div>
+
+        <h3>5. vw / vh</h3>
+        <div class="example-box">
+            <div class="unit-example">
+                <div class="unit-sample" style="width:20vw; background:#4a90e2;">20vw</div>
+                <div class="unit-desc">Viewport width (<code>vw</code>) and height (<code>vh</code>). 1vw is 1% of viewport width.</div>
+            </div>
+            <code>width: 20vw;</code>
+        </div>
+
+        <h3>6. fr (Fractional Unit)</h3>
+        <div class="example-box">
+            <div class="unit-example">
+                <div class="unit-sample" style="background:#f39c12;">1fr</div>
+                <div class="unit-desc">Used in CSS Grid to distribute space. 1fr means one fraction of available space.</div>
+            </div>
+            <code>grid-template-columns: 1fr 2fr;</code>
+        </div>
+
+        <h2>Units Comparison</h2>
+        <ul>
+            <li><b>px:</b> Absolute, fixed size</li>
+            <li><b>em:</b> Relative to element's font size</li>
+            <li><b>rem:</b> Relative to root font size</li>
+            <li><b>%:</b> Relative to parent</li>
+            <li><b>vw/vh:</b> Relative to viewport</li>
+            <li><b>fr:</b> Fraction of available space (Grid)</li>
+        </ul>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

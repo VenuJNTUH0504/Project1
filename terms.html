@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50, #3498db, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .terms-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+        }
+
+        .terms-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .terms-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terms-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .terms-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .terms-section:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .terms-section h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .terms-section h2 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .terms-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .terms-section ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+        }
+
+        .terms-section li {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #3498db, #1abc9c);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .terms-container {
+                margin: 100px 1rem 50px;
+            }
+
+            .terms-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CodeMaster</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Terms of Service Content -->
+    <div class="terms-container">
+        <div class="terms-header">
+            <h1>Terms of Service</h1>
+            <p>Last updated: March 2024</p>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-user-shield"></i> Account Terms</h2>
+            <p>By creating an account on CodeMaster, you agree to:</p>
+            <ul>
+                <li>Provide accurate and complete information during registration</li>
+                <li>Maintain the security of your account credentials</li>
+                <li>Be responsible for all activities under your account</li>
+                <li>Not share your account with others</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-graduation-cap"></i> Learning Content</h2>
+            <p>All course materials, including videos, code examples, and documentation, are protected by copyright. You may:</p>
+            <ul>
+                <li>Access and use the content for personal learning</li>
+                <li>Download course materials for offline study</li>
+                <li>Share your own code and projects created during courses</li>
+            </ul>
+            <p class="highlight">You may not redistribute, sell, or modify our course materials without permission.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-code"></i> Code of Conduct</h2>
+            <p>As a member of our community, you agree to:</p>
+            <ul>
+                <li>Treat all members with respect and professionalism</li>
+                <li>Not engage in harassment or discrimination</li>
+                <li>Share knowledge and help others learn</li>
+                <li>Report any violations of these terms</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-shield-alt"></i> Intellectual Property</h2>
+            <p>CodeMaster retains all rights to:</p>
+            <ul>
+                <li>Course content and materials</li>
+                <li>Platform design and functionality</li>
+                <li>Branding and trademarks</li>
+            </ul>
+            <p>You retain rights to code and projects you create during courses.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-ban"></i> Prohibited Activities</h2>
+            <p>You may not:</p>
+            <ul>
+                <li>Use automated tools to access the platform</li>
+                <li>Attempt to hack or disrupt the service</li>
+                <li>Share account credentials</li>
+                <li>Use the platform for commercial purposes without permission</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Disclaimer</h2>
+            <p>CodeMaster provides educational content "as is" without warranties. We are not responsible for:</p>
+            <ul>
+                <li>Technical issues or service interruptions</li>
+                <li>Content accuracy or completeness</li>
+                <li>Results of using our platform</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2><i class="fas fa-gavel"></i> Changes to Terms</h2>
+            <p>We may update these terms periodically. Continued use of the platform constitutes acceptance of changes.</p>
+        </div>
+
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </div>
+</body>
+</html> 

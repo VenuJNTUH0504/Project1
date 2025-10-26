@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Control Structures - Code Pathway</title>
+    <style>
+        :root {
+            --primary-color: #00ADD8;
+            --secondary-color: #5D4037;
+            --text-color: #2C3E50;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #F8F9FA;
+            --code-color: #E91E63;
+        }
+
+        .dark-theme {
+            --primary-color: #00ADD8;
+            --secondary-color: #8D6E63;
+            --text-color: #ECF0F1;
+            --bg-color: #1A1A2E;
+            --card-bg: #16213E;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #FF79C6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .note {
+            background-color: rgba(0, 173, 216, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #FF9F43;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .example-card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .example-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../golang-homepage.html" class="back-button">
+        <span>Go Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Go Control Structures</h1>
+            <p>Understanding control flow in Go</p>
+        </header>
+
+        <div class="card">
+            <section id="if-else">
+                <h2>If-Else Statements</h2>
+                <p>Go's if-else statements are similar to other languages but with some unique features:</p>
+                <pre><code class="language-go">// Basic if statement
+if x > 0 {
+    fmt.Println("x is positive")
+}
+
+// If-else statement
+if x > 0 {
+    fmt.Println("x is positive")
+} else {
+    fmt.Println("x is not positive")
+}
+
+// If-else if-else statement
+if x > 0 {
+    fmt.Println("x is positive")
+} else if x < 0 {
+    fmt.Println("x is negative")
+} else {
+    fmt.Println("x is zero")
+}
+
+// If with initialization
+if x := 10; x > 0 {
+    fmt.Println("x is positive")
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="switch">
+                <h2>Switch Statements</h2>
+                <p>Go's switch statements are more flexible than in many other languages:</p>
+                <pre><code class="language-go">// Basic switch
+switch day {
+case "Monday":
+    fmt.Println("Start of the week")
+case "Friday":
+    fmt.Println("End of the week")
+default:
+    fmt.Println("Midweek")
+}
+
+// Switch with initialization
+switch x := 10; {
+case x > 0:
+    fmt.Println("Positive")
+case x < 0:
+    fmt.Println("Negative")
+default:
+    fmt.Println("Zero")
+}
+
+// Type switch
+var i interface{} = "hello"
+switch v := i.(type) {
+case int:
+    fmt.Printf("Integer: %v\n", v)
+case string:
+    fmt.Printf("String: %v\n", v)
+default:
+    fmt.Printf("Unknown type: %T\n", v)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="for-loops">
+                <h2>For Loops</h2>
+                <p>Go has only one loop construct, the for loop, which is very versatile:</p>
+                <pre><code class="language-go">// Basic for loop
+for i := 0; i < 10; i++ {
+    fmt.Println(i)
+}
+
+// While-like loop
+i := 0
+for i < 10 {
+    fmt.Println(i)
+    i++
+}
+
+// Infinite loop
+for {
+    // Do something
+    if condition {
+        break
+    }
+}
+
+// Range loop
+numbers := []int{1, 2, 3, 4, 5}
+for index, value := range numbers {
+    fmt.Printf("Index: %d, Value: %d\n", index, value)
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="break-continue">
+                <h2>Break and Continue</h2>
+                <p>Control loop execution with break and continue:</p>
+                <pre><code class="language-go">// Break example
+for i := 0; i < 10; i++ {
+    if i == 5 {
+        break
+    }
+    fmt.Println(i)
+}
+
+// Continue example
+for i := 0; i < 10; i++ {
+    if i%2 == 0 {
+        continue
+    }
+    fmt.Println(i)
+}
+
+// Break with label
+outer:
+for i := 0; i < 3; i++ {
+    for j := 0; j < 3; j++ {
+        if i == 1 && j == 1 {
+            break outer
+        }
+        fmt.Printf("i: %d, j: %d\n", i, j)
+    }
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="defer">
+                <h2>Defer Statement</h2>
+                <p>The defer statement postpones the execution of a function until the surrounding function returns:</p>
+                <pre><code class="language-go">func main() {
+    defer fmt.Println("This will be printed last")
+    fmt.Println("This will be printed first")
+}
+
+// Multiple defers are executed in LIFO order
+func main() {
+    defer fmt.Println("Third")
+    defer fmt.Println("Second")
+    defer fmt.Println("First")
+}
+
+// Common use case: closing resources
+func readFile() error {
+    file, err := os.Open("file.txt")
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+    // Use file
+    return nil
+}</code></pre>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use early returns to reduce nesting</li>
+                    <li>Keep if conditions simple and readable</li>
+                    <li>Use switch statements for multiple conditions</li>
+                    <li>Prefer range loops when iterating over collections</li>
+                    <li>Use defer for cleanup operations</li>
+                    <li>Be careful with infinite loops</li>
+                    <li>Use meaningful loop variable names</li>
+                    <li>Consider using break labels for complex nested loops</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced OOP Concepts - Java Programming</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #67b26f;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --code-bg: #f0f0f0;
+            --code-color: #d63384;
+        }
+
+        .dark-theme {
+            --primary-color: #61dafb;
+            --secondary-color: #4ecca3;
+            --text-color: #f0f0f0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --code-bg: #272822;
+            --code-color: #ff79c6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .note {
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="/../../java-homepage.html" class="back-button">
+        <span>← Back to Java Home</span>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+    <div class="container">
+        <header>
+            <h1>Advanced Object-Oriented Programming Concepts in Java</h1>
+            <p>Exploring advanced OOP concepts and their implementation in Java</p>
+        </header>
+
+        <div class="card">
+            <section id="inheritance">
+                <h2>Inheritance</h2>
+                <p>Inheritance is a fundamental OOP concept that allows a class to inherit properties and methods from another class.</p>
+                <div class="code-example">
+                    <h3>Example: Basic Inheritance</h3>
+                    <pre><code>class Animal {
+    void eat() {
+        System.out.println("Animal is eating");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog is barking");
+    }
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Key points about inheritance:</p>
+                    <ul>
+                        <li>Java supports single inheritance (a class can extend only one class)</li>
+                        <li>All classes implicitly extend Object class</li>
+                        <li>Use 'extends' keyword for inheritance</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="polymorphism">
+                <h2>Polymorphism</h2>
+                <p>Polymorphism allows objects to take multiple forms and enables one interface to be used for a general class of actions.</p>
+                <div class="code-example">
+                    <h3>Example: Method Overriding</h3>
+                    <pre><code>class Shape {
+    void draw() {
+        System.out.println("Drawing a shape");
+    }
+}
+
+class Circle extends Shape {
+    @Override
+    void draw() {
+        System.out.println("Drawing a circle");
+    }
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Types of polymorphism in Java:</p>
+                    <ul>
+                        <li>Compile-time polymorphism (Method overloading)</li>
+                        <li>Runtime polymorphism (Method overriding)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="abstraction">
+                <h2>Abstraction</h2>
+                <p>Abstraction is the process of hiding implementation details and showing only essential features.</p>
+                <div class="code-example">
+                    <h3>Example: Abstract Class</h3>
+                    <pre><code>abstract class Vehicle {
+    abstract void start();
+    
+    void stop() {
+        System.out.println("Vehicle stopped");
+    }
+}
+
+class Car extends Vehicle {
+    @Override
+    void start() {
+        System.out.println("Car started");
+    }
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Abstraction can be achieved through:</p>
+                    <ul>
+                        <li>Abstract classes</li>
+                        <li>Interfaces</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="encapsulation">
+                <h2>Encapsulation</h2>
+                <p>Encapsulation is the mechanism of wrapping data and methods together as a single unit.</p>
+                <div class="code-example">
+                    <h3>Example: Encapsulation</h3>
+                    <pre><code>class Student {
+    private String name;
+    private int age;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public void setAge(int age) {
+        if(age > 0) {
+            this.age = age;
+        }
+    }
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Benefits of encapsulation:</p>
+                    <ul>
+                        <li>Data hiding</li>
+                        <li>Increased flexibility</li>
+                        <li>Reusability</li>
+                        <li>Testing is easier</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="interfaces">
+                <h2>Interfaces</h2>
+                <p>Interfaces define a contract that classes must implement, specifying what methods a class must have.</p>
+                <div class="code-example">
+                    <h3>Example: Interface Implementation</h3>
+                    <pre><code>interface Drawable {
+    void draw();
+    double getArea();
+}
+
+class Rectangle implements Drawable {
+    private double width;
+    private double height;
+    
+    @Override
+    public void draw() {
+        System.out.println("Drawing rectangle");
+    }
+    
+    @Override
+    public double getArea() {
+        return width * height;
+    }
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Interface features:</p>
+                    <ul>
+                        <li>All methods are public and abstract by default</li>
+                        <li>Can have default and static methods (Java 8+)</li>
+                        <li>Can have private methods (Java 9+)</li>
+                        <li>Supports multiple inheritance</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section id="composition">
+                <h2>Composition</h2>
+                <p>Composition is a design technique to implement has-a relationship in classes.</p>
+                <div class="code-example">
+                    <h3>Example: Composition</h3>
+                    <pre><code>class Engine {
+    void start() {
+        System.out.println("Engine started");
+    }
+}
+
+class Car {
+    private Engine engine;
+    
+    Car() {
+        engine = new Engine();
+    }
+    
+    void start() {
+        engine.start();
+    }
+}</code></pre>
+                </div>
+                <div class="note">
+                    <p>Composition vs Inheritance:</p>
+                    <ul>
+                        <li>Composition provides better flexibility</li>
+                        <li>Easier to change behavior at runtime</li>
+                        <li>Better encapsulation</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Next: <a href="exception-handling.html">Exception Handling</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html> 
