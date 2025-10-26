@@ -113,3 +113,6 @@ temp/
 # Backup files
 *.bak
 *.backup
+
+# Project directories
+Project1/
